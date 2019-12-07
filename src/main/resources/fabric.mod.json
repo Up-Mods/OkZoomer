@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Ok Zoomer",
-  "description": "This mod adds a zoom button similar to OptiFine's.",
+  "description": "This mod adds a highly configurable zoom button, it works like OptiFine's zoom when not configured.",
   "authors": [
     "joaoh1"
   ],

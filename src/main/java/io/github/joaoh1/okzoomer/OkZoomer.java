@@ -30,15 +30,18 @@ public class OkZoomer implements ClientModInitializer {
 	}
 	
 	Boolean smoothCamera = true;
-	Boolean smoothTransition = false;
+	Boolean smoothTransition = true;
 	Boolean zoomToggle = false;
+	Double zoomFactor = 0.5;
+	Double smoothInFactor = 0.25;
+	Double smoothOutFactor = 0.2;
 
 	Boolean cinematicMode = false;
 	Boolean fovProcessing = true;
 	Boolean zoomPressed = false;
 
+	Double smoothing = 1.0 - zoomFactor;
 	Double realFov = 70.0;
-	Double smoothing = 0.5;
 
 	Integer cinematicModeToggleCooldown = 1;
 	Integer zoomToggleCooldown = 1;
@@ -77,25 +80,33 @@ public class OkZoomer implements ClientModInitializer {
 				}
 
 				if (zoomPressed == true) {
+					System.out.println(smoothing);
 					if (smoothTransition == false) {
 						smoothing = 0.0;
 					}
-					if (smoothing > 0.05) {
-						smoothing *= 0.25;
-						minecraft.options.fov = realFov * (0.5 + smoothing);
-					} else if (smoothing < 0.05) {
+					if (smoothing > 0.05 || smoothing < 0.0) {
+						smoothing *= smoothInFactor;
+						minecraft.options.fov = realFov * (zoomFactor + smoothing);
+					}
+					if (smoothing < 0.0) {
+						smoothing *= -smoothInFactor;
+						minecraft.options.fov = realFov * (zoomFactor + smoothing);
+					}
+					if (smoothing <= 0.05 && smoothing >= 0.00) {
 						smoothing = 0.05;
-						minecraft.options.fov = realFov * 0.5;
+						minecraft.options.fov = realFov * zoomFactor;
 						fovProcessing = false;
 					}
 				} else if (zoomPressed == false) {
-					smoothing /= 0.2;
-					if (smoothTransition == false) {
-						smoothing = 0.5;
+					if (!smoothTransition) {
+						smoothing = 1.0 - zoomFactor;
 					}
-					minecraft.options.fov = realFov * (0.5 + smoothing);
-					if (smoothing >= 0.5) {
-						smoothing = 0.5;
+					if (zoomFactor < 1.0) {
+						smoothing /= smoothOutFactor;
+					}
+					minecraft.options.fov = realFov * (zoomFactor + smoothing);
+					if (smoothing >= 1.0 - zoomFactor) {
+						smoothing = 1.0 - zoomFactor;
 						minecraft.options.fov = realFov;
 						fovProcessing = true;
 					}
@@ -105,13 +116,15 @@ public class OkZoomer implements ClientModInitializer {
 					zoomToggleCooldown = 1;
 				} else {
 					if (!fovProcessing) {
-						smoothing /= 0.2;
-						if (smoothTransition == false) {
-							smoothing = 0.5;
+						if (!smoothTransition) {
+							smoothing = 1.0 - zoomFactor;
 						}
-						minecraft.options.fov = realFov * (0.5 + smoothing);
-						if (smoothing >= 0.5) {
-							smoothing = 0.5;
+						if (zoomFactor < 1.0) {
+							smoothing /= smoothOutFactor;
+						}
+						minecraft.options.fov = realFov * (zoomFactor + smoothing);
+						if (smoothing >= 1.0 - zoomFactor) {
+							smoothing = 1.0 - zoomFactor;
 							minecraft.options.fov = realFov;
 							fovProcessing = true;
 							zoomPressed = false;
@@ -119,8 +132,8 @@ public class OkZoomer implements ClientModInitializer {
 					}
 				}
 
-				if (fovProcessing && smoothing == 0.5) {
-					smoothing = 0.5;
+				if (fovProcessing && smoothing == 1.0 - zoomFactor) {
+					smoothing = 1.0 - zoomFactor;
 					realFov = minecraft.options.fov;
 				}
 			}
