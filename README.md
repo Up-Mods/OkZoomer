@@ -1,5 +1,5 @@
 # Ok Zoomer
-A mod that adds a zoom key, currently it does a little more than OptiFine, high configurability will be added as soon as a config API releases for 1.15.
+A mod that adds a zoom button, currently it does a little more than OptiFine, high configurability will be added as soon as a config API releases for 1.15.
 
 ## License
 
