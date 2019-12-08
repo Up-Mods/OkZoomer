@@ -18,13 +18,9 @@
 
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "io.github.joaoh1.okzoomer.OkZoomer"
-    ]
+    "client": ["io.github.joaoh1.okzoomer.OkZoomer"],
+    "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"]
   },
-  "mixinos": [
-    "okzoomer.mixins.json"
-  ],
 
   "depends": {
     "fabricloader": ">=0.4.0",
