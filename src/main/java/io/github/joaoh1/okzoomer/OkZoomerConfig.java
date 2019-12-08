@@ -12,7 +12,7 @@ public class OkZoomerConfig implements ConfigData {
     @Comment("Enables Smooth Transitions when zooming in and out.\nWARNING: It might be prone to breakage, be careful.")
     @ConfigEntry.Gui.Tooltip(count = 2)
     boolean smoothTransition = false;
-    @Comment("The divisor used while applying smoothing, smaller number zooms faster, higher is slower.")
+    @Comment("The divisor used while applying smoothing, smaller number zooms faster, bigger number zoom slower.")
     @ConfigEntry.Gui.Tooltip(count = 2)
     int smoothDivisor = 64;
     @Comment("Enables the ability to toggle zooming.")

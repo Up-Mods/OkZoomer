@@ -50,9 +50,9 @@ public class OkZoomer implements ClientModInitializer {
 	Double smoothing = 1.0 - 0.5;
 
   Integer cinematicModeToggleCooldown = 1;
+  Integer zoomToggleCooldown = 1;
   Integer timesToRepeatZoomCheck = 1;
   Integer zoomProgress = 0;
-	Integer zoomToggleCooldown = 1;
 
 	@Override
 	public void onInitializeClient() {

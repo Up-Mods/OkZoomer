@@ -21,10 +21,14 @@
     "client": ["io.github.joaoh1.okzoomer.OkZoomer"],
     "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"]
   },
-
   "depends": {
-    "fabricloader": ">=0.4.0",
-    "fabric": "*",
-    "minecraft": "1.15.x"
+    "autoconfig1u": ">=1.2.4",
+    "cloth-config2": ">=1.8.0",
+    "fabricloader": ">=0.7.0",
+    "fabric": ">=0.4.0",
+    "minecraft": ">=1.14.4"
+  },
+  "custom": {
+    "modmenu:clientsideOnly": true
   }
 }
