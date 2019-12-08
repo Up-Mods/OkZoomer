@@ -13,7 +13,7 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
-  "license": "Apache-2.0",
+  "license": "MIT",
   "icon": "assets/okzoomer/icon.png",
 
   "environment": "*",
