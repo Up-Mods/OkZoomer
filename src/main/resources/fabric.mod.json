@@ -27,6 +27,8 @@
     "minecraft": ">=1.14.4"
   },
   "custom": {
-    "modmenu:clientsideOnly": true
+    "modmenu:clientsideOnly": true,
+    "modsoftheworld:logo": "okzoomer:motw/logo.png",
+    "modsoftheworld:splashes": "okzoomer:motw/splashes.txt"
   }
 }
