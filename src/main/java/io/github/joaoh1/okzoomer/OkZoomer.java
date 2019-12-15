@@ -8,9 +8,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 import org.lwjgl.glfw.GLFW;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
@@ -35,12 +32,6 @@ public class OkZoomer implements ClientModInitializer {
     
 		return toggledBoolean;
   }
-  
-  public static double round(double number, int places) {
-		BigDecimal bd = BigDecimal.valueOf(number);
-		bd = bd.setScale(places, RoundingMode.HALF_UP);
-		return bd.doubleValue();
-	}
 
 	Boolean cinematicMode = false;
   Boolean fovProcessing = true;
@@ -72,7 +63,7 @@ public class OkZoomer implements ClientModInitializer {
 			if (config.smoothCamera) {
 				if (minecraft.options.keySmoothCamera.isPressed()) {
 					cinematicMode = toggleBooleanByKeybind(cinematicMode, cinematicModeToggleCooldown);
-					cinematicModeToggleCooldown = 3;
+					cinematicModeToggleCooldown = config.smoothTransitionOptions.timesToRepeatSmoothing;
 				} else {
 					cinematicModeToggleCooldown = 1;
 				}
@@ -84,7 +75,7 @@ public class OkZoomer implements ClientModInitializer {
 				}
       }
       
-      if (config.smoothTransition) {
+      if (config.smoothTransitionOptions.smoothTransition) {
         timesToRepeatZoomCheck = 4;
       } else {
         timesToRepeatZoomCheck = 1;
@@ -100,13 +91,13 @@ public class OkZoomer implements ClientModInitializer {
           }
   
           if (zoomPressed && zoomProgress != 2) {
-            smoothing = round(smoothing * 2, 4);
+            smoothing *= 2;
             zoomProgress = 1;
-            if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+            if (!config.smoothTransitionOptions.smoothTransition || config.zoomMultiplier == 1.0) {
               smoothing = config.zoomMultiplier;
             }
             if (smoothing >= config.zoomMultiplier) {
-              smoothing = config.zoomMultiplier / config.smoothDivisor;
+              smoothing = config.zoomMultiplier / config.smoothTransitionOptions.smoothDivisor;
               minecraft.options.fov = realFov * config.zoomMultiplier;
               fovProcessing = false;
               zoomProgress = 2;
@@ -118,13 +109,13 @@ public class OkZoomer implements ClientModInitializer {
               }
             }
           } else if ((!zoomPressed && zoomProgress == 2)|| zoomProgress == 1) {
-              smoothing = round(smoothing * 2, 4);
+            smoothing *= 2;
               zoomProgress = 1;
-              if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+              if (!config.smoothTransitionOptions.smoothTransition || config.zoomMultiplier == 1.0) {
                 smoothing = config.zoomMultiplier;
               }
               if (smoothing >= config.zoomMultiplier) {
-                smoothing = config.zoomMultiplier / config.smoothDivisor;
+                smoothing = config.zoomMultiplier / config.smoothTransitionOptions.smoothDivisor;
                 minecraft.options.fov = realFov;
                 fovProcessing = true;
                 zoomProgress = 0;
@@ -140,13 +131,13 @@ public class OkZoomer implements ClientModInitializer {
           if (config.zoomToggle) {
             zoomToggleCooldown = 1;
           } else if (zoomProgress != 0 || !fovProcessing || zoomProgress == 1) {
-            smoothing = round(smoothing * 2, 4);
+            smoothing *= 2;
             zoomProgress = 0;
-            if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+            if (!config.smoothTransitionOptions.smoothTransition || config.zoomMultiplier == 1.0) {
               smoothing = config.zoomMultiplier;
             }
             if (smoothing >= config.zoomMultiplier) {
-              smoothing = config.zoomMultiplier / config.smoothDivisor;
+              smoothing = config.zoomMultiplier / config.smoothTransitionOptions.smoothDivisor;
               minecraft.options.fov = realFov;
               fovProcessing = true;
               zoomProgress = 0;
@@ -158,7 +149,7 @@ public class OkZoomer implements ClientModInitializer {
             }
           } 
           if (fovProcessing && zoomProgress == 0) {
-            smoothing = config.zoomMultiplier / config.smoothDivisor;
+            smoothing = config.zoomMultiplier / config.smoothTransitionOptions.smoothDivisor;
             realFov = minecraft.options.fov;
           }
         }   
