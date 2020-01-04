@@ -16,14 +16,14 @@ import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 public class OkZoomer implements ClientModInitializer {
 	private static MinecraftClient minecraft = MinecraftClient.getInstance();
 
-	private static FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder.create(
+	public static FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder.create(
 			new Identifier("okzoomer", "zoom"),
 			InputUtil.Type.KEYSYM,
 			GLFW.GLFW_KEY_Z,
 			"key.categories.misc"
 		).build();
 
-	private Boolean toggleBooleanByKeybind(Boolean toggledBoolean, Integer cooldown) {
+	public boolean toggleBooleanByKeybind(boolean toggledBoolean, int cooldown) {
 		cooldown -= 1;
 		if (cooldown <= 1) {
 			cooldown = 3;
@@ -33,17 +33,17 @@ public class OkZoomer implements ClientModInitializer {
 		return toggledBoolean;
   }
 
-	Boolean cinematicMode = false;
-  Boolean fovProcessing = true;
-  Boolean zoomPressed = false;
+	boolean cinematicMode = false;
+  boolean fovProcessing = true;
+  boolean zoomPressed = false;
 
-  Double realFov = 70.0;
-	Double smoothing = 1.0 - 0.5;
+  double realFov = 70.0;
+	double smoothing = 1.0 - 0.5;
 
-  Integer cinematicModeToggleCooldown = 1;
-  Integer zoomToggleCooldown = 1;
-  Integer timesToRepeatZoomCheck = 1;
-  Integer zoomProgress = 0;
+  int cinematicModeToggleCooldown = 1;
+  int zoomToggleCooldown = 1;
+  int timesToRepeatZoomCheck = 1;
+  int zoomProgress = 0;
 
 	@Override
 	public void onInitializeClient() {
