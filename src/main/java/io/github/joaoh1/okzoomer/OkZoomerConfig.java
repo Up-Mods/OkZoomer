@@ -10,14 +10,15 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip(count = 2)
   boolean smoothCamera = true;
 
+  @Comment("Enables Smooth Transitions when zooming in and out.")
+  @ConfigEntry.Gui.Tooltip(count = 1)
+  boolean smoothTransition = false;
+
   @ConfigEntry.Gui.CollapsibleObject
-  SmoothTransitionOptions smoothTransitionOptions = new SmoothTransitionOptions();
+  @ConfigEntry.Gui.Tooltip(count = 1)
+  AdvancedSmoothTransSettings advancedSmoothTransSettings = new AdvancedSmoothTransSettings();
 
-  public static class SmoothTransitionOptions {
-    @Comment("Enables Smooth Transitions when zooming in and out.")
-    @ConfigEntry.Gui.Tooltip(count = 1)
-    boolean smoothTransition = false;
-
+  public static class AdvancedSmoothTransSettings {
     @Comment("The divisor used while applying smoothing, smaller number zooms faster, bigger number zoom slower.")
     @ConfigEntry.Gui.Tooltip(count = 2)
     int smoothDivisor = 128;
@@ -25,6 +26,14 @@ public class OkZoomerConfig implements ConfigData {
     @Comment("The number of times the transition is applied during the zoom press.")
     @ConfigEntry.Gui.Tooltip(count = 1)
     int timesToRepeatSmoothing = 6;
+
+    @Comment("The multiplier used on the FOV's smoothing while it's being zoomed in.")
+    @ConfigEntry.Gui.Tooltip(count = 1)
+    double smoothInMultiplier = 2;
+
+    @Comment("The multiplier used on the FOV's smoothing while it's being zoomed out.")
+    @ConfigEntry.Gui.Tooltip(count = 1)
+    double smoothOutMultiplier = 2;
   }
 
   @Comment("Enables the ability to toggle zooming.")
