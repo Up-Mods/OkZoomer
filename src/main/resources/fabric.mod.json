@@ -27,7 +27,7 @@
     "minecraft": ">=1.14.4"
   },
   "suggests": {
-    "modmenu": ">=1.8.0"
+    "modmenu": ">=1.7.14"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
