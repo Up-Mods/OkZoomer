@@ -26,6 +26,9 @@
     "fabric": ">=0.4.0",
     "minecraft": ">=1.14.4"
   },
+  "suggests": {
+    "modmenu": ">=1.8.0"
+  },
   "custom": {
     "modmenu:clientsideOnly": true,
     "modsoftheworld:logo": "okzoomer:motw/logo.png",

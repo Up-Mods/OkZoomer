@@ -91,7 +91,7 @@ public class OkZoomer implements ClientModInitializer {
           }
   
           if (zoomPressed && zoomProgress != 2) {
-            smoothing *= config.advancedSmoothTransSettings.smoothInMultiplier;
+            smoothing *= config.advancedSmoothTransSettings.transitionStartMultiplier;
             zoomProgress = 1;
             if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
               smoothing = config.zoomMultiplier;
@@ -109,7 +109,7 @@ public class OkZoomer implements ClientModInitializer {
               }
             }
           } else if ((!zoomPressed && zoomProgress == 2)|| zoomProgress == 1) {
-            smoothing *= config.advancedSmoothTransSettings.smoothOutMultiplier;
+            smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
               zoomProgress = 1;
               if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
                 smoothing = config.zoomMultiplier;
@@ -131,7 +131,7 @@ public class OkZoomer implements ClientModInitializer {
           if (config.zoomToggle) {
             zoomToggleCooldown = 1;
           } else if (zoomProgress != 0 || !fovProcessing || zoomProgress == 1) {
-            smoothing *= config.advancedSmoothTransSettings.smoothOutMultiplier;
+            smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
             zoomProgress = 0;
             if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
               smoothing = config.zoomMultiplier;

@@ -29,11 +29,11 @@ public class OkZoomerConfig implements ConfigData {
 
     @Comment("The multiplier used on the FOV's smoothing while it's being zoomed in.")
     @ConfigEntry.Gui.Tooltip(count = 1)
-    double smoothInMultiplier = 2;
+    double transitionStartMultiplier = 2;
 
     @Comment("The multiplier used on the FOV's smoothing while it's being zoomed out.")
     @ConfigEntry.Gui.Tooltip(count = 1)
-    double smoothOutMultiplier = 2;
+    double transitionEndMultiplier = 2;
   }
 
   @Comment("Enables the ability to toggle zooming.")
