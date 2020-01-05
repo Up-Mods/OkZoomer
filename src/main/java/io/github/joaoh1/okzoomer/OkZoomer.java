@@ -36,6 +36,7 @@ public class OkZoomer implements ClientModInitializer {
 	boolean cinematicMode = false;
   boolean fovProcessing = true;
   boolean zoomPressed = false;
+  boolean hideHandsBecauseZoom = false;
 
   double realFov = 70.0;
 	double smoothing = 1.0 - 0.5;
@@ -69,10 +70,18 @@ public class OkZoomer implements ClientModInitializer {
 				}
 	
 				if (zoomProgress == 2 || cinematicMode) {
-					minecraft.options.smoothCameraEnabled = true;
+          minecraft.options.smoothCameraEnabled = true;
 				} else {
 					minecraft.options.smoothCameraEnabled = false;
 				}
+      }
+
+      if (config.hideHands) {
+        if (zoomProgress == 2) {
+          hideHandsBecauseZoom = true;
+        } else {
+          hideHandsBecauseZoom = false;
+        }
       }
       
       if (config.smoothTransition) {

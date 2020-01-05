@@ -10,6 +10,10 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip(count = 2)
   boolean smoothCamera = true;
 
+  @Comment("When enabled, zooming will hide your hands.")
+  @ConfigEntry.Gui.Tooltip(count = 1)
+  boolean hideHands = true;
+
   @Comment("Enables Smooth Transitions when zooming in and out.")
   @ConfigEntry.Gui.Tooltip(count = 1)
   boolean smoothTransition = false;

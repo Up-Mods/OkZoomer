@@ -2,6 +2,8 @@
 	"key.okzoomer.zoom": "Zoom",
 	"text.autoconfig.okzoomer.option.smoothCamera": "Smooth Camera",
 	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[0]": "Enables Smooth Camera while zooming,",
+	"text.autoconfig.okzoomer.option.hideHands": "Hide Hands",
+	"text.autoconfig.okzoomer.option.hideHands.@Tooltip": "While enabled, zooming hides your hands.",
 	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[1]": "interfers with Cinematic Mode but it shouldn't be anything negative.",
 	"text.autoconfig.okzoomer.option.smoothTransition": "Smooth Transition",
 	"text.autoconfig.okzoomer.option.smoothTransition.@Tooltip": "Enables smooth transitions when zooming in and out.",
