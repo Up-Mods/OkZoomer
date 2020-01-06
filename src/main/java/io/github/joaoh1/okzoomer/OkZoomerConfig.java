@@ -46,5 +46,5 @@ public class OkZoomerConfig implements ConfigData {
 
   @Comment("The multiplier applied to the FOV when zooming.\n1.25 is the recommended maximum, anything above that will break the FOV.")
   @ConfigEntry.Gui.Tooltip(count =  3)
-  double zoomMultiplier = 0.5;  
+  double zoomMultiplier = 0.25;  
 }
