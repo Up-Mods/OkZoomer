@@ -19,6 +19,9 @@
     "client": ["io.github.joaoh1.okzoomer.OkZoomer"],
     "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"]
   },
+  "mixins": [
+    "okzoomer.mixins.json"
+  ],
   "depends": {
     "autoconfig1u": ">=1.2.4",
     "cloth-config2": ">=1.8.0",

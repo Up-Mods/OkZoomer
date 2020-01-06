@@ -16,7 +16,7 @@ import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 public class OkZoomer implements ClientModInitializer {
 	private static MinecraftClient minecraft = MinecraftClient.getInstance();
 
-	public static FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder.create(
+	public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder.create(
 			new Identifier("okzoomer", "zoom"),
 			InputUtil.Type.KEYSYM,
 			GLFW.GLFW_KEY_Z,
@@ -33,13 +33,19 @@ public class OkZoomer implements ClientModInitializer {
 		return toggledBoolean;
   }
 
+  private static boolean hideHandsBecauseZoom = false;
+
+  public static boolean shouldHideHands() {
+    boolean hideHands = hideHandsBecauseZoom;
+    return hideHands;
+  }
+
 	boolean cinematicMode = false;
   boolean fovProcessing = true;
   boolean zoomPressed = false;
-  boolean hideHandsBecauseZoom = false;
 
   double realFov = 70.0;
-	double smoothing = 1.0 - 0.5;
+  double smoothing = 1.0 - 0.5;
 
   int cinematicModeToggleCooldown = 1;
   int zoomToggleCooldown = 1;
@@ -75,14 +81,6 @@ public class OkZoomer implements ClientModInitializer {
 					minecraft.options.smoothCameraEnabled = false;
 				}
       }
-
-      if (config.hideHands) {
-        if (zoomProgress == 2) {
-          hideHandsBecauseZoom = true;
-        } else {
-          hideHandsBecauseZoom = false;
-        }
-      }
       
       if (config.smoothTransition) {
         timesToRepeatZoomCheck = 4;
@@ -108,6 +106,9 @@ public class OkZoomer implements ClientModInitializer {
             if (smoothing >= config.zoomMultiplier) {
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov * config.zoomMultiplier;
+              if (config.hideHands) {
+                hideHandsBecauseZoom = true;
+              }
               fovProcessing = false;
               zoomProgress = 2;
             } else {
@@ -126,6 +127,7 @@ public class OkZoomer implements ClientModInitializer {
               if (smoothing >= config.zoomMultiplier) {
                 smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
                 minecraft.options.fov = realFov;
+                hideHandsBecauseZoom = false;
                 fovProcessing = true;
                 zoomProgress = 0;
               } else {
@@ -148,6 +150,7 @@ public class OkZoomer implements ClientModInitializer {
             if (smoothing >= config.zoomMultiplier) {
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov;
+              hideHandsBecauseZoom = false;
               fovProcessing = true;
               zoomProgress = 0;
               zoomPressed = false;
