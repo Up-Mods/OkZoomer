@@ -1,0 +1,28 @@
+{
+	"key.okzoomer.zoom": "Zoom",
+	"text.autoconfig.okzoomer.option.smoothCamera": "Soepele camera",
+	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[0]": "Maakt soepele camera mogelijk tijdens zoomen,",
+	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[1]": "interfereert met de filmische modus, maar het zou geen problemen opleveren.",
+	"text.autoconfig.okzoomer.option.smoothTransition": "Soepele overgang",
+	"text.autoconfig.okzoomer.option.smoothTransition.@Tooltip": "Maakt soepele overgangen mogelijk bij het in- en uitzoomen.",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings": "Geavanceerde vloeiende overgangsinstellingen",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.@Tooltip": "Meer specifieke instellingen voor vloeiende overgangen, gevoelig voor breuk.",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.smoothDivisor": "Vloeiende overgangsdeler",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.smoothDivisor.@Tooltip[0]": "De deler gebruikt tijdens het toepassen van vloeiend maken,",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.smoothDivisor.@Tooltip[1]": "kleiner aantal zoomt sneller, groter aantal zoomt langzamer.",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.timesToRepeatSmoothing": "Tijden om het vloeiend maken te herhalen",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.timesToRepeatSmoothing.@Tooltip": "Het aantal keren dat de afvlakking wordt toegepast tijdens de overgang.",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionStartMultiplier": "Overgang start multiplier",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionStartMultiplier.@Tooltip": "De vermenigvuldiger die wordt gebruikt bij het vloeiend maken van de FOV terwijl deze wordt ingezoomd.",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier": "Overgangseindvermenigvulder",
+	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier.@Tooltip": "De vermenigvuldiger die wordt gebruikt bij het vloeiend maken van de FOV terwijl deze wordt uitgezoomd.",
+	"text.autoconfig.okzoomer.option.zoomMultiplier": "Zoom vermenigvulder",
+	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[0]": "De vermenigvuldiger die op de FOV wordt toegepast bij het zoomen.",
+	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[1]": "1,25 is het aanbevolen maximum,",
+	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[2]": "alles daarboven zal de FOV breken.",
+	"text.autoconfig.okzoomer.option.zoomToggle": "Zoomknop",
+	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Hiermee kunt u schakelen tussen zoomen.",
+	"text.autoconfig.okzoomer.title": "Ok Zoomer configuratie"
+}
+
+
