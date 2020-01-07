@@ -108,6 +108,7 @@ public class OkZoomer implements ClientModInitializer {
               minecraft.options.fov = realFov * config.zoomMultiplier;
               if (config.hideHands) {
                 hideHandsBecauseZoom = true;
+                minecraft.gameRenderer.tick();
               }
               fovProcessing = false;
               zoomProgress = 2;
@@ -127,7 +128,10 @@ public class OkZoomer implements ClientModInitializer {
               if (smoothing >= config.zoomMultiplier) {
                 smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
                 minecraft.options.fov = realFov;
-                hideHandsBecauseZoom = false;
+                if (hideHandsBecauseZoom) {
+                  hideHandsBecauseZoom = false;
+                  minecraft.gameRenderer.tick();
+                }
                 fovProcessing = true;
                 zoomProgress = 0;
               } else {
@@ -150,7 +154,10 @@ public class OkZoomer implements ClientModInitializer {
             if (smoothing >= config.zoomMultiplier) {
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov;
-              hideHandsBecauseZoom = false;
+              if (hideHandsBecauseZoom) {
+                hideHandsBecauseZoom = false;
+                minecraft.gameRenderer.tick();
+              }
               fovProcessing = true;
               zoomProgress = 0;
               zoomPressed = false;

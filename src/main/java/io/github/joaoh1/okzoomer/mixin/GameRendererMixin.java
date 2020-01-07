@@ -14,12 +14,12 @@ public class GameRendererMixin {
     @Shadow
 	private boolean renderHand;
 
-    @Inject(at = @At("HEAD"), method = "net/minecraft/client/render/GameRenderer.renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V")
+    @Inject(at = @At("HEAD"), method = "net/minecraft/client/render/GameRenderer.tick()V")
 	private void renderWorld(CallbackInfo info) {
         if (OkZoomer.shouldHideHands()) {
             this.renderHand = false;
         } else {
             this.renderHand = true;
         }
-	}
+    }
 }
