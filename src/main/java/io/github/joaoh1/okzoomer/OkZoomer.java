@@ -11,26 +11,23 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
 
 public class OkZoomer implements ClientModInitializer {
-	private static MinecraftClient minecraft = MinecraftClient.getInstance();
+  private static MinecraftClient minecraft = MinecraftClient.getInstance();
 
-	public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder.create(
-			new Identifier("okzoomer", "zoom"),
-			InputUtil.Type.KEYSYM,
-			GLFW.GLFW_KEY_Z,
-			"key.categories.misc"
-		).build();
+  public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
+      .create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, "key.categories.misc")
+      .build();
 
-	public boolean toggleBooleanByKeybind(boolean toggledBoolean, int cooldown) {
-		cooldown -= 1;
-		if (cooldown <= 1) {
-			cooldown = 3;
-			toggledBoolean = !toggledBoolean;
-		}
-    
-		return toggledBoolean;
+  public boolean toggleBooleanByKeybind(boolean toggledBoolean, int cooldown) {
+    cooldown -= 1;
+    if (cooldown <= 1) {
+      cooldown = 3;
+      toggledBoolean = !toggledBoolean;
+    }
+
+    return toggledBoolean;
   }
 
   private static boolean hideHandsBecauseZoom = false;
@@ -40,7 +37,7 @@ public class OkZoomer implements ClientModInitializer {
     return hideHands;
   }
 
-	boolean cinematicMode = false;
+  boolean cinematicMode = false;
   boolean fovProcessing = true;
   boolean zoomPressed = false;
 
@@ -52,14 +49,15 @@ public class OkZoomer implements ClientModInitializer {
   int timesToRepeatZoomCheck = 1;
   int zoomProgress = 0;
 
-	@Override
-	public void onInitializeClient() {
-		AutoConfig.register(OkZoomerConfig.class, JanksonConfigSerializer::new);
+  @Override
+  public void onInitializeClient() {
+    AutoConfig.register(OkZoomerConfig.class, Toml4jConfigSerializer::new);
 		OkZoomerConfig config = AutoConfig.getConfigHolder(OkZoomerConfig.class).getConfig();
 		
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
 
 		ClientTickCallback.EVENT.register(e -> {
+      //If Zoom Toggle is enabled, Minecraft is paused and zoom's toggled in, toggle out.
 			if (config.zoomToggle) {
         if (minecraft.isPaused() && zoomPressed) {
           zoomPressed = false;
@@ -67,14 +65,16 @@ public class OkZoomer implements ClientModInitializer {
         }
       }
 
+      //If Smooth Camera is enabled, reimplement the Smooth Camera function.
 			if (config.smoothCamera) {
 				if (minecraft.options.keySmoothCamera.isPressed()) {
 					cinematicMode = toggleBooleanByKeybind(cinematicMode, cinematicModeToggleCooldown);
-					cinematicModeToggleCooldown = config.advancedSmoothTransSettings.timesToRepeatSmoothing;
+					cinematicModeToggleCooldown = 3;
 				} else {
 					cinematicModeToggleCooldown = 1;
 				}
-	
+        
+        //But also consider the zoom's smooth camera.
 				if (zoomProgress == 2 || cinematicMode) {
           minecraft.options.smoothCameraEnabled = true;
 				} else {
@@ -82,8 +82,9 @@ public class OkZoomer implements ClientModInitializer {
 				}
       }
       
+      //If Smooth Transitions are enabled, repeat the code more than once to guarantee smoothiness.
       if (config.smoothTransition) {
-        timesToRepeatZoomCheck = 4;
+        timesToRepeatZoomCheck = config.advancedSmoothTransSettings.timesToRepeatSmoothing;
       } else {
         timesToRepeatZoomCheck = 1;
       }

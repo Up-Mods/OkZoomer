@@ -29,7 +29,7 @@ public class OkZoomerConfig implements ConfigData {
 
     @Comment("The number of times the transition is applied during the zoom press.")
     @ConfigEntry.Gui.Tooltip(count = 1)
-    int timesToRepeatSmoothing = 6;
+    int timesToRepeatSmoothing = 5;
 
     @Comment("The multiplier used on the FOV's smoothing while it's being zoomed in.")
     @ConfigEntry.Gui.Tooltip(count = 1)
