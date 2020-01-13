@@ -44,6 +44,10 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip()
   boolean zoomToggle = false;
 
+  @Comment("Reduces the mouse sensitivity when zooming.")
+  @ConfigEntry.Gui.Tooltip()
+  boolean reduceSensitivity = false;
+
   @Comment("The multiplier applied to the FOV when zooming.\n1.25 is the recommended maximum, anything above that will break the FOV.")
   @ConfigEntry.Gui.Tooltip(count =  3)
   double zoomMultiplier = 0.25;  

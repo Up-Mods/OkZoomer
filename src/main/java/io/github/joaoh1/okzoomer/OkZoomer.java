@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 
 public class OkZoomer implements ClientModInitializer {
   private static MinecraftClient minecraft = MinecraftClient.getInstance();
@@ -38,11 +38,12 @@ public class OkZoomer implements ClientModInitializer {
   }
 
   boolean cinematicMode = false;
-  boolean fovProcessing = true;
   boolean zoomPressed = false;
 
   double realFov = 70.0;
+  double realSensitivity = 100.0;
   double smoothing = 1.0 - 0.5;
+  double sensitivity = 100.0 - 50.0;
 
   int cinematicModeToggleCooldown = 1;
   int zoomToggleCooldown = 1;
@@ -51,7 +52,7 @@ public class OkZoomer implements ClientModInitializer {
 
   @Override
   public void onInitializeClient() {
-    AutoConfig.register(OkZoomerConfig.class, Toml4jConfigSerializer::new);
+    AutoConfig.register(OkZoomerConfig.class, JanksonConfigSerializer::new);
 		OkZoomerConfig config = AutoConfig.getConfigHolder(OkZoomerConfig.class).getConfig();
 		
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
@@ -122,6 +123,9 @@ public class OkZoomer implements ClientModInitializer {
             if (smoothing >= config.zoomMultiplier) {
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov * config.zoomMultiplier;
+              if (config.reduceSensitivity) {
+                minecraft.options.mouseSensitivity = realSensitivity * config.zoomMultiplier;
+              }
               zoomProgress = 2;
 
               if (config.smoothCamera) {
@@ -136,8 +140,14 @@ public class OkZoomer implements ClientModInitializer {
               }
             } else if (config.zoomMultiplier > 1.0) {
               minecraft.options.fov = realFov * (1.0 + smoothing);
+              if (config.reduceSensitivity) {
+                minecraft.options.mouseSensitivity = realSensitivity * (1.0 + smoothing);
+              }
             } else {
               minecraft.options.fov = realFov * (1.0 - smoothing);
+              if (config.reduceSensitivity) {
+                minecraft.options.mouseSensitivity = realSensitivity * (1.0 - smoothing);
+              }
             }
           }
         }
@@ -152,6 +162,7 @@ public class OkZoomer implements ClientModInitializer {
           if (smoothing >= config.zoomMultiplier) {
             smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
             minecraft.options.fov = realFov;
+            minecraft.options.mouseSensitivity = realSensitivity;
             zoomProgress = 0;
 
             if (config.smoothCamera && !cinematicMode) {
@@ -163,15 +174,22 @@ public class OkZoomer implements ClientModInitializer {
               minecraft.gameRenderer.tick();
             }
           } else if (config.zoomMultiplier > 1.0) {
-            minecraft.options.fov = realFov * (config.zoomMultiplier - smoothing);
+            minecraft.options.fov = realFov * (1.0 + smoothing);
+            if (config.reduceSensitivity) {
+              minecraft.options.mouseSensitivity = realSensitivity * (1.0 + smoothing);
+            }
           } else {
-            minecraft.options.fov = realFov * (config.zoomMultiplier + smoothing);
+            minecraft.options.fov = realFov * (1.0 - smoothing);
+            if (config.reduceSensitivity) {
+              minecraft.options.mouseSensitivity = realSensitivity * (1.0 - smoothing);
+            }
           }
         }
 
         if (zoomProgress == 0) {
           smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
           realFov = minecraft.options.fov;
+          realSensitivity = minecraft.options.mouseSensitivity;
         }
       }
 		});

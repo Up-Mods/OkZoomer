@@ -18,11 +18,13 @@
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionStartMultiplier.@Tooltip": "The multiplier used on the FOV's smoothing while it's being zoomed in.",
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier": "Transition End Multiplier",
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier.@Tooltip": "The multiplier used on the FOV's smoothing while it's being zoomed out.",
+	"text.autoconfig.okzoomer.option.reduceSensitivity": "Reduce Sensitivity",
+	"text.autoconfig.okzoomer.option.reduceSensitivity.@Tooltip": "Reduces the mouse sensitivity when zooming.",
+	"text.autoconfig.okzoomer.option.zoomToggle": "Zoom Toggle",
+	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Enables the ability to toggle zooming.",
 	"text.autoconfig.okzoomer.option.zoomMultiplier": "Zoom Multiplier",
 	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[0]": "The multiplier applied to the FOV when zooming.",
 	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[1]": "1.25 is the recommended maximum,",
 	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[2]": "anything above that will break the FOV.",
-	"text.autoconfig.okzoomer.option.zoomToggle": "Zoom Toggle",
-	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Enables the ability to toggle zooming.",
 	"text.autoconfig.okzoomer.title": "Ok Zoomer Config"
 }
