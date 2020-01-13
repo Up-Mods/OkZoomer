@@ -65,21 +65,18 @@ public class OkZoomer implements ClientModInitializer {
         }
       }
 
-      //If Smooth Camera is enabled, reimplement the Smooth Camera function.
+      //If Smooth Camera is enabled, reimplement the Smooth Camera function but with cinematicMode being set.
 			if (config.smoothCamera) {
 				if (minecraft.options.keySmoothCamera.isPressed()) {
 					cinematicMode = toggleBooleanByKeybind(cinematicMode, cinematicModeToggleCooldown);
 					cinematicModeToggleCooldown = 3;
 				} else {
 					cinematicModeToggleCooldown = 1;
-				}
+        }
         
-        //But also consider the zoom's smooth camera.
-				if (zoomProgress == 2 || cinematicMode) {
+        if (zoomProgress == 2 || cinematicMode) {
           minecraft.options.smoothCameraEnabled = true;
-				} else {
-					minecraft.options.smoothCameraEnabled = false;
-				}
+        }
       }
       
       //If Smooth Transitions are enabled, repeat the code more than once to guarantee smoothiness.
@@ -89,90 +86,93 @@ public class OkZoomer implements ClientModInitializer {
         timesToRepeatZoomCheck = 1;
       }
 
+      //If the zoom keybind is pressed, set zoomToggle.
+      if (zoomKeyBinding.isPressed()) {
+        //If Zoom Toggle is enabled, toggle zoomToggle, else, set it to true.
+        if (config.zoomToggle) {
+          zoomPressed = toggleBooleanByKeybind(zoomPressed, zoomToggleCooldown);
+          zoomToggleCooldown = 3;
+        } else {
+          zoomPressed = true;
+        }
+      } else
+      //If Zoom Toggle is enabled, reset the cooldown, else, set zoomPressed to false.
+      if (config.zoomToggle) {
+        zoomToggleCooldown = 1;
+      } else {
+        if (zoomPressed) {
+          zoomPressed = false;
+        }
+      }
+
+      //Repeat X times to guarantee smoothiness.
       for (int i = 0; i < timesToRepeatZoomCheck; i++) {
-        if (zoomKeyBinding.isPressed() || zoomProgress == 1) {
-          if (config.zoomToggle) {
-            zoomPressed = toggleBooleanByKeybind(zoomPressed, zoomToggleCooldown);
-            zoomToggleCooldown = 3;
-          } else {
-            zoomPressed = true;
-          }
-  
-          if (zoomPressed && zoomProgress != 2) {
+        if (zoomPressed && zoomProgress == 0) {
+          zoomProgress = 1;
+        }
+
+        if (zoomProgress == 1) {
+          if (zoomPressed) {
             smoothing *= config.advancedSmoothTransSettings.transitionStartMultiplier;
-            zoomProgress = 1;
+
             if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
               smoothing = config.zoomMultiplier;
             }
+
             if (smoothing >= config.zoomMultiplier) {
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov * config.zoomMultiplier;
-              if (config.hideHands) {
-                hideHandsBecauseZoom = true;
-                minecraft.gameRenderer.tick();
-              }
-              fovProcessing = false;
               zoomProgress = 2;
-            } else {
-              if (config.zoomMultiplier > 1.0) {
-                minecraft.options.fov = realFov * (1.0 + smoothing);
-              } else {
-                minecraft.options.fov = realFov * (1.0 - smoothing);
+
+              if (config.smoothCamera) {
+                minecraft.options.smoothCameraEnabled = true;
               }
-            }
-          } else if ((!zoomPressed && zoomProgress == 2)|| zoomProgress == 1) {
-            smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
-              zoomProgress = 1;
-              if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
-                smoothing = config.zoomMultiplier;
-              }
-              if (smoothing >= config.zoomMultiplier) {
-                smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
-                minecraft.options.fov = realFov;
-                if (hideHandsBecauseZoom) {
-                  hideHandsBecauseZoom = false;
+
+              if (config.hideHands) {
+                if (!hideHandsBecauseZoom) {
+                  hideHandsBecauseZoom = true;
                   minecraft.gameRenderer.tick();
                 }
-                fovProcessing = true;
-                zoomProgress = 0;
-              } else {
-                if (config.zoomMultiplier > 1.0) {
-                  minecraft.options.fov = realFov * (config.zoomMultiplier - smoothing);
-                } else {
-                  minecraft.options.fov = realFov * (config.zoomMultiplier + smoothing);
-                }
               }
-          }
-        } else {
-          if (config.zoomToggle) {
-            zoomToggleCooldown = 1;
-          } else if (zoomProgress != 0 || !fovProcessing || zoomProgress == 1) {
-            smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
-            zoomProgress = 0;
-            if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
-              smoothing = config.zoomMultiplier;
-            }
-            if (smoothing >= config.zoomMultiplier) {
-              smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
-              minecraft.options.fov = realFov;
-              if (hideHandsBecauseZoom) {
-                hideHandsBecauseZoom = false;
-                minecraft.gameRenderer.tick();
-              }
-              fovProcessing = true;
-              zoomProgress = 0;
-              zoomPressed = false;
             } else if (config.zoomMultiplier > 1.0) {
-              minecraft.options.fov = realFov * (config.zoomMultiplier - smoothing);
+              minecraft.options.fov = realFov * (1.0 + smoothing);
             } else {
-              minecraft.options.fov = realFov * (config.zoomMultiplier + smoothing);
+              minecraft.options.fov = realFov * (1.0 - smoothing);
             }
-          } 
-          if (fovProcessing && zoomProgress == 0) {
-            smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
-            realFov = minecraft.options.fov;
           }
-        }   
+        }
+
+        if (!zoomPressed && zoomProgress == 2) {
+          smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
+
+          if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+            smoothing = config.zoomMultiplier;
+          }
+
+          if (smoothing >= config.zoomMultiplier) {
+            smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
+            minecraft.options.fov = realFov;
+            zoomProgress = 0;
+
+            if (config.smoothCamera && !cinematicMode) {
+              minecraft.options.smoothCameraEnabled = false;
+            }
+
+            if (hideHandsBecauseZoom) {
+              hideHandsBecauseZoom = false;
+              minecraft.gameRenderer.tick();
+            }
+          } else if (config.zoomMultiplier > 1.0) {
+            minecraft.options.fov = realFov * (config.zoomMultiplier - smoothing);
+          } else {
+            minecraft.options.fov = realFov * (config.zoomMultiplier + smoothing);
+          }
+        }
+
+        if (zoomProgress == 0) {
+          smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
+          realFov = minecraft.options.fov;
+        }
       }
 		});
 	}
