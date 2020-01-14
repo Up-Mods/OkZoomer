@@ -18,9 +18,5 @@
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier.@Tooltip": "De vermenigvuldiger die wordt gebruikt bij het vloeiend maken van de FOV terwijl deze wordt uitgezoomd.",
 	"text.autoconfig.okzoomer.option.zoomToggle": "Zoomknop",
 	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Hiermee kunt u schakelen tussen zoomen.",
-	"text.autoconfig.okzoomer.option.zoomMultiplier": "Zoom vermenigvulder",
-	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[0]": "De vermenigvuldiger die op de FOV wordt toegepast bij het zoomen.",
-	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[1]": "1,25 is het aanbevolen maximum,",
-	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip[2]": "alles daarboven zal de FOV breken.",
 	"text.autoconfig.okzoomer.title": "Ok Zoomer configuratie"
 }
