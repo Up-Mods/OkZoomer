@@ -47,7 +47,6 @@ public class OkZoomer implements ClientModInitializer {
   double realSensitivity = 100.0;
   double smoothing = 1.0 - 0.5;
   double sensitivity = 100.0 - 50.0;
-  double zoomMultiplier = 1 / 4;
 
   int cinematicModeToggleCooldown = 1;
 	int zoomToggleCooldown = 1;
@@ -66,9 +65,6 @@ public class OkZoomer implements ClientModInitializer {
 
 		//Everything related to the zoom is done here.
 		ClientTickCallback.EVENT.register(e -> {
-      //Set the zoom multiplier, which will be used on the FOV when zooming.
-      zoomMultiplier = 1.0 / config.zoomDivisor;
-
       //If Zoom Toggle is enabled, Minecraft is paused and zoom's toggled in, toggle out.
 			if (config.zoomToggle) {
         if (minecraft.isPaused() && zoomPressed) {
@@ -133,21 +129,21 @@ public class OkZoomer implements ClientModInitializer {
 
 						//If Smooth Transitions are disabled, set smoothing to the zoom multiplier.
 						//Which in turn, will trigger the next if condition which will finish the zoom.
-            if (!config.smoothTransition || zoomMultiplier == 1.0) {
-              smoothing = zoomMultiplier;
+            if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+              smoothing = config.zoomMultiplier;
             }
 
 						//If the smoothing is equal/bigger than the zoom multiplier,
-            if (smoothing >= zoomMultiplier) {
+            if (smoothing >= config.zoomMultiplier) {
 							//Set all the values to the zoomed in values.
-              smoothing = zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
-              minecraft.options.fov = realFov * zoomMultiplier;
+              smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
+              minecraft.options.fov = realFov * config.zoomMultiplier;
 							//Also set zoomProgress to 2, since it's finished.
 							zoomProgress = 2;
 
 							//If "Reduce Sensitivity" is on, set the sensitivity adequately.
 							if (config.reduceSensitivity) {
-                minecraft.options.mouseSensitivity = realSensitivity * zoomMultiplier;
+                minecraft.options.mouseSensitivity = realSensitivity * config.zoomMultiplier;
 							}
 							
 							//If "Smooth Camera" is on, enable the smooth camera.
@@ -164,7 +160,7 @@ public class OkZoomer implements ClientModInitializer {
               }
 						} else 
 						//Apply the proper smoothing.
-						if (zoomMultiplier > 1.0) {
+						if (config.zoomMultiplier > 1.0) {
               minecraft.options.fov = realFov * (1.0 + smoothing);
               if (config.reduceSensitivity) {
                 minecraft.options.mouseSensitivity = realSensitivity * (1.0 + smoothing);
@@ -183,12 +179,12 @@ public class OkZoomer implements ClientModInitializer {
 					//The smoothing here is applied similarly to the zoom in.
           smoothing *= config.advancedSmoothTransSettings.transitionEndMultiplier;
 
-          if (!config.smoothTransition || zoomMultiplier == 1.0) {
-            smoothing = zoomMultiplier;
+          if (!config.smoothTransition || config.zoomMultiplier == 1.0) {
+            smoothing = config.zoomMultiplier;
           }
 
-          if (smoothing >= zoomMultiplier) {
-            smoothing = zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
+          if (smoothing >= config.zoomMultiplier) {
+            smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
             minecraft.options.fov = realFov;
             minecraft.options.mouseSensitivity = realSensitivity;
             zoomProgress = 0;
@@ -201,7 +197,7 @@ public class OkZoomer implements ClientModInitializer {
               hideHandsBecauseZoom = false;
               minecraft.gameRenderer.tick();
             }
-          } else if (zoomMultiplier > 1.0) {
+          } else if (config.zoomMultiplier > 1.0) {
             minecraft.options.fov = realFov * (1.0 + smoothing);
             if (config.reduceSensitivity) {
               minecraft.options.mouseSensitivity = realSensitivity * (1.0 + smoothing);
@@ -216,7 +212,7 @@ public class OkZoomer implements ClientModInitializer {
 
 				//If there's no zoom going on, set the values to be used by zooming.
         if (zoomProgress == 0) {
-          smoothing = zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
+          smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
           realFov = minecraft.options.fov;
           realSensitivity = minecraft.options.mouseSensitivity;
         }

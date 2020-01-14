@@ -48,7 +48,7 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip()
   boolean reduceSensitivity = false;
 
-  @Comment("The divisor applied to the FOV when zooming.")
-  @ConfigEntry.Gui.Tooltip(count =  1)
-  int zoomDivisor = 4;  
+  @Comment("The multiplier applied to the FOV when zooming.\n1.25 is the recommended maximum, anything above that will break the FOV.")
+  @ConfigEntry.Gui.Tooltip(count =  3)
+  double zoomMultiplier = 0.25;  
 }
