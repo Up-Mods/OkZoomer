@@ -19,11 +19,11 @@ repositories {
 }
 
 dependencies {
-	//to change the versions see the gradle.properties file
+	//to change the versions, see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
@@ -31,7 +31,7 @@ dependencies {
 	
 	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
     include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-
+	
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 

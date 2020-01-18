@@ -6,3 +6,4 @@ Get it? Zoomer, Zoom?
 Better than OptiFine's zoom!
 Better than SimpleZoom!
 Now with smooth transitions!
+Extremely configurable!
