@@ -5,10 +5,11 @@ import me.sargunvohra.mcmods.autoconfig1u.annotation.*;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "okzoomer")
+@Config.Gui.Background(value = "minecraft:textures/block/yellow_wool.png")
 public class OkZoomerConfig implements ConfigData {
   @Comment("Enables Smooth Camera while zooming, interferes with Cinematic Mode but it shouldn't be anything negative.")
   @ConfigEntry.Gui.Tooltip(count = 2)
-  boolean smoothCamera = true;
+  boolean smoothCamera = false;
 
   @Comment("While enabled, zooming hides your hands.")
   @ConfigEntry.Gui.Tooltip(count = 1)
@@ -46,9 +47,13 @@ public class OkZoomerConfig implements ConfigData {
 
   @Comment("Reduces the mouse sensitivity when zooming.")
   @ConfigEntry.Gui.Tooltip()
-  boolean reduceSensitivity = false;
+  boolean reduceSensitivity = true;
 
-  @Comment("The multiplier applied to the FOV when zooming.\n1.25 is the recommended maximum, anything above that will break the FOV.")
-  @ConfigEntry.Gui.Tooltip(count =  3)
-  double zoomMultiplier = 0.25;  
+  @Comment("Allows to increase/decrease zoom by scrolling.")
+  @ConfigEntry.Gui.Tooltip()
+  boolean zoomScrolling = true;
+
+  @Comment("The divisor applied to the FOV when zooming.")
+  @ConfigEntry.Gui.Tooltip(count =  1)
+  double zoomDivisor = 4.0;  
 }

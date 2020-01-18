@@ -14,6 +14,7 @@ public class GameRendererMixin {
     @Shadow
 	private boolean renderHand;
 
+    //This is injected in the tick method to prevent any conflicts with other mods.
     @Inject(at = @At("HEAD"), method = "net/minecraft/client/render/GameRenderer.tick()V")
 	private void renderWorld(CallbackInfo info) {
         if (OkZoomer.shouldHideHands()) {
