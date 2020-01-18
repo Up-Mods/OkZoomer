@@ -6,8 +6,6 @@ import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
@@ -20,17 +18,6 @@ public class OkZoomer implements ClientModInitializer {
   public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
   	.create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, "key.categories.misc")
     .build();
-
-  //Increases or decreases the zoom, used by zoom scrolling.
-  public void scrollZoom(double scrollAmount) {
-    if (scrollAmount > 0.0D) {
-      scrollAmount = 1.0D;
-    } else if (scrollAmount < 0.0D) {
-      scrollAmount = -1.0D;
-    }
-
-    //TODO - figure out a good logic for this ;-;
-  }
 
 	//Toggles a boolean if the matching cooldown is over.
   public boolean toggleBooleanByKeybind(boolean toggledBoolean, int cooldown) {
@@ -146,7 +133,6 @@ public class OkZoomer implements ClientModInitializer {
 
 						//If the smoothing is equal/bigger than the zoom multiplier,
             if (smoothing >= config.zoomMultiplier) {
-              minecraft.inGameHud.addChatMessage(MessageType.SYSTEM, new LiteralText(String.valueOf(minecraft.options.fov)));
 							//Set all the values to the zoomed in values.
               smoothing = config.zoomMultiplier / config.advancedSmoothTransSettings.smoothDivisor;
               minecraft.options.fov = realFov * config.zoomMultiplier;

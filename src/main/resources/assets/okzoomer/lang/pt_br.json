@@ -19,7 +19,7 @@
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier": "Multiplicador do fim da transição",
 	"text.autoconfig.okzoomer.option.advancedSmoothTransSettings.transitionEndMultiplier.@Tooltip": "O multiplicador usado na suavização do FOV enquanto sai no zoom.",
 	"text.autoconfig.okzoomer.option.reduceSensitivity": "Reduzir sensibilidade",
-	"text.autoconfig.okzoomer.option.reduceSensitivity.@Tooltip": "Reduz a sensibilidade do mouse enquando dar zoom.",
+	"text.autoconfig.okzoomer.option.reduceSensitivity.@Tooltip": "Reduz a sensibilidade do mouse enquanto dar zoom.",
 	"text.autoconfig.okzoomer.option.zoomToggle": "Alternar zoom",
 	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Ativa a habilidade de alternar o zoom.",
 	"text.autoconfig.okzoomer.option.zoomMultiplier": "Multiplicador do zoom",

@@ -5,6 +5,7 @@ import me.sargunvohra.mcmods.autoconfig1u.annotation.*;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
 @Config(name = "okzoomer")
+@Config.Gui.Background(value = "minecraft:textures/block/yellow_wool.png")
 public class OkZoomerConfig implements ConfigData {
   @Comment("Enables Smooth Camera while zooming, interferes with Cinematic Mode but it shouldn't be anything negative.")
   @ConfigEntry.Gui.Tooltip(count = 2)
