@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import io.github.joaoh1.okzoomer.OkZoomer;
+import io.github.joaoh1.okzoomer.OkZoomerConfig;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
@@ -29,10 +31,12 @@ public class GameRendererMixin {
 
     private float zoomedMovementFovMultiplier = 1.0f;
 
+    OkZoomerConfig config = AutoConfig.getConfigHolder(OkZoomerConfig.class).getConfig();
+
     @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.updateMovementFovMultiplier()V")
     private void zoomerUpdateMovementFovMultiplier(CallbackInfo info) {
         if (OkZoomer.shouldZoomSmoothly()) {
-            this.movementFovMultiplier = (float)(OkZoomer.getZoomMultiplier()) * zoomedMovementFovMultiplier;
+            this.movementFovMultiplier = (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier;
         } else {
             zoomedMovementFovMultiplier = this.movementFovMultiplier;
         }

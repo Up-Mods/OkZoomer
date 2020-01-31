@@ -1,3 +1,4 @@
+/*
 package io.github.joaoh1.okzoomer.mixin;
 
 import net.minecraft.client.Mouse;
@@ -24,3 +25,4 @@ public class MouseMixin {
       }
    }
 }
+*/

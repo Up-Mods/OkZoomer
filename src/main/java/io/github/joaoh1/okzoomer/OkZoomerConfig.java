@@ -33,5 +33,5 @@ public class OkZoomerConfig implements ConfigData {
 
   @Comment("The divisor applied to the FOV when zooming.")
   @ConfigEntry.Gui.Tooltip(count =  1)
-  double zoomDivisor = 4.0;  
+  public double zoomDivisor = 4.0;  
 }
