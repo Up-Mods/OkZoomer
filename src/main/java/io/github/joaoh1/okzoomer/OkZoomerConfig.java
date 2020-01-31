@@ -27,9 +27,11 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip()
   boolean reduceSensitivity = true;
 
+  /*
   @Comment("Allows to increase/decrease zoom by scrolling.")
   @ConfigEntry.Gui.Tooltip()
   boolean zoomScrolling = true;
+  */
 
   @Comment("The divisor applied to the FOV when zooming.")
   @ConfigEntry.Gui.Tooltip(count =  1)
