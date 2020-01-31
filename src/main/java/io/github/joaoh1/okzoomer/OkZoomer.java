@@ -199,12 +199,14 @@ public class OkZoomer implements ClientModInitializer {
             }
           }
 
+          /*
           //If "Zoom Scrolling" is on, allow for zoom scrolling.
           if (config.zoomScrolling) {
             if (!shouldScrollZoom) {
               shouldScrollZoom = true;
             }
           }
+          */
         }
       }
 
