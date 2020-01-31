@@ -16,11 +16,25 @@ public class GameRendererMixin {
 
     //This is injected in the tick method to prevent any conflicts with other mods.
     @Inject(at = @At("HEAD"), method = "net/minecraft/client/render/GameRenderer.tick()V")
-	private void renderWorld(CallbackInfo info) {
+	private void zoomerRenderWorld(CallbackInfo info) {
         if (OkZoomer.shouldHideHands()) {
             this.renderHand = false;
         } else {
             this.renderHand = true;
+        }
+    }
+
+    @Shadow
+    private float movementFovMultiplier;
+
+    private float zoomedMovementFovMultiplier = 1.0f;
+
+    @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.updateMovementFovMultiplier()V")
+    private void zoomerUpdateMovementFovMultiplier(CallbackInfo info) {
+        if (OkZoomer.shouldZoomSmoothly()) {
+            this.movementFovMultiplier = (float)(OkZoomer.getZoomMultiplier()) * zoomedMovementFovMultiplier;
+        } else {
+            zoomedMovementFovMultiplier = this.movementFovMultiplier;
         }
     }
 }

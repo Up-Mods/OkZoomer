@@ -19,28 +19,6 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip(count = 1)
   boolean smoothTransition = false;
 
-  @ConfigEntry.Gui.CollapsibleObject
-  @ConfigEntry.Gui.Tooltip(count = 1)
-  AdvancedSmoothTransSettings advancedSmoothTransSettings = new AdvancedSmoothTransSettings();
-
-  public static class AdvancedSmoothTransSettings {
-    @Comment("The divisor used while applying smoothing, smaller number zooms faster, bigger number zoom slower.")
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    int smoothDivisor = 128;
-
-    @Comment("The number of times the transition is applied during the zoom press.")
-    @ConfigEntry.Gui.Tooltip(count = 1)
-    int timesToRepeatSmoothing = 5;
-
-    @Comment("The multiplier used on the FOV's smoothing while it's being zoomed in.")
-    @ConfigEntry.Gui.Tooltip(count = 1)
-    double transitionStartMultiplier = 2;
-
-    @Comment("The multiplier used on the FOV's smoothing while it's being zoomed out.")
-    @ConfigEntry.Gui.Tooltip(count = 1)
-    double transitionEndMultiplier = 2;
-  }
-
   @Comment("Enables the ability to toggle zooming.")
   @ConfigEntry.Gui.Tooltip()
   boolean zoomToggle = false;

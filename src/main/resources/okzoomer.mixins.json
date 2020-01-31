@@ -4,8 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
   "client": [
-   "GameRendererMixin",
-   "MouseMixin"
+   "GameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
