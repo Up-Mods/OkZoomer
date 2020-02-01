@@ -9,7 +9,7 @@ import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 public class OkZoomerConfig implements ConfigData {
   @Comment("Enables Smooth Camera while zooming, interferes with Cinematic Mode but it shouldn't be anything negative.")
   @ConfigEntry.Gui.Tooltip(count = 2)
-  boolean smoothCamera = false;
+  boolean smoothCamera = true;
 
   @Comment("While enabled, zooming hides your hands.")
   @ConfigEntry.Gui.Tooltip(count = 1)
@@ -25,7 +25,7 @@ public class OkZoomerConfig implements ConfigData {
 
   @Comment("Reduces the mouse sensitivity when zooming.")
   @ConfigEntry.Gui.Tooltip()
-  boolean reduceSensitivity = true;
+  boolean reduceSensitivity = false;
 
   /*
   @Comment("Allows to increase/decrease zoom by scrolling.")
