@@ -121,7 +121,6 @@ public class OkZoomer implements ClientModInitializer {
 			if (config.zoomToggle) {
         if (minecraft.isPaused() && zoomPressed) {
           zoomPressed = false;
-          zoomKeyBinding.setPressed(true);
         }
       }
 

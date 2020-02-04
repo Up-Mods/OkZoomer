@@ -26,11 +26,11 @@
     "autoconfig1u": ">=1.2.4",
     "fabricloader": ">=0.7.0",
     "fabric": ">=0.4.0",
-    "minecraft": "1.15.x"
+    "minecraft": "1.14.x"
   },
   "recommends": {
-    "cloth-config2": ">=2.9.2",
-    "modmenu": ">=1.8.0"
+    "cloth-config2": ">=1.8",
+    "modmenu": ">=1.7.0"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
