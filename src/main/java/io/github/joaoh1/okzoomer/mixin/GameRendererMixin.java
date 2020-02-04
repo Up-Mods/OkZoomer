@@ -1,11 +1,14 @@
 package io.github.joaoh1.okzoomer.mixin;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.joaoh1.okzoomer.OkZoomer;
 import io.github.joaoh1.okzoomer.OkZoomerConfig;
@@ -36,9 +39,20 @@ public class GameRendererMixin {
     @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.updateMovementFovMultiplier()V")
     private void zoomerUpdateMovementFovMultiplier(CallbackInfo info) {
         if (OkZoomer.shouldZoomSmoothly()) {
-            this.movementFovMultiplier = (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier;
+            if (this.movementFovMultiplier != (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier) {
+                this.movementFovMultiplier = (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier;
+            }
         } else {
             zoomedMovementFovMultiplier = this.movementFovMultiplier;
         }
+    }
+
+    @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.getFov(Lnet/minecraft/client/render/Camera;FZ)D")
+    private double zoomerGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable info) {
+        if (changingFov) {
+            MinecraftClient.getInstance().worldRenderer.scheduleTerrainUpdate();
+        }
+
+        return info.getReturnValueD();
     }
 }
