@@ -11,27 +11,35 @@ public class OkZoomerConfig implements ConfigData {
   @ConfigEntry.Gui.Tooltip(count = 2)
   boolean smoothCamera = true;
 
+  @Comment("Reduces the mouse sensitivity when zooming.")
+  @ConfigEntry.Gui.Tooltip()
+  boolean reduceSensitivity = false;
+
   @Comment("While enabled, zooming hides your hands.")
-  @ConfigEntry.Gui.Tooltip(count = 1)
+  @ConfigEntry.Gui.Tooltip()
   boolean hideHands = true;
 
   @Comment("Enables Smooth Transitions when zooming in and out.")
-  @ConfigEntry.Gui.Tooltip(count = 1)
+  @ConfigEntry.Gui.Tooltip()
   boolean smoothTransition = false;
 
   @Comment("Enables the ability to toggle zooming.")
   @ConfigEntry.Gui.Tooltip()
   boolean zoomToggle = false;
 
-  @Comment("Reduces the mouse sensitivity when zooming.")
+  @Comment("The divisor applied to the FOV when zooming.")
   @ConfigEntry.Gui.Tooltip()
-  boolean reduceSensitivity = false;
+  public double zoomDivisor = 4.0;
 
   @Comment("Allows to increase or decrease zoom by scrolling.")
   @ConfigEntry.Gui.Tooltip()
   boolean zoomScrolling = false;
 
-  @Comment("The divisor applied to the FOV when zooming.")
-  @ConfigEntry.Gui.Tooltip(count =  1)
-  public double zoomDivisor = 4.0;  
+  @Comment("The minimum value that you can scroll down.")
+  @ConfigEntry.Gui.Tooltip()
+  public double minimumZoomDivisor = 1.0;
+
+  @Comment("The maximum value that you can scroll up.")
+  @ConfigEntry.Gui.Tooltip()
+  public double maximumZoomDivisor = 50.0;
 }

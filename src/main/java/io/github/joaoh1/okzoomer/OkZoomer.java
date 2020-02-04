@@ -50,7 +50,7 @@ public class OkZoomer implements ClientModInitializer {
   double zoomDivisor = 4.0;
 
   //Increases or decreases the zoom, used by zoom scrolling.
-  public static double scrollZoom(double providedZoomDivisor, double scrollAmount) {
+  public static double scrollZoom(double providedZoomDivisor, double scrollAmount, double minimumValue, double maximumValue) {
     double generalAmount = 0.0;
     if (providedZoomDivisor <= 5.0) {
       generalAmount = 0.25;
@@ -77,12 +77,12 @@ public class OkZoomer implements ClientModInitializer {
     if (shouldScrollZoom) {
       providedZoomDivisor += scrollAmount;
 
-      if (providedZoomDivisor <= 1.0) {
-        return 1.0;
+      if (providedZoomDivisor <= minimumValue) {
+        return minimumValue;
       }
 
-      if (providedZoomDivisor >= 50.0) {
-        return providedZoomDivisor -= scrollAmount;
+      if (providedZoomDivisor >= maximumValue) {
+        return maximumValue;
       }
 
       return providedZoomDivisor;
