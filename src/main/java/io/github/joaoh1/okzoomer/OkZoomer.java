@@ -12,7 +12,7 @@ import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import org.lwjgl.glfw.GLFW;
 
 public class OkZoomer implements ClientModInitializer {
-  private static MinecraftClient minecraft = MinecraftClient.getInstance();
+  private static final MinecraftClient minecraft = MinecraftClient.getInstance();
 
 	//The keybind itself
   public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
@@ -28,20 +28,6 @@ public class OkZoomer implements ClientModInitializer {
     }
     return toggledBoolean;
   }
-
-  /*
-  //Increases or decreases the zoom, used by zoom scrolling.
-  private static double zoomScrollTarget = 0.0;
-  public static void scrollZoom(double scrollAmount) {
-    if (scrollAmount > 0.0D) {
-      scrollAmount = 0.25;
-    } else if (scrollAmount < 0.0D) {
-      scrollAmount = -0.25;
-    }
-
-    zoomScrollTarget += scrollAmount;
-  }
-  */
 
   //Used by the mixin that hides the hands.
   private static boolean hideHandsBecauseZoom = false;
@@ -61,10 +47,48 @@ public class OkZoomer implements ClientModInitializer {
     return shouldScrollZoom;
   }
 
-  double zoomMultiplier = 1 / 4;
-  private static double returnedZoomMultiplier = 1 / 4;
-  public static double getZoomMultiplier() {
-    return returnedZoomMultiplier;
+  double zoomDivisor = 4.0;
+
+  //Increases or decreases the zoom, used by zoom scrolling.
+  public static double scrollZoom(double providedZoomDivisor, double scrollAmount) {
+    double generalAmount = 0.0;
+    if (providedZoomDivisor <= 5.0) {
+      generalAmount = 0.25;
+    }
+
+    if (providedZoomDivisor > 5.0 && providedZoomDivisor <= 8.0) {
+      generalAmount = 0.5;
+    }
+
+    if (providedZoomDivisor > 8.0) {
+      generalAmount = 1.0;
+    }
+
+    if (providedZoomDivisor > 20.0) {
+      generalAmount = 2.0;
+    }
+
+    if (scrollAmount > 0.0D) {
+      scrollAmount = generalAmount;
+    } else if (scrollAmount < 0.0D) {
+      scrollAmount = -generalAmount;
+    }
+
+    if (shouldScrollZoom) {
+      providedZoomDivisor += scrollAmount;
+
+      if (providedZoomDivisor <= 1.0) {
+        return 1.0;
+      }
+
+      if (providedZoomDivisor >= 50.0) {
+        return providedZoomDivisor -= scrollAmount;
+      }
+
+      return providedZoomDivisor;
+    } else {
+      return providedZoomDivisor;
+    }
   }
 
 	//Internal booleans, one for mimicking Cinematic Mode, another replaces zoomKeybinding.isPressed().
@@ -75,9 +99,6 @@ public class OkZoomer implements ClientModInitializer {
   double realSensitivity = 100.0;
   double smoothing = 1.0 - 0.5;
   double sensitivity = 100.0 - 50.0;
-  double zoomDivisorInteger = 4;
-  double zoomDivisorToRound = 0;
-  double zoomScrollDivisor = 4.0;
 
   int cinematicModeToggleCooldown = 1;
 	int zoomToggleCooldown = 1;
@@ -96,30 +117,6 @@ public class OkZoomer implements ClientModInitializer {
 
 		//Everything related to the zoom is done here.
 		ClientTickCallback.EVENT.register(e -> {
-      // TODO - Investigate Zoom Scrolling
-      /*
-      //Set the zoom multiplier, which will be used on the FOV when zooming.
-      if (config.zoomScrolling) {
-        if (zoomMultiplier != (1.0 / (zoomDivisorInteger + zoomDivisorToRound))) {
-          String[] zoomDivisorArray = Double.toString(config.zoomDivisor).split("[.]", 2);
-          zoomDivisorInteger = Double.parseDouble(zoomDivisorArray[0]);
-          zoomDivisorToRound = Double.parseDouble(zoomDivisorArray[1]);
-          if (zoomDivisorToRound >= 0 && zoomDivisorToRound < 25) zoomDivisorToRound = 0.00;
-          if (zoomDivisorToRound >= 25 && zoomDivisorToRound < 50) zoomDivisorToRound = 0.25;
-          if (zoomDivisorToRound >= 50 && zoomDivisorToRound < 75) zoomDivisorToRound = 0.50;
-          if (zoomDivisorToRound >= 75 && zoomDivisorToRound < 100) zoomDivisorToRound = 0.75;
-          zoomMultiplier = (1.0 / (zoomDivisorInteger + zoomDivisorToRound));
-          returnedZoomMultiplier = (1.0 / (zoomDivisorInteger + zoomDivisorToRound));
-          zoomScrollDivisor = zoomDivisorInteger + zoomDivisorToRound;
-        }
-      } else {
-        if (zoomMultiplier != (1.0 / config.zoomDivisor)) {
-          zoomMultiplier = (1.0 / config.zoomDivisor);
-          returnedZoomMultiplier = (1.0 / config.zoomDivisor);
-        }
-      }
-      */
-
       //If Zoom Toggle is enabled, Minecraft is paused and zoom's toggled in, toggle out.
 			if (config.zoomToggle) {
         if (minecraft.isPaused() && zoomPressed) {
@@ -170,7 +167,7 @@ public class OkZoomer implements ClientModInitializer {
 
       if (zoomProgress == 1) {
         if (zoomPressed) {
-          if (!config.smoothTransition || zoomMultiplier == 1.0) {
+          if (!config.smoothTransition || zoomDivisor == 1.0) {
             minecraft.options.fov = realFov * (1.0 / config.zoomDivisor);
           }
           
@@ -199,49 +196,38 @@ public class OkZoomer implements ClientModInitializer {
             }
           }
 
-          /*
           //If "Zoom Scrolling" is on, allow for zoom scrolling.
           if (config.zoomScrolling) {
             if (!shouldScrollZoom) {
               shouldScrollZoom = true;
             }
           }
-          */
         }
       }
 
-      /*
       //If a zoom scroll happened, change the FOV.
       if (config.zoomScrolling && zoomProgress == 2) {
-        if (zoomScrollTarget != 0.0) {
-          if (zoomScrollDivisor <= 1.0 && zoomScrollTarget <= 0.0) {
-            zoomScrollTarget = 0.0;
-            zoomScrollDivisor = 1.0;
-            return;
-          }
-          if (zoomScrollDivisor >= 20.0 && zoomScrollTarget >= 0.0) {
-            zoomScrollTarget = 0.0;
-            zoomScrollDivisor = 20.0;
-            return;
+        if ((realFov * (1.0 * config.zoomDivisor)) != minecraft.options.fov) {
+          if (!config.smoothTransition) {
+            minecraft.options.fov = realFov * (1.0 / config.zoomDivisor);
           }
 
-          zoomScrollDivisor += zoomScrollTarget;
-          minecraft.options.fov = realFov * (1.0 / zoomScrollDivisor);
-          zoomScrollTarget = 0.0;
+          if (config.reduceSensitivity) {
+            minecraft.options.mouseSensitivity = realSensitivity * (1.0 / config.zoomDivisor);
+          }
         }
       }
-      */
 
       //If the zoom isn't pressed and there's still zooming, zoom out.
       if (!zoomPressed && zoomProgress == 2) {
-        if (!config.smoothTransition || zoomMultiplier == 1.0) {
+        if (!config.smoothTransition || zoomDivisor == 1.0) {
           minecraft.options.fov = realFov;
         }
         
         if (config.smoothTransition) {
           shouldZoomSmoothly = false;
         }
-
+        
         minecraft.options.mouseSensitivity = realSensitivity;
         zoomProgress = 0;
 
@@ -256,14 +242,18 @@ public class OkZoomer implements ClientModInitializer {
 
         if (shouldScrollZoom) {
           shouldScrollZoom = false;
-        }          
+        }
+
+        if (config.zoomScrolling) {
+          config.zoomDivisor = zoomDivisor;
+        }
       }
 
       //If there's no zoom going on, set the values to be used by zooming.
       if (zoomProgress == 0) {
         realFov = minecraft.options.fov;
         realSensitivity = minecraft.options.mouseSensitivity;
-        zoomScrollDivisor = zoomDivisorInteger + zoomDivisorToRound;
+        zoomDivisor = config.zoomDivisor;
       }
 		});
 	}

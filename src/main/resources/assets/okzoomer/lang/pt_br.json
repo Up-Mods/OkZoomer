@@ -11,7 +11,9 @@
 	"text.autoconfig.okzoomer.option.reduceSensitivity.@Tooltip": "Reduz a sensibilidade do mouse enquanto dar zoom.",
 	"text.autoconfig.okzoomer.option.zoomToggle": "Alternar zoom",
 	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Ativa a habilidade de alternar o zoom.",
-	"text.autoconfig.okzoomer.option.zoomMultiplier": "Divisor do zoom",
-	"text.autoconfig.okzoomer.option.zoomMultiplier.@Tooltip": "O divisor aplicado no multiplicador do zoom do campo visual.",
+	"text.autoconfig.okzoomer.option.zoomScrolling": "Rolagem do zoom",
+	"text.autoconfig.okzoomer.option.zoomScrolling.@Tooltip": "Permite o aumento ou a diminuição do zoom pela rolagem do mouse.",
+	"text.autoconfig.okzoomer.option.zoomDivisor": "Divisor do zoom",
+	"text.autoconfig.okzoomer.option.zoomDivisor.@Tooltip": "O divisor aplicado no multiplicador do zoom do campo visual.",
 	"text.autoconfig.okzoomer.title": "Configurações do Ok Zoomer"
 }
