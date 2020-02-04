@@ -5,5 +5,7 @@ Made by a zoomer, for zoomers!
 Get it? Zoomer, Zoom?
 Better than OptiFine's zoom!
 Better than SimpleZoom!
+Better than WI Zoom!
 Now with smooth transitions!
+Now with zoom scrolling!
 Extremely configurable!
