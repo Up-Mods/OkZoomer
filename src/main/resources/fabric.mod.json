@@ -26,10 +26,10 @@
     "autoconfig1u": ">=1.2.4",
     "fabricloader": ">=0.7.0",
     "fabric": ">=0.4.0",
-    "minecraft": "1.15.x"
+    "minecraft": ">=1.15.0"
   },
   "recommends": {
-    "cloth-config2": ">=2.9.2",
+    "cloth-config2": ">=2.9.3",
     "modmenu": ">=1.8.0"
   },
   "custom": {
