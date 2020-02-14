@@ -21,7 +21,7 @@ public class MouseMixin {
    
    @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
    private void zoomerOnMouseScroll(CallbackInfo info) {
-      if (OkZoomer.shouldScrollZoom()) {
+      if (OkZoomer.shouldScrollZoom) {
          double scrollAmount = OkZoomer.scrollZoom(config.zoomDivisor, this.eventDeltaWheel, config.minimumZoomDivisor, config.maximumZoomDivisor);
          config.zoomDivisor = scrollAmount;
          

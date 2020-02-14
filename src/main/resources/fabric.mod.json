@@ -26,7 +26,7 @@
     "autoconfig1u": ">=1.2.4",
     "fabricloader": ">=0.7.0",
     "fabric": ">=0.4.0",
-    "minecraft": ">=1.15.0"
+    "minecraft": ">=1.15"
   },
   "recommends": {
     "cloth-config2": ">=2.9.3",

@@ -30,22 +30,13 @@ public class OkZoomer implements ClientModInitializer {
   }
 
   //Used by the mixin that hides the hands.
-  private static boolean hideHandsBecauseZoom = false;
-  public static boolean shouldHideHands() {
-    return hideHandsBecauseZoom;
-  }
+  public static boolean shouldHideHands = false;
 
   //Used by the mixin that handles the smooth transition.
-  private static boolean shouldZoomSmoothly = false;
-  public static boolean shouldZoomSmoothly() {
-    return shouldZoomSmoothly;
-  }
+  public static boolean shouldZoomSmoothly = false;
 
   //Used by the mixin that overrides the scrolling.
-  private static boolean shouldScrollZoom = false;
-  public static boolean shouldScrollZoom() {
-    return shouldScrollZoom;
-  }
+  public static boolean shouldScrollZoom = false;
 
   double zoomDivisor = 4.0;
 
@@ -189,8 +180,8 @@ public class OkZoomer implements ClientModInitializer {
 
           //If "Hide Hands" is on, trigger the mixin with a tick.
           if (config.hideHands) {
-            if (!hideHandsBecauseZoom) {
-              hideHandsBecauseZoom = true;
+            if (!shouldHideHands) {
+              shouldHideHands = true;
               minecraft.gameRenderer.tick();
             }
           }
@@ -235,8 +226,8 @@ public class OkZoomer implements ClientModInitializer {
           minecraft.options.smoothCameraEnabled = false;
         }
 
-        if (hideHandsBecauseZoom) {
-          hideHandsBecauseZoom = false;
+        if (shouldHideHands) {
+          shouldHideHands = false;
           minecraft.gameRenderer.tick();
         }
 

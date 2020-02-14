@@ -22,7 +22,7 @@ public class GameRendererMixin {
     //This is injected in the tick method to prevent any conflicts with other mods.
     @Inject(at = @At("HEAD"), method = "net/minecraft/client/render/GameRenderer.tick()V")
 	private void zoomerRenderWorld(CallbackInfo info) {
-        if (OkZoomer.shouldHideHands()) {
+        if (OkZoomer.shouldHideHands) {
             this.renderHand = false;
         } else {
             this.renderHand = true;
@@ -38,7 +38,7 @@ public class GameRendererMixin {
 
     @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.updateMovementFovMultiplier()V")
     private void zoomerUpdateMovementFovMultiplier(CallbackInfo info) {
-        if (OkZoomer.shouldZoomSmoothly()) {
+        if (OkZoomer.shouldZoomSmoothly) {
             if (this.movementFovMultiplier != (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier) {
                 this.movementFovMultiplier = (float)(1.0 / config.zoomDivisor) * zoomedMovementFovMultiplier;
             }
