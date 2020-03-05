@@ -16,6 +16,8 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
+    private final MinecraftClient minecraft = MinecraftClient.getInstance();
+
     @Shadow
 	private boolean renderHand;
 
@@ -48,9 +50,9 @@ public class GameRendererMixin {
     }
 
     @Inject(at = @At("TAIL"), method = "net/minecraft/client/render/GameRenderer.getFov(Lnet/minecraft/client/render/Camera;FZ)D")
-    private double zoomerGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable info) {
+    private double zoomerGetFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
         if (changingFov) {
-            MinecraftClient.getInstance().worldRenderer.scheduleTerrainUpdate();
+            minecraft.worldRenderer.scheduleTerrainUpdate();
         }
 
         return info.getReturnValueD();

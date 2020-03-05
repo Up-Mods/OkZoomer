@@ -25,7 +25,7 @@ public class MouseMixin {
          double scrollAmount = OkZoomer.scrollZoom(config.zoomDivisor, this.eventDeltaWheel, config.minimumZoomDivisor, config.maximumZoomDivisor);
          config.zoomDivisor = scrollAmount;
          
-         this.eventDeltaWheel = (double)0.0;
+         this.eventDeltaWheel = 0.0D;
          info.cancel();
       }
    }
