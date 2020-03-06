@@ -24,13 +24,13 @@
   ],
   "depends": {
     "autoconfig1u": ">=1.2.4",
-    "fabricloader": ">=0.7.0",
-    "fabric": ">=0.4.0",
-    "minecraft": ">=1.15"
+    "fabricloader": ">=0.7.8",
+    "fabric": ">=0.5.0",
+    "minecraft": ">1.15.2"
   },
   "recommends": {
-    "cloth-config2": ">=2.9.3",
-    "modmenu": ">=1.8.0"
+    "cloth-config2": ">=2.11",
+    "modmenu": ">=1.10.0"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
