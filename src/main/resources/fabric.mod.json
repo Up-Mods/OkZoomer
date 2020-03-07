@@ -29,8 +29,8 @@
     "minecraft": ">1.15.2"
   },
   "recommends": {
-    "cloth-config2": ">=2.11",
-    "modmenu": ">=1.10.0"
+    "cloth-config2": ">=3.0.0",
+    "modmenu": ">=1.10.2"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
