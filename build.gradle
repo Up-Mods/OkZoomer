@@ -7,15 +7,24 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+
+if (System.env.ONE_PLUS_ONE == "TWO") {
+	def branch
+	branch = System.env.GITHUB_REF
+	branch = branch.substring(branch.lastIndexOf("/")+1)
+
+	version = "${project.mod_version}.${branch}+${System.env.GITHUB_RUN_NUMBER}"
+} else {
+	version = project.mod_version
+}
+
 group = project.maven_group
 
 minecraft {
 }
 
 repositories {
-    jcenter()
-    maven { url "https://dl.bintray.com/shedaniel/autoconfig1u/" }
+	mavenCentral()
 }
 
 dependencies {
@@ -27,12 +36,10 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
-    modImplementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+	modImplementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
 	
 	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
     include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-	
-	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 
 processResources {
@@ -69,6 +76,20 @@ jar {
 
 // configure the maven publication
 publishing {
+	repositories {
+		maven {
+		    name = "GitHubPackages"
+			// crid | replace the link with the correct repository
+            url = uri("https://maven.pkg.github.com/joaoh1/OkZoomer")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+            }
+		}
+		// uncomment to publish to the local maven
+		// mavenLocal()
+	}
+
 	publications {
 		mavenJava(MavenPublication) {
 			// add all the jars that should be included when publishing to maven
@@ -79,11 +100,5 @@ publishing {
 				builtBy remapSourcesJar
 			}
 		}
-	}
-
-	// select the repositories you want to publish to
-	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
 	}
 }

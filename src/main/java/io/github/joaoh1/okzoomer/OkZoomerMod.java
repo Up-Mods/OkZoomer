@@ -8,10 +8,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import org.lwjgl.glfw.GLFW;
 
-public class OkZoomer implements ClientModInitializer {
+public class OkZoomerMod implements ClientModInitializer {
   private static final MinecraftClient minecraft = MinecraftClient.getInstance();
 
   //The keybind itself
@@ -99,8 +98,7 @@ public class OkZoomer implements ClientModInitializer {
 
   @Override
   public void onInitializeClient() {
-    //Register the configuration.
-    AutoConfig.register(OkZoomerConfig.class, JanksonConfigSerializer::new);
+    //Get the configuration.
     OkZoomerConfig config = AutoConfig.getConfigHolder(OkZoomerConfig.class).getConfig();
 
     //Register the keybind.

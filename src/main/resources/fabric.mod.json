@@ -16,8 +16,9 @@
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.joaoh1.okzoomer.OkZoomer"],
-    "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"]
+    "client": ["io.github.joaoh1.okzoomer.OkZoomerMod"],
+    "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"],
+    "preLaunch": ["io.github.joaoh1.okzoomer.OkZoomerPreLaunchMod"]
   },
   "mixins": [
     "okzoomer.mixins.json"
@@ -29,8 +30,8 @@
     "minecraft": ">1.15.2"
   },
   "recommends": {
-    "cloth-config2": ">=3.0.0",
-    "modmenu": ">=1.10.2"
+    "cloth-config2": ">=3.1.0",
+    "modmenu": ">=1.11.0"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
