@@ -20,9 +20,6 @@ if (System.env.ONE_PLUS_ONE == "TWO") {
 
 group = project.maven_group
 
-minecraft {
-}
-
 repositories {
 	mavenCentral()
 }
@@ -36,10 +33,10 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
-	modImplementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
 	
 	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
-    include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+    include "me.zeroeightsix:fiber:${project.fiber_version}"
 }
 
 processResources {
@@ -79,7 +76,6 @@ publishing {
 	repositories {
 		maven {
 		    name = "GitHubPackages"
-			// crid | replace the link with the correct repository
             url = uri("https://maven.pkg.github.com/joaoh1/OkZoomer")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
