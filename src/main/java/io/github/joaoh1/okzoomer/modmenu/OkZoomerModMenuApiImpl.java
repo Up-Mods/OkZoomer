@@ -1,3 +1,4 @@
+/*
 package io.github.joaoh1.okzoomer.modmenu;
 
 import io.github.joaoh1.okzoomer.OkZoomerConfig;
@@ -19,3 +20,4 @@ public class OkZoomerModMenuApiImpl implements ModMenuApi {
 		return screen -> AutoConfig.getConfigScreen(OkZoomerConfig.class, screen).get();
 	}
 }
+*/

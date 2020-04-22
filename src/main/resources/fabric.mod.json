@@ -16,15 +16,12 @@
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.joaoh1.okzoomer.OkZoomerMod"],
-    "modmenu": ["io.github.joaoh1.okzoomer.modmenu.OkZoomerModMenuApiImpl"],
-    "preLaunch": ["io.github.joaoh1.okzoomer.OkZoomerPreLaunchMod"]
+    "client": ["io.github.joaoh1.okzoomer.OkZoomerMod"]
   },
   "mixins": [
     "okzoomer.mixins.json"
   ],
   "depends": {
-    "autoconfig1u": ">=1.2.4",
     "fabricloader": ">=0.7.8",
     "fabric": ">=0.5.0",
     "minecraft": ">1.15.2"

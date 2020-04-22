@@ -4,18 +4,29 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import org.lwjgl.glfw.GLFW;
+
+import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
 
 public class OkZoomerMod implements ClientModInitializer {
   private static final MinecraftClient minecraft = MinecraftClient.getInstance();
 
+  //The method used in order to choose the zoom key.
+  public static int chooseKeybind() {
+    if (FabricLoader.getInstance().isModLoaded("optifabric")) {
+      return GLFW.GLFW_KEY_Z;
+    }
+
+    return GLFW.GLFW_KEY_C;
+  }
+
   //The keybind itself
   public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
-      .create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, "key.categories.misc")
+      .create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, chooseKeybind(), "key.categories.misc")
       .build();
 
   //Toggles a boolean if the matching cooldown is over.
@@ -40,7 +51,9 @@ public class OkZoomerMod implements ClientModInitializer {
   double zoomDivisor = 4.0;
 
   //Increases or decreases the zoom, used by zoom scrolling.
-  public static double scrollZoom(double providedZoomDivisor, double scrollAmount, double minimumValue, double maximumValue) {
+  public static double scrollZoom(double providedZoomDivisor, double scrollAmount) {
+    double minimumValue = OkZoomerConfig.minimumZoomDivisor.getValue();
+    double maximumValue = OkZoomerConfig.maximumZoomDivisor.getValue();
     double generalAmount = 0.0;
     if (providedZoomDivisor <= 5.0) {
       generalAmount = 0.25;
@@ -99,7 +112,7 @@ public class OkZoomerMod implements ClientModInitializer {
   @Override
   public void onInitializeClient() {
     //Get the configuration.
-    OkZoomerConfig config = AutoConfig.getConfigHolder(OkZoomerConfig.class).getConfig();
+    OkZoomerConfig.loadJanksonConfig();
 
     //Register the keybind.
     KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
@@ -107,14 +120,14 @@ public class OkZoomerMod implements ClientModInitializer {
     //Everything related to the zoom is done here.
     ClientTickCallback.EVENT.register(e -> {
       //If Zoom Toggle is enabled, Minecraft is paused and zoom's toggled in, toggle out.
-      if (config.zoomToggle) {
+      if (OkZoomerConfig.zoomToggle.getValue()) {
         if (minecraft.isPaused() && zoomPressed) {
           zoomPressed = false;
         }
       }
 
       //If Smooth Camera is enabled, reimplement the Smooth Camera function but with cinematicMode being set.
-      if (config.smoothCamera) {
+      if (OkZoomerConfig.smoothCamera.getValue()) {
         if (minecraft.options.keySmoothCamera.isPressed()) {
           cinematicMode = toggleBooleanByKeybind(cinematicMode, cinematicModeToggleCooldown);
           cinematicModeToggleCooldown = 3;
@@ -132,7 +145,7 @@ public class OkZoomerMod implements ClientModInitializer {
       //If the zoom keybind is pressed, set zoomToggle.
       if (zoomKeyBinding.isPressed()) {
         //If Zoom Toggle is enabled, toggle zoomToggle, else, set it to true.
-        if (config.zoomToggle) {
+        if (OkZoomerConfig.zoomToggle.getValue()) {
           zoomPressed = toggleBooleanByKeybind(zoomPressed, zoomToggleCooldown);
           zoomToggleCooldown = 3;
         } else {
@@ -140,7 +153,7 @@ public class OkZoomerMod implements ClientModInitializer {
         }
       } else
       //If Zoom Toggle is enabled, reset the cooldown, else, set zoomPressed to false if it was true.
-      if (config.zoomToggle) {
+      if (OkZoomerConfig.zoomToggle.getValue()) {
         zoomToggleCooldown = 1;
       } else {
         if (zoomPressed) {
@@ -155,11 +168,11 @@ public class OkZoomerMod implements ClientModInitializer {
 
       if (zoomProgress == 1) {
         if (zoomPressed) {
-          if (!config.smoothTransition || zoomDivisor == 1.0) {
-            minecraft.options.fov = realFov * (1.0 / config.zoomDivisor);
+          if (!OkZoomerConfig.smoothTransition.getValue() || zoomDivisor == 1.0) {
+            minecraft.options.fov = realFov * (1.0 / OkZoomerConfig.zoomDivisor.getValue());
           }
 
-          if (config.smoothTransition) {
+          if (OkZoomerConfig.smoothTransition.getValue()) {
             shouldZoomSmoothly = true;
           }
 
@@ -167,17 +180,17 @@ public class OkZoomerMod implements ClientModInitializer {
           zoomProgress = 2;
 
           //If "Reduce Sensitivity" is on, set the sensitivity adequately.
-          if (config.reduceSensitivity) {
-            minecraft.options.mouseSensitivity = realSensitivity * (1.0 / config.zoomDivisor);
+          if (OkZoomerConfig.reduceSensitivity.getValue()) {
+            minecraft.options.mouseSensitivity = realSensitivity * (1.0 / OkZoomerConfig.zoomDivisor.getValue());
           }
 
           //If "Smooth Camera" is on, enable the smooth camera.
-          if (config.smoothCamera) {
+          if (OkZoomerConfig.smoothCamera.getValue()) {
             minecraft.options.smoothCameraEnabled = true;
           }
 
           //If "Hide Hands" is on, trigger the mixin with a tick.
-          if (config.hideHands) {
+          if (OkZoomerConfig.hideHands.getValue()) {
             if (!shouldHideHands) {
               shouldHideHands = true;
               minecraft.gameRenderer.tick();
@@ -185,7 +198,7 @@ public class OkZoomerMod implements ClientModInitializer {
           }
 
           //If "Zoom Scrolling" is on, allow for zoom scrolling.
-          if (config.zoomScrolling) {
+          if (OkZoomerConfig.zoomScrolling.getValue()) {
             if (!shouldScrollZoom) {
               shouldScrollZoom = true;
             }
@@ -194,33 +207,33 @@ public class OkZoomerMod implements ClientModInitializer {
       }
 
       //If a zoom scroll happened, change the FOV.
-      if (config.zoomScrolling && zoomProgress == 2) {
-        if ((realFov * (1.0 * config.zoomDivisor)) != minecraft.options.fov) {
-          if (!config.smoothTransition) {
-            minecraft.options.fov = realFov * (1.0 / config.zoomDivisor);
+      if (OkZoomerConfig.zoomScrolling.getValue() && zoomProgress == 2) {
+        if ((realFov * (1.0 * OkZoomerConfig.zoomDivisor.getValue())) != minecraft.options.fov) {
+          if (!OkZoomerConfig.smoothTransition.getValue()) {
+            minecraft.options.fov = realFov * (1.0 / OkZoomerConfig.zoomDivisor.getValue());
             minecraft.worldRenderer.scheduleTerrainUpdate();
           }
 
-          if (config.reduceSensitivity) {
-            minecraft.options.mouseSensitivity = realSensitivity * (1.0 / config.zoomDivisor);
+          if (OkZoomerConfig.reduceSensitivity.getValue()) {
+            minecraft.options.mouseSensitivity = realSensitivity * (1.0 / OkZoomerConfig.zoomDivisor.getValue());
           }
         }
       }
 
       //If the zoom isn't pressed and there's still zooming, zoom out.
       if (!zoomPressed && zoomProgress == 2) {
-        if (!config.smoothTransition || zoomDivisor == 1.0) {
+        if (!OkZoomerConfig.smoothTransition.getValue() || zoomDivisor == 1.0) {
           minecraft.options.fov = realFov;
         }
 
-        if (config.smoothTransition) {
+        if (OkZoomerConfig.smoothTransition.getValue()) {
           shouldZoomSmoothly = false;
         }
 
         minecraft.options.mouseSensitivity = realSensitivity;
         zoomProgress = 0;
 
-        if (config.smoothCamera && !cinematicMode) {
+        if (OkZoomerConfig.smoothCamera.getValue() && !cinematicMode) {
           minecraft.options.smoothCameraEnabled = false;
         }
 
@@ -233,8 +246,8 @@ public class OkZoomerMod implements ClientModInitializer {
           shouldScrollZoom = false;
         }
 
-        if (config.zoomScrolling) {
-          config.zoomDivisor = zoomDivisor;
+        if (OkZoomerConfig.zoomScrolling.getValue()) {
+          OkZoomerConfig.zoomDivisor.setValue(zoomDivisor);
         }
 
         minecraft.worldRenderer.scheduleTerrainUpdate();
@@ -244,7 +257,7 @@ public class OkZoomerMod implements ClientModInitializer {
       if (zoomProgress == 0) {
         realFov = minecraft.options.fov;
         realSensitivity = minecraft.options.mouseSensitivity;
-        zoomDivisor = config.zoomDivisor;
+        zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
       }
 		});
 	}

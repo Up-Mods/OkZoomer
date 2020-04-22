@@ -6,7 +6,11 @@ Ok Zoomer is a mod that adds a highly configurable zoom button, by default, it z
 
 ## Download
 
-You can obtain Ok Zoomer through either [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer) or this repository's [GitHub Releases](https://github.com/joaoh1/OkZoomer/releases), indev releases are also available as [GitHub Packages](https://github.com/joaoh1/OkZoomer/packages) but they are unstable and might have serious issues.
+This mod is available for download on the following services:
+
+- [CurseForge (recommended)](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
+- [GitHub Releases (alternative)](https://github.com/joaoh1/OkZoomer/releases)
+- [GitHub Packages (indev releases, **use at your own risk**)](https://github.com/joaoh1/OkZoomer/packages)
 
 ## License
 
