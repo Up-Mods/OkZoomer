@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import me.zeroeightsix.fiber.exception.FiberException;
-import me.zeroeightsix.fiber.serialization.JanksonSerializer;
-import me.zeroeightsix.fiber.tree.ConfigBranch;
-import me.zeroeightsix.fiber.tree.ConfigTree;
-import me.zeroeightsix.fiber.tree.PropertyMirror;
+import me.zeroeightsix.fiber.api.exception.FiberException;
+import me.zeroeightsix.fiber.api.serialization.JanksonSerializer;
+import me.zeroeightsix.fiber.api.tree.ConfigBranch;
+import me.zeroeightsix.fiber.api.tree.ConfigTree;
+import me.zeroeightsix.fiber.api.tree.PropertyMirror;
 
 public class OkZoomerConfig {
 	public static final PropertyMirror<Boolean> smoothCamera = new PropertyMirror<>();
