@@ -3,7 +3,8 @@
   "package": "io.github.joaoh1.okzoomer.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "GameRendererMixin"
+   "GameRendererMixin",
+   "MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

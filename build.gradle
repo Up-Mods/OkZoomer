@@ -8,7 +8,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 
-if (System.env.ONE_PLUS_ONE == "TWO") {
+if (System.env.CI == true) {
 	def branch
 	branch = System.env.GITHUB_REF
 	branch = branch.substring(branch.lastIndexOf("/")+1)

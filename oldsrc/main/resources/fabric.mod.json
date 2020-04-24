@@ -3,8 +3,10 @@
   "id": "okzoomer",
   "version": "${version}",
   "name": "Ok Zoomer",
-  "description": "A complete rewrite of Ok Zoomer. Now with 99% better code!",
-  "authors": ["joaoh1"],
+  "description": "This mod adds a highly configurable zoom button, it works like OptiFine's zoom when not configured.",
+  "authors": [
+    "joaoh1"
+  ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
     "issues": "https://github.com/joaoh1/OkZoomer/issues",
@@ -24,7 +26,13 @@
     "fabric": ">=0.5.0",
     "minecraft": ">1.15.2"
   },
+  "recommends": {
+    "cloth-config2": ">=3.1.0",
+    "modmenu": ">=1.11.0"
+  },
   "custom": {
-    "modmenu:clientsideOnly": true
+    "modmenu:clientsideOnly": true,
+    "modsoftheworld:logo": "okzoomer:motw/logo.png",
+    "modsoftheworld:splashes": "okzoomer:motw/splashes.txt"
   }
 }

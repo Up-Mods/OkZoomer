@@ -1,0 +1,23 @@
+{
+	"key.okzoomer.zoom": "Zoom",
+	"text.autoconfig.okzoomer.option.smoothCamera": "Smooth Camera",
+	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[0]": "Enables Smooth Camera while zooming,",
+	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[1]": "interfers with Cinematic Mode but it shouldn't be anything negative.",
+	"text.autoconfig.okzoomer.option.reduceSensitivity": "Reduce Sensitivity",
+	"text.autoconfig.okzoomer.option.reduceSensitivity.@Tooltip": "Reduces the mouse sensitivity when zooming.",
+	"text.autoconfig.okzoomer.option.hideHands": "Hide Hands",
+	"text.autoconfig.okzoomer.option.hideHands.@Tooltip": "While enabled, zooming hides your hands.",
+	"text.autoconfig.okzoomer.option.smoothTransition": "Smooth Transition",
+	"text.autoconfig.okzoomer.option.smoothTransition.@Tooltip": "Enables smooth transitions when zooming in and out.",
+	"text.autoconfig.okzoomer.option.zoomToggle": "Zoom Toggle",
+	"text.autoconfig.okzoomer.option.zoomToggle.@Tooltip": "Enables the ability to toggle zooming.",
+	"text.autoconfig.okzoomer.option.zoomDivisor": "Zoom Divisor",
+	"text.autoconfig.okzoomer.option.zoomDivisor.@Tooltip": "The divisor applied to the FOV's zoom multiplier.",
+	"text.autoconfig.okzoomer.option.zoomScrolling": "Zoom Scrolling",
+	"text.autoconfig.okzoomer.option.zoomScrolling.@Tooltip": "Allows to increase or decrease zoom by scrolling.",
+	"text.autoconfig.okzoomer.option.minimumZoomDivisor": "Minimum Zoom Divisor",
+	"text.autoconfig.okzoomer.option.minimumZoomDivisor.@Tooltip": "The minimum value that you can scroll down.",
+	"text.autoconfig.okzoomer.option.maximumZoomDivisor": "Maximum Zoom Divisor",
+	"text.autoconfig.okzoomer.option.maximumZoomDivisor.@Tooltip": "The maximum value that you can scroll up.",
+	"text.autoconfig.okzoomer.title": "Ok Zoomer Config"
+}
