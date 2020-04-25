@@ -13,25 +13,25 @@ public class OkZoomerConfigScreen {
 		ConfigBuilder builder = ConfigBuilder.create()
 			.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/yellow_concrete.png"))
 			.setParentScreen(parentScreen)
-            .setTitle(new TranslatableText("text.okzoomer.config.title"));
+            .setTitle(new TranslatableText("config.okzoomer.title"));
 
 		builder.setSavingRunnable(() -> {
 			OkZoomerConfig.saveJanksonConfig();
 		});
 
-		ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("text.okzoomer.config.category.general"));
+		ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.general"));
 		
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("text.okzoomer.config.option.zoomToggle"), OkZoomerConfig.zoomToggle.getValue())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoomToggle"), OkZoomerConfig.zoomToggle.getValue())
         	.setDefaultValue(false)
-        	.setTooltip(new TranslatableText("text.okzoomer.config.option.zoomToggle.tooltip"))
+        	.setTooltip(new TranslatableText("config.okzoomer.option.zoomToggle.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("text.okzoomer.config.option.zoomDivisor"), OkZoomerConfig.zoomDivisor.getValue())
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoomDivisor"), OkZoomerConfig.zoomDivisor.getValue())
         	.setDefaultValue(4.0D)
-        	.setTooltip(new TranslatableText("text.okzoomer.config.option.zoomDivisor.tooltip"))
+        	.setTooltip(new TranslatableText("config.okzoomer.option.zoomDivisor.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
         	.build());
 
