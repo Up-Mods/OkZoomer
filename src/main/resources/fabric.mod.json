@@ -3,7 +3,7 @@
   "id": "okzoomer",
   "version": "${version}",
   "name": "Ok Zoomer",
-  "description": "A complete rewrite of Ok Zoomer. Now with 99% better code!",
+  "description": "This mod adds a highly configurable zoom button. It works like OptiFine's zoom by default, however, it can be configured in order to fit your preferences.",
   "authors": ["joaoh1"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
@@ -14,7 +14,8 @@
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.joaoh1.okzoomer.OkZoomerMod"]
+    "client": ["io.github.joaoh1.okzoomer.OkZoomerMod"],
+    "modmenu": ["io.github.joaoh1.okzoomer.config.OkZoomerModMenuApiImpl"]
   },
   "mixins": [
     "okzoomer.mixins.json"

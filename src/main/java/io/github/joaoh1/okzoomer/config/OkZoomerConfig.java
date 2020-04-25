@@ -11,6 +11,7 @@ import me.zeroeightsix.fiber.api.tree.ConfigTree;
 import me.zeroeightsix.fiber.api.tree.PropertyMirror;
 
 public class OkZoomerConfig {
+	// TODO - Organize the config in categories
 	public static final PropertyMirror<Boolean> smoothCamera = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> reduceSensitivity = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> hideHands = new PropertyMirror<>();
@@ -67,7 +68,6 @@ public class OkZoomerConfig {
 
 	public static void saveJanksonConfig() {
 		try {
-			System.out.println(node.getItems());
 			serializer.serialize(node, Files.newOutputStream(Paths.get("./config/okzoomer.json5")));
 		} catch (IOException | FiberException e) {
 			e.printStackTrace();
