@@ -29,6 +29,12 @@ public class OkZoomerConfigScreen {
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.smoothTransition"), OkZoomerConfig.smoothTransition.getValue())
+        	.setDefaultValue(false)
+        	.setTooltip(new TranslatableText("config.okzoomer.option.smoothTransition.tooltip"))
+        	.setSaveConsumer(newValue -> OkZoomerConfig.smoothTransition.setValue(newValue))
+			.build());
+		
 		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoomDivisor"), OkZoomerConfig.zoomDivisor.getValue())
         	.setDefaultValue(4.0D)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoomDivisor.tooltip"))
