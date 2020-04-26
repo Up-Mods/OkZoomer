@@ -11,7 +11,7 @@ import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 
-//TODO - reimplement Reduce Sensitivity option
+//TODO - Reimplement Reduce Sensitivity option
 @Mixin(Mouse.class)
 public class MouseMixin {
     @Shadow

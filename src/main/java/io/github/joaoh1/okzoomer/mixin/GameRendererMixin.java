@@ -21,8 +21,7 @@ public class GameRendererMixin {
 
 	private float zoomFovMultiplier;
 	private float lastZoomFovMultiplier;
-
-	//TODO - Make smooth transitions not cause pain in the stomach, that didn't happen on 2.1.x
+	
 	private void updateZoomFovMultiplier() {
 		float f = 1.0F;
 
@@ -31,7 +30,7 @@ public class GameRendererMixin {
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
-		this.zoomFovMultiplier += (f - this.zoomFovMultiplier) * 0.5F;
+		this.zoomFovMultiplier += (f - this.zoomFovMultiplier) * 0.75F;
 	 }
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
