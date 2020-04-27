@@ -21,16 +21,19 @@ public class GameRendererMixin {
 
 	private float zoomFovMultiplier;
 	private float lastZoomFovMultiplier;
-	
+
 	private void updateZoomFovMultiplier() {
-		float f = 1.0F;
+		float zoomMultiplier = 1.0F;
+		//TODO - Figure out a better name for this
+		float thingy = 0.75F;
 
 		if (OkZoomerMod.isZoomKeyPressed) {
-			f /= OkZoomerConfig.zoomDivisor.getValue();
+			zoomMultiplier /= OkZoomerMod.zoomDivisor;
+			thingy = 1.0F - zoomMultiplier;
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
-		this.zoomFovMultiplier += (f - this.zoomFovMultiplier) * 0.75F;
+		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * thingy;
 	 }
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
@@ -56,8 +59,9 @@ public class GameRendererMixin {
 				}
 			}
 		} else {
+			//TODO - Figure out how to prevent terrain glitches on non-smooth zooms
 			if (OkZoomerMod.isZoomKeyPressed) {
-				double zoomedFov = fov / OkZoomerConfig.zoomDivisor.getValue();
+				double zoomedFov = fov / OkZoomerMod.zoomDivisor;
 				info.setReturnValue(zoomedFov);
 			}
 		}

@@ -31,11 +31,19 @@ public class OkZoomerMod implements ClientModInitializer {
 		.create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, getDefaultKey(), "key.categories.misc")
 		.build();
 
+	//The "Increase Zoom" keybinding.
+	public static final FabricKeyBinding increaseZoomKeyBinding = FabricKeyBinding.Builder
+		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.categories.misc")
+		.build();
+
 	//The zoom signal, which is managed in an event and used by other mixins.
 	public static boolean isZoomKeyPressed = false;
 
 	//Used internally in order to make zoom toggling possible.
 	private static boolean previousZoomPress = false;
+
+	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
+	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 
 	@Override
 	public void onInitializeClient() {
@@ -47,24 +55,33 @@ public class OkZoomerMod implements ClientModInitializer {
 
 		// Register the zoom keybinding.
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
+		KeyBindingRegistry.INSTANCE.register(increaseZoomKeyBinding);
 
 		// This event is responsible for managing the zoom signal.
 		ClientTickCallback.EVENT.register(e -> {
-			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable.
+			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
 			if (zoomKeyBinding.isPressed() == previousZoomPress) return;
 
 			if (!OkZoomerConfig.zoomToggle.getValue()) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				isZoomKeyPressed = zoomKeyBinding.isPressed();
+				zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 			} else {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					isZoomKeyPressed = !isZoomKeyPressed;
+					zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 				}
 			}
 
 			//Set the previous zoom signal for the next tick.
 			previousZoomPress = zoomKeyBinding.isPressed();
+		});
+
+		ClientTickCallback.EVENT.register(e -> {
+			if (increaseZoomKeyBinding.isPressed()) {
+				zoomDivisor += 1.0D;
+			}
 		});
 	}
 }
