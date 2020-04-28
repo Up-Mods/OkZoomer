@@ -12,7 +12,8 @@ import me.zeroeightsix.fiber.api.tree.PropertyMirror;
 
 public class OkZoomerConfig {
 	// TODO - Organize the config in categories
-	public static final PropertyMirror<Boolean> smoothCamera = new PropertyMirror<>();
+	public static final PropertyMirror<Boolean> cinematicCamera = new PropertyMirror<>();
+	public static final PropertyMirror<Boolean> useAlternativeSmoothing = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> reduceSensitivity = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> hideHands = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> smoothTransition = new PropertyMirror<>();
@@ -23,9 +24,12 @@ public class OkZoomerConfig {
 	public static final PropertyMirror<Double> maximumZoomDivisor = new PropertyMirror<>();
 
 	public static final ConfigBranch node = ConfigTree.builder()
-		.beginValue("smooth_camera", Boolean.class, true)
-			.withComment("Enables Smooth Camera while zooming, interferes with Cinematic Mode but it shouldn't be anything negative.")
-		.finishValue(smoothCamera::mirror)
+		.beginValue("cinematic_camera", Boolean.class, true)
+			.withComment("Enables the cinematic camera while zooming.")
+		.finishValue(cinematicCamera::mirror)
+		.beginValue("use_alternative_smoothing", Boolean.class, true)
+			.withComment("Makes the zoom's cinematic camera linger less.")
+		.finishValue(useAlternativeSmoothing::mirror)
 		.beginValue("reduce_sensitivity", Boolean.class, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")
 		.finishValue(reduceSensitivity::mirror)
@@ -37,6 +41,9 @@ public class OkZoomerConfig {
 		.finishValue(zoomToggle::mirror)
 		.beginValue("zoom_divisor", Double.class, 4.0D)
 			.withComment("The divisor applied to the FOV when zooming.")
+			.beginConstraints()
+				.atLeast(Double.MIN_VALUE)
+			.finishConstraints()
 		.finishValue(zoomDivisor::mirror)
 		.beginValue("zoom_scrolling", Boolean.class, false)
 			.withComment("Allows to increase or decrease zoom by scrolling.")

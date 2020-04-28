@@ -29,7 +29,9 @@ public class GameRendererMixin {
 
 		if (OkZoomerMod.isZoomKeyPressed) {
 			zoomMultiplier /= OkZoomerMod.zoomDivisor;
-			thingy = 1.0F - zoomMultiplier;
+			if (OkZoomerMod.zoomDivisor >= 1.0) {
+				thingy = 1.0F - zoomMultiplier;
+			}
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;

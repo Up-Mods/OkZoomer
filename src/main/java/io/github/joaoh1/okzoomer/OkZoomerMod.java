@@ -60,7 +60,9 @@ public class OkZoomerMod implements ClientModInitializer {
 		// This event is responsible for managing the zoom signal.
 		ClientTickCallback.EVENT.register(e -> {
 			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
-			if (zoomKeyBinding.isPressed() == previousZoomPress) return;
+			if (zoomKeyBinding.isPressed() == previousZoomPress) {
+				return;
+			}
 
 			if (!OkZoomerConfig.zoomToggle.getValue()) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
