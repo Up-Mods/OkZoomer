@@ -1,8 +1,5 @@
 {
 	"key.okzoomer.zoom": "Zoom",
-	"text.autoconfig.okzoomer.option.smoothCamera": "Soepele camera",
-	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[0]": "Maakt soepele camera mogelijk tijdens zoomen,",
-	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[1]": "interfereert met de filmische modus, maar het zou geen problemen opleveren.",
 	"text.autoconfig.okzoomer.option.smoothTransition": "Soepele overgang",
 	"text.autoconfig.okzoomer.option.smoothTransition.@Tooltip": "Maakt soepele overgangen mogelijk bij het in- en uitzoomen.",
 	"text.autoconfig.okzoomer.option.zoomToggle": "Zoomknop",

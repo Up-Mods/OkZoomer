@@ -14,7 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.util.SmoothUtil;
 
-//TODO - Comment this code better
+//TODO - Comment the code
 @Mixin(Mouse.class)
 public class MouseMixin {
     @Shadow
@@ -29,7 +29,7 @@ public class MouseMixin {
     private final SmoothUtil cursorXZoomSmoother = new SmoothUtil();
     private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
 
-    private double adjustedE;
+    private double extractedE;
     private double adjustedG;
     
     //This mixin handles the "Reduce Sensitivity" option.
@@ -49,16 +49,16 @@ public class MouseMixin {
     
     @Inject(at = @At(value = "INVOKE", target = "net/minecraft/client/Mouse.isCursorLocked()Z"), method = "updateMouse()V", locals = LocalCapture.CAPTURE_FAILHARD)
     private void obtainCinematicCameraValues(CallbackInfo info, double d, double e) {
-        this.adjustedE = e;
+        this.extractedE = e;
     }
 
-    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "l", print = true)
+    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "l")
 	private double applyCinematicModeX(double l) {
-        if (OkZoomerConfig.cinematicCamera.getValue() && OkZoomerMod.isZoomKeyPressed) {
-            if (!this.client.options.smoothCameraEnabled && !OkZoomerConfig.useAlternativeSmoothing.getValue()) {
-                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.adjustedE * this.adjustedG));
-            } else if (OkZoomerConfig.useAlternativeSmoothing.getValue()) {
-                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.adjustedE * this.adjustedG) * 4.0D);
+        if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
+            if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
+                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
+            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("4x")) {
+                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {
             this.cursorXZoomSmoother.clear();
@@ -66,13 +66,13 @@ public class MouseMixin {
         return l;
     }
     
-    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "m" ,print = true)
+    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "m")
 	private double applyCinematicModeY(double m) {
-        if (OkZoomerConfig.cinematicCamera.getValue() && OkZoomerMod.isZoomKeyPressed) {
-            if (!this.client.options.smoothCameraEnabled && !OkZoomerConfig.useAlternativeSmoothing.getValue()) {
-                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.adjustedE * this.adjustedG));
-            } else if (OkZoomerConfig.useAlternativeSmoothing.getValue()) {
-                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.adjustedE * this.adjustedG) * 4.0D);
+        if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
+            if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
+                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
+            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("4x")) {
+                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {
             this.cursorYZoomSmoother.clear();

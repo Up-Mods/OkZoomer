@@ -2,6 +2,8 @@
 
 # Ok Zoomer
 
+**NOTE: Ok Zoomer is currently going through a complete rewrite! Some information here might be irrelevant!**
+
 Ok Zoomer is a mod that adds a highly configurable zoom button, by default, it zooms like OptiFine's zoom, but when you go to this mod's settings, you will find way more options that makes the zoom different, like smooth transitions, zoom scrolling and reduced sensitivity instead of smooth camera. For more information, see the [CurseForge page](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
 
 ## Download

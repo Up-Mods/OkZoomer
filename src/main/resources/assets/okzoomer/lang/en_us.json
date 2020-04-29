@@ -1,6 +1,9 @@
 {
 	"config.okzoomer.option.cinematic_camera": "Cinematic Camera",
 	"config.okzoomer.option.cinematic_camera.tooltip": "Enables the cinematic camera while zooming.",
+	"config.okzoomer.option.cinematic_camera.off": "Off",
+	"config.okzoomer.option.cinematic_camera.vanilla": "Vanilla",
+	"config.okzoomer.option.cinematic_camera.4x": "4x",
 	"config.okzoomer.option.use_alternative_smoothing": "Use Alternative Smoothing",
 	"config.okzoomer.option.use_alternative_smoothing.tooltip": "Makes the zoom's cinematic camera linger less.",
 	"config.okzoomer.option.reduce_sensitivity": "Reduce Sensitivity",

@@ -14,6 +14,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.math.MathHelper;
 
+// TODO - Comment the code
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 	@Shadow
@@ -24,18 +25,17 @@ public class GameRendererMixin {
 
 	private void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
-		//TODO - Figure out a better name for this
-		float thingy = 0.75F;
+		float multiplierMultiplier = 0.75F;
 
 		if (OkZoomerMod.isZoomKeyPressed) {
 			zoomMultiplier /= OkZoomerMod.zoomDivisor;
 			if (OkZoomerMod.zoomDivisor >= 1.0) {
-				thingy = 1.0F - zoomMultiplier;
+				multiplierMultiplier = 1.0F - zoomMultiplier;
 			}
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
-		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * thingy;
+		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * multiplierMultiplier;
 	 }
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
@@ -54,19 +54,19 @@ public class GameRendererMixin {
 				fov *= (double)MathHelper.lerp(tickDelta, this.lastZoomFovMultiplier, this.zoomFovMultiplier);
 				info.setReturnValue(fov);
 			}
-			
-			if (this.lastZoomFovMultiplier != 1.0F) {
-				if (changingFov) {
-					this.client.worldRenderer.scheduleTerrainUpdate();
-				}
-			}
 		} else {
-			//TODO - Figure out how to prevent terrain glitches on non-smooth zooms
 			if (OkZoomerMod.isZoomKeyPressed) {
 				double zoomedFov = fov / OkZoomerMod.zoomDivisor;
 				info.setReturnValue(zoomedFov);
 			}
 		}
+
+		if (OkZoomerMod.zoomHasHappened) {
+			if (changingFov) {
+				this.client.worldRenderer.scheduleTerrainUpdate();
+			}
+		}
+
 		return fov;
 	}
 }

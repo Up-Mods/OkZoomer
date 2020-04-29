@@ -12,8 +12,7 @@ import me.zeroeightsix.fiber.api.tree.PropertyMirror;
 
 public class OkZoomerConfig {
 	// TODO - Organize the config in categories
-	public static final PropertyMirror<Boolean> cinematicCamera = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> useAlternativeSmoothing = new PropertyMirror<>();
+	public static final PropertyMirror<String> cinematicCamera = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> reduceSensitivity = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> hideHands = new PropertyMirror<>();
 	public static final PropertyMirror<Boolean> smoothTransition = new PropertyMirror<>();
@@ -24,12 +23,12 @@ public class OkZoomerConfig {
 	public static final PropertyMirror<Double> maximumZoomDivisor = new PropertyMirror<>();
 
 	public static final ConfigBranch node = ConfigTree.builder()
-		.beginValue("cinematic_camera", Boolean.class, true)
-			.withComment("Enables the cinematic camera while zooming.")
+		.beginValue("cinematic_camera", String.class, "off")
+			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"4x\" is a less-lingering variant.")
+			.beginConstraints()
+				.regex("^off$|^vanilla$|^4x$")
+			.finishConstraints()
 		.finishValue(cinematicCamera::mirror)
-		.beginValue("use_alternative_smoothing", Boolean.class, true)
-			.withComment("Makes the zoom's cinematic camera linger less.")
-		.finishValue(useAlternativeSmoothing::mirror)
 		.beginValue("reduce_sensitivity", Boolean.class, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")
 		.finishValue(reduceSensitivity::mirror)
