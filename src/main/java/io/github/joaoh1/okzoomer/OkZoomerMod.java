@@ -13,6 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
+//This class is responsible for the management of the zoom divisor and of the keybinds.
 public class OkZoomerMod implements ClientModInitializer {
 	protected static Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 	
@@ -53,20 +54,26 @@ public class OkZoomerMod implements ClientModInitializer {
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
 	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 
+	public static void changeZoomDivisor(boolean increase) {
+		
+	}
+
 	@Override
 	public void onInitializeClient() {
-		// TODO - Actually do zoom stuff, remove when everything's done.
+		//TODO - Actually do zoom stuff, remove when everything's done.
 		modLogger.info("[Ok Zoomer] owo what's this");
 
-		// Load the configuration.
+		//Load the configuration.
 		OkZoomerConfig.loadJanksonConfig();
 
-		// Register the zoom keybinding.
+		//Register the zoom keybinding.
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
+		//Register the "Decrease Zoom" keybinding.
 		KeyBindingRegistry.INSTANCE.register(decreaseZoomKeyBinding);
+		//Register the "Increase Zoom" keybinding.
 		KeyBindingRegistry.INSTANCE.register(increaseZoomKeyBinding);
 
-		// This event is responsible for managing the zoom signal.
+		//This event is responsible for managing the zoom signal.
 		ClientTickCallback.EVENT.register(e -> {
 			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
 			if (zoomKeyBinding.isPressed() == previousZoomPress) {
@@ -85,6 +92,7 @@ public class OkZoomerMod implements ClientModInitializer {
 				}
 			}
 
+			//Manage the post-zoom signal.
 			if (!isZoomKeyPressed && previousZoomPress) {
 				zoomHasHappened = true;
 			} else {

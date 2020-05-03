@@ -4,53 +4,58 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import me.zeroeightsix.fiber.api.exception.FiberException;
-import me.zeroeightsix.fiber.api.serialization.JanksonSerializer;
-import me.zeroeightsix.fiber.api.tree.ConfigBranch;
-import me.zeroeightsix.fiber.api.tree.ConfigTree;
-import me.zeroeightsix.fiber.api.tree.PropertyMirror;
+import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
+import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
+import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonSerializer;
+import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch;
+import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
+import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 
 public class OkZoomerConfig {
-	// TODO - Organize the config in categories
-	public static final PropertyMirror<String> cinematicCamera = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> reduceSensitivity = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> hideHands = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> smoothTransition = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> zoomToggle = new PropertyMirror<>();
-	public static final PropertyMirror<Double> zoomDivisor = new PropertyMirror<>();
-	public static final PropertyMirror<Boolean> zoomScrolling = new PropertyMirror<>();
-	public static final PropertyMirror<Double> minimumZoomDivisor = new PropertyMirror<>();
-	public static final PropertyMirror<Double> maximumZoomDivisor = new PropertyMirror<>();
+	//TODO - Organize the config in categories
+	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING);
+	public static final PropertyMirror<Boolean> reduceSensitivity = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	public static final PropertyMirror<Boolean> hideHands = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	public static final PropertyMirror<Boolean> smoothTransition = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	public static final PropertyMirror<Boolean> zoomToggle = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
+	public static final PropertyMirror<Boolean> zoomScrolling = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
+	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
 
 	public static final ConfigBranch node = ConfigTree.builder()
-		.beginValue("cinematic_camera", String.class, "off")
-			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"4x\" is a less-lingering variant.")
+		.beginValue("cinematic_camera", ConfigTypes.STRING, "off")
+			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"4x\" is a less-lingering variant of \"vanilla\".")
+			/*TODO - Readd the limits after Fiber is updated
 			.beginConstraints()
 				.regex("^off$|^vanilla$|^4x$")
 			.finishConstraints()
+			*/
 		.finishValue(cinematicCamera::mirror)
-		.beginValue("reduce_sensitivity", Boolean.class, false)
+		.beginValue("reduce_sensitivity", ConfigTypes.BOOLEAN, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")
 		.finishValue(reduceSensitivity::mirror)
-		.beginValue("smooth_transition", Boolean.class, false)
+		.beginValue("smooth_transition", ConfigTypes.BOOLEAN, false)
 			.withComment("Enables smooth transitions when zooming in and out.")
 		.finishValue(smoothTransition::mirror)
-		.beginValue("zoom_toggle", Boolean.class, false)
+		.beginValue("zoom_toggle", ConfigTypes.BOOLEAN, false)
 			.withComment("Enables the ability to toggle zooming.")
 		.finishValue(zoomToggle::mirror)
-		.beginValue("zoom_divisor", Double.class, 4.0D)
+		.beginValue("zoom_divisor", ConfigTypes.DOUBLE, 4.0D)
 			.withComment("The divisor applied to the FOV when zooming.")
+			/*TODO - Readd the limits after Fiber is updated
 			.beginConstraints()
 				.atLeast(Double.MIN_VALUE)
 			.finishConstraints()
+			*/
 		.finishValue(zoomDivisor::mirror)
-		.beginValue("zoom_scrolling", Boolean.class, false)
+		.beginValue("zoom_scrolling", ConfigTypes.BOOLEAN, false)
 			.withComment("Allows to increase or decrease zoom by scrolling.")
 		.finishValue(zoomScrolling::mirror)
-		.beginValue("minimum_zoom_divisor", Double.class, 1.0D)
+		.beginValue("minimum_zoom_divisor", ConfigTypes.DOUBLE, 1.0D)
 			.withComment("The minimum value that you can scroll down.")
 		.finishValue(minimumZoomDivisor::mirror)
-		.beginValue("maximum_zoom_divisor", Double.class, 50.0D)
+		.beginValue("maximum_zoom_divisor", ConfigTypes.DOUBLE, 50.0D)
 			.withComment("The maximum value that you can scroll up.")
 		.finishValue(maximumZoomDivisor::mirror)
 		.build();

@@ -14,7 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.util.SmoothUtil;
 
-//TODO - Comment the code
+//This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
     @Shadow
@@ -52,7 +52,7 @@ public class MouseMixin {
         this.extractedE = e;
     }
 
-    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "l")
+    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
         if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
             if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
@@ -66,7 +66,7 @@ public class MouseMixin {
         return l;
     }
     
-    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", name = "m")
+    @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
         if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
             if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
