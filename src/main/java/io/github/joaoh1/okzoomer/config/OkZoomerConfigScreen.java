@@ -7,11 +7,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
+//TODO - Overhaul the config screen
 public class OkZoomerConfigScreen {
+	/*
 	private static String getCinematicCameraMode(String value, boolean convertToRegular) {
-		String translatedOffField = new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString();
-		String translatedVanillaField = new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString();
-		String translatedFourXField = new TranslatableText("config.okzoomer.option.cinematic_camera.4x").getString();
+		String translatedOffField = new TranslatableText("config.okzoomer.option.cinematic_camera.off").asString();
+		String translatedVanillaField = new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").asString();
+		String translatedFourXField = new TranslatableText("config.okzoomer.option.cinematic_camera.4x").asString();
 
 		if (convertToRegular) {
 			if (value.equals(translatedOffField)) {
@@ -38,7 +40,8 @@ public class OkZoomerConfigScreen {
 		}
 		return value;
 	}
-	//TODO - Actually make a proper config screen that isn't just a debug menu
+	*/
+
     public static Screen getConfigScreen(Screen parentScreen) {
 		ConfigBuilder builder = ConfigBuilder.create()
 			.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/yellow_concrete.png"))
@@ -52,13 +55,14 @@ public class OkZoomerConfigScreen {
 		ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.general"));
 		
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-
+		
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), OkZoomerConfig.reduceSensitivity.getValue())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.reduce_sensitivity.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.reduceSensitivity.setValue(newValue))
 			.build());
 		
+		/*	
 		general.addEntry(entryBuilder.startSelector(
 				new TranslatableText("config.okzoomer.option.cinematic_camera"),
 				new String[]{
@@ -66,34 +70,37 @@ public class OkZoomerConfigScreen {
 					new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString(),
 					new TranslatableText("config.okzoomer.option.cinematic_camera.4x").getString()
 				},
-				getCinematicCameraMode(OkZoomerConfig.cinematicCamera.getValue(), false)
+				"Off"
 			)
 			.setDefaultValue(new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString())
 			.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_camera.tooltip"))
 			.setSaveConsumer(newValue -> {
-				String convertedValue = getCinematicCameraMode(newValue, true);
+				String convertedValue = "4x";
 				OkZoomerConfig.cinematicCamera.setValue(convertedValue);
 			})
 			.build());
-		
+		*/
+		/*
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.smooth_transition"), OkZoomerConfig.smoothTransition.getValue())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.smooth_transition.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.smoothTransition.setValue(newValue))
 			.build());
-
+		*/
+		/*
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), OkZoomerConfig.zoomToggle.getValue())
         	.setDefaultValue(false)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_toggle.tooltip"))
-        	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
+        	//.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
 		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerConfig.zoomDivisor.getValue())
 			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
-        	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
-        	.build());
+        	//.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
+			.build());
+		*/
 
         return builder.build();
     }

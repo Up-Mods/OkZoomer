@@ -13,24 +13,19 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 
 public class OkZoomerConfig {
 	//TODO - Organize the config in categories
-	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING);
+	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^vanilla$|^4x$"));
 	public static final PropertyMirror<Boolean> reduceSensitivity = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Boolean> hideHands = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Boolean> smoothTransition = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Boolean> zoomToggle = PropertyMirror.create(ConfigTypes.BOOLEAN);
-	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
+	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<Boolean> zoomScrolling = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
 	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
 
 	public static final ConfigBranch node = ConfigTree.builder()
-		.beginValue("cinematic_camera", ConfigTypes.STRING, "off")
+		.beginValue("cinematic_camera", ConfigTypes.STRING.withPattern("^off$|^vanilla$|^4x$"), "off")
 			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"4x\" is a less-lingering variant of \"vanilla\".")
-			/*TODO - Readd the limits after Fiber is updated
-			.beginConstraints()
-				.regex("^off$|^vanilla$|^4x$")
-			.finishConstraints()
-			*/
 		.finishValue(cinematicCamera::mirror)
 		.beginValue("reduce_sensitivity", ConfigTypes.BOOLEAN, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")
@@ -41,13 +36,8 @@ public class OkZoomerConfig {
 		.beginValue("zoom_toggle", ConfigTypes.BOOLEAN, false)
 			.withComment("Enables the ability to toggle zooming.")
 		.finishValue(zoomToggle::mirror)
-		.beginValue("zoom_divisor", ConfigTypes.DOUBLE, 4.0D)
+		.beginValue("zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 4.0D)
 			.withComment("The divisor applied to the FOV when zooming.")
-			/*TODO - Readd the limits after Fiber is updated
-			.beginConstraints()
-				.atLeast(Double.MIN_VALUE)
-			.finishConstraints()
-			*/
 		.finishValue(zoomDivisor::mirror)
 		.beginValue("zoom_scrolling", ConfigTypes.BOOLEAN, false)
 			.withComment("Allows to increase or decrease zoom by scrolling.")
