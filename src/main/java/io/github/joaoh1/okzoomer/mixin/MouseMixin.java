@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.util.SmoothUtil;
 
+//TODO - Comment this code better
 //This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
