@@ -55,7 +55,7 @@ public class OkZoomerConfigScreen {
 		
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 		
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), OkZoomerConfig.reduceSensitivity.getValue())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), DoNotCommitBad.getReduceSensitivity())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.reduce_sensitivity.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.reduceSensitivity.setValue(newValue))
@@ -68,7 +68,7 @@ public class OkZoomerConfigScreen {
 					new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString(),
 					new TranslatableText("config.okzoomer.option.cinematic_camera.multiplied").getString()
 				},
-				getCinematicCameraMode(OkZoomerConfig.cinematicCamera.getValue(), false)
+				getCinematicCameraMode(DoNotCommitBad.getCinematicZoom(), false)
 			)
 			.setDefaultValue(new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString())
 			.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_camera.tooltip"))
@@ -77,26 +77,27 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.smooth_transition"), OkZoomerConfig.smoothTransition.getValue())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.smooth_transition"), DoNotCommitBad.getSmoothTransition())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.smooth_transition.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.smoothTransition.setValue(newValue))
 			.build());
 		
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), OkZoomerConfig.zoomToggle.getValue())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), DoNotCommitBad.getZoomToggle())
         	.setDefaultValue(false)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_toggle.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
-		/*
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerConfig.zoomDivisor.getValue().doubleValue())
+		
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), DoNotCommitBad.getZoomDivisor())
 			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
 			.build());
-		
+
+		/*
 		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerMod.zoomDivisor)
 			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)

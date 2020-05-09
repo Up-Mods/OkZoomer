@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import io.github.joaoh1.okzoomer.OkZoomerMod;
+import io.github.joaoh1.okzoomer.config.DoNotCommitBad;
 import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -37,7 +38,7 @@ public class MouseMixin {
     @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
 	private double applyReduceSensitivity(double g) {
         double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
-        if (OkZoomerConfig.reduceSensitivity.getValue()) {
+        if (DoNotCommitBad.getReduceSensitivity()) {
             if (OkZoomerMod.isZoomKeyPressed) {
                 modifiedMouseSensitivity /= OkZoomerMod.zoomDivisor;
             }
@@ -55,10 +56,10 @@ public class MouseMixin {
 
     @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
-        if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
-            if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
+        if (!DoNotCommitBad.getCinematicZoom().equals("off") && OkZoomerMod.isZoomKeyPressed) {
+            if (!this.client.options.smoothCameraEnabled && DoNotCommitBad.getCinematicZoom().equals("vanilla")) {
                 l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
-            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
+            } else if (DoNotCommitBad.getCinematicZoom().equals("multiplied")) {
                 l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {
@@ -69,10 +70,10 @@ public class MouseMixin {
     
     @ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
-        if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
-            if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
+        if (!DoNotCommitBad.getCinematicZoom().equals("off") && OkZoomerMod.isZoomKeyPressed) {
+            if (!this.client.options.smoothCameraEnabled && DoNotCommitBad.getCinematicZoom().equals("vanilla")) {
                 m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
-            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
+            } else if (DoNotCommitBad.getCinematicZoom().equals("multiplied")) {
                 m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {

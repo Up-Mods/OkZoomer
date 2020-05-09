@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import io.github.joaoh1.okzoomer.config.DoNotCommitBad;
 import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
@@ -52,7 +53,7 @@ public class OkZoomerMod implements ClientModInitializer {
 	public static boolean zoomHasHappened = false;
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
-	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+	public static double zoomDivisor = DoNotCommitBad.getZoomDivisor();
 
 	public static void changeZoomDivisor(boolean increase) {
 		
@@ -65,8 +66,6 @@ public class OkZoomerMod implements ClientModInitializer {
 
 		//Load the configuration.
 		OkZoomerConfig.loadJanksonConfig();
-
-		modLogger.info("[Ok Zoomer] " + OkZoomerConfig.cinematicCamera.getValue() + " | " + OkZoomerConfig.smoothTransition.getValue().toString());
 
 		//Register the zoom keybinding.
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
@@ -82,15 +81,15 @@ public class OkZoomerMod implements ClientModInitializer {
 				return;
 			}
 
-			if (!OkZoomerConfig.zoomToggle.getValue()) {
+			if (!DoNotCommitBad.getZoomToggle()) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				isZoomKeyPressed = zoomKeyBinding.isPressed();
-				zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+				zoomDivisor = DoNotCommitBad.getZoomDivisor();
 			} else {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					isZoomKeyPressed = !isZoomKeyPressed;
-					zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+					zoomDivisor = DoNotCommitBad.getZoomDivisor();
 				}
 			}
 
