@@ -66,6 +66,8 @@ public class OkZoomerMod implements ClientModInitializer {
 		//Load the configuration.
 		OkZoomerConfig.loadJanksonConfig();
 
+		modLogger.info("[Ok Zoomer] " + OkZoomerConfig.cinematicCamera.getValue() + " | " + OkZoomerConfig.smoothTransition.getValue().toString());
+
 		//Register the zoom keybinding.
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
 		//Register the "Decrease Zoom" keybinding.

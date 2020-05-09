@@ -13,7 +13,7 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 
 public class OkZoomerConfig {
 	//TODO - Organize the config in categories
-	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^vanilla$|^4x$"));
+	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"));
 	public static final PropertyMirror<Boolean> reduceSensitivity = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Boolean> hideHands = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Boolean> smoothTransition = PropertyMirror.create(ConfigTypes.BOOLEAN);
@@ -24,8 +24,8 @@ public class OkZoomerConfig {
 	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
 
 	public static final ConfigBranch node = ConfigTree.builder()
-		.beginValue("cinematic_camera", ConfigTypes.STRING.withPattern("^off$|^vanilla$|^4x$"), "off")
-			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"4x\" is a less-lingering variant of \"vanilla\".")
+		.beginValue("cinematic_camera", ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"), "off")
+			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"multiplied\" is a less-lingering variant of \"vanilla\".")
 		.finishValue(cinematicCamera::mirror)
 		.beginValue("reduce_sensitivity", ConfigTypes.BOOLEAN, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")

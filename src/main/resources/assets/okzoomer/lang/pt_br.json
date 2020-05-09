@@ -3,7 +3,7 @@
 	"config.okzoomer.option.cinematic_camera.tooltip": "Ativa a câmera cinemática enquanto dar zoom.",
 	"config.okzoomer.option.cinematic_camera.off": "Desligado",
 	"config.okzoomer.option.cinematic_camera.vanilla": "Vanilla",
-	"config.okzoomer.option.cinematic_camera.4x": "4x",
+	"config.okzoomer.option.cinematic_camera.multiplied": "Multiplicado",
 	"key.okzoomer.zoom": "Zoom",
 	"text.autoconfig.okzoomer.option.smoothCamera": "Câmera suave",
 	"text.autoconfig.okzoomer.option.smoothCamera.@Tooltip[0]": "Ativa a câmera suave enquanto dar zoom, interfere com",

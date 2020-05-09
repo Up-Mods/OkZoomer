@@ -58,7 +58,7 @@ public class MouseMixin {
         if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
             if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
                 l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
-            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("4x")) {
+            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
                 l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {
@@ -72,7 +72,7 @@ public class MouseMixin {
         if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && OkZoomerMod.isZoomKeyPressed) {
             if (!this.client.options.smoothCameraEnabled && OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
                 m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
-            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("4x")) {
+            } else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
                 m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
             }
         } else {

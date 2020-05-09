@@ -1,4 +1,4 @@
-<img src="./src/main/resources/assets/okzoomer/icon.png" align="right" width="128px"/>
+<img src="./src/main/resources/assets/okzoomer/icon.png" align="right" width="128px" alt="Ok Zoomer icon"/>
 
 # Ok Zoomer
 
