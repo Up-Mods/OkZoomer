@@ -24,7 +24,8 @@
 	"config.okzoomer.option.maximum_zoom_divisor.tooltip": "The maximum value that you can scroll up.",
 	"config.okzoomer.category.general": "General",
 	"config.okzoomer.title": "Ok Zoomer Config",
-	"key.okzoomer.zoom": "Zoom",
+	"key.okzoomer.category": "Zoom",
 	"key.okzoomer.decrease_zoom": "Decrease Zoom",
-	"key.okzoomer.increase_zoom": "Increase Zoom"
+	"key.okzoomer.increase_zoom": "Increase Zoom",
+	"key.okzoomer.zoom": "Zoom"
 }

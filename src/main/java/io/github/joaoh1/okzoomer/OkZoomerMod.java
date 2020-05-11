@@ -30,17 +30,17 @@ public class OkZoomerMod implements ClientModInitializer {
 
 	//The zoom keybinding, which will be registered.
 	public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, getDefaultKey(), "key.categories.misc")
+		.create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, getDefaultKey(), "key.okzoomer.category")
 		.build();
 
 	//The "Decrease Zoom" keybinding.
 	public static final FabricKeyBinding decreaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "decrease_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.categories.misc")
+		.create(new Identifier("okzoomer", "decrease_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.okzoomer.category")
 		.build();
 
 	//The "Increase Zoom" keybinding.
 	public static final FabricKeyBinding increaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.categories.misc")
+		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.okzoomer.category")
 		.build();
 
 	//The zoom signal, which is managed in an event and used by other mixins.
@@ -56,7 +56,11 @@ public class OkZoomerMod implements ClientModInitializer {
 	public static double zoomDivisor = DoNotCommitBad.getZoomDivisor();
 
 	public static void changeZoomDivisor(boolean increase) {
-		
+		if (increase) {
+			zoomDivisor += 0.5D;
+		} else {
+			zoomDivisor -= 0.5D;
+		}
 	}
 
 	@Override
@@ -67,6 +71,8 @@ public class OkZoomerMod implements ClientModInitializer {
 		//Load the configuration.
 		OkZoomerConfig.loadJanksonConfig();
 
+		//Register the zoom category.
+		KeyBindingRegistry.INSTANCE.addCategory("key.okzoomer.category");
 		//Register the zoom keybinding.
 		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
 		//Register the "Decrease Zoom" keybinding.
@@ -110,12 +116,12 @@ public class OkZoomerMod implements ClientModInitializer {
 				if (zoomDivisor <= 0.5D) {
 					zoomDivisor = 0.5D;
 				} else {
-					zoomDivisor -= 0.5D;
+					changeZoomDivisor(false);
 				}
 			}
 
 			if (increaseZoomKeyBinding.wasPressed()) {
-				zoomDivisor += 1.0D;
+				changeZoomDivisor(true);
 			}
 		});
 	}
