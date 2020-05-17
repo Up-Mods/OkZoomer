@@ -43,7 +43,7 @@ public class GameRendererMixin {
 	//If smooth transitions are enabled, update the zoom multiplier on each tick.
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	private void zoomFovMultiplierTick(CallbackInfo info) {
-		if (DoNotCommitBad.getSmoothTransition()) {
+		if (DoNotCommitBad.getZoomTransition().equals("smooth")) {
 			this.updateZoomFovMultiplier();
 		}
 	}
@@ -53,7 +53,7 @@ public class GameRendererMixin {
 	private double getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
 		double fov = info.getReturnValueD();
 
-		if (DoNotCommitBad.getSmoothTransition()) {
+		if (DoNotCommitBad.getZoomTransition().equals("smooth")) {
 			//Handle the zoom with smooth transitions enabled.
 			if (this.zoomFovMultiplier != 1.0F) {
 				fov *= (double)MathHelper.lerp(tickDelta, this.lastZoomFovMultiplier, this.zoomFovMultiplier);

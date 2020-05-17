@@ -16,6 +16,7 @@ import net.minecraft.client.Mouse;
 import net.minecraft.client.util.SmoothUtil;
 
 //TODO - Comment this code better
+//TODO - Implement the vanilla-mode cinematic camera better.
 //This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
@@ -60,7 +61,7 @@ public class MouseMixin {
             if (!this.client.options.smoothCameraEnabled && DoNotCommitBad.getCinematicZoom().equals("vanilla")) {
                 l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
             } else if (DoNotCommitBad.getCinematicZoom().equals("multiplied")) {
-                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
+                l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * DoNotCommitBad.getCinematicMultiplier());
             }
         } else {
             this.cursorXZoomSmoother.clear();
@@ -74,7 +75,7 @@ public class MouseMixin {
             if (!this.client.options.smoothCameraEnabled && DoNotCommitBad.getCinematicZoom().equals("vanilla")) {
                 m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
             } else if (DoNotCommitBad.getCinematicZoom().equals("multiplied")) {
-                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * 4.0D);
+                m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * DoNotCommitBad.getCinematicMultiplier());
             }
         } else {
             this.cursorYZoomSmoother.clear();

@@ -10,32 +10,60 @@ import net.minecraft.util.Identifier;
 
 //TODO - Overhaul the config screen
 public class OkZoomerConfigScreen {
+	private static String translatedCineOffField = new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString();
+	private static String translatedCineVanillaField = new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString();
+	private static String translatedCineMultipliedField = new TranslatableText("config.okzoomer.option.cinematic_camera.multiplied").getString();
+	private static String translatedTransOffField = new TranslatableText("config.okzoomer.option.zoom_transition.off").getString();
+	private static String translatedTransSmoothField = new TranslatableText("config.okzoomer.option.zoom_transition.smooth").getString();
+	private static String translatedTransLinearField = new TranslatableText("config.okzoomer.option.zoom_transition.linear").getString();
+	
 	private static String getCinematicCameraMode(String value, boolean convertToRegular) {
-		String translatedOffField = new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString();
-		String translatedVanillaField = new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString();
-		String translatedFourXField = new TranslatableText("config.okzoomer.option.cinematic_camera.multiplied").getString();
-
 		if (convertToRegular) {
-			if (value.equals(translatedOffField)) {
+			if (value.equals(translatedCineOffField)) {
 				return "off";
 			}
 	
-			if (value.equals(translatedVanillaField)) {
+			if (value.equals(translatedCineVanillaField)) {
 				return "vanilla";
 			}
 	
-			if (value.equals(translatedFourXField)) {
+			if (value.equals(translatedCineMultipliedField)) {
 				return "multiplied";
 			}
 		} else {
-			if (value.equals("off")) {
-				return translatedOffField;
+			switch (value) {
+				case "off":
+					return translatedCineOffField;
+				case "vanilla":
+					return translatedCineVanillaField;
+				case "multiplied":
+					return translatedCineMultipliedField;
 			}
-			if (value.equals("vanilla")) {
-				return translatedVanillaField;
+		}
+		return value;
+	}
+
+	private static String getZoomTransitionMode(String value, boolean convertToRegular) {
+		if (convertToRegular) {
+			if (value.equals(translatedTransOffField)) {
+				return "off";
 			}
-			if (value.equals("multiplied")) {
-				return translatedFourXField;
+	
+			if (value.equals(translatedTransSmoothField)) {
+				return "smooth";
+			}
+	
+			if (value.equals(translatedTransLinearField)) {
+				return "linear";
+			}
+		} else {
+			switch (value) {
+				case "off":
+					return translatedTransOffField;
+				case "smooth":
+					return translatedTransSmoothField;
+				case "linear":
+					return translatedTransLinearField;
 			}
 		}
 		return value;
@@ -64,23 +92,46 @@ public class OkZoomerConfigScreen {
 		general.addEntry(entryBuilder.startSelector(
 				new TranslatableText("config.okzoomer.option.cinematic_camera"),
 				new String[]{
-					new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString(),
-					new TranslatableText("config.okzoomer.option.cinematic_camera.vanilla").getString(),
-					new TranslatableText("config.okzoomer.option.cinematic_camera.multiplied").getString()
+					translatedCineOffField,
+					translatedCineVanillaField,
+					translatedCineMultipliedField
 				},
 				getCinematicCameraMode(DoNotCommitBad.getCinematicZoom(), false)
 			)
-			.setDefaultValue(new TranslatableText("config.okzoomer.option.cinematic_camera.off").getString())
+			.setDefaultValue(translatedCineOffField)
 			.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_camera.tooltip"))
 			.setSaveConsumer(newValue -> {
 				OkZoomerConfig.cinematicCamera.setValue(getCinematicCameraMode(newValue, true));
 			})
 			.build());
 		
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.cinematic_multiplier"), DoNotCommitBad.getCinematicMultiplier())
+			.setDefaultValue(4.0D)
+			.setMin(Double.MIN_VALUE)
+        	.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_multiplier.tooltip"))
+        	.setSaveConsumer(newValue -> OkZoomerConfig.cinematicMultiplier.setValue(newValue))
+			.build());
+		/*
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.smooth_transition"), DoNotCommitBad.getSmoothTransition())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.smooth_transition.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.smoothTransition.setValue(newValue))
+			.build());
+		*/
+		general.addEntry(entryBuilder.startSelector(
+				new TranslatableText("config.okzoomer.option.zoom_transition"),
+				new String[]{
+					translatedTransOffField,
+					translatedTransSmoothField,
+					translatedTransLinearField
+				},
+				getZoomTransitionMode(DoNotCommitBad.getZoomTransition(), false)
+			)
+			.setDefaultValue(translatedTransSmoothField)
+			.setTooltip(new TranslatableText("config.okzoomer.option.zoom_transition.tooltip"))
+			.setSaveConsumer(newValue -> {
+				OkZoomerConfig.zoomTransition.setValue(getZoomTransitionMode(newValue, true));
+			})
 			.build());
 		
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), DoNotCommitBad.getZoomToggle())
@@ -96,15 +147,7 @@ public class OkZoomerConfigScreen {
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
 			.build());
-
-		/*
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerMod.zoomDivisor)
-			.setDefaultValue(4.0D)
-			.setMin(Double.MIN_VALUE)
-			.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
-			.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
-			.build());
-		*/
+		
         return builder.build();
     }
 }
