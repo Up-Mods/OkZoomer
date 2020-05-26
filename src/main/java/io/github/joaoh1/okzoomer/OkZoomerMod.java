@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import io.github.joaoh1.okzoomer.config.DoNotCommitBad;
 import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
@@ -35,12 +34,12 @@ public class OkZoomerMod implements ClientModInitializer {
 
 	//The "Decrease Zoom" keybinding.
 	public static final FabricKeyBinding decreaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "decrease_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.okzoomer.category")
+		.create(new Identifier("okzoomer", "decrease_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category")
 		.build();
 
 	//The "Increase Zoom" keybinding.
 	public static final FabricKeyBinding increaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.okzoomer.category")
+		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category")
 		.build();
 
 	//The zoom signal, which is managed in an event and used by other mixins.
@@ -53,7 +52,7 @@ public class OkZoomerMod implements ClientModInitializer {
 	public static boolean zoomHasHappened = false;
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
-	public static double zoomDivisor = DoNotCommitBad.getZoomDivisor();
+	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 
 	public static void changeZoomDivisor(boolean increase) {
 		if (increase) {
@@ -87,15 +86,15 @@ public class OkZoomerMod implements ClientModInitializer {
 				return;
 			}
 
-			if (!DoNotCommitBad.getZoomToggle()) {
+			if (!OkZoomerConfig.zoomToggle.getValue()) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				isZoomKeyPressed = zoomKeyBinding.isPressed();
-				zoomDivisor = DoNotCommitBad.getZoomDivisor();
+				zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 			} else {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					isZoomKeyPressed = !isZoomKeyPressed;
-					zoomDivisor = DoNotCommitBad.getZoomDivisor();
+					zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 				}
 			}
 

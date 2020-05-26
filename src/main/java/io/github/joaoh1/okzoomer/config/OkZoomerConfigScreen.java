@@ -1,6 +1,5 @@
 package io.github.joaoh1.okzoomer.config;
 
-import io.github.joaoh1.okzoomer.OkZoomerMod;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -83,7 +82,7 @@ public class OkZoomerConfigScreen {
 		
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 		
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), DoNotCommitBad.getReduceSensitivity())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), OkZoomerConfig.reduceSensitivity.getValue())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.reduce_sensitivity.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.reduceSensitivity.setValue(newValue))
@@ -96,7 +95,7 @@ public class OkZoomerConfigScreen {
 					translatedCineVanillaField,
 					translatedCineMultipliedField
 				},
-				getCinematicCameraMode(DoNotCommitBad.getCinematicZoom(), false)
+				getCinematicCameraMode(OkZoomerConfig.cinematicCamera.getValue(), false)
 			)
 			.setDefaultValue(translatedCineOffField)
 			.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_camera.tooltip"))
@@ -105,7 +104,7 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.cinematic_multiplier"), DoNotCommitBad.getCinematicMultiplier())
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.cinematic_multiplier"), OkZoomerConfig.cinematicMultiplier.getValue())
 			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)
         	.setTooltip(new TranslatableText("config.okzoomer.option.cinematic_multiplier.tooltip"))
@@ -125,7 +124,7 @@ public class OkZoomerConfigScreen {
 					translatedTransSmoothField,
 					translatedTransLinearField
 				},
-				getZoomTransitionMode(DoNotCommitBad.getZoomTransition(), false)
+				getZoomTransitionMode(OkZoomerConfig.zoomTransition.getValue(), false)
 			)
 			.setDefaultValue(translatedTransSmoothField)
 			.setTooltip(new TranslatableText("config.okzoomer.option.zoom_transition.tooltip"))
@@ -134,14 +133,14 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
-		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), DoNotCommitBad.getZoomToggle())
+		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_toggle"), OkZoomerConfig.zoomToggle.getValue())
         	.setDefaultValue(false)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_toggle.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
 		
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), DoNotCommitBad.getZoomDivisor())
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerConfig.zoomDivisor.getValue())
 			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))

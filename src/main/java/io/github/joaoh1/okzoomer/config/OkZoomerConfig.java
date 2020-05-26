@@ -6,10 +6,11 @@ import java.nio.file.Paths;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
-import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonSerializer;
+import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
+import io.github.fablabsmc.fablabs.impl.fiber.serialization.FiberSerialization;
 
 public class OkZoomerConfig {
 	//TODO - Organize the config in categories
@@ -22,8 +23,9 @@ public class OkZoomerConfig {
 	public static final PropertyMirror<Boolean> zoomToggle = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<String> zoomScrolling = PropertyMirror.create(ConfigTypes.STRING);
-	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
-	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE);
+	public static final PropertyMirror<Integer> adjustableZoomSteps = PropertyMirror.create(ConfigTypes.INTEGER.withMinimum(1));
+	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
+	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	
 	public static final ConfigBranch node = ConfigTree.builder()
 		.beginValue("cinematic_camera", ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"), "off")
@@ -50,6 +52,9 @@ public class OkZoomerConfig {
 		.beginValue("zoom_scrolling", ConfigTypes.STRING.withPattern("^off$|^by_step$|^by_divisor$"), "by_step")
 			.withComment("Allows to increase or decrease zoom by scrolling.\n\"off\" disables it.\n\"by_step\" uses a set number of steps between the default and the maximum.\n\"by_divisor\" rounds the divisor and increments it arbitrarily.")
 		.finishValue(zoomScrolling::mirror)
+		.beginValue("adjustable_zoom_steps", ConfigTypes.INTEGER, 1)
+			.withComment("The steps between the default and the maximum zoom divisor.")
+		.finishValue(adjustableZoomSteps::mirror)
 		.beginValue("minimum_zoom_divisor", ConfigTypes.DOUBLE, 1.0D)
 			.withComment("The minimum value that you can scroll down.")
 		.finishValue(minimumZoomDivisor::mirror)
@@ -58,12 +63,12 @@ public class OkZoomerConfig {
 		.finishValue(maximumZoomDivisor::mirror)
 		.build();
 
-	private static JanksonSerializer serializer = new JanksonSerializer();
+	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
 	public static void loadJanksonConfig() {
 		if (Files.exists(Paths.get("./config/okzoomer.json5"))) {
 			try {
-				serializer.deserialize(node, Files.newInputStream(Paths.get("./config/okzoomer.json5")));
+				FiberSerialization.deserialize(node, Files.newInputStream(Paths.get("./config/okzoomer.json5")), serializer);
 			} catch (IOException | FiberException e) {
 				e.printStackTrace();
 			}
@@ -74,8 +79,8 @@ public class OkZoomerConfig {
 
 	public static void saveJanksonConfig() {
 		try {
-			serializer.serialize(node, Files.newOutputStream(Paths.get("./config/okzoomer.json5")));
-		} catch (IOException | FiberException e) {
+			FiberSerialization.serialize(node, Files.newOutputStream(Paths.get("./config/okzoomer.json5")), serializer);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
