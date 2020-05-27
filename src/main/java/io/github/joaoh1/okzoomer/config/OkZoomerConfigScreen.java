@@ -76,11 +76,11 @@ public class OkZoomerConfigScreen {
 		
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.maximum_zoom_divisor"), OkZoomerConfig.maximumZoomDivisor.getValue())
-			.setDefaultValue(50.0D)
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerConfig.zoomDivisor.getValue())
+			.setDefaultValue(4.0D)
 			.setMin(Double.MIN_VALUE)
-        	.setTooltip(new TranslatableText("config.okzoomer.option.maximum_zoom_divisor.tooltip"))
-        	.setSaveConsumer(newValue -> OkZoomerConfig.maximumZoomDivisor.setValue(newValue))
+        	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
+        	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
 			.build());
 		
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.reduce_sensitivity"), OkZoomerConfig.reduceSensitivity.getValue())
@@ -133,13 +133,6 @@ public class OkZoomerConfigScreen {
         	.setSaveConsumer(newValue -> OkZoomerConfig.zoomToggle.setValue(newValue))
 			.build());
 		
-		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.zoom_divisor"), OkZoomerConfig.zoomDivisor.getValue())
-			.setDefaultValue(4.0D)
-			.setMin(Double.MIN_VALUE)
-        	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_divisor.tooltip"))
-        	.setSaveConsumer(newValue -> OkZoomerConfig.zoomDivisor.setValue(newValue))
-			.build());
-		
 		general.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.option.zoom_scrolling"), OkZoomerConfig.zoomScrolling.getValue())
         	.setDefaultValue(true)
         	.setTooltip(new TranslatableText("config.okzoomer.option.zoom_scrolling.tooltip"))
@@ -151,6 +144,13 @@ public class OkZoomerConfigScreen {
 			.setMin(Double.MIN_VALUE)
         	.setTooltip(new TranslatableText("config.okzoomer.option.minimum_zoom_divisor.tooltip"))
         	.setSaveConsumer(newValue -> OkZoomerConfig.minimumZoomDivisor.setValue(newValue))
+			.build());
+
+		general.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.option.maximum_zoom_divisor"), OkZoomerConfig.maximumZoomDivisor.getValue())
+			.setDefaultValue(50.0D)
+			.setMin(Double.MIN_VALUE)
+        	.setTooltip(new TranslatableText("config.okzoomer.option.maximum_zoom_divisor.tooltip"))
+        	.setSaveConsumer(newValue -> OkZoomerConfig.maximumZoomDivisor.setValue(newValue))
 			.build());
 		
         return builder.build();
