@@ -1,6 +1,8 @@
 package io.github.joaoh1.okzoomer.mixin;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +20,7 @@ import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.util.InputUtil;
 
 //TODO - Create a mixin plugin for this, this should only be injected once and then never more.
+//Responsible for loading the config and handling the hijacking of "Save Toolbar Activator".
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 	@Shadow
@@ -38,20 +41,16 @@ public class MinecraftClientMixin {
 
 	@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/RunArgs;)V")
 	public void hijackCKeybind(RunArgs args, CallbackInfo info) {
-		//Load the configuration.
-		OkZoomerConfig.loadJanksonConfig();
-
-		//If "Unbind Conflicting Keybind" is true, unbind the "Save Toolbar Activator" keybind if it hasn't been changed.
-		if (OkZoomerConfig.unbindConflictingKeybind.getValue()) {
+		//If the configuration didn't exist before, unbind the "Save Toolbar Activator" keybind if there's a conflict.
+		if (!Files.exists(OkZoomerConfig.okZoomerConfigPath)) {
 			if (OkZoomerMod.zoomKeyBinding.isDefault()) {
 				if (this.options.keySaveToolbarActivator.isDefault()) {
 					modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
 					this.options.keySaveToolbarActivator.setBoundKey(InputUtil.fromKeyCode(InputUtil.UNKNOWN_KEY.getCode(), InputUtil.UNKNOWN_KEY.getCode()));
 				}
 			}
-			//Set self to false.
-			OkZoomerConfig.unbindConflictingKeybind.setValue(false);
-			OkZoomerConfig.saveJanksonConfig();
 		}
+		//Load the configuration.
+		OkZoomerConfig.loadJanksonConfig();
 	}
 }

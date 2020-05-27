@@ -2,6 +2,7 @@ package io.github.joaoh1.okzoomer.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
@@ -12,6 +13,8 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 import io.github.fablabsmc.fablabs.impl.fiber.serialization.FiberSerialization;
 
 public class OkZoomerConfig {
+	public static final Path okZoomerConfigPath = Paths.get("./config/okzoomer-next.json5");
+
 	//TODO - Organize the config in categories
 	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"));
@@ -23,7 +26,6 @@ public class OkZoomerConfig {
 	//public static final PropertyMirror<Integer> adjustableZoomSteps = PropertyMirror.create(ConfigTypes.INTEGER.withMinimum(1));
 	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
-	public static final PropertyMirror<Boolean> unbindConflictingKeybind = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	
 	public static final ConfigTree tree = ConfigTree.builder()
 		.beginValue("zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 4.0D)
@@ -58,15 +60,12 @@ public class OkZoomerConfig {
 		.beginValue("maximum_zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 50.0D)
 			.withComment("The maximum value that you can scroll up.")
 		.finishValue(maximumZoomDivisor::mirror)
-		.beginValue("unbind_conflicting_keybind", ConfigTypes.BOOLEAN, true)
-			.withComment("Unbinds the \"Save Hotbar Activator\" keybind, which is binded to C by default.\nOnce it's unbinded/ignored, this config value is set to false.")
-		.finishValue(unbindConflictingKeybind::mirror)
 		.build();
 
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
 	public static void loadJanksonConfig() {
-		if (Files.exists(Paths.get("./config/okzoomer-next.json5"))) {
+		if (Files.exists(okZoomerConfigPath)) {
 			try {
 				FiberSerialization.deserialize(tree, Files.newInputStream(Paths.get("./config/okzoomer-next.json5")), serializer);
 			} catch (IOException | FiberException e) {
