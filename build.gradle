@@ -21,8 +21,6 @@ if (System.env.CI == "true") {
 group = project.maven_group
 
 repositories {
-	//TODO - Revert the bad that has been committed.
-	maven { url 'https://jitpack.io' }
 	mavenCentral()
 }
 

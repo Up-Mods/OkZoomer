@@ -26,17 +26,13 @@ public class GameRendererMixin {
 	//The equivalent of updateFovMultiplier but for zooming. Used by smooth transitions.
 	private void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
-		float multiplierMultiplier = 0.75F;
 
 		if (OkZoomerMod.isZoomKeyPressed) {
 			zoomMultiplier /= OkZoomerMod.zoomDivisor;
-			if (OkZoomerMod.zoomDivisor > 1.0) {
-				multiplierMultiplier = 1.0F - zoomMultiplier;
-			}
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
-		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * multiplierMultiplier;
+		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * 0.75F;
 	}
 
 	//If smooth transitions are enabled, update the zoom multiplier on each tick.

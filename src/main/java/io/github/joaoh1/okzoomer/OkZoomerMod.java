@@ -13,14 +13,15 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
+//TODO - Split the zoom management from the keybind management. 
 //This class is responsible for the management of the zoom divisor and of the keybinds.
 public class OkZoomerMod implements ClientModInitializer {
-	protected static Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
+	protected static Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer Next");
 	
 	public static int getDefaultKey() {
 		//If OptiFabric (and therefore, OptiFine) is detected, use Z as the default value instead.
 		if (FabricLoader.getInstance().isModLoaded("optifabric")) {
-			modLogger.info("[Ok Zoomer] OptiFabric was detected! Using Z as the default key.");
+			modLogger.info("[Ok Zoomer Next] OptiFabric was detected! Using Z as the default key.");
 			return GLFW.GLFW_KEY_Z;
 		} else {
 			return GLFW.GLFW_KEY_C;
@@ -56,19 +57,46 @@ public class OkZoomerMod implements ClientModInitializer {
 
 	public static void changeZoomDivisor(boolean increase) {
 		if (increase) {
-			zoomDivisor += 0.5D;
+			if (zoomDivisor < OkZoomerConfig.maximumZoomDivisor.getValue()) {
+				zoomDivisor += 0.5D;
+			} else {
+				zoomDivisor = OkZoomerConfig.maximumZoomDivisor.getValue();
+			}
 		} else {
-			zoomDivisor -= 0.5D;
+			if (zoomDivisor > OkZoomerConfig.minimumZoomDivisor.getValue()) {
+				zoomDivisor -= 0.5D;
+				zoomHasHappened = true;
+			} else {
+				zoomDivisor = OkZoomerConfig.minimumZoomDivisor.getValue();
+			}
 		}
 	}
 
 	@Override
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
-		modLogger.info("[Ok Zoomer] owo what's this");
+		modLogger.info("[Ok Zoomer Next] owo what's this");
 
 		//Load the configuration.
 		OkZoomerConfig.loadJanksonConfig();
+
+		//TODO - Hijack the C keybind through a mixin instead of an event.
+		//If "Unbind Conflicting Keybind" is true, unbind the "Save Toolbar Activator" keybind if it hasn't been changed.
+		if (OkZoomerConfig.unbindConflictingKeybind.getValue()) {
+			if (OkZoomerMod.zoomKeyBinding.isDefault()) {
+				ClientTickCallback.EVENT.register(client -> {
+					if (client.options.equals(null)) return;
+					if (!OkZoomerConfig.unbindConflictingKeybind.getValue()) return;
+					if (client.options.keySaveToolbarActivator.isDefault()) {
+						modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
+						client.options.keySaveToolbarActivator.setBoundKey(InputUtil.fromKeyCode(InputUtil.UNKNOWN_KEY.getCode(), InputUtil.UNKNOWN_KEY.getCode()));
+					}
+					//Set self to false.
+					OkZoomerConfig.unbindConflictingKeybind.setValue(false);
+					OkZoomerConfig.saveJanksonConfig();
+				});
+			}
+		}
 
 		//Register the zoom category.
 		KeyBindingRegistry.INSTANCE.addCategory("key.okzoomer.category");
@@ -108,18 +136,13 @@ public class OkZoomerMod implements ClientModInitializer {
 			//Set the previous zoom signal for the next tick.
 			previousZoomPress = zoomKeyBinding.isPressed();
 		});
-
-		//TODO - Add proper functionality for the keybinds
+		
 		ClientTickCallback.EVENT.register(e -> {
-			if (decreaseZoomKeyBinding.wasPressed()) {
-				if (zoomDivisor <= 0.5D) {
-					zoomDivisor = 0.5D;
-				} else {
-					changeZoomDivisor(false);
-				}
+			if (decreaseZoomKeyBinding.isPressed()) {
+				changeZoomDivisor(false);
 			}
 
-			if (increaseZoomKeyBinding.wasPressed()) {
+			if (increaseZoomKeyBinding.isPressed()) {
 				changeZoomDivisor(true);
 			}
 		});

@@ -7,27 +7,28 @@ import java.nio.file.Paths;
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
-import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 import io.github.fablabsmc.fablabs.impl.fiber.serialization.FiberSerialization;
 
 public class OkZoomerConfig {
 	//TODO - Organize the config in categories
+	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<String> cinematicCamera = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"));
 	public static final PropertyMirror<Double> cinematicMultiplier = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<Boolean> reduceSensitivity = PropertyMirror.create(ConfigTypes.BOOLEAN);
-	public static final PropertyMirror<Boolean> hideHands = PropertyMirror.create(ConfigTypes.BOOLEAN);
-	public static final PropertyMirror<Boolean> smoothTransition = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	public static final PropertyMirror<String> zoomTransition = PropertyMirror.create(ConfigTypes.STRING.withPattern("^off$|^smooth$|^linear$"));
 	public static final PropertyMirror<Boolean> zoomToggle = PropertyMirror.create(ConfigTypes.BOOLEAN);
-	public static final PropertyMirror<Double> zoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
-	public static final PropertyMirror<String> zoomScrolling = PropertyMirror.create(ConfigTypes.STRING);
-	public static final PropertyMirror<Integer> adjustableZoomSteps = PropertyMirror.create(ConfigTypes.INTEGER.withMinimum(1));
+	public static final PropertyMirror<Boolean> zoomScrolling = PropertyMirror.create(ConfigTypes.BOOLEAN);
+	//public static final PropertyMirror<Integer> adjustableZoomSteps = PropertyMirror.create(ConfigTypes.INTEGER.withMinimum(1));
 	public static final PropertyMirror<Double> minimumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
 	public static final PropertyMirror<Double> maximumZoomDivisor = PropertyMirror.create(ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE));
+	public static final PropertyMirror<Boolean> unbindConflictingKeybind = PropertyMirror.create(ConfigTypes.BOOLEAN);
 	
-	public static final ConfigBranch node = ConfigTree.builder()
+	public static final ConfigTree tree = ConfigTree.builder()
+		.beginValue("zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 4.0D)
+			.withComment("The divisor applied to the FOV when zooming.")
+		.finishValue(zoomDivisor::mirror)
 		.beginValue("cinematic_camera", ConfigTypes.STRING.withPattern("^off$|^vanilla$|^multiplied$"), "off")
 			.withComment("Enables the cinematic camera while zooming.\n\"off\" disables it.\n\"vanilla\" mimics Vanilla's Cinematic Camera.\n\"multiplied\" is a less-lingering variant of \"vanilla\".")
 		.finishValue(cinematicCamera::mirror)
@@ -37,38 +38,37 @@ public class OkZoomerConfig {
 		.beginValue("reduce_sensitivity", ConfigTypes.BOOLEAN, false)
 			.withComment("Reduces the mouse sensitivity when zooming.")
 		.finishValue(reduceSensitivity::mirror)
-		.beginValue("smooth_transition", ConfigTypes.BOOLEAN, false)
-			.withComment("Enables smooth transitions when zooming in and out.")
-		.finishValue(smoothTransition::mirror)
-		.beginValue("zoom_transition", ConfigTypes.STRING.withPattern("^off$|^smooth$|^linear$"), "smooth")
-			.withComment("Adds transitions between zooms.\n\"off\" disables it.\n\"smooth\" starts fast and ends slow.\n\"linear\" keeps a fixed speed.")
+		.beginValue("zoom_transition", ConfigTypes.STRING.withPattern("^off$|^smooth$"), "smooth")
+			.withComment("Adds transitions between zooms.\n\"off\" disables it.\n\"smooth\" starts fast and ends slow.")
 		.finishValue(zoomTransition::mirror)
 		.beginValue("zoom_toggle", ConfigTypes.BOOLEAN, false)
 			.withComment("Enables the ability to toggle zooming.")
 		.finishValue(zoomToggle::mirror)
-		.beginValue("zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 4.0D)
-			.withComment("The divisor applied to the FOV when zooming.")
-		.finishValue(zoomDivisor::mirror)
-		.beginValue("zoom_scrolling", ConfigTypes.STRING.withPattern("^off$|^by_step$|^by_divisor$"), "by_step")
-			.withComment("Allows to increase or decrease zoom by scrolling.\n\"off\" disables it.\n\"by_step\" uses a set number of steps between the default and the maximum.\n\"by_divisor\" rounds the divisor and increments it arbitrarily.")
+		.beginValue("zoom_scrolling", ConfigTypes.BOOLEAN, true)
+			.withComment("Allows to increase or decrease zoom by scrolling. Not polished yet.")
 		.finishValue(zoomScrolling::mirror)
+		/*
 		.beginValue("adjustable_zoom_steps", ConfigTypes.INTEGER, 1)
 			.withComment("The steps between the default and the maximum zoom divisor.")
 		.finishValue(adjustableZoomSteps::mirror)
-		.beginValue("minimum_zoom_divisor", ConfigTypes.DOUBLE, 1.0D)
+		*/
+		.beginValue("minimum_zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 1.0D)
 			.withComment("The minimum value that you can scroll down.")
 		.finishValue(minimumZoomDivisor::mirror)
-		.beginValue("maximum_zoom_divisor", ConfigTypes.DOUBLE, 50.0D)
+		.beginValue("maximum_zoom_divisor", ConfigTypes.DOUBLE.withMinimum(Double.MIN_VALUE), 50.0D)
 			.withComment("The maximum value that you can scroll up.")
 		.finishValue(maximumZoomDivisor::mirror)
+		.beginValue("unbind_conflicting_keybind", ConfigTypes.BOOLEAN, true)
+			.withComment("Unbinds the \"Save Hotbar Activator\" keybind, which is binded to C by default.\nOnce it's unbinded/ignored, this config value is set to false.")
+		.finishValue(unbindConflictingKeybind::mirror)
 		.build();
 
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
 	public static void loadJanksonConfig() {
-		if (Files.exists(Paths.get("./config/okzoomer.json5"))) {
+		if (Files.exists(Paths.get("./config/okzoomer-next.json5"))) {
 			try {
-				FiberSerialization.deserialize(node, Files.newInputStream(Paths.get("./config/okzoomer.json5")), serializer);
+				FiberSerialization.deserialize(tree, Files.newInputStream(Paths.get("./config/okzoomer-next.json5")), serializer);
 			} catch (IOException | FiberException e) {
 				e.printStackTrace();
 			}
@@ -79,7 +79,7 @@ public class OkZoomerConfig {
 
 	public static void saveJanksonConfig() {
 		try {
-			FiberSerialization.serialize(node, Files.newOutputStream(Paths.get("./config/okzoomer.json5")), serializer);
+			FiberSerialization.serialize(tree, Files.newOutputStream(Paths.get("./config/okzoomer-next.json5")), serializer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
