@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.config;
+package io.github.joaoh1.okzoomer.client.config;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.mixin;
+package io.github.joaoh1.okzoomer.client.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.joaoh1.okzoomer.OkZoomerMod;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
@@ -27,8 +27,8 @@ public class GameRendererMixin {
 	private void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
 
-		if (OkZoomerMod.isZoomKeyPressed) {
-			zoomMultiplier /= OkZoomerMod.zoomDivisor;
+		if (ZoomUtils.isZoomKeyPressed) {
+			zoomMultiplier /= ZoomUtils.zoomDivisor;
 		}
 
 		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
@@ -56,14 +56,14 @@ public class GameRendererMixin {
 			}
 		} else {
 			//Handle the zoom without smooth transitions.
-			if (OkZoomerMod.isZoomKeyPressed) {
-				double zoomedFov = fov / OkZoomerMod.zoomDivisor;
+			if (ZoomUtils.isZoomKeyPressed) {
+				double zoomedFov = fov / ZoomUtils.zoomDivisor;
 				info.setReturnValue(zoomedFov);
 			}
 		}
 
 		//Regardless of the mode, if the zoom is over, update the terrain in order to stop terrain glitches.
-		if (OkZoomerMod.zoomHasHappened) {
+		if (ZoomUtils.zoomHasHappened) {
 			if (changingFov) {
 				this.client.worldRenderer.scheduleTerrainUpdate();
 			}

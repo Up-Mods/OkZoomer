@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.config;
+package io.github.joaoh1.okzoomer.client.config;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
