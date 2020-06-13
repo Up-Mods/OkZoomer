@@ -7,12 +7,14 @@ import org.apache.logging.log4j.Logger;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
-import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.text.LiteralText;
 
 //TODO - Split the zoom management from the keybind management.
 //This class is responsible for the management of the zoom divisor and of the keybinds.
@@ -21,19 +23,16 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	protected static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer Next");
 	
 	//The zoom keybinding, which will be registered.
-	public static final FabricKeyBinding zoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "zoom"), InputUtil.Type.KEYSYM, ZoomUtils.getDefaultZoomKey(), "key.okzoomer.category")
-		.build();
+	public static final KeyBinding zoomKeyBinding = KeyBindingHelper.registerKeyBinding(
+		new KeyBinding("key.okzoomer.zoom", InputUtil.Type.KEYSYM, ZoomUtils.getDefaultZoomKey(), "key.okzoomer.category"));
 
 	//The "Decrease Zoom" keybinding.
-	public static final FabricKeyBinding decreaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "decrease_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category")
-		.build();
+	public static final KeyBinding decreaseZoomKeyBinding = KeyBindingHelper.registerKeyBinding(
+		new KeyBinding("key.okzoomer.decrease_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
 
 	//The "Increase Zoom" keybinding.
-	public static final FabricKeyBinding increaseZoomKeyBinding = FabricKeyBinding.Builder
-		.create(new Identifier("okzoomer", "increase_zoom"), InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category")
-		.build();
+	public static final KeyBinding increaseZoomKeyBinding = KeyBindingHelper.registerKeyBinding(
+		new KeyBinding("key.okzoomer.increase_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
 
 	//Used internally in order to make zoom toggling possible.
 	private static boolean previousZoomPress = false;
@@ -42,20 +41,16 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0"};
-		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(10)] + " what's this");
-
-		//Register the zoom category.
-		KeyBindingRegistry.INSTANCE.addCategory("key.okzoomer.category");
-		//Register the zoom keybinding.
-		KeyBindingRegistry.INSTANCE.register(zoomKeyBinding);
-		//Register the "Decrease Zoom" keybinding.
-		KeyBindingRegistry.INSTANCE.register(decreaseZoomKeyBinding);
-		//Register the "Increase Zoom" keybinding.
-		KeyBindingRegistry.INSTANCE.register(increaseZoomKeyBinding);
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*"};
+		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//This event is responsible for managing the zoom signal.
 		ClientTickCallback.EVENT.register(e -> {
+			//If zoom is disabled, do not allow for zooming at all.
+			if (ZoomUtils.isZoomDisabled) {
+				return;
+			}
+
 			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
 			if (zoomKeyBinding.isPressed() == previousZoomPress) {
 				return;
@@ -93,5 +88,19 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				ZoomUtils.changeZoomDivisor(true);
 			}
 		});
+
+		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
+            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
+				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), true);
+				System.out.println("it worked!");
+			})
+		);
+
+		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOMING_PACKET_ID,
+            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
+				packetContext.getPlayer().sendMessage(new LiteralText(":crab: ok zoomer is gone :crab:"), true);
+				ZoomUtils.isZoomDisabled = true;
+			})
+		);
 	}
 }

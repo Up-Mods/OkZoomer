@@ -49,7 +49,10 @@ public class MinecraftClientMixin {
 				if (ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
 					if (this.options.keySaveToolbarActivator.isDefault()) {
 						modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
-						this.options.keySaveToolbarActivator.setBoundKey(InputUtil.fromKeyCode(InputUtil.UNKNOWN_KEY.getCode(), InputUtil.UNKNOWN_KEY.getCode()));
+						this.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+						//Save and load the options, or else the zoom key won't work.
+						this.options.write();
+						this.options.load();
 					}
 				}
 			}

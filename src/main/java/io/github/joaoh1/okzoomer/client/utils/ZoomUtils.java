@@ -30,8 +30,16 @@ public class ZoomUtils {
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
 	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
 
-    //
+	//Used in order to allow the server to disable the client's zoom.
+	public static boolean isZoomDisabled = false;
+
+    //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static void changeZoomDivisor(boolean increase) {
+		//If the zoom is disabled, don't allow for zoom scrolling
+		if (isZoomDisabled) {
+			return;
+		}
+
 		if (increase) {
 			if (zoomDivisor < OkZoomerConfig.maximumZoomDivisor.getValue()) {
 				zoomDivisor += 0.5D;

@@ -7,10 +7,10 @@ import java.nio.file.Paths;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
+import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
-import io.github.fablabsmc.fablabs.impl.fiber.serialization.FiberSerialization;
 
 public class OkZoomerConfig {
 	public static final Path okZoomerConfigPath = Paths.get("./config/okzoomer-next.json5");

@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "io.github.joaoh1.okzoomer.client.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"client": [
+		"GameRendererMixin",
+		"MinecraftClientMixin",
+		"MouseMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
