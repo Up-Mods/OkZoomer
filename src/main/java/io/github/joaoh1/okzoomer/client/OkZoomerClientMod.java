@@ -41,7 +41,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*"};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~"};
 		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//This event is responsible for managing the zoom signal.
@@ -89,6 +89,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			}
 		});
 
+		/*
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), true);
@@ -102,5 +103,6 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				ZoomUtils.isZoomDisabled = true;
 			})
 		);
+		*/
 	}
 }

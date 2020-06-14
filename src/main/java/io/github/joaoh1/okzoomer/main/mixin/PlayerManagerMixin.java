@@ -17,8 +17,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class PlayerManagerMixin {
 	@Inject(at = @At("RETURN"), method = "onPlayerConnect")
 	private void sendModeInfo(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
-		PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
-		ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOMING_PACKET_ID, passedData);
-		System.out.println("henlo");
+		if (player.world.random.nextBoolean()) {
+			PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOMING_PACKET_ID, passedData);
+		}
 	}
 }
