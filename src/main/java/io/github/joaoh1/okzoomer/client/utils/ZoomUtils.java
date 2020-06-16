@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class ZoomUtils {
@@ -28,7 +29,7 @@ public class ZoomUtils {
 	public static boolean zoomHasHappened = false;
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
-	public static double zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+	public static double zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
 
 	//Used in order to allow the server to disable the client's zoom.
 	public static boolean isZoomDisabled = false;

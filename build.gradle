@@ -34,9 +34,11 @@ dependencies {
 	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
 	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
+	modImplementation "me.shedaniel.cloth:fiber2cloth:${project.fiber2cloth_version}"
 	
 	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
     include "me.zeroeightsix:fiber:${project.fiber_version}"
+	include "me.shedaniel.cloth:fiber2cloth:${project.fiber2cloth_version}"
 }
 
 processResources {

@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
@@ -16,7 +17,6 @@ import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 
-//TODO - Split the zoom management from the keybind management.
 //This class is responsible for the management of the zoom divisor and of the keybinds.
 public class OkZoomerClientMod implements ClientModInitializer {
 	//The logger, used here to owo, because why not?
@@ -59,12 +59,12 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			if (!OkZoomerConfig.zoomToggle.getValue()) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				ZoomUtils.isZoomKeyPressed = zoomKeyBinding.isPressed();
-				ZoomUtils.zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
 			} else {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					ZoomUtils.isZoomKeyPressed = !ZoomUtils.isZoomKeyPressed;
-					ZoomUtils.zoomDivisor = OkZoomerConfig.zoomDivisor.getValue();
+					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
 				}
 			}
 
@@ -88,8 +88,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				ZoomUtils.changeZoomDivisor(true);
 			}
 		});
-
-		/*
+		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), true);
@@ -103,6 +102,5 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				ZoomUtils.isZoomDisabled = true;
 			})
 		);
-		*/
 	}
 }
