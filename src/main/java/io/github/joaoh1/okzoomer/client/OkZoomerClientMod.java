@@ -58,7 +58,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				return;
 			}
 
-			if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.TOGGLE) || OkZoomerConfigPojo.zoomMode.equals(ZoomModes.PERSISTENT)) {
+			if (!OkZoomerConfigPojo.zoomMode.equals(ZoomModes.HOLD)) {
 				if (!persistentZoomEnabled) {
 					persistentZoomEnabled = true;
 					previousZoomPress = true;
