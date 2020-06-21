@@ -4,8 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import io.github.joaoh1.okzoomer.client.OkZoomerClientMod;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomModes;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class ZoomUtils {
@@ -42,17 +44,17 @@ public class ZoomUtils {
 		}
 
 		if (increase) {
-			if (zoomDivisor < OkZoomerConfig.maximumZoomDivisor.getValue()) {
+			if (zoomDivisor < OkZoomerConfigPojo.maximumZoomDivisor) {
 				zoomDivisor += 0.5D;
 			} else {
-				zoomDivisor = OkZoomerConfig.maximumZoomDivisor.getValue();
+				zoomDivisor = OkZoomerConfigPojo.maximumZoomDivisor;
 			}
 		} else {
-			if (zoomDivisor > OkZoomerConfig.minimumZoomDivisor.getValue()) {
+			if (zoomDivisor > OkZoomerConfigPojo.minimumZoomDivisor) {
 				zoomDivisor -= 0.5D;
 				zoomHasHappened = true;
 			} else {
-				zoomDivisor = OkZoomerConfig.minimumZoomDivisor.getValue();
+				zoomDivisor = OkZoomerConfigPojo.minimumZoomDivisor;
 			}
 		}
 	}

@@ -5,8 +5,8 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,8 +34,15 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public static final KeyBinding increaseZoomKeyBinding = KeyBindingHelper.registerKeyBinding(
 		new KeyBinding("key.okzoomer.increase_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
 
+	//The "Reset Zoom" keybinding.
+	public static final KeyBinding resetZoomKeyBinding = KeyBindingHelper.registerKeyBinding(
+		new KeyBinding("key.okzoomer.reset_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
+
 	//Used internally in order to make zoom toggling possible.
 	private static boolean previousZoomPress = false;
+
+	//Used internally in order to make persistent zoom less buggy.
+	private static boolean persistentZoomEnabled = false;
 
 	@Override
 	public void onInitializeClient() {
@@ -51,21 +58,37 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				return;
 			}
 
+			if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.TOGGLE) || OkZoomerConfigPojo.zoomMode.equals(ZoomModes.PERSISTENT)) {
+				if (!persistentZoomEnabled) {
+					persistentZoomEnabled = true;
+					previousZoomPress = true;
+					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+				}
+			} else {
+				if (persistentZoomEnabled) {
+					persistentZoomEnabled = false;
+					previousZoomPress = true;
+				}
+			}
+
 			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
 			if (zoomKeyBinding.isPressed() == previousZoomPress) {
 				return;
 			}
 
-			if (!OkZoomerConfig.zoomToggle.getValue()) {
+			if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.HOLD)) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				ZoomUtils.isZoomKeyPressed = zoomKeyBinding.isPressed();
 				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
-			} else {
+			} else if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.TOGGLE)) {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					ZoomUtils.isZoomKeyPressed = !ZoomUtils.isZoomKeyPressed;
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
 				}
+			} else if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.PERSISTENT)) {
+				//If persistent zoom is enabled, just keep the zoom on.
+				ZoomUtils.isZoomKeyPressed = true;
 			}
 
 			//Manage the post-zoom signal.
@@ -87,18 +110,22 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			if (increaseZoomKeyBinding.isPressed()) {
 				ZoomUtils.changeZoomDivisor(true);
 			}
+
+			if (resetZoomKeyBinding.isPressed()) {
+				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+			}
 		});
 		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), true);
+				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), false);
 				System.out.println("it worked!");
 			})
 		);
 
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOMING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText(":crab: ok zoomer is gone :crab:"), true);
+				packetContext.getPlayer().sendMessage(new LiteralText("Ok Zoomer has been disabled by this server."), false);
 				ZoomUtils.isZoomDisabled = true;
 			})
 		);

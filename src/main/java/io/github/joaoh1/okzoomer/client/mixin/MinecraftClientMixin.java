@@ -44,7 +44,7 @@ public class MinecraftClientMixin {
 	@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/client/RunArgs;)V")
 	public void hijackCKeybind(RunArgs args, CallbackInfo info) {
 		//If the configuration didn't exist before, unbind the "Save Toolbar Activator" keybind if there's a conflict.
-		if (!Files.exists(OkZoomerConfig.okZoomerConfigPath)) {
+		if (!Files.exists(OkZoomerConfig.configPath)) {
 			if (OkZoomerClientMod.zoomKeyBinding.isDefault()) {
 				if (ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
 					if (this.options.keySaveToolbarActivator.isDefault()) {
@@ -58,6 +58,6 @@ public class MinecraftClientMixin {
 			}
 		}
 		//Load the configuration.
-		OkZoomerConfig.loadJanksonConfig();
+		OkZoomerConfig.loadModConfig();
 	}
 }

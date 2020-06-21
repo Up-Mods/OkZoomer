@@ -6,8 +6,8 @@ import net.minecraft.client.gui.screen.Screen;
 
 public class OkZoomerConfigScreen {
     public static Screen getConfigScreen(Screen parentScreen) {
-		return Fiber2Cloth.create(parentScreen, "okzoomer", (ConfigBranch)OkZoomerNewConfig.tree, "config.okzoomer.title").setSaveRunnable(() -> {
-			OkZoomerNewConfig.saveJanksonConfig();
+		return Fiber2Cloth.create(parentScreen, "okzoomer", (ConfigBranch)OkZoomerConfig.tree, "config.okzoomer.title").setSaveRunnable(() -> {
+			OkZoomerConfig.saveModConfig();
 		}).build().getScreen();
     }
 }

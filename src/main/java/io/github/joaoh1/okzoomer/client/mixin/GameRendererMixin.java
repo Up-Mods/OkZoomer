@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomTransitionOptions;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
@@ -38,7 +39,7 @@ public class GameRendererMixin {
 	//If smooth transitions are enabled, update the zoom multiplier on each tick.
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	private void zoomFovMultiplierTick(CallbackInfo info) {
-		if (OkZoomerConfig.zoomTransition.getValue().equals("smooth")) {
+		if (OkZoomerConfigPojo.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			this.updateZoomFovMultiplier();
 		}
 	}
@@ -48,7 +49,7 @@ public class GameRendererMixin {
 	private double getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
 		double fov = info.getReturnValueD();
 
-		if (OkZoomerConfig.zoomTransition.getValue().equals("smooth")) {
+		if (OkZoomerConfigPojo.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			//Handle the zoom with smooth transitions enabled.
 			if (this.zoomFovMultiplier != 1.0F) {
 				fov *= (double)MathHelper.lerp(tickDelta, this.lastZoomFovMultiplier, this.zoomFovMultiplier);

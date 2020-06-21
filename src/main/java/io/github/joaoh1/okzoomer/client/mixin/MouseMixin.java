@@ -8,7 +8,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.client.OkZoomerClientMod;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.CinematicCameraOptions;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -50,8 +53,8 @@ public class MouseMixin {
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
 	private double applyReduceSensitivity(double g) {
 		double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
-		if (OkZoomerConfig.reduceSensitivity.getValue()) {
-			if (ZoomUtils.isZoomKeyPressed) {
+		if (OkZoomerConfigPojo.reduceSensitivity == true) {
+			if (ZoomUtils.isZoomKeyPressed == true) {
 				modifiedMouseSensitivity /= ZoomUtils.zoomDivisor;
 			}
 		}
@@ -68,20 +71,20 @@ public class MouseMixin {
 
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
-		if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && ZoomUtils.isZoomKeyPressed) {
-			if (OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
+		if (!OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.isZoomKeyPressed) {
+			if (OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
 				if (this.client.options.smoothCameraEnabled) {
 					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
 					this.cursorXZoomSmoother.clear();
 				} else {
 					l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
 				}
-			} else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
+			} else if (OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
 				if (this.client.options.smoothCameraEnabled) {
 					this.cursorXSmoother.smooth(-(this.cursorDeltaX * this.adjustedG), -(this.extractedE * this.adjustedG));
-					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfig.cinematicMultiplier.getValue());
+					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.cinematicMultiplier);
 				} else {
-					l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfig.cinematicMultiplier.getValue());
+					l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.cinematicMultiplier);
 				}
 			}
 		} else {
@@ -92,20 +95,20 @@ public class MouseMixin {
 	
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
-		if (!OkZoomerConfig.cinematicCamera.getValue().equals("off") && ZoomUtils.isZoomKeyPressed) {
-			if (OkZoomerConfig.cinematicCamera.getValue().equals("vanilla")) {
-				if (this.client.options.smoothCameraEnabled) {
+		if (!OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.isZoomKeyPressed) {
+			if (OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
+				if (this.client.options.smoothCameraEnabled == true) {
 					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
 					this.cursorYZoomSmoother.clear();
 				} else {
 					m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
 				}
-			} else if (OkZoomerConfig.cinematicCamera.getValue().equals("multiplied")) {
-				if (this.client.options.smoothCameraEnabled) {
+			} else if (OkZoomerConfigPojo.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
+				if (this.client.options.smoothCameraEnabled == true) {
 					this.cursorYSmoother.smooth(-(this.cursorDeltaY * this.adjustedG), -(this.extractedE * this.adjustedG));
-					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfig.cinematicMultiplier.getValue());
+					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.cinematicMultiplier);
 				} else {
-					m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfig.cinematicMultiplier.getValue());
+					m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.cinematicMultiplier);
 				}
 			}
 		} else {
@@ -116,8 +119,12 @@ public class MouseMixin {
 
 @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
-		if (OkZoomerConfig.zoomScrolling.getValue()) {
-			if (ZoomUtils.isZoomKeyPressed) {
+		if (OkZoomerConfigPojo.zoomScrolling == true) {
+			if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.PERSISTENT)) {
+				if (OkZoomerClientMod.zoomKeyBinding.isPressed() == false) return;
+			}
+
+			if (ZoomUtils.isZoomKeyPressed == true) {
 				if (this.eventDeltaWheel != 0.0) {
 					if (this.eventDeltaWheel > 0.0) {
 						ZoomUtils.changeZoomDivisor(true);
