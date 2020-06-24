@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomModes;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
@@ -58,11 +58,11 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				return;
 			}
 
-			if (!OkZoomerConfigPojo.zoomMode.equals(ZoomModes.HOLD)) {
+			if (!OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
 				if (!persistentZoomEnabled) {
 					persistentZoomEnabled = true;
 					previousZoomPress = true;
-					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 				}
 			} else {
 				if (persistentZoomEnabled) {
@@ -76,17 +76,17 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				return;
 			}
 
-			if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.HOLD)) {
+			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
 				ZoomUtils.isZoomKeyPressed = zoomKeyBinding.isPressed();
-				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
-			} else if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.TOGGLE)) {
+				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.TOGGLE)) {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					ZoomUtils.isZoomKeyPressed = !ZoomUtils.isZoomKeyPressed;
-					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 				}
-			} else if (OkZoomerConfigPojo.zoomMode.equals(ZoomModes.PERSISTENT)) {
+			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 				//If persistent zoom is enabled, just keep the zoom on.
 				ZoomUtils.isZoomKeyPressed = true;
 			}
@@ -112,7 +112,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			}
 
 			if (resetZoomKeyBinding.isPressed()) {
-				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 			}
 		});
 		

@@ -11,8 +11,6 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
-import me.shedaniel.fiber2cloth.api.ClothAttributes;
-import me.shedaniel.fiber2cloth.api.Fiber2Cloth;
 import net.minecraft.util.Identifier;
 
 public class OkZoomerConfig {
@@ -20,11 +18,9 @@ public class OkZoomerConfig {
 	
 	private static final OkZoomerConfigPojo pojo = new OkZoomerConfigPojo();
 	public static final ConfigTree tree = ConfigTree.builder()
-		.withAttribute(ClothAttributes.defaultBackground(new Identifier("minecraft:textures/block/yellow_concrete.png")))
 		.applyFromPojo(pojo,
 			AnnotatedSettings.builder()
 				.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
-				.apply(Fiber2Cloth::configure)
 				.build())
 		.build();
 	

@@ -4,10 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import io.github.joaoh1.okzoomer.client.OkZoomerClientMod;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.ZoomModes;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class ZoomUtils {
@@ -31,7 +28,7 @@ public class ZoomUtils {
 	public static boolean zoomHasHappened = false;
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
-	public static double zoomDivisor = OkZoomerConfigPojo.zoomDivisor;
+	public static double zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 
 	//Used in order to allow the server to disable the client's zoom.
 	public static boolean isZoomDisabled = false;
@@ -44,17 +41,17 @@ public class ZoomUtils {
 		}
 
 		if (increase) {
-			if (zoomDivisor < OkZoomerConfigPojo.maximumZoomDivisor) {
+			if (zoomDivisor < OkZoomerConfigPojo.values.maximumZoomDivisor) {
 				zoomDivisor += 0.5D;
 			} else {
-				zoomDivisor = OkZoomerConfigPojo.maximumZoomDivisor;
+				zoomDivisor = OkZoomerConfigPojo.values.maximumZoomDivisor;
 			}
 		} else {
-			if (zoomDivisor > OkZoomerConfigPojo.minimumZoomDivisor) {
+			if (zoomDivisor > OkZoomerConfigPojo.values.minimumZoomDivisor) {
 				zoomDivisor -= 0.5D;
 				zoomHasHappened = true;
 			} else {
-				zoomDivisor = OkZoomerConfigPojo.minimumZoomDivisor;
+				zoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
 			}
 		}
 	}
