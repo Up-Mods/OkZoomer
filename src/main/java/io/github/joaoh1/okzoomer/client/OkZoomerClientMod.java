@@ -48,7 +48,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~"};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "<>w<>"};
 		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//This event is responsible for managing the zoom signal.
