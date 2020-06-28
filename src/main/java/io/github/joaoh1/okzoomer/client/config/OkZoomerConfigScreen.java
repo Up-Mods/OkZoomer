@@ -1,19 +1,19 @@
 package io.github.joaoh1.okzoomer.client.config;
 
-import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigBranch;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import me.shedaniel.clothconfig2.gui.entries.EnumListEntry;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 
 public class OkZoomerConfigScreen {
     public static Screen getConfigScreen(Screen parentScreen) {
 		ConfigBuilder builder = ConfigBuilder.create()
-        	.setParentScreen(parentScreen)
+			.setParentScreen(parentScreen)
+			.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/yellow_concrete.png"))
 			.setTitle(new TranslatableText("config.okzoomer.title"));
 		
 		builder.setSavingRunnable(() -> {
@@ -41,7 +41,11 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
-		ConfigCategory values = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.values"));
+		ConfigCategory values = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.values"))
+			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_concrete_powder.png"));
+		
+		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
+			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
 		
 		return builder.build();
     }

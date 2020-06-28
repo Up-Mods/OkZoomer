@@ -1,17 +1,21 @@
 package io.github.joaoh1.okzoomer.client;
 
+import java.nio.file.Files;
 import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -39,70 +43,90 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		new KeyBinding("key.okzoomer.reset_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
 
 	//Used internally in order to make zoom toggling possible.
-	private static boolean previousZoomPress = false;
+	private static boolean lastZoomPress = false;
 
 	//Used internally in order to make persistent zoom less buggy.
-	private static boolean persistentZoomEnabled = false;
+	private static boolean persistentZoom = false;
 
 	@Override
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "<>w<>"};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "<>w<>"};
 		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
+		//Handle the hijacking of the "Save Toolbar Activator" keybind's key.
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			//If the configuration didn't exist before, unbind the "Save Toolbar Activator" keybind if there's a conflict.
+			if (!Files.exists(OkZoomerConfig.configPath)) {
+				if (OkZoomerClientMod.zoomKeyBinding.isDefault()) {
+					if (ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
+						if (client.options.keySaveToolbarActivator.isDefault()) {
+							modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
+							client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+							//Save and load the options, or else the zoom key won't work.
+							client.options.write();
+							client.options.load();
+						}
+					}
+				}
+				//Create a new config file.
+				OkZoomerConfig.loadModConfig();
+			}
+		});
+
 		//This event is responsible for managing the zoom signal.
-		ClientTickCallback.EVENT.register(e -> {
+		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			//If zoom is disabled, do not allow for zooming at all.
-			if (ZoomUtils.isZoomDisabled) {
+			if (ZoomUtils.disableZoom) {
 				return;
 			}
 
 			if (!OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
-				if (!persistentZoomEnabled) {
-					persistentZoomEnabled = true;
-					previousZoomPress = true;
+				if (!persistentZoom) {
+					persistentZoom = true;
+					lastZoomPress = true;
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 				}
 			} else {
-				if (persistentZoomEnabled) {
-					persistentZoomEnabled = false;
-					previousZoomPress = true;
+				if (persistentZoom) {
+					persistentZoom = false;
+					lastZoomPress = true;
 				}
 			}
 
 			//If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
-			if (zoomKeyBinding.isPressed() == previousZoomPress) {
+			if (zoomKeyBinding.isPressed() == lastZoomPress) {
 				return;
 			}
 
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
 				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
-				ZoomUtils.isZoomKeyPressed = zoomKeyBinding.isPressed();
+				ZoomUtils.zoomState = zoomKeyBinding.isPressed();
 				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.TOGGLE)) {
 				//If zoom toggling is enabled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
-					ZoomUtils.isZoomKeyPressed = !ZoomUtils.isZoomKeyPressed;
+					ZoomUtils.zoomState = !ZoomUtils.zoomState;
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 				}
 			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 				//If persistent zoom is enabled, just keep the zoom on.
-				ZoomUtils.isZoomKeyPressed = true;
+				ZoomUtils.zoomState = true;
 			}
 
 			//Manage the post-zoom signal.
-			if (!ZoomUtils.isZoomKeyPressed && previousZoomPress) {
-				ZoomUtils.zoomHasHappened = true;
+			if (!ZoomUtils.zoomState && lastZoomPress) {
+				ZoomUtils.lastZoomState = true;
 			} else {
-				ZoomUtils.zoomHasHappened = false;
+				ZoomUtils.lastZoomState = false;
 			}
 
 			//Set the previous zoom signal for the next tick.
-			previousZoomPress = zoomKeyBinding.isPressed();
+			lastZoomPress = zoomKeyBinding.isPressed();
 		});
 		
-		ClientTickCallback.EVENT.register(e -> {
+		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			if (decreaseZoomKeyBinding.isPressed()) {
 				ZoomUtils.changeZoomDivisor(false);
 			}
@@ -119,14 +143,14 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), false);
-				System.out.println("it worked!");
+				ZoomUtils.optifineMode = true;
 			})
 		);
 
-		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOMING_PACKET_ID,
+		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				packetContext.getPlayer().sendMessage(new LiteralText("Ok Zoomer has been disabled by this server."), false);
-				ZoomUtils.isZoomDisabled = true;
+				ZoomUtils.disableZoom = true;
 			})
 		);
 	}

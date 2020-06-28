@@ -19,7 +19,7 @@ public class PlayerManagerMixin {
 	private void sendModeInfo(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
 		if (player.world.random.nextBoolean()) {
 			PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
-			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOMING_PACKET_ID, passedData);
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOM_PACKET_ID, passedData);
 		}
 	}
 }

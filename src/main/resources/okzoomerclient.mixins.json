@@ -4,7 +4,6 @@
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"GameRendererMixin",
-		"MinecraftClientMixin",
 		"MouseMixin"
 	],
 	"injectors": {

@@ -11,7 +11,6 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
-import net.minecraft.util.Identifier;
 
 public class OkZoomerConfig {
 	public static final Path configPath = Paths.get("./config/ok-zoomer-next.json5");

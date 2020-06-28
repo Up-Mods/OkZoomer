@@ -22,21 +22,27 @@ public class ZoomUtils {
     }
     
     //The zoom signal, which is managed in an event and used by other mixins.
-	public static boolean isZoomKeyPressed = false;
+	public static boolean zoomState = false;
 
 	//Used for post-zoom actions like updating the terrain.
-	public static boolean zoomHasHappened = false;
+	public static boolean lastZoomState = false;
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
 	public static double zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 
 	//Used in order to allow the server to disable the client's zoom.
-	public static boolean isZoomDisabled = false;
+	public static boolean disableZoom = false;
+
+	//Used in order to allow the server to disable the client's zoom scrolling.
+	public static boolean disableZoomScrolling = false;
+
+	//Used in order to allow the server to force the zoom to behave like OptiFine's.
+	public static boolean optifineMode = false;
 
     //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
-		if (isZoomDisabled) {
+		if (disableZoom || disableZoomScrolling) {
 			return;
 		}
 
@@ -49,7 +55,7 @@ public class ZoomUtils {
 		} else {
 			if (zoomDivisor > OkZoomerConfigPojo.values.minimumZoomDivisor) {
 				zoomDivisor -= 0.5D;
-				zoomHasHappened = true;
+				lastZoomState = true;
 			} else {
 				zoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
 			}

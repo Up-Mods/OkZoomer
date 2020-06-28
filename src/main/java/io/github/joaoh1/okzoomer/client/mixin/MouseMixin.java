@@ -54,7 +54,7 @@ public class MouseMixin {
 	private double applyReduceSensitivity(double g) {
 		double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
 		if (OkZoomerConfigPojo.features.reduceSensitivity == true) {
-			if (ZoomUtils.isZoomKeyPressed == true) {
+			if (ZoomUtils.zoomState == true) {
 				modifiedMouseSensitivity /= ZoomUtils.zoomDivisor;
 			}
 		}
@@ -71,7 +71,7 @@ public class MouseMixin {
 
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
-		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.isZoomKeyPressed) {
+		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.zoomState) {
 			if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
 				if (this.client.options.smoothCameraEnabled) {
 					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
@@ -95,7 +95,7 @@ public class MouseMixin {
 	
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
-		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.isZoomKeyPressed) {
+		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.zoomState) {
 			if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
 				if (this.client.options.smoothCameraEnabled == true) {
 					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
@@ -119,12 +119,12 @@ public class MouseMixin {
 
 @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
-		if (OkZoomerConfigPojo.features.zoomScrolling == true) {
+		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 				if (OkZoomerClientMod.zoomKeyBinding.isPressed() == false) return;
 			}
 
-			if (ZoomUtils.isZoomKeyPressed == true) {
+			if (ZoomUtils.zoomState == true) {
 				if (this.eventDeltaWheel != 0.0) {
 					if (this.eventDeltaWheel > 0.0) {
 						ZoomUtils.changeZoomDivisor(true);

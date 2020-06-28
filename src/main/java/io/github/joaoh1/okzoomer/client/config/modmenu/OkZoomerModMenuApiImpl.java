@@ -10,11 +10,6 @@ import net.fabricmc.api.EnvType;
 @Environment(EnvType.CLIENT)
 public class OkZoomerModMenuApiImpl implements ModMenuApi {
 	@Override
-	public String getModId() {
-		return "okzoomer";
-	}
-
-	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> OkZoomerConfigScreen.getConfigScreen(MinecraftClient.getInstance().currentScreen);
 	}

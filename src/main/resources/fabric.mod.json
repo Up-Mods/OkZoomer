@@ -18,7 +18,8 @@
     "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuApiImpl"]
   },
   "mixins": [
-    "okzoomerclient.mixins.json"
+    "okzoomerclient.mixins.json",
+    "okzoomerserver.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.0",

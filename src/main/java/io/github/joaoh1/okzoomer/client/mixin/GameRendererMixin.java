@@ -28,7 +28,7 @@ public class GameRendererMixin {
 	private void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
 
-		if (ZoomUtils.isZoomKeyPressed) {
+		if (ZoomUtils.zoomState) {
 			zoomMultiplier /= ZoomUtils.zoomDivisor;
 		}
 
@@ -57,14 +57,14 @@ public class GameRendererMixin {
 			}
 		} else {
 			//Handle the zoom without smooth transitions.
-			if (ZoomUtils.isZoomKeyPressed) {
+			if (ZoomUtils.zoomState) {
 				double zoomedFov = fov / ZoomUtils.zoomDivisor;
 				info.setReturnValue(zoomedFov);
 			}
 		}
 
 		//Regardless of the mode, if the zoom is over, update the terrain in order to stop terrain glitches.
-		if (ZoomUtils.zoomHasHappened) {
+		if (ZoomUtils.lastZoomState) {
 			if (changingFov) {
 				this.client.worldRenderer.scheduleTerrainUpdate();
 			}
