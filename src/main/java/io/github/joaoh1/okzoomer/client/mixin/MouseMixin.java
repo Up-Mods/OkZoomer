@@ -1,5 +1,6 @@
 package io.github.joaoh1.okzoomer.client.mixin;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,9 +22,10 @@ import net.minecraft.client.util.SmoothUtil;
 //This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
+	@Final
 	@Shadow
-	private final MinecraftClient client;
-
+	private MinecraftClient client;
+	
 	@Shadow
 	private final SmoothUtil cursorXSmoother = new SmoothUtil();
 	
@@ -44,10 +46,6 @@ public class MouseMixin {
 
 	private double extractedE;
 	private double adjustedG;
-
-	public MouseMixin(MinecraftClient client) {
-		this.client = client;
-	}
 	
 	//This mixin handles the "Reduce Sensitivity" option.
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
@@ -116,8 +114,8 @@ public class MouseMixin {
 		}
 		return m;
 	}
-
-@Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
+	
+	@Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {

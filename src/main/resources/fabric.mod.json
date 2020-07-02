@@ -15,7 +15,7 @@
   "environment": "client",
   "entrypoints": {
     "client": ["io.github.joaoh1.okzoomer.client.OkZoomerClientMod"],
-    "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuApiImpl"]
+    "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [
     "okzoomerclient.mixins.json",
@@ -23,7 +23,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.8.0",
-    "fabric": ">=0.12.0",
+    "fabric": ">=0.14.0",
     "fiber": ">=0.23.0-"
   },
   "recommends": {

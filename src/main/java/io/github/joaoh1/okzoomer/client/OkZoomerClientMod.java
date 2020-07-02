@@ -52,27 +52,25 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "<>w<>"};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>"};
 		modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//Handle the hijacking of the "Save Toolbar Activator" keybind's key.
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			//If the configuration didn't exist before, unbind the "Save Toolbar Activator" keybind if there's a conflict.
 			if (!Files.exists(OkZoomerConfig.configPath)) {
-				if (OkZoomerClientMod.zoomKeyBinding.isDefault()) {
-					if (ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
-						if (client.options.keySaveToolbarActivator.isDefault()) {
-							modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
-							client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
-							//Save and load the options, or else the zoom key won't work.
-							client.options.write();
-							client.options.load();
-						}
+				if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
+					if (client.options.keySaveToolbarActivator.isDefault()) {
+						modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
+						client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+						client.options.write();
+						KeyBinding.updateKeysByCode();
 					}
 				}
-				//Create a new config file.
-				OkZoomerConfig.loadModConfig();
 			}
+
+			//Load the config file, create new one if not found.
+			OkZoomerConfig.loadModConfig();
 		});
 
 		//This event is responsible for managing the zoom signal.
@@ -82,6 +80,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				return;
 			}
 
+			//Handle zoom mode changes.
 			if (!OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
 				if (!persistentZoom) {
 					persistentZoom = true;
@@ -101,11 +100,11 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			}
 
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
-				//If zoom toggling is disabled, then the zoom signal is determined by if the key is pressed or not.
+				//If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not.
 				ZoomUtils.zoomState = zoomKeyBinding.isPressed();
 				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
 			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.TOGGLE)) {
-				//If zoom toggling is enabled, toggle the zoom signal instead.
+				//If the zoom needs to be toggled, toggle the zoom signal instead.
 				if (zoomKeyBinding.isPressed()) {
 					ZoomUtils.zoomState = !ZoomUtils.zoomState;
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
@@ -127,6 +126,10 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		});
 		
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
+			if (ZoomUtils.disableZoomScrolling) {
+				return;
+			};
+
 			if (decreaseZoomKeyBinding.isPressed()) {
 				ZoomUtils.changeZoomDivisor(false);
 			}
@@ -142,14 +145,14 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText(":crab: boomer mode is on :crab:"), false);
+				packetContext.getPlayer().sendMessage(new LiteralText("[Ok Zoomer] The zoom has been forced to behave like OptiFine's zoom by this server."), false);
 				ZoomUtils.optifineMode = true;
 			})
 		);
-
+		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText("Ok Zoomer has been disabled by this server."), false);
+				packetContext.getPlayer().sendMessage(new LiteralText("[Ok Zoomer] The zoom has been disabled by this server."), false);
 				ZoomUtils.disableZoom = true;
 			})
 		);

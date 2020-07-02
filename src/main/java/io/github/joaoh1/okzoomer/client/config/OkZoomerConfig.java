@@ -15,12 +15,12 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 public class OkZoomerConfig {
 	public static final Path configPath = Paths.get("./config/ok-zoomer-next.json5");
 	
+	private static final AnnotatedSettings annotatedSettings = AnnotatedSettings.builder()
+		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
+		.build();
 	private static final OkZoomerConfigPojo pojo = new OkZoomerConfigPojo();
 	public static final ConfigTree tree = ConfigTree.builder()
-		.applyFromPojo(pojo,
-			AnnotatedSettings.builder()
-				.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
-				.build())
+		.applyFromPojo(pojo, annotatedSettings)
 		.build();
 	
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
@@ -28,6 +28,7 @@ public class OkZoomerConfig {
 	public static void loadModConfig() {
 		if (Files.exists(configPath)) {
 			try {
+				annotatedSettings.applyToNode(tree, pojo);
 				FiberSerialization.deserialize(tree, Files.newInputStream(configPath), serializer);
 			} catch (IOException | FiberException e) {
 				e.printStackTrace();
@@ -39,8 +40,9 @@ public class OkZoomerConfig {
 
 	public static void saveModConfig() {
 		try {
+			annotatedSettings.applyToNode(tree, pojo);
 			FiberSerialization.serialize(tree, Files.newOutputStream(configPath), serializer);
-		} catch (IOException e) {
+		} catch (IOException | FiberException e) {
 			e.printStackTrace();
 		}
 	}

@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
     //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.
@@ -29,6 +31,10 @@ public class ZoomUtils {
 
 	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
 	public static double zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+
+	//The zoom FOV multipliers. Used by the GameRenderer mixin.
+	public static float zoomFovMultiplier = 1.0F;
+	public static float lastZoomFovMultiplier = 1.0F;
 
 	//Used in order to allow the server to disable the client's zoom.
 	public static boolean disableZoom = false;
@@ -59,6 +65,23 @@ public class ZoomUtils {
 			} else {
 				zoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
 			}
+		}
+	}
+
+	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by smooth transitions.
+	public static void updateZoomFovMultiplier() {
+		float zoomMultiplier = 1.0F;
+
+		if (ZoomUtils.zoomState) {
+			zoomMultiplier /= ZoomUtils.zoomDivisor;
+		}
+
+		lastZoomFovMultiplier = zoomFovMultiplier;
+		
+		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
+			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * 0.75F;
+		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SINE)) {
+			zoomFovMultiplier += Math.sin(zoomMultiplier - zoomFovMultiplier);
 		}
 	}
 }

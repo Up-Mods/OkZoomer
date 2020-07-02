@@ -1,6 +1,8 @@
 package io.github.joaoh1.okzoomer.client.config;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -15,10 +17,6 @@ public class OkZoomerConfigScreen {
 			.setParentScreen(parentScreen)
 			.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/yellow_concrete.png"))
 			.setTitle(new TranslatableText("config.okzoomer.title"));
-		
-		builder.setSavingRunnable(() -> {
-			OkZoomerConfig.saveModConfig();
-		});
 
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
@@ -39,13 +37,138 @@ public class OkZoomerConfigScreen {
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.features.cinematicCamera = (CinematicCameraOptions) value;
 			})
+			.setTooltip(new TranslatableText("config.okzoomer.cinematic_camera.tooltip"))
+			.build());
+		
+		features.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.reduce_sensitivity"), OkZoomerConfigPojo.features.reduceSensitivity)
+			.setDefaultValue(true)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.reduceSensitivity = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.reduce_sensitivity.tooltip"))
+			.build());
+		
+		features.addEntry(entryBuilder.startSelector(new TranslatableText("config.okzoomer.zoom_transition"), ZoomTransitionOptions.values(), OkZoomerConfigPojo.features.zoomTransition)
+			.setDefaultValue(ZoomTransitionOptions.SMOOTH)
+			.setNameProvider(value -> {
+				if (value.equals(ZoomTransitionOptions.OFF)) {
+					return new TranslatableText("config.okzoomer.zoom_transition.off");
+				} else if (value.equals(ZoomTransitionOptions.SMOOTH)) {
+					return new TranslatableText("config.okzoomer.zoom_transition.smooth");
+				} else if (value.equals(ZoomTransitionOptions.SINE)) {
+					return new TranslatableText("config.okzoomer.zoom_transition.sine");
+				}
+				return new LiteralText("Error");
+			})
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.zoomTransition = (ZoomTransitionOptions) value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.zoom_transition.tooltip"))
+			.build());
+		
+			features.addEntry(entryBuilder.startSelector(new TranslatableText("config.okzoomer.zoom_mode"), ZoomModes.values(), OkZoomerConfigPojo.features.zoomMode)
+			.setDefaultValue(ZoomModes.HOLD)
+			.setNameProvider(value -> {
+				if (value.equals(ZoomModes.HOLD)) {
+					return new TranslatableText("config.okzoomer.zoom_mode.hold");
+				} else if (value.equals(ZoomModes.TOGGLE)) {
+					return new TranslatableText("config.okzoomer.zoom_mode.toggle");
+				} else if (value.equals(ZoomModes.PERSISTENT)) {
+					return new TranslatableText("config.okzoomer.zoom_mode.persistent");
+				}
+				return new LiteralText("Error");
+			})
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.zoomMode = (ZoomModes) value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.zoom_mode.tooltip"))
+			.build());
+		
+		features.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.zoom_scrolling"), OkZoomerConfigPojo.features.zoomScrolling)
+			.setDefaultValue(true)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.zoomScrolling = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.zoom_scrolling.tooltip"))
 			.build());
 		
 		ConfigCategory values = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.values"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_concrete_powder.png"));
+
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.zoom_divisor"), OkZoomerConfigPojo.values.zoomDivisor)
+			.setDefaultValue(4.0D)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.zoomDivisor = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.zoom_divisor.tooltip"))
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.minimum_zoom_divisor"), OkZoomerConfigPojo.values.minimumZoomDivisor)
+			.setDefaultValue(1.0D)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.minimumZoomDivisor = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.minimum_zoom_divisor.tooltip"))
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.maximum_zoom_divisor"), OkZoomerConfigPojo.values.maximumZoomDivisor)
+			.setDefaultValue(50.0D)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.maximumZoomDivisor = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"))
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.cinematic_multiplier"), OkZoomerConfigPojo.values.cinematicMultiplier)
+			.setDefaultValue(4.0D)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.cinematicMultiplier = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.cinematic_multiplier.tooltip"))
+			.build());
 		
 		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
+
+		String[] presetArray = new String[]{"None", "Default", "Classic"};
+		presets.addEntry(entryBuilder.startSelector(new TranslatableText("config.okzoomer.reset_to_preset"), presetArray, presetArray[0])
+			.setSaveConsumer(value -> {
+				if (value.equals("Default")) {
+					value = presetArray[0];
+					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
+					OkZoomerConfigPojo.features.reduceSensitivity = true;
+					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
+					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
+					OkZoomerConfigPojo.features.zoomScrolling = true;
+					OkZoomerConfigPojo.values.zoomDivisor = 4.0D;
+					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0D;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0D;
+					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0D;
+				} else if (value.equals("Classic")) {
+					value = presetArray[0];
+					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
+					OkZoomerConfigPojo.features.reduceSensitivity = false;
+					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.OFF;
+					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
+					OkZoomerConfigPojo.features.zoomScrolling = false;
+					OkZoomerConfigPojo.values.zoomDivisor = 4.0D;
+				}
+			})
+			.setNameProvider(value -> {
+				if (value.equals("None")) {
+					return new TranslatableText("config.okzoomer.reset_to_preset.none");
+				} else if (value.equals("Default")) {
+					return new TranslatableText("config.okzoomer.reset_to_preset.default");
+				} else if (value.equals("Classic")) {
+					return new TranslatableText("config.okzoomer.reset_to_preset.classic");
+				}
+				return new LiteralText("Error");
+			})
+			.build());
+
+		builder.setSavingRunnable(() -> {
+			OkZoomerConfig.saveModConfig();
+		});
 		
 		return builder.build();
     }

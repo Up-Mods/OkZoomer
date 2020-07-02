@@ -1,5 +1,6 @@
 package io.github.joaoh1.okzoomer.client.mixin;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,29 +19,15 @@ import net.minecraft.util.math.MathHelper;
 //This mixin is responsible for managing the fov-changing part of the zoom.
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
+	@Final
 	@Shadow
-	private final MinecraftClient client = MinecraftClient.getInstance();
-
-	private float zoomFovMultiplier;
-	private float lastZoomFovMultiplier;
-
-	//The equivalent of updateFovMultiplier but for zooming. Used by smooth transitions.
-	private void updateZoomFovMultiplier() {
-		float zoomMultiplier = 1.0F;
-
-		if (ZoomUtils.zoomState) {
-			zoomMultiplier /= ZoomUtils.zoomDivisor;
-		}
-
-		this.lastZoomFovMultiplier = this.zoomFovMultiplier;
-		this.zoomFovMultiplier += (zoomMultiplier - this.zoomFovMultiplier) * 0.75F;
-	}
+	private MinecraftClient client;
 
 	//If smooth transitions are enabled, update the zoom multiplier on each tick.
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	private void zoomFovMultiplierTick(CallbackInfo info) {
-		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			this.updateZoomFovMultiplier();
+		if (!OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.OFF)) {
+			ZoomUtils.updateZoomFovMultiplier();
 		}
 	}
 	
@@ -49,10 +36,10 @@ public class GameRendererMixin {
 	private double getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
 		double fov = info.getReturnValueD();
 
-		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
+		if (!OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.OFF)) {
 			//Handle the zoom with smooth transitions enabled.
-			if (this.zoomFovMultiplier != 1.0F) {
-				fov *= (double)MathHelper.lerp(tickDelta, this.lastZoomFovMultiplier, this.zoomFovMultiplier);
+			if (ZoomUtils.zoomFovMultiplier != 1.0F) {
+				fov *= MathHelper.lerp(tickDelta, ZoomUtils.lastZoomFovMultiplier, ZoomUtils.zoomFovMultiplier);
 				info.setReturnValue(fov);
 			}
 		} else {
