@@ -96,7 +96,7 @@ public class OkZoomerConfigScreen {
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_concrete_powder.png"));
 
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.zoom_divisor"), OkZoomerConfigPojo.values.zoomDivisor)
-			.setDefaultValue(4.0D)
+			.setDefaultValue(4.0)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.zoomDivisor = value;
 			})
@@ -104,7 +104,7 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.minimum_zoom_divisor"), OkZoomerConfigPojo.values.minimumZoomDivisor)
-			.setDefaultValue(1.0D)
+			.setDefaultValue(1.0)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.minimumZoomDivisor = value;
 			})
@@ -112,7 +112,7 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.maximum_zoom_divisor"), OkZoomerConfigPojo.values.maximumZoomDivisor)
-			.setDefaultValue(50.0D)
+			.setDefaultValue(50.0)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.maximumZoomDivisor = value;
 			})
@@ -120,7 +120,7 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.cinematic_multiplier"), OkZoomerConfigPojo.values.cinematicMultiplier)
-			.setDefaultValue(4.0D)
+			.setDefaultValue(4.0)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.cinematicMultiplier = value;
 			})
@@ -140,10 +140,10 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = true;
-					OkZoomerConfigPojo.values.zoomDivisor = 4.0D;
-					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0D;
-					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0D;
-					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0D;
+					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
+					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 				} else if (value.equals("Classic")) {
 					value = presetArray[0];
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
@@ -151,7 +151,10 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.OFF;
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = false;
-					OkZoomerConfigPojo.values.zoomDivisor = 4.0D;
+					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
+					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 				}
 			})
 			.setNameProvider(value -> {

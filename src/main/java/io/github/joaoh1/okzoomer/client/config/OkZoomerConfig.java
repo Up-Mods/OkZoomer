@@ -3,7 +3,6 @@ package io.github.joaoh1.okzoomer.client.config;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.SettingNamingConvention;
@@ -11,9 +10,10 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class OkZoomerConfig {
-	public static final Path configPath = Paths.get("./config/ok-zoomer-next.json5");
+	public static final Path configPath = FabricLoader.getInstance().getConfigDirectory().toPath().resolve("ok-zoomer-next.json5");
 	
 	private static final AnnotatedSettings annotatedSettings = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)

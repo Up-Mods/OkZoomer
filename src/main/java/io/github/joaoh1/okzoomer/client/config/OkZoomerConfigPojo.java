@@ -49,10 +49,6 @@ public class OkZoomerConfigPojo {
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The divisor applied to the FOV when zooming.")
 		public double zoomDivisor = 4.0;
-	
-		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
-		@Setting(comment = "The multiplier used on the multiplied cinematic camera.")
-		public double cinematicMultiplier = 4.0;
 
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The minimum value that you can scroll down.")
@@ -61,5 +57,9 @@ public class OkZoomerConfigPojo {
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The maximum value that you can scroll up.")
 		public double maximumZoomDivisor = 50.0;
+
+		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
+		@Setting(comment = "The multiplier used on the multiplied cinematic camera.")
+		public double cinematicMultiplier = 4.0;
 	}
 }

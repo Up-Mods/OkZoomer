@@ -7,7 +7,6 @@ import org.lwjgl.glfw.GLFW;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
     //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.

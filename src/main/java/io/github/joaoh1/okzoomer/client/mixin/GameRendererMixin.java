@@ -34,7 +34,7 @@ public class GameRendererMixin {
 	//Handles zooming of both modes (Transitionless and with Smooth Transitions).
 	@Inject(at = @At("RETURN"), method = "getFov(Lnet/minecraft/client/render/Camera;FZ)D", cancellable = true)
 	private double getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
-		double fov = info.getReturnValueD();
+		double fov = info.getReturnValue();
 
 		if (!OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.OFF)) {
 			//Handle the zoom with smooth transitions enabled.
