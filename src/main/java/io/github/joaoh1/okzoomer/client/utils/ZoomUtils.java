@@ -67,7 +67,7 @@ public class ZoomUtils {
 		}
 	}
 
-	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by smooth transitions.
+	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by zoom transitions.
 	public static void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
 
@@ -78,7 +78,7 @@ public class ZoomUtils {
 		lastZoomFovMultiplier = zoomFovMultiplier;
 		
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * 0.75F;
+			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SINE)) {
 			zoomFovMultiplier += Math.sin(zoomMultiplier - zoomFovMultiplier);
 		}

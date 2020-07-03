@@ -3,7 +3,7 @@
   "id": "okzoomer",
   "version": "${version}",
   "name": "Ok Zoomer",
-  "description": "The next generation of Ok Zoomer, currently semi-unstable! This mod adds a highly configurable zoom button. By default, it provides its own take on zooming, however, with the mod's config, you can drastically change the zoom with something more familiar or useful.",
+  "description": "The next generation of Ok Zoomer, currently in alpha stages! This mod adds a highly configurable zoom button. By default, it provides its own take on zooming, however, with the mod's config, you can drastically change the zoom with something more familiar or useful.",
   "authors": ["joaoh1"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
@@ -18,11 +18,10 @@
     "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [
-    "okzoomerclient.mixins.json",
-    "okzoomerserver.mixins.json"
+    "okzoomerclient.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.8.0",
+    "fabricloader": ">=0.8.8",
     "fabric": ">=0.14.0",
     "fiber": ">=0.23.0-"
   },

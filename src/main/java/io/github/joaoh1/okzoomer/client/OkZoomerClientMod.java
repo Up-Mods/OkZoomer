@@ -30,6 +30,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public static final KeyBinding zoomKeyBinding = KeyBindingHelper.registerKeyBinding(
 		new KeyBinding("key.okzoomer.zoom", InputUtil.Type.KEYSYM, ZoomUtils.getDefaultZoomKey(), "key.okzoomer.category"));
 
+	//TODO - Allow for the zoom manipulation keybinds to be disabled by the user.
 	//The "Decrease Zoom" keybinding.
 	public static final KeyBinding decreaseZoomKeyBinding = KeyBindingHelper.registerKeyBinding(
 		new KeyBinding("key.okzoomer.decrease_zoom", InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
@@ -143,12 +144,14 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			}
 		});
 		
+		/*
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				packetContext.getPlayer().sendMessage(new LiteralText("[Ok Zoomer] The zoom has been forced to behave like OptiFine's zoom by this server."), false);
 				ZoomUtils.optifineMode = true;
 			})
 		);
+		*/
 		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {

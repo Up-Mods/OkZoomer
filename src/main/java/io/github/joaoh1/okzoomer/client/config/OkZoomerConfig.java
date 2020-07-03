@@ -13,7 +13,7 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class OkZoomerConfig {
-	public static final Path configPath = FabricLoader.getInstance().getConfigDirectory().toPath().resolve("ok-zoomer-next.json5");
+	public static final Path configPath = FabricLoader.getInstance().getConfigDirectory().toPath().resolve("okzoomer-next.json5");
 	
 	private static final AnnotatedSettings annotatedSettings = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)

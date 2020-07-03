@@ -8,7 +8,7 @@ public class OkZoomerConfigPojo {
 	public static FeaturesGroup features = new FeaturesGroup();
 
 	public static class FeaturesGroup {
-		@Setting(comment = "Enables the cinematic camera while zooming.\n\"OFF\" disables it.\n\"VANILLA\" mimics Vanilla's Cinematic Camera.\n\"MULTIPLIED\" is a multiplied variant of \"VANILLA\".")
+		@Setting(comment = "Defines the cinematic camera while zooming.\n\"OFF\" disables the cinematic camera.\n\"VANILLA\" uses Vanilla's cinematic camera.\n\"MULTIPLIED\" is a multiplied variant of \"VANILLA\".")
 		public CinematicCameraOptions cinematicCamera = CinematicCameraOptions.OFF;
 	
 		public enum CinematicCameraOptions {
@@ -20,7 +20,7 @@ public class OkZoomerConfigPojo {
 		@Setting(comment = "Reduces the mouse sensitivity when zooming.")
 		public boolean reduceSensitivity = true;
 	
-		@Setting(comment = "Adds transitions between zooms.\n\"OFF\" disables it.\n\"SMOOTH\" replicates Vanilla's dynamic FOV.\n\"SINE\" applies the zoom through a sine function.")
+		@Setting(comment = "Adds transitions between zooms.\n\"OFF\" disables transitions.\n\"SMOOTH\" replicates Vanilla's dynamic FOV.\n\"SINE\" applies the transition with a sine function.")
 		public ZoomTransitionOptions zoomTransition = ZoomTransitionOptions.SMOOTH;
 	
 		public enum ZoomTransitionOptions {
@@ -29,7 +29,7 @@ public class OkZoomerConfigPojo {
 			SINE
 		}
 	
-		@Setting(comment = "The behavior of the zoom key.\n\"HOLD\" needs the zoom key to be hold.\n\"TOGGLE\" has the zoom key toggle the zoom.\n\"PERSISTENT\" always zooms, with the zoom key only being used for zoom scrolling.")
+		@Setting(comment = "The behavior of the zoom key.\n\"HOLD\" needs the zoom key to be hold.\n\"TOGGLE\" has the zoom key toggle the zoom.\n\"PERSISTENT\" makes the zoom permanent.")
 		public ZoomModes zoomMode = ZoomModes.HOLD;
 	
 		public enum ZoomModes {
@@ -38,7 +38,7 @@ public class OkZoomerConfigPojo {
 			PERSISTENT
 		}
 	
-		@Setting(comment = "Allows to increase or decrease zoom by scrolling.")
+		@Setting(comment = "Allows to increase or decrease zoom by scrolling.\nThe functionality might not be final.")
 		public boolean zoomScrolling = true;
 	}
 
@@ -59,7 +59,11 @@ public class OkZoomerConfigPojo {
 		public double maximumZoomDivisor = 50.0;
 
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
-		@Setting(comment = "The multiplier used on the multiplied cinematic camera.")
+		@Setting(comment = "The multiplier used for the multiplied cinematic camera.")
 		public double cinematicMultiplier = 4.0;
+
+		@Setting.Constrain.Range(min = Double.MIN_NORMAL, max = 1.0)
+		@Setting(comment = "The multiplier used for smooth transitions.")
+		public double smoothMultiplier = 0.75;
 	}
 }
