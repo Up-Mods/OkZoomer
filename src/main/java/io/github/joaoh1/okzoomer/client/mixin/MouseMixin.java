@@ -51,13 +51,13 @@ public class MouseMixin {
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
 	private double applyReduceSensitivity(double g) {
 		double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
-		if (OkZoomerConfigPojo.features.reduceSensitivity == true) {
-			if (ZoomUtils.zoomState == true) {
+		if (OkZoomerConfigPojo.features.reduceSensitivity) {
+			if (ZoomUtils.zoomState) {
 				modifiedMouseSensitivity /= ZoomUtils.zoomDivisor;
 			}
 		}
-		double appliedMouseSensitivity = modifiedMouseSensitivity * 0.6000000238418579D + 0.20000000298023224D;
-		g = appliedMouseSensitivity * appliedMouseSensitivity * appliedMouseSensitivity * 8.0D;
+		double appliedMouseSensitivity = modifiedMouseSensitivity * 0.6 + 0.2;
+		g = appliedMouseSensitivity * appliedMouseSensitivity * appliedMouseSensitivity * 8.0;
 		this.adjustedG = g;
 		return g;
 	}
@@ -69,49 +69,43 @@ public class MouseMixin {
 
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
-		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.zoomState) {
-			if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
+		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
+			if (ZoomUtils.zoomState) {
 				if (this.client.options.smoothCameraEnabled) {
 					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
 					this.cursorXZoomSmoother.clear();
 				} else {
 					l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG));
 				}
-			} else if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
-				if (this.client.options.smoothCameraEnabled) {
-					this.cursorXSmoother.smooth(-(this.cursorDeltaX * this.adjustedG), -(this.extractedE * this.adjustedG));
-					l = this.cursorXSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.values.cinematicMultiplier);
-				} else {
-					l = this.cursorXZoomSmoother.smooth(this.cursorDeltaX * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.values.cinematicMultiplier);
+				if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
+					l *= OkZoomerConfigPojo.values.cinematicMultiplier;
 				}
+			} else {
+				this.cursorXZoomSmoother.clear();
 			}
-		} else {
-			this.cursorXZoomSmoother.clear();
 		}
+		
 		return l;
 	}
 	
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
-		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF) && ZoomUtils.zoomState) {
-			if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.VANILLA)) {
-				if (this.client.options.smoothCameraEnabled == true) {
+		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
+			if (ZoomUtils.zoomState) {
+				if (this.client.options.smoothCameraEnabled) {
 					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
 					this.cursorYZoomSmoother.clear();
 				} else {
 					m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG));
 				}
-			} else if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
-				if (this.client.options.smoothCameraEnabled == true) {
-					this.cursorYSmoother.smooth(-(this.cursorDeltaY * this.adjustedG), -(this.extractedE * this.adjustedG));
-					m = this.cursorYSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.values.cinematicMultiplier);
-				} else {
-					m = this.cursorYZoomSmoother.smooth(this.cursorDeltaY * this.adjustedG, (this.extractedE * this.adjustedG) * OkZoomerConfigPojo.values.cinematicMultiplier);
+				if (OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.MULTIPLIED)) {
+					m *= OkZoomerConfigPojo.values.cinematicMultiplier;
 				}
+			} else {
+				this.cursorYZoomSmoother.clear();
 			}
-		} else {
-			this.cursorYZoomSmoother.clear();
 		}
+		
 		return m;
 	}
 	
@@ -119,17 +113,19 @@ public class MouseMixin {
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
-				if (OkZoomerClientMod.zoomKeyBinding.isPressed() == false) return;
+				if (!OkZoomerClientMod.zoomKeyBinding.isPressed()) {
+					return;
+				}
 			}
 
-			if (ZoomUtils.zoomState == true) {
+			if (ZoomUtils.zoomState) {
 				if (this.eventDeltaWheel != 0.0) {
 					if (this.eventDeltaWheel > 0.0) {
 						ZoomUtils.changeZoomDivisor(true);
 					} else if (this.eventDeltaWheel < 0.0) {
 						ZoomUtils.changeZoomDivisor(false);
 					}
-
+					
 					info.cancel();
 				}
 			}
