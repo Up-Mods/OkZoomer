@@ -60,7 +60,7 @@ public class OkZoomerConfigPojo {
 
 		@Setting.Constrain.Range(min = 0.0)
 		@Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is above the starting point.")
-		public double scrollStep = 0.92;
+		public double scrollStep = 1.0;
 
 		@Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is below the starting point.")
 		public double lesserScrollStep = 0.5;
