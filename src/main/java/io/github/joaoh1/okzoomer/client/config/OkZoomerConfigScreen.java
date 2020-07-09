@@ -106,8 +106,7 @@ public class OkZoomerConfigScreen {
 				OkZoomerConfigPojo.features.zoomScrolling = value;
 			})
 			.setTooltip(new TranslatableText[] {
-				new TranslatableText("config.okzoomer.zoom_scrolling.tooltip"),
-				new TranslatableText("config.okzoomer.zoom_scrolling.tooltip.warning")
+				new TranslatableText("config.okzoomer.zoom_scrolling.tooltip")
 			})
 			.build());
 		

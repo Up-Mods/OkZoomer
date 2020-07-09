@@ -38,7 +38,7 @@ public class OkZoomerConfigPojo {
 			PERSISTENT
 		}
 	
-		@Setting(comment = "Allows to increase or decrease zoom by scrolling.\nThe functionality might not be final.")
+		@Setting(comment = "Allows to increase or decrease zoom by scrolling.")
 		public boolean zoomScrolling = true;
 	}
 
