@@ -56,11 +56,14 @@ public class OkZoomerConfigPojo {
 	
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The maximum value that you can scroll up.")
-		public double maximumZoomDivisor = 52.0;
+		public double maximumZoomDivisor = 50.0;
 
 		@Setting.Constrain.Range(min = 0.0)
-		@Setting(comment = "The number which is de/incremented by zoom scrolling.")
-		public double scrollStep = 0.75;
+		@Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is above the starting point.")
+		public double scrollStep = 0.92;
+
+		@Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is below the starting point.")
+		public double lesserScrollStep = 0.5;
 
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The multiplier used for the multiplied cinematic camera.")

@@ -142,12 +142,27 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.scroll_step"), OkZoomerConfigPojo.values.scrollStep)
-			.setDefaultValue(0.75)
+			.setDefaultValue(0.92)
 			.setMin(0.0)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.scrollStep = value;
 			})
-			.setTooltip(new TranslatableText("config.okzoomer.scroll_step.tooltip"))
+			.setTooltip(new TranslatableText[] {
+				new TranslatableText("config.okzoomer.scroll_step.tooltip.1"),
+				new TranslatableText("config.okzoomer.scroll_step.tooltip.2")
+			})
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.lesser_scroll_step"), OkZoomerConfigPojo.values.lesserScrollStep)
+			.setDefaultValue(0.75)
+			.setMin(0.0)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.lesserScrollStep = value;
+			})
+			.setTooltip(new TranslatableText[] {
+				new TranslatableText("config.okzoomer.scroll_step.tooltip.1"),
+				new TranslatableText("config.okzoomer.scroll_step.tooltip.2")
+			})
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.cinematic_multiplier"), OkZoomerConfigPojo.values.cinematicMultiplier)

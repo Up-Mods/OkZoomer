@@ -51,13 +51,20 @@ public class ZoomUtils {
 			return;
 		}
 
-		double changedZoomDivisor = zoomDivisor;
+		double changedZoomDivisor;
+		double lesserChangedZoomDivisor;
 
 		if (increase) {
-			changedZoomDivisor += OkZoomerConfigPojo.values.scrollStep;
+			changedZoomDivisor = zoomDivisor + OkZoomerConfigPojo.values.scrollStep;
+			lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigPojo.values.lesserScrollStep;
 		} else {
-			changedZoomDivisor -= OkZoomerConfigPojo.values.scrollStep;
+			changedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.scrollStep;
+			lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.lesserScrollStep;
 			lastZoomState = true;
+		}
+
+		if (lesserChangedZoomDivisor <= OkZoomerConfigPojo.values.zoomDivisor) {
+			changedZoomDivisor = lesserChangedZoomDivisor;
 		}
 
 		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
