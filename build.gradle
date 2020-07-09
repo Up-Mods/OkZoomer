@@ -9,11 +9,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = project.archives_base_name
 
 if (System.env.CI == "true") {
-	def branch
-	branch = System.env.GITHUB_REF
-	branch = branch.substring(branch.lastIndexOf("/")+1)
-
-	version = "${project.mod_version}.${branch}+${System.env.GITHUB_RUN_NUMBER}"
+	version = "${project.mod_version}-github.${System.env.GITHUB_RUN_NUMBER}"
 } else {
 	version = project.mod_version
 }

@@ -133,12 +133,21 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.maximum_zoom_divisor"), OkZoomerConfigPojo.values.maximumZoomDivisor)
-			.setDefaultValue(50.0)
+			.setDefaultValue(52.0)
 			.setMin(Double.MIN_VALUE)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.values.maximumZoomDivisor = value;
 			})
 			.setTooltip(new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"))
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.scroll_step"), OkZoomerConfigPojo.values.scrollStep)
+			.setDefaultValue(0.75)
+			.setMin(0.0)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.scrollStep = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.scroll_step.tooltip"))
 			.build());
 		
 		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.cinematic_multiplier"), OkZoomerConfigPojo.values.cinematicMultiplier)
@@ -174,7 +183,8 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomScrolling = true;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
-					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 52.0;
+					OkZoomerConfigPojo.values.scrollStep = 0.75;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 				} else if (value.equals("Classic")) {
@@ -185,7 +195,8 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomScrolling = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
-					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 52.0;
+					OkZoomerConfigPojo.values.scrollStep = 0.75;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 				} else if (value.equals("Persistent")) {
@@ -196,7 +207,8 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomScrolling = true;
 					OkZoomerConfigPojo.values.zoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
-					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 52.0;
+					OkZoomerConfigPojo.values.scrollStep = 0.75;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 				}

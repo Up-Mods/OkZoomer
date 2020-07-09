@@ -51,18 +51,19 @@ public class ZoomUtils {
 			return;
 		}
 
+		double changedZoomDivisor = zoomDivisor;
+
 		if (increase) {
-			if (zoomDivisor < OkZoomerConfigPojo.values.maximumZoomDivisor) {
-				zoomDivisor += 0.5D;
-			} else {
-				zoomDivisor = OkZoomerConfigPojo.values.maximumZoomDivisor;
-			}
+			changedZoomDivisor += OkZoomerConfigPojo.values.scrollStep;
 		} else {
-			if (zoomDivisor > OkZoomerConfigPojo.values.minimumZoomDivisor) {
-				zoomDivisor -= 0.5D;
-				lastZoomState = true;
-			} else {
-				zoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
+			changedZoomDivisor -= OkZoomerConfigPojo.values.scrollStep;
+			lastZoomState = true;
+		}
+
+		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
+			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
+				zoomDivisor = changedZoomDivisor;
+				System.out.println(zoomDivisor);
 			}
 		}
 	}

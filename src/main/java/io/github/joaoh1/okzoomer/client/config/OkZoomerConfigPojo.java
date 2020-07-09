@@ -4,7 +4,7 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting.Group;
 
 public class OkZoomerConfigPojo {
-	@Group()
+	@Group
 	public static FeaturesGroup features = new FeaturesGroup();
 
 	public static class FeaturesGroup {
@@ -42,7 +42,7 @@ public class OkZoomerConfigPojo {
 		public boolean zoomScrolling = true;
 	}
 
-	@Group()
+	@Group
 	public static ValuesGroup values = new ValuesGroup();
 
 	public static class ValuesGroup {
@@ -56,7 +56,11 @@ public class OkZoomerConfigPojo {
 	
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The maximum value that you can scroll up.")
-		public double maximumZoomDivisor = 50.0;
+		public double maximumZoomDivisor = 52.0;
+
+		@Setting.Constrain.Range(min = 0.0)
+		@Setting(comment = "The number which is de/incremented by zoom scrolling.")
+		public double scrollStep = 0.75;
 
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
 		@Setting(comment = "The multiplier used for the multiplied cinematic camera.")
