@@ -40,6 +40,9 @@ public class OkZoomerConfigPojo {
 	
 		@Setting(comment = "Allows to increase or decrease zoom by scrolling.")
 		public boolean zoomScrolling = true;
+
+		@Setting(comment = "Adds zoom manipulation keys along with the zoom key.")
+		public boolean extraKeybinds = true;
 	}
 
 	@Group
@@ -72,5 +75,13 @@ public class OkZoomerConfigPojo {
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL, max = 1.0)
 		@Setting(comment = "The multiplier used for smooth transitions.")
 		public double smoothMultiplier = 0.75;
+	}
+
+	@Group
+	public static TechnicalGroup technical = new TechnicalGroup();
+
+	public static class TechnicalGroup {
+		@Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound.")
+		public boolean hijackSaveToolbarActivatorKey = true;
 	}
 }

@@ -110,6 +110,18 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
+		features.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.extra_keybinds"), OkZoomerConfigPojo.features.extraKeybinds)
+			.requireRestart()
+			.setDefaultValue(true)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.extraKeybinds = value;
+			})
+			.setTooltip(new TranslatableText[] {
+				new TranslatableText("config.okzoomer.extra_keybinds.tooltip"),
+				new TranslatableText("config.okzoomer.extra_keybinds.tooltip.warning")
+			})
+			.build());
+		
 		ConfigCategory values = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.values"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_concrete_powder.png"));
 
@@ -195,6 +207,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = true;
+					OkZoomerConfigPojo.features.extraKeybinds = true;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
@@ -208,6 +221,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.OFF;
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = false;
+					OkZoomerConfigPojo.features.extraKeybinds = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 52.0;
@@ -221,6 +235,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.PERSISTENT;
 					OkZoomerConfigPojo.features.zoomScrolling = true;
+					OkZoomerConfigPojo.features.extraKeybinds = true;
 					OkZoomerConfigPojo.values.zoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
