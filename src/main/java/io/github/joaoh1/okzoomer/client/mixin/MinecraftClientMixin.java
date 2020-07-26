@@ -15,6 +15,7 @@ public class MinecraftClientMixin {
 	@Inject(at = @At("TAIL"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
 	public void resetZoomLimitations(Screen screen, CallbackInfo info) {
 		ZoomUtils.disableZoom = false;
-		ZoomUtils.optifineMode = false;
+		ZoomUtils.disableZoomScrolling = false;
+		ZoomUtils.forceClassicPreset = false;
 	}
 }

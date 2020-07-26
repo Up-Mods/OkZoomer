@@ -18,6 +18,9 @@ public class OkZoomerConfigScreen {
 			.setDefaultBackgroundTexture(new Identifier("minecraft:textures/block/yellow_concrete.png"))
 			.setTitle(new TranslatableText("config.okzoomer.title"));
 
+		builder.setGlobalized(true);
+		builder.setGlobalizedExpanded(false);
+
 		ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
 		ConfigCategory features = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.features"));

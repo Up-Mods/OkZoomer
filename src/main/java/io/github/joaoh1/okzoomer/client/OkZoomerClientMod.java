@@ -2,6 +2,8 @@ package io.github.joaoh1.okzoomer.client;
 
 import java.util.Random;
 
+import org.lwjgl.glfw.GLFW;
+
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
@@ -12,7 +14,9 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 
@@ -44,16 +48,28 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\""};
 		ZoomUtils.modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
-		//Handle the loading of the config file.
+		//Handle the loading of the config file and the hijacking of the "Save Toolbar Activator" key.
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			if (!OkZoomerConfig.isConfigLoaded) {
 				OkZoomerConfig.loadModConfig();
 			}
-			ZoomUtils.hijackSaveToolbarActivatorKey(client);
+
+			if (OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey) {
+				if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
+					if (client.options.keySaveToolbarActivator.isDefault()) {
+						ZoomUtils.modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
+						client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+						client.options.write();
+						KeyBinding.updateKeysByCode();
+					}
+				}
+				OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey = false;
+				OkZoomerConfig.saveModConfig();
+			}
 		});
 
 		//This event is responsible for managing the zoom signal.
-		ClientTickEvents.START_CLIENT_TICK.register(client -> {
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			//If zoom is disabled, do not allow for zooming at all.
 			if (ZoomUtils.disableZoom) {
 				return;
@@ -105,7 +121,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		});
 		
 		if (ZoomUtils.areExtraKeybindsEnabled()) {
-			ClientTickEvents.START_CLIENT_TICK.register(client -> {
+			ClientTickEvents.END_CLIENT_TICK.register(client -> {
 				if (ZoomUtils.disableZoomScrolling) {
 					return;
 				};
@@ -124,19 +140,27 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			});
 		}
 		
-		/*
-		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_OPTIFINE_MODE_PACKET_ID,
-            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText("[Ok Zoomer] The zoom has been forced to behave like OptiFine's zoom by this server."), false);
-				ZoomUtils.optifineMode = true;
-			})
-		);
-		*/
-		
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				packetContext.getPlayer().sendMessage(new LiteralText("[Ok Zoomer] The zoom has been disabled by this server."), false);
+				MinecraftClient client = MinecraftClient.getInstance();
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Disabled zooming")));
 				ZoomUtils.disableZoom = true;
+			})
+		);
+
+		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_SCROLLING_PACKET_ID,
+            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
+				MinecraftClient client = MinecraftClient.getInstance();
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Disabled zoom scrolling")));
+				ZoomUtils.disableZoomScrolling = true;
+			})
+		);
+
+		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_CLASSIC_PRESET_PACKET_ID,
+            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
+				MinecraftClient client = MinecraftClient.getInstance();
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Forced the Classic preset")));
+				ZoomUtils.forceClassicPreset = true;
 			})
 		);
 	}

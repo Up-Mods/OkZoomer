@@ -4,13 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import io.github.joaoh1.okzoomer.client.OkZoomerClientMod;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
@@ -70,12 +68,12 @@ public class ZoomUtils {
 	public static boolean disableZoomScrolling = false;
 
 	//Used in order to allow the server to force the zoom to behave like OptiFine's.
-	public static boolean optifineMode = false;
+	public static boolean forceClassicPreset = false;
 
     //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static final void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
-		if (disableZoom || disableZoomScrolling) {
+		if (disableZoom || disableZoomScrolling || forceClassicPreset) {
 			return;
 		}
 
@@ -117,22 +115,6 @@ public class ZoomUtils {
 			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SINE)) {
 			zoomFovMultiplier += Math.sin(zoomMultiplier - zoomFovMultiplier);
-		}
-	}
-
-	//This method is used in order to hijack the "Save Toolbar Activator" keybind's key, which is C.
-	public static final void hijackSaveToolbarActivatorKey(MinecraftClient client) {
-		if (OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey) {
-			if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
-				if (client.options.keySaveToolbarActivator.isDefault()) {
-					modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
-					client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
-					client.options.write();
-					KeyBinding.updateKeysByCode();
-				}
-			}
-			OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey = false;
-			OkZoomerConfig.saveModConfig();
 		}
 	}
 }

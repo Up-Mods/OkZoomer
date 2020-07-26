@@ -17,9 +17,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class PlayerManagerMixin {
 	@Inject(at = @At("RETURN"), method = "onPlayerConnect")
 	private void sendModeInfo(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
-		if (player.world.random.nextBoolean()) {
+		if (true) {
 			PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
-			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOM_PACKET_ID, passedData);
+			//ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOM_SCROLLING_PACKET_ID, passedData);
+			ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.FORCE_CLASSIC_PRESET_PACKET_ID, passedData);
+			//ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, OkZoomerMod.DISABLE_ZOOM_PACKET_ID, passedData);
 		}
 	}
 }
