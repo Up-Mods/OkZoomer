@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
     //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.
@@ -96,7 +97,6 @@ public class ZoomUtils {
 		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
 			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
 				zoomDivisor = changedZoomDivisor;
-				System.out.println(zoomDivisor);
 			}
 		}
 	}
@@ -104,17 +104,19 @@ public class ZoomUtils {
 	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by zoom transitions.
 	public static final void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
+		float dividedZoomMultiplier = 1.0F / (float)(ZoomUtils.zoomDivisor);
 
 		if (ZoomUtils.zoomState) {
-			zoomMultiplier /= ZoomUtils.zoomDivisor;
+			zoomMultiplier = dividedZoomMultiplier;
 		}
 
 		lastZoomFovMultiplier = zoomFovMultiplier;
 		
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
-		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SINE)) {
-			zoomFovMultiplier += Math.sin(zoomMultiplier - zoomFovMultiplier);
+		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
+			System.out.println("Zoom: " + zoomFovMultiplier + " " + zoomMultiplier + " " + dividedZoomMultiplier);
+			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, dividedZoomMultiplier);
 		}
 	}
 }

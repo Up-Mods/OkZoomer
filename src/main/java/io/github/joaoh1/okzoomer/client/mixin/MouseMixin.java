@@ -18,7 +18,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.util.SmoothUtil;
 
-//TODO - Comment this code better
 //This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
@@ -47,7 +46,7 @@ public class MouseMixin {
 	private double extractedE;
 	private double adjustedG;
 	
-	//This mixin handles the "Reduce Sensitivity" option.
+	//This mixin handles the "Reduce Sensitivity" option and extracts the g variable for the cinematic cameras.
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
 	private double applyReduceSensitivity(double g) {
 		double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
@@ -62,11 +61,13 @@ public class MouseMixin {
 		return g;
 	}
 	
+	//Extracts the e variable for the cinematic cameras.
 	@Inject(at = @At(value = "INVOKE", target = "net/minecraft/client/Mouse.isCursorLocked()Z"), method = "updateMouse()V", locals = LocalCapture.CAPTURE_FAILHARD)
 	private void obtainCinematicCameraValues(CallbackInfo info, double d, double e) {
 		this.extractedE = e;
 	}
 
+	//Applies the cinematic camera on the mouse's X.
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
 	private double applyCinematicModeX(double l) {
 		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
@@ -88,6 +89,7 @@ public class MouseMixin {
 		return l;
 	}
 	
+	//Applies the cinematic camera on the mouse's Y.
 	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
 	private double applyCinematicModeY(double m) {
 		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
@@ -109,6 +111,7 @@ public class MouseMixin {
 		return m;
 	}
 	
+	//Handles zoom scrolling.
 	@Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {

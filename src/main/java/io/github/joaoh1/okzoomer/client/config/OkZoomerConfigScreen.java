@@ -63,8 +63,8 @@ public class OkZoomerConfigScreen {
 					return new TranslatableText("config.okzoomer.zoom_transition.off");
 				} else if (value.equals(ZoomTransitionOptions.SMOOTH)) {
 					return new TranslatableText("config.okzoomer.zoom_transition.smooth");
-				} else if (value.equals(ZoomTransitionOptions.SINE)) {
-					return new TranslatableText("config.okzoomer.zoom_transition.sine");
+				} else if (value.equals(ZoomTransitionOptions.LINEAR)) {
+					return new TranslatableText("config.okzoomer.zoom_transition.linear");
 				}
 				return new LiteralText("Error");
 			})
@@ -75,7 +75,7 @@ public class OkZoomerConfigScreen {
 				new TranslatableText("config.okzoomer.zoom_transition.tooltip"),
 				new TranslatableText("config.okzoomer.zoom_transition.tooltip.off"),
 				new TranslatableText("config.okzoomer.zoom_transition.tooltip.smooth"),
-				new TranslatableText("config.okzoomer.zoom_transition.tooltip.sine")
+				new TranslatableText("config.okzoomer.zoom_transition.tooltip.linear")
 			})
 			.build());
 		

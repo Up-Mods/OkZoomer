@@ -20,13 +20,13 @@ public class OkZoomerConfigPojo {
 		@Setting(comment = "Reduces the mouse sensitivity when zooming.")
 		public boolean reduceSensitivity = true;
 	
-		@Setting(comment = "Adds transitions between zooms.\n\"OFF\" disables transitions.\n\"SMOOTH\" replicates Vanilla's dynamic FOV.\n\"SINE\" applies the transition with a sine function.")
+		@Setting(comment = "Adds transitions between zooms.\n\"OFF\" disables transitions.\n\"SMOOTH\" replicates Vanilla's dynamic FOV.\n\"LINEAR\" removes the smoothiness.")
 		public ZoomTransitionOptions zoomTransition = ZoomTransitionOptions.SMOOTH;
 	
 		public enum ZoomTransitionOptions {
 			OFF,
 			SMOOTH,
-			SINE
+			LINEAR
 		}
 	
 		@Setting(comment = "The behavior of the zoom key.\n\"HOLD\" needs the zoom key to be hold.\n\"TOGGLE\" has the zoom key toggle the zoom.\n\"PERSISTENT\" makes the zoom permanent.")

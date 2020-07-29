@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigScreen;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.main.OkZoomerMod;
@@ -18,7 +19,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 
 //This class is responsible for the management of the zoom divisor and of the keybinds.
 public class OkZoomerClientMod implements ClientModInitializer {
@@ -45,7 +46,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\""};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\"", "öwö", "ôwô", "ÖwÖ", "ÔwÔ"};
 		ZoomUtils.modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//Handle the loading of the config file and the hijacking of the "Save Toolbar Activator" key.
@@ -136,6 +137,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	
 				if (resetZoomKeyBinding.isPressed()) {
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+					client.openScreen(OkZoomerConfigScreen.getConfigScreen(client.currentScreen));
 				}
 			});
 		}
@@ -143,7 +145,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Disabled zooming")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
 				ZoomUtils.disableZoom = true;
 			})
 		);
@@ -151,17 +153,19 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_SCROLLING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Disabled zoom scrolling")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
 				ZoomUtils.disableZoomScrolling = true;
 			})
 		);
 
+		/*
 		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_CLASSIC_PRESET_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new LiteralText("Ok Zoomer"), new LiteralText("Forced the Classic preset")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
 				ZoomUtils.forceClassicPreset = true;
 			})
 		);
+		*/
 	}
 }

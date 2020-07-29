@@ -18,7 +18,7 @@
     "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [
-    "okzoomerclient.mixins.json",
+    "okzoomer.mixins.json",
     "okzoomerserver.mixins.json"
   ],
   "depends": {
