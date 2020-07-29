@@ -142,7 +142,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
 				ZoomUtils.disableZoom = true;
 			})
 		);
@@ -150,7 +150,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_SCROLLING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
 				ZoomUtils.disableZoomScrolling = true;
 			})
 		);
@@ -159,7 +159,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.FORCE_CLASSIC_PRESET_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
+				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
 				ZoomUtils.forceClassicPreset = true;
 			})
 		);

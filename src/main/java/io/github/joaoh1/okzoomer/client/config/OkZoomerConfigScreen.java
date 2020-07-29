@@ -227,7 +227,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.extraKeybinds = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
-					OkZoomerConfigPojo.values.maximumZoomDivisor = 52.0;
+					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
 					OkZoomerConfigPojo.values.scrollStep = 1.0;
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
