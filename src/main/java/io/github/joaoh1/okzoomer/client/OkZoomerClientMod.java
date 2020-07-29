@@ -6,10 +6,8 @@ import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigScreen;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
-import io.github.joaoh1.okzoomer.main.OkZoomerMod;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -137,12 +135,11 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	
 				if (resetZoomKeyBinding.isPressed()) {
 					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
-					client.openScreen(OkZoomerConfigScreen.getConfigScreen(client.currentScreen));
 				}
 			});
 		}
 		
-		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_PACKET_ID,
+		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
 				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
@@ -150,7 +147,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			})
 		);
 
-		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.DISABLE_ZOOM_SCROLLING_PACKET_ID,
+		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_SCROLLING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
 				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
@@ -159,7 +156,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		);
 
 		/*
-		ClientSidePacketRegistry.INSTANCE.register(OkZoomerMod.FORCE_CLASSIC_PRESET_PACKET_ID,
+		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.FORCE_CLASSIC_PRESET_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
 				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));

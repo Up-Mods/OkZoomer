@@ -11,11 +11,17 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
     //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.
-    public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer Next");
+	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer Next");
+	
+	//The IDs for packets that allows the server to have some control on the zoom.
+	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
+	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
+	public static final Identifier FORCE_CLASSIC_PRESET_PACKET_ID = new Identifier("okzoomer", "force_optifine_mode");
 	
 	//The method used for getting the default zoom key, which can be either C or Z.
 	public static final int getDefaultZoomKey() {
@@ -115,7 +121,6 @@ public class ZoomUtils {
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			System.out.println("Zoom: " + zoomFovMultiplier + " " + zoomMultiplier + " " + dividedZoomMultiplier);
 			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, dividedZoomMultiplier);
 		}
 	}
