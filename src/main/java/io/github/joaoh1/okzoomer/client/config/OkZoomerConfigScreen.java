@@ -83,9 +83,9 @@ public class OkZoomerConfigScreen {
 			.setDefaultValue(ZoomModes.HOLD)
 			.setNameProvider(value -> {
 				if (value.equals(ZoomModes.HOLD)) {
-					return new TranslatableText("config.okzoomer.zoom_mode.hold");
+					return new TranslatableText("options.key.hold");
 				} else if (value.equals(ZoomModes.TOGGLE)) {
-					return new TranslatableText("config.okzoomer.zoom_mode.toggle");
+					return new TranslatableText("options.key.toggle");
 				} else if (value.equals(ZoomModes.PERSISTENT)) {
 					return new TranslatableText("config.okzoomer.zoom_mode.persistent");
 				}
