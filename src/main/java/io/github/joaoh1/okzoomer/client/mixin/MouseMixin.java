@@ -47,7 +47,11 @@ public class MouseMixin {
 	private double adjustedG;
 	
 	//This mixin handles the "Reduce Sensitivity" option and extracts the g variable for the cinematic cameras.
-	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2), method = "updateMouse()V", ordinal = 2)
+	@ModifyVariable(
+		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;client:Lnet/minecraft/client/MinecraftClient;", ordinal = 2),
+		method = "updateMouse()V", 
+		ordinal = 2
+	)
 	private double applyReduceSensitivity(double g) {
 		double modifiedMouseSensitivity = this.client.options.mouseSensitivity;
 		if (OkZoomerConfigPojo.features.reduceSensitivity) {
@@ -62,13 +66,21 @@ public class MouseMixin {
 	}
 	
 	//Extracts the e variable for the cinematic cameras.
-	@Inject(at = @At(value = "INVOKE", target = "net/minecraft/client/Mouse.isCursorLocked()Z"), method = "updateMouse()V", locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(
+		at = @At(value = "INVOKE", target = "net/minecraft/client/Mouse.isCursorLocked()Z"),
+		method = "updateMouse()V",
+		locals = LocalCapture.CAPTURE_FAILHARD
+	)
 	private void obtainCinematicCameraValues(CallbackInfo info, double d, double e) {
 		this.extractedE = e;
 	}
 
 	//Applies the cinematic camera on the mouse's X.
-	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 1)
+	@ModifyVariable(
+		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaX:D", ordinal = 3, shift = At.Shift.BEFORE),
+		method = "updateMouse()V",
+		ordinal = 1
+	)
 	private double applyCinematicModeX(double l) {
 		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
 			if (ZoomUtils.zoomState) {
@@ -90,7 +102,11 @@ public class MouseMixin {
 	}
 	
 	//Applies the cinematic camera on the mouse's Y.
-	@ModifyVariable(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE), method = "updateMouse()V", ordinal = 2)
+	@ModifyVariable(
+		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;cursorDeltaY:D", ordinal = 3, shift = At.Shift.BEFORE),
+		method = "updateMouse()V",
+		ordinal = 2
+	)
 	private double applyCinematicModeY(double m) {
 		if (!OkZoomerConfigPojo.features.cinematicCamera.equals(CinematicCameraOptions.OFF)) {
 			if (ZoomUtils.zoomState) {
@@ -112,7 +128,11 @@ public class MouseMixin {
 	}
 	
 	//Handles zoom scrolling.
-	@Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7), method = "onMouseScroll(JDD)V", cancellable = true)
+	@Inject(
+		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7),
+		method = "onMouseScroll(JDD)V",
+		cancellable = true
+	)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
@@ -130,6 +150,32 @@ public class MouseMixin {
 					}
 					
 					info.cancel();
+				}
+			}
+		}
+	}
+
+	//Handles the zoom scrolling reset through the middle button.
+	@Inject(
+		at = @At(value = "INVOKE", target = "net/minecraft/client/options/KeyBinding.setKeyPressed(Lnet/minecraft/client/util/InputUtil$Key;Z)V"),
+		method = "onMouseButton(JIII)V",
+		cancellable = true,
+		locals = LocalCapture.CAPTURE_FAILHARD
+	)
+	private void zoomerOnMouseButton(long window, int button, int action, int mods, CallbackInfo info, boolean bl, int i) {
+		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
+			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
+				if (!OkZoomerClientMod.zoomKeyBinding.isPressed()) {
+					return;
+				}
+			}
+	
+			if (button == 2 && bl == true) {
+				if (OkZoomerClientMod.zoomKeyBinding.isPressed()) {
+					if (OkZoomerConfigPojo.tweaks.resetZoomWithMouse) {
+						ZoomUtils.resetZoomDivisor();
+						info.cancel();
+					}
 				}
 			}
 		}

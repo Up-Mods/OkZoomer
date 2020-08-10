@@ -86,10 +86,12 @@ public class OkZoomerConfigPojo {
 	}
 
 	@Group
-	public static TechnicalGroup technical = new TechnicalGroup();
+	public static TweaksGroup tweaks = new TweaksGroup();
 
-	public static class TechnicalGroup {
-		@Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound.")
-		public boolean hijackSaveToolbarActivatorKey = true;
+	public static class TweaksGroup {
+		@Setting(comment = "Allows for resetting the zoom with the middle mouse button.")
+		public boolean resetZoomWithMouse = true; 
+		@Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
+		public boolean unbindConflictingKey = true;
 	}
 }

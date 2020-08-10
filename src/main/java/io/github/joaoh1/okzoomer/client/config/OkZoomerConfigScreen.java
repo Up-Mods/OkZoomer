@@ -3,9 +3,11 @@ package io.github.joaoh1.okzoomer.client.config;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -215,6 +217,31 @@ public class OkZoomerConfigScreen {
 			})
 			.setTooltip(new TranslatableText("config.okzoomer.maximum_linear_step.tooltip"))
 			.build());
+
+		ConfigCategory tweaks = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.tweaks"))
+			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_glazed_terracotta.png"));
+
+		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.reset_zoom_with_mouse"), OkZoomerConfigPojo.tweaks.resetZoomWithMouse)
+			.setDefaultValue(true)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.tweaks.resetZoomWithMouse = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.reset_zoom_with_mouse.tooltip"))
+			.build());
+		
+		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.unbind_conflicting_key"), OkZoomerConfigPojo.tweaks.unbindConflictingKey)
+			.setDefaultValue(false)
+			.setSaveConsumer(value -> {
+				if (value = true) {
+					MinecraftClient client = MinecraftClient.getInstance();
+					ZoomUtils.unbindConflictingKey(client, true);
+				}
+			})
+			.setTooltip(new TranslatableText[] {
+				new TranslatableText("config.okzoomer.unbind_conflicting_key.tooltip.1"),
+				new TranslatableText("config.okzoomer.unbind_conflicting_key.tooltip.2")
+			})
+			.build());
 		
 		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
@@ -237,6 +264,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 					OkZoomerConfigPojo.values.scrollStep = 0.25;
+					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
 				} else if (value.equals("Classic")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
 					OkZoomerConfigPojo.features.reduceSensitivity = false;
@@ -252,6 +280,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 					OkZoomerConfigPojo.values.scrollStep = 0.25;
+					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
 				} else if (value.equals("Persistent")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
 					OkZoomerConfigPojo.features.reduceSensitivity = true;
@@ -267,6 +296,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
 					OkZoomerConfigPojo.values.scrollStep = 0.25;
+					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
 				}
 				value = presetArray[0];
 			})

@@ -12,7 +12,10 @@ import net.minecraft.client.gui.screen.Screen;
 //TODO - Move this to Fabric API once the bikeshed is done.
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-	@Inject(at = @At("TAIL"), method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V")
+	@Inject(
+		at = @At("TAIL"),
+		method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"
+	)
 	public void resetZoomLimitations(Screen screen, CallbackInfo info) {
 		ZoomUtils.disableZoom = false;
 		ZoomUtils.disableZoomScrolling = false;

@@ -24,7 +24,10 @@ public class GameRendererMixin {
 	private MinecraftClient client;
 
 	//If smooth transitions are enabled, update the zoom multiplier on each tick.
-	@Inject(at = @At("HEAD"), method = "tick()V")
+	@Inject(
+		at = @At("HEAD"),
+		method = "tick()V"
+	)
 	private void zoomFovMultiplierTick(CallbackInfo info) {
 		if (!OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.OFF)) {
 			ZoomUtils.updateZoomFovMultiplier();
@@ -32,7 +35,11 @@ public class GameRendererMixin {
 	}
 	
 	//Handles zooming of both modes (Transitionless and with Smooth Transitions).
-	@Inject(at = @At("RETURN"), method = "getFov(Lnet/minecraft/client/render/Camera;FZ)D", cancellable = true)
+	@Inject(
+		at = @At("RETURN"),
+		method = "getFov(Lnet/minecraft/client/render/Camera;FZ)D",
+		cancellable = true
+	)
 	private double getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
 		double fov = info.getReturnValue();
 

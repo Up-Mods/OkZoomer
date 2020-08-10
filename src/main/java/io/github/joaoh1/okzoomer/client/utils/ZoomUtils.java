@@ -4,18 +4,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
+import io.github.joaoh1.okzoomer.client.OkZoomerClientMod;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
-    //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.
+    //The logger, used everywhere to print messages to the console.
 	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 	
 	//The IDs for packets that allows the server to have some control on the zoom.
@@ -47,7 +49,7 @@ public class ZoomUtils {
 	}
 	
 	//The method used to get zoom manipulation keybinds, if disabled, return null.
-	public static final KeyBinding getZoomManipulationKeybind(String translationKey) {
+	public static final KeyBinding getExtraKeybind(String translationKey) {
 		if (areExtraKeybindsEnabled()) {
 			return KeyBindingHelper.registerKeyBinding(
 				new KeyBinding(translationKey, InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
@@ -103,6 +105,27 @@ public class ZoomUtils {
 		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
 			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
 				zoomDivisor = changedZoomDivisor;
+			}
+		}
+	}
+
+	//The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak.
+	public static final void resetZoomDivisor() {
+		zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+		lastZoomState = true;
+	}
+
+	public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
+		if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
+			if (client.options.keySaveToolbarActivator.isDefault()) {
+				if (userPrompted) {
+					ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
+				} else {
+					ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
+				}
+				client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+				client.options.write();
+				KeyBinding.updateKeysByCode();
 			}
 		}
 	}

@@ -2,8 +2,6 @@ package io.github.joaoh1.okzoomer.client;
 
 import java.util.Random;
 
-import org.lwjgl.glfw.GLFW;
-
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
@@ -26,13 +24,13 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		new KeyBinding("key.okzoomer.zoom", InputUtil.Type.KEYSYM, ZoomUtils.getDefaultZoomKey(), "key.okzoomer.category"));
 	
 	//The "Decrease Zoom" keybinding.
-	public static final KeyBinding decreaseZoomKeyBinding = ZoomUtils.getZoomManipulationKeybind("key.okzoomer.decrease_zoom");
+	public static final KeyBinding decreaseZoomKeyBinding = ZoomUtils.getExtraKeybind("key.okzoomer.decrease_zoom");
 
 	//The "Increase Zoom" keybinding.
-	public static final KeyBinding increaseZoomKeyBinding = ZoomUtils.getZoomManipulationKeybind("key.okzoomer.increase_zoom");
+	public static final KeyBinding increaseZoomKeyBinding = ZoomUtils.getExtraKeybind("key.okzoomer.increase_zoom");
 
 	//The "Reset Zoom" keybinding.
-	public static final KeyBinding resetZoomKeyBinding = ZoomUtils.getZoomManipulationKeybind("key.okzoomer.reset_zoom");
+	public static final KeyBinding resetZoomKeyBinding = ZoomUtils.getExtraKeybind("key.okzoomer.reset_zoom");
 
 	//Used internally in order to make zoom toggling possible.
 	private static boolean lastZoomPress = false;
@@ -44,25 +42,19 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
-		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\"", "öwö", "ôwô", "ÖwÖ", "ÔwÔ"};
+		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\"", "öwö", "ôwô", "ÖwÖ", "ÔwÔ", ".w.", "+w+", ")w(", "]w[", "}w{"};
 		ZoomUtils.modLogger.info("[Ok Zoomer] " + owo[random.nextInt(owo.length)] + " what's this");
 
-		//Handle the loading of the config file and the hijacking of the "Save Toolbar Activator" key.
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			//Attempt to load the config if it hasn't been loaded yet, which is unlikely due to extra keybinds.
 			if (!OkZoomerConfig.isConfigLoaded) {
 				OkZoomerConfig.loadModConfig();
 			}
 
-			if (OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey) {
-				if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
-					if (client.options.keySaveToolbarActivator.isDefault()) {
-						ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
-						client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
-						client.options.write();
-						KeyBinding.updateKeysByCode();
-					}
-				}
-				OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey = false;
+			//This handles the hijacking of the "Save Toolbar Activator" key.
+			if (OkZoomerConfigPojo.tweaks.unbindConflictingKey) {
+				ZoomUtils.unbindConflictingKey(client, false);
+				OkZoomerConfigPojo.tweaks.unbindConflictingKey = false;
 				OkZoomerConfig.saveModConfig();
 			}
 		});
@@ -134,7 +126,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				}
 	
 				if (resetZoomKeyBinding.isPressed()) {
-					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+					ZoomUtils.resetZoomDivisor();
 				}
 			});
 		}
