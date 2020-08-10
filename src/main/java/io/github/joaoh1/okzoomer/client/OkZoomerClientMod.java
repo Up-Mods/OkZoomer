@@ -45,7 +45,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		//TODO - Actually do zoom stuff, remove when everything's done.
 		Random random = new Random();
 		String[] owo = new String[]{"owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO", ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*", ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~", "umu", "nmn", "own", "nwo", "ùwú", "úwù", "ñwñ", "UwU", "NwN", "ÙwÚ", "PwP", "own", "nwo", "/w/", "\\w\\", "|w|", "#w#", "<>w<>", "'w'", "\"w\"", "öwö", "ôwô", "ÖwÖ", "ÔwÔ"};
-		ZoomUtils.modLogger.info("[Ok Zoomer Next] " + owo[random.nextInt(owo.length)] + " what's this");
+		ZoomUtils.modLogger.info("[Ok Zoomer] " + owo[random.nextInt(owo.length)] + " what's this");
 
 		//Handle the loading of the config file and the hijacking of the "Save Toolbar Activator" key.
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
@@ -56,7 +56,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			if (OkZoomerConfigPojo.technical.hijackSaveToolbarActivatorKey) {
 				if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
 					if (client.options.keySaveToolbarActivator.isDefault()) {
-						ZoomUtils.modLogger.info("[Ok Zoomer Next] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
+						ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated.");
 						client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
 						client.options.write();
 						KeyBinding.updateKeysByCode();
@@ -142,7 +142,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
 				ZoomUtils.disableZoom = true;
 			})
 		);
@@ -150,7 +150,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.DISABLE_ZOOM_SCROLLING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
 				ZoomUtils.disableZoomScrolling = true;
 			})
 		);
@@ -159,7 +159,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.FORCE_CLASSIC_PRESET_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.method_29047(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
+				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
 				ZoomUtils.forceClassicPreset = true;
 			})
 		);

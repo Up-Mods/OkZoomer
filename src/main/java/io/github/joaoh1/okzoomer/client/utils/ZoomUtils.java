@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class ZoomUtils {
     //The logger, used here for letting the user know that the zoom key isn't C if Z is chosen.
-	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer Next");
+	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 	
 	//The IDs for packets that allows the server to have some control on the zoom.
 	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
@@ -27,7 +27,7 @@ public class ZoomUtils {
 	public static final int getDefaultZoomKey() {
 		//If OptiFabric (and therefore, OptiFine) is detected, use Z as the default value instead.
 		if (FabricLoader.getInstance().isModLoaded("optifabric")) {
-			modLogger.info("[Ok Zoomer Next] OptiFabric was detected! Using Z as the default key.");
+			modLogger.info("[Ok Zoomer] OptiFabric was detected! Using Z as the default key.");
 			return GLFW.GLFW_KEY_Z;
 		} else {
 			return GLFW.GLFW_KEY_C;
@@ -110,10 +110,10 @@ public class ZoomUtils {
 	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by zoom transitions.
 	public static final void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
-		float dividedZoomMultiplier = 1.0F / (float)(ZoomUtils.zoomDivisor);
+		double dividedZoomMultiplier = 1.0 / ZoomUtils.zoomDivisor;
 
 		if (ZoomUtils.zoomState) {
-			zoomMultiplier = dividedZoomMultiplier;
+			zoomMultiplier = (float)dividedZoomMultiplier;
 		}
 
 		lastZoomFovMultiplier = zoomFovMultiplier;
@@ -121,7 +121,14 @@ public class ZoomUtils {
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, dividedZoomMultiplier);
+			double linearStep = dividedZoomMultiplier;
+			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
+				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
+			}
+			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
+				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
+			}
+			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
 		}
 	}
 }

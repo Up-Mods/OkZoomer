@@ -75,6 +75,14 @@ public class OkZoomerConfigPojo {
 		@Setting.Constrain.Range(min = Double.MIN_NORMAL, max = 1.0)
 		@Setting(comment = "The multiplier used for smooth transitions.")
 		public double smoothMultiplier = 0.75;
+
+		@Setting.Constrain.Range(min = 0)
+		@Setting(comment = "The minimum value which the linear transition step can reach.")
+		public double minimumLinearStep = 0.125;
+
+		@Setting.Constrain.Range(min = Double.MIN_NORMAL)
+		@Setting(comment = "The maximum value which the linear transition step can reach.")
+		public double maximumLinearStep = 0.25;
 	}
 
 	@Group

@@ -198,6 +198,24 @@ public class OkZoomerConfigScreen {
 			.setTooltip(new TranslatableText("config.okzoomer.smooth_multiplier.tooltip"))
 			.build());
 		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.minimum_linear_step"), OkZoomerConfigPojo.values.minimumLinearStep)
+			.setDefaultValue(0.125)
+			.setMin(0)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.minimumLinearStep = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.minimum_linear_step.tooltip"))
+			.build());
+		
+		values.addEntry(entryBuilder.startDoubleField(new TranslatableText("config.okzoomer.maximum_linear_step"), OkZoomerConfigPojo.values.maximumLinearStep)
+			.setDefaultValue(0.25)
+			.setMin(Double.MIN_VALUE)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.values.maximumLinearStep = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.maximum_linear_step.tooltip"))
+			.build());
+		
 		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
 
@@ -218,6 +236,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
+					OkZoomerConfigPojo.values.scrollStep = 0.25;
 				} else if (value.equals("Classic")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
 					OkZoomerConfigPojo.features.reduceSensitivity = false;
@@ -232,6 +251,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
+					OkZoomerConfigPojo.values.scrollStep = 0.25;
 				} else if (value.equals("Persistent")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
 					OkZoomerConfigPojo.features.reduceSensitivity = true;
@@ -246,6 +266,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
+					OkZoomerConfigPojo.values.scrollStep = 0.25;
 				}
 				value = presetArray[0];
 			})
