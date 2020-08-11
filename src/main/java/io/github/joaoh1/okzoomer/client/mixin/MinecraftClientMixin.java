@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 
@@ -17,7 +17,7 @@ public class MinecraftClientMixin {
 		method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"
 	)
 	public void resetZoomLimitations(Screen screen, CallbackInfo info) {
-		ZoomUtils.disableZoom = false;
-		ZoomUtils.disableZoomScrolling = false;
+		ZoomPackets.disableZoom = false;
+		ZoomPackets.disableZoomScrolling = false;
 	}
 }

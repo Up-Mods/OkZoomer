@@ -17,6 +17,8 @@ import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.fabricmc.loader.api.FabricLoader;
 
+//The class responsible for loading and saving the config.
+//TODO - Remove backward-compatibility on the next major MC version.
 public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
@@ -38,7 +40,6 @@ public class OkZoomerConfig {
 	
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
-	//TODO - Remove backward-compatibility on the next major MC version.
 	public static void loadModConfig() {
 		//If the config file from the 4.0.0 alphas is detected, move it to okzoomer.json5
 		if (Files.exists(ALPHA_CONFIG_PATH)) {

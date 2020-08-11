@@ -18,8 +18,6 @@
 	"config.okzoomer.zoom_transition.tooltip.off": "\"关\" 禁用缩放过渡。",
 	"config.okzoomer.zoom_transition.tooltip.smooth": "\"丝滑\" 使用原版的动态视场角。",
 	"config.okzoomer.zoom_mode": "放大模式",
-	"config.okzoomer.zoom_mode.hold": "长按",
-	"config.okzoomer.zoom_mode.toggle": "切换",
 	"config.okzoomer.zoom_mode.persistent": "持续",
 	"config.okzoomer.zoom_mode.tooltip": "放大快捷键的作用",
 	"config.okzoomer.zoom_mode.tooltip.hold": "\"长按\" 需要按住放大键来放大。",
