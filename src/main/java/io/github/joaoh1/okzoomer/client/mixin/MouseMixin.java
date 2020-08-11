@@ -134,15 +134,15 @@ public class MouseMixin {
 		cancellable = true
 	)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
-		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
-			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
-				if (!OkZoomerClientMod.zoomKeyBinding.isPressed()) {
-					return;
+		if (this.eventDeltaWheel != 0.0) {
+			if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomUtils.disableZoomScrolling) {
+				if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
+					if (!OkZoomerClientMod.zoomKeyBinding.isPressed()) {
+						return;
+					}
 				}
-			}
-
-			if (ZoomUtils.zoomState) {
-				if (this.eventDeltaWheel != 0.0) {
+				
+				if (ZoomUtils.zoomState) {
 					if (this.eventDeltaWheel > 0.0) {
 						ZoomUtils.changeZoomDivisor(true);
 					} else if (this.eventDeltaWheel < 0.0) {

@@ -146,15 +146,5 @@ public class OkZoomerClientMod implements ClientModInitializer {
 				ZoomUtils.disableZoomScrolling = true;
 			})
 		);
-
-		/*
-		ClientSidePacketRegistry.INSTANCE.register(ZoomUtils.FORCE_CLASSIC_PRESET_PACKET_ID,
-            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.force_classic_preset")));
-				ZoomUtils.forceClassicPreset = true;
-			})
-		);
-		*/
 	}
 }

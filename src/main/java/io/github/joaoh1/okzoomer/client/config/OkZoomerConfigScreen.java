@@ -232,7 +232,7 @@ public class OkZoomerConfigScreen {
 		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.unbind_conflicting_key"), OkZoomerConfigPojo.tweaks.unbindConflictingKey)
 			.setDefaultValue(false)
 			.setSaveConsumer(value -> {
-				if (value = true) {
+				if (value.equals(true)) {
 					MinecraftClient client = MinecraftClient.getInstance();
 					ZoomUtils.unbindConflictingKey(client, true);
 				}
@@ -263,7 +263,8 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
-					OkZoomerConfigPojo.values.scrollStep = 0.25;
+					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
+					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
 				} else if (value.equals("Classic")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
@@ -279,8 +280,9 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
-					OkZoomerConfigPojo.values.scrollStep = 0.25;
-					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
+					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
+					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
+					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = false;
 				} else if (value.equals("Persistent")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
 					OkZoomerConfigPojo.features.reduceSensitivity = true;
@@ -295,7 +297,8 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
 					OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
 					OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
-					OkZoomerConfigPojo.values.scrollStep = 0.25;
+					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
+					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
 				}
 				value = presetArray[0];

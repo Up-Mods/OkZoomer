@@ -23,7 +23,6 @@ public class ZoomUtils {
 	//The IDs for packets that allows the server to have some control on the zoom.
 	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
 	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
-	public static final Identifier FORCE_CLASSIC_PRESET_PACKET_ID = new Identifier("okzoomer", "force_optifine_mode");
 	
 	//The method used for getting the default zoom key, which can be either C or Z.
 	public static final int getDefaultZoomKey() {
@@ -76,13 +75,10 @@ public class ZoomUtils {
 	//Used in order to allow the server to disable the client's zoom scrolling.
 	public static boolean disableZoomScrolling = false;
 
-	//Used in order to allow the server to force the zoom to behave like OptiFine's.
-	public static boolean forceClassicPreset = false;
-
     //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static final void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
-		if (disableZoom || disableZoomScrolling || forceClassicPreset) {
+		if (disableZoom || disableZoomScrolling) {
 			return;
 		}
 
@@ -115,6 +111,7 @@ public class ZoomUtils {
 		lastZoomState = true;
 	}
 
+	//The method used for unbinding the "Save Toolbar Activator"
 	public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
 		if (OkZoomerClientMod.zoomKeyBinding.isDefault() && ZoomUtils.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
 			if (client.options.keySaveToolbarActivator.isDefault()) {
@@ -126,6 +123,8 @@ public class ZoomUtils {
 				client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
 				client.options.write();
 				KeyBinding.updateKeysByCode();
+			} else {
+				ZoomUtils.modLogger.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind was found!");
 			}
 		}
 	}

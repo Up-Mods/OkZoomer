@@ -1,6 +1,7 @@
 package io.github.joaoh1.okzoomer.client.config;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -19,6 +20,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
+	public static final Path ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-next.json5");
 	private static final AnnotatedSettings ANNOTATED_SETTINGS = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
 		.build();
@@ -36,7 +38,21 @@ public class OkZoomerConfig {
 	
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
+	//TODO - Remove backward-compatibility on the next major MC version.
 	public static void loadModConfig() {
+		//If the config file from the 4.0.0 alphas is detected, move it to okzoomer.json5
+		if (Files.exists(ALPHA_CONFIG_PATH)) {
+			try {
+				ZoomUtils.modLogger.info("[Ok Zoomer] A config file from the 4.0.0 alphas was found! It will be converted to the new format then used.");
+				String content = Files.readString(ALPHA_CONFIG_PATH, Charset.defaultCharset());
+				content.replace("\"technical\": {", "\"tweaks\": {");
+				content.replace("\"hijack_save_toolbar_activator_key\": ", "\"unbind_conflicting_key\": ");
+				Files.writeString(CONFIG_PATH, content, Charset.defaultCharset());
+				Files.delete(ALPHA_CONFIG_PATH);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if (Files.exists(CONFIG_PATH)) {
 			try {
 				//If the legacy config file is detected, translate it to the new format.

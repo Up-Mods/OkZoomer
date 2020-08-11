@@ -71,7 +71,6 @@
 	"toast.okzoomer.title": "Ok Zoomer",
 	"toast.okzoomer.disable_zoom": "Disabled zooming",
 	"toast.okzoomer.disable_zoom_scrolling": "Disabled zoom scrolling",
-	"toast.okzoomer.force_classic_preset": "Forced the Classic preset",
 	"key.okzoomer.category": "Zoom",
 	"key.okzoomer.decrease_zoom": "Decrease Zoom",
 	"key.okzoomer.increase_zoom": "Increase Zoom",

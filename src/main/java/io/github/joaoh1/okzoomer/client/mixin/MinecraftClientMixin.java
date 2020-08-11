@@ -19,6 +19,5 @@ public class MinecraftClientMixin {
 	public void resetZoomLimitations(Screen screen, CallbackInfo info) {
 		ZoomUtils.disableZoom = false;
 		ZoomUtils.disableZoomScrolling = false;
-		ZoomUtils.forceClassicPreset = false;
 	}
 }

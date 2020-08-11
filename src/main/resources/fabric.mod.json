@@ -3,7 +3,7 @@
   "id": "okzoomer",
   "version": "${version}",
   "name": "Ok Zoomer",
-  "description": "The next generation of Ok Zoomer, currently in beta stages! This mod adds a highly configurable zoom button. By default, it provides its own take on zooming, however, with the mod's config, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
+  "description": "Adds a highly configurable zoom button. By default, this mod provides its own take on zooming, however, with configuration, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
   "authors": ["joaoh1"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
@@ -26,6 +26,6 @@
     "fiber": ">=0.23.0-"
   },
   "recommends": {
-    "modmenu": ">=1.12.0"
+    "modmenu": ">=1.14.6"
   }
 }
