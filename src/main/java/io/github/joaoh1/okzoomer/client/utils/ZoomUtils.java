@@ -6,7 +6,6 @@ import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.keybinds.ZoomKeybinds;
 import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
