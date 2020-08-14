@@ -20,7 +20,9 @@ import net.fabricmc.loader.api.FabricLoader;
 //TODO - Remove backward-compatibility on the next major MC version.
 public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
+	public static final Path ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-next.json5");
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
+	public static final Path LEGACY_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-legacy.json5");
 	private static final AnnotatedSettings ANNOTATED_SETTINGS = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
 		.build();
@@ -48,6 +50,7 @@ public class OkZoomerConfig {
 							ZoomUtils.modLogger.info("[Ok Zoomer] A pre-4.0.0 config file was found! It will be converted to the new format then used.");
 							LEGACY_ANNOTATED_SETTINGS.applyToNode(LEGACY_TREE, LEGACY_POJO);
 							FiberSerialization.deserialize(TREE, Files.newInputStream(CONFIG_PATH), serializer);
+							Files.copy(CONFIG_PATH, LEGACY_CONFIG_PATH);
 							OkZoomerConfigPojo.values.zoomDivisor = OkZoomerLegacyConfigPojo.zoomDivisor;
 							OkZoomerConfigPojo.values.minimumZoomDivisor = OkZoomerLegacyConfigPojo.minimumZoomDivisor;
 							OkZoomerConfigPojo.values.maximumZoomDivisor = OkZoomerLegacyConfigPojo.maximumZoomDivisor;
