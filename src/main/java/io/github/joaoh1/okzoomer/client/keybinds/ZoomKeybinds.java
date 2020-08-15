@@ -43,8 +43,8 @@ public class ZoomKeybinds {
 	public static final boolean areExtraKeybindsEnabled() {
 		if (!OkZoomerConfig.isConfigLoaded) {
 			OkZoomerConfig.loadModConfig();
-			extraKeybinds = OkZoomerConfigPojo.features.extraKeybinds;
 		}
+		extraKeybinds = OkZoomerConfigPojo.features.extraKeybinds;
 		return extraKeybinds;
 	}
     
