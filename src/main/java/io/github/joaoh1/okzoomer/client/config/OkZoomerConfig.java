@@ -57,6 +57,10 @@ public class OkZoomerConfig {
 					alphaConfigText.replace("\"zoom_transition\": \"SINE\"", "\"zoom_transition\": \"LINEAR\"");
 					Files.writeString(CONFIG_PATH, alphaConfigText);
 					Files.delete(ALPHA_CONFIG_PATH);
+				} else {
+					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! But due to limitations, it won't be converted to the new format.");
+					Files.copy(ALPHA_CONFIG_PATH, LEGACY_ALPHA_CONFIG_PATH);
+					Files.delete(ALPHA_CONFIG_PATH);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
