@@ -48,20 +48,18 @@ public class OkZoomerConfig {
 			//TODO - Remove this conversion for the final 4.0.0 release.
 			//If the alpha config file is detected, translate it to the new format. Limited to 4.0.0-alpha.4+
 			try {
+				Files.copy(ALPHA_CONFIG_PATH, LEGACY_ALPHA_CONFIG_PATH);
 				if (JavaVersion.current() >= 11) {
 					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! It will be converted to the new format then used.");
 					String alphaConfigText = Files.readString(ALPHA_CONFIG_PATH);
-					Files.writeString(LEGACY_ALPHA_CONFIG_PATH, alphaConfigText);
 					alphaConfigText.replace("\"technical\": {", "\"tweaks\": {");
 					alphaConfigText.replace("\"hijack_save_toolbar_activator_key\": ", "\"unbind_conflicting_key\": ");
 					alphaConfigText.replace("\"zoom_transition\": \"SINE\"", "\"zoom_transition\": \"LINEAR\"");
 					Files.writeString(CONFIG_PATH, alphaConfigText);
-					Files.delete(ALPHA_CONFIG_PATH);
 				} else {
 					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! But due to limitations, it won't be converted to the new format.");
-					Files.copy(ALPHA_CONFIG_PATH, LEGACY_ALPHA_CONFIG_PATH);
-					Files.delete(ALPHA_CONFIG_PATH);
 				}
+				Files.delete(ALPHA_CONFIG_PATH);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
