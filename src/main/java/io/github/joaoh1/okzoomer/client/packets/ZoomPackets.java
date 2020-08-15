@@ -15,7 +15,8 @@ public class ZoomPackets {
     //The signals used by other parts of the zoom in order to enforce the packets. 
 	public static boolean disableZoom = false;
 	public static boolean disableZoomScrolling = false;
-    
+	
+	//Registers all the packets
     public static void registerPackets() {
         ClientSidePacketRegistry.INSTANCE.register(DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
@@ -32,5 +33,11 @@ public class ZoomPackets {
 				disableZoomScrolling = true;
 			})
 		);
-    }
+	}
+	
+	//The method used to reset the signals once left the server.
+	public static void resetPacketSignals() {
+		ZoomPackets.disableZoom = false;
+		ZoomPackets.disableZoomScrolling = false;
+	}
 }

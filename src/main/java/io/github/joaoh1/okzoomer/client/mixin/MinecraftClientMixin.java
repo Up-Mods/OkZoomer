@@ -9,7 +9,7 @@ import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 
-//TODO - Move this to Fabric API once the bikeshed is done.
+//TODO - Move this to an event once the bikeshed on the networking API is done.
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 	@Inject(
@@ -17,7 +17,6 @@ public class MinecraftClientMixin {
 		method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"
 	)
 	public void resetZoomLimitations(Screen screen, CallbackInfo info) {
-		ZoomPackets.disableZoom = false;
-		ZoomPackets.disableZoomScrolling = false;
+		ZoomPackets.resetPacketSignals();
 	}
 }

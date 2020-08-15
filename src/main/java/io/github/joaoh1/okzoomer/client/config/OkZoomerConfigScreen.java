@@ -243,6 +243,14 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
+		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.print_owo_on_start"), OkZoomerConfigPojo.tweaks.printOwoOnStart)
+			.setDefaultValue(true)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.tweaks.printOwoOnStart = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.print_owo_on_start.tooltip"))
+			.build());
+		
 		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
 

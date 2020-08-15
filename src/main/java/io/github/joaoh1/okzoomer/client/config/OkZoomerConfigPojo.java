@@ -93,5 +93,8 @@ public class OkZoomerConfigPojo {
 		public boolean resetZoomWithMouse = true; 
 		@Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
 		public boolean unbindConflictingKey = true;
+		//TODO - Set to false once 4.0.0 is ready.
+		@Setting(comment = "Prints a random owo once Minecraft starts.")
+		public boolean printOwoOnStart = true;
 	}
 }

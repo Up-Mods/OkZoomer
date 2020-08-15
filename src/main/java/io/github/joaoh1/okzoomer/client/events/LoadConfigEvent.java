@@ -2,10 +2,11 @@ package io.github.joaoh1.okzoomer.client.events;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.client.utils.OwoUtils;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
-//The event that makes sure to load the config and puts the "Unbind Conflicting Key" option in effect if enabled through the config file.
+//The event that makes sure to load the config and puts any load-once options in effect if enabled through the config file.
 public class LoadConfigEvent {
     public static void registerEvent() {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
@@ -13,6 +14,9 @@ public class LoadConfigEvent {
 			if (!OkZoomerConfig.isConfigLoaded) {
 				OkZoomerConfig.loadModConfig();
 			}
+			
+			//uwu
+			OwoUtils.printOwo();
 
 			//This handles the hijacking of the "Save Toolbar Activator" key.
 			if (OkZoomerConfigPojo.tweaks.unbindConflictingKey) {
