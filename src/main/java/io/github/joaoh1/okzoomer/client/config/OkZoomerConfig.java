@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.spongepowered.asm.util.JavaVersion;
+
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.SettingNamingConvention;
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
@@ -22,6 +24,7 @@ public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
 	public static final Path ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-next.json5");
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
+	public static final Path LEGACY_ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-alpha.json5");
 	public static final Path LEGACY_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-legacy.json5");
 	private static final AnnotatedSettings ANNOTATED_SETTINGS = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
@@ -41,13 +44,31 @@ public class OkZoomerConfig {
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
 	public static void loadModConfig() {
+		if (Files.exists(ALPHA_CONFIG_PATH)) {
+			//TODO - Remove this conversion for the final 4.0.0 release.
+			//If the alpha config file is detected, translate it to the new format. Limited to 4.0.0-alpha.4+
+			try {
+				if (JavaVersion.current() >= 11) {
+					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! It will be converted to the new format then used.");
+					String alphaConfigText = Files.readString(ALPHA_CONFIG_PATH);
+					Files.writeString(LEGACY_ALPHA_CONFIG_PATH, alphaConfigText);
+					alphaConfigText.replace("\"technical\": {", "\"tweaks\": {");
+					alphaConfigText.replace("\"hijack_save_toolbar_activator_key\": ", "\"unbind_conflicting_key\": ");
+					alphaConfigText.replace("\"zoom_transition\": \"SINE\"", "\"zoom_transition\": \"LINEAR\"");
+					Files.writeString(CONFIG_PATH, alphaConfigText);
+					Files.delete(ALPHA_CONFIG_PATH);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if (Files.exists(CONFIG_PATH)) {
 			try {
 				//If the legacy config file is detected, translate it to the new format.
 				Files.readAllLines(CONFIG_PATH).forEach(string -> {
 					if (string.contains("\"hideHands\":")) {
 						try {
-							ZoomUtils.modLogger.info("[Ok Zoomer] A pre-4.0.0 config file was found! It will be converted to the new format then used.");
+							ZoomUtils.modLogger.info("[Ok Zoomer] A config file from the 4.0.0 alphas was found! It will be converted to the new format then used.");
 							LEGACY_ANNOTATED_SETTINGS.applyToNode(LEGACY_TREE, LEGACY_POJO);
 							FiberSerialization.deserialize(TREE, Files.newInputStream(CONFIG_PATH), serializer);
 							Files.copy(CONFIG_PATH, LEGACY_CONFIG_PATH);
