@@ -127,6 +127,18 @@ public class OkZoomerConfigScreen {
 			})
 			.build());
 		
+		features.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.zoom_overlay"), OkZoomerConfigPojo.features.zoomOverlay)
+			.setDefaultValue(false)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.features.zoomOverlay = value;
+			})
+			.setTooltip(new TranslatableText[] {
+				new TranslatableText("config.okzoomer.zoom_overlay.tooltip.1"),
+				new TranslatableText("config.okzoomer.zoom_overlay.tooltip.2"),
+				new TranslatableText("config.okzoomer.zoom_overlay.tooltip.3")
+			})
+			.build());
+		
 		ConfigCategory values = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.values"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_concrete_powder.png"));
 
@@ -264,6 +276,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = true;
 					OkZoomerConfigPojo.features.extraKeybinds = true;
+					OkZoomerConfigPojo.features.zoomOverlay = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
@@ -281,6 +294,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
 					OkZoomerConfigPojo.features.zoomScrolling = false;
 					OkZoomerConfigPojo.features.extraKeybinds = false;
+					OkZoomerConfigPojo.features.zoomOverlay = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 4.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
@@ -298,6 +312,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.features.zoomMode = ZoomModes.PERSISTENT;
 					OkZoomerConfigPojo.features.zoomScrolling = true;
 					OkZoomerConfigPojo.features.extraKeybinds = true;
+					OkZoomerConfigPojo.features.zoomOverlay = false;
 					OkZoomerConfigPojo.values.zoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
 					OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;

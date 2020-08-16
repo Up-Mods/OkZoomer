@@ -30,6 +30,10 @@ public class ZoomUtils {
 	public static float zoomFovMultiplier = 1.0F;
 	public static float lastZoomFovMultiplier = 1.0F;
 
+	//The zoom overlay's alpha. Used by the InGameHud mixin.
+	public static float zoomOverlayAlpha = 0.0F;
+	public static float lastZoomOverlayAlpha = 0.0F;
+
     //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static final void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
@@ -110,6 +114,30 @@ public class ZoomUtils {
 				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
 			}
 			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
+		}
+	}
+
+	//Handles the zoom overlay transparency with transitions. Used by zoom overlay.
+	public static final void updateZoomOverlayAlpha() {
+		float zoomMultiplier = 0.0F;
+
+		if (ZoomUtils.zoomState) {
+			zoomMultiplier = 1.0F;
+		}
+
+		lastZoomOverlayAlpha = zoomOverlayAlpha;
+		
+		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
+			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * (OkZoomerConfigPojo.values.smoothMultiplier);
+		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
+			double linearStep = 1.0F / zoomDivisor;
+			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
+				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
+			}
+			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
+				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
+			}
+			zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
 		}
 	}
 }

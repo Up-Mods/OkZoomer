@@ -43,6 +43,9 @@ public class OkZoomerConfigPojo {
 
 		@Setting(comment = "Adds zoom manipulation keys along with the zoom key.")
 		public boolean extraKeybinds = true;
+
+		@Setting(comment = "Adds an overlay in the screen during zoom. The overlay texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png")
+		public boolean zoomOverlay = false;
 	}
 
 	@Group
