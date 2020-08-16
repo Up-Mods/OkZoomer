@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.spongepowered.asm.util.JavaVersion;
-
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.SettingNamingConvention;
 import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
@@ -22,9 +20,7 @@ import net.fabricmc.loader.api.FabricLoader;
 //TODO - Remove backward-compatibility on the next major MC version.
 public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
-	public static final Path ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-next.json5");
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
-	public static final Path LEGACY_ALPHA_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-alpha.json5");
 	public static final Path LEGACY_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-legacy.json5");
 	private static final AnnotatedSettings ANNOTATED_SETTINGS = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
@@ -44,26 +40,6 @@ public class OkZoomerConfig {
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
 
 	public static void loadModConfig() {
-		if (Files.exists(ALPHA_CONFIG_PATH)) {
-			//TODO - Remove this conversion for the final 4.0.0 release.
-			//If the alpha config file is detected, translate it to the new format. Limited to 4.0.0-alpha.4+
-			try {
-				Files.copy(ALPHA_CONFIG_PATH, LEGACY_ALPHA_CONFIG_PATH);
-				if (JavaVersion.current() >= 11) {
-					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! It will be converted to the new format then used.");
-					String alphaConfigText = Files.readString(ALPHA_CONFIG_PATH);
-					alphaConfigText.replace("\"technical\": {", "\"tweaks\": {");
-					alphaConfigText.replace("\"hijack_save_toolbar_activator_key\": ", "\"unbind_conflicting_key\": ");
-					alphaConfigText.replace("\"zoom_transition\": \"SINE\"", "\"zoom_transition\": \"LINEAR\"");
-					Files.writeString(CONFIG_PATH, alphaConfigText);
-				} else {
-					ZoomUtils.modLogger.info("[Ok Zoomer] A 4.0.0 alpha config file was found! But due to limitations, it won't be converted to the new format.");
-				}
-				Files.delete(ALPHA_CONFIG_PATH);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		if (Files.exists(CONFIG_PATH)) {
 			try {
 				//If the legacy config file is detected, translate it to the new format.

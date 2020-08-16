@@ -2,7 +2,6 @@ package io.github.joaoh1.okzoomer.client.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import io.github.joaoh1.okzoomer.client.keybinds.ZoomKeybinds;
 import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
@@ -76,7 +75,7 @@ public class ZoomUtils {
 
 	//The method used for unbinding the "Save Toolbar Activator"
 	public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
-		if (ZoomKeybinds.zoomKey.isDefault() && ZoomKeybinds.getDefaultZoomKey() == GLFW.GLFW_KEY_C) {
+		if (ZoomKeybinds.zoomKey.isDefault()) {
 			if (client.options.keySaveToolbarActivator.isDefault()) {
 				if (userPrompted) {
 					ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
@@ -128,7 +127,7 @@ public class ZoomUtils {
 		lastZoomOverlayAlpha = zoomOverlayAlpha;
 		
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * (OkZoomerConfigPojo.values.smoothMultiplier);
+			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
 			double linearStep = 1.0F / zoomDivisor;
 			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {

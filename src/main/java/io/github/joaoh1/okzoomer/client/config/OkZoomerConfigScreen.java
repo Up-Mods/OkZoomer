@@ -256,7 +256,7 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.print_owo_on_start"), OkZoomerConfigPojo.tweaks.printOwoOnStart)
-			.setDefaultValue(true)
+			.setDefaultValue(false)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.tweaks.printOwoOnStart = value;
 			})
@@ -287,7 +287,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
 				} else if (value.equals("Classic")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
 					OkZoomerConfigPojo.features.reduceSensitivity = false;
@@ -306,7 +306,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = false;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
 				} else if (value.equals("Persistent")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
 					OkZoomerConfigPojo.features.reduceSensitivity = true;
@@ -325,7 +325,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
 				}
 				value = presetArray[0];
 			})
