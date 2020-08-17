@@ -26,6 +26,7 @@
     "fiber": ">=0.23.0-"
   },
   "recommends": {
-    "modmenu": ">=1.14.6"
+    "modmenu": ">=1.14.6",
+    "minecraft": ">=1.16.2"
   }
 }
