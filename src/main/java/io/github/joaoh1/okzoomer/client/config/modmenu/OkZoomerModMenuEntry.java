@@ -12,4 +12,9 @@ public class OkZoomerModMenuEntry implements ModMenuApi {
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return screen -> OkZoomerConfigScreen.getConfigScreen(screen);
 	}
+
+	@Override
+	public String getModId() {
+		return "okzoomer";
+	}
 }

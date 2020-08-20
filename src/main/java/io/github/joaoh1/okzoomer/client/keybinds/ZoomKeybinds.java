@@ -39,7 +39,7 @@ public class ZoomKeybinds {
 	public static final KeyBinding getExtraKeybind(String translationKey) {
 		if (areExtraKeybindsEnabled()) {
 			return KeyBindingHelper.registerKeyBinding(
-				new KeyBinding(translationKey, InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
+				new KeyBinding(translationKey, InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEYCODE.getKeyCode(), "key.okzoomer.category"));
 		}
 		return null;
 	}

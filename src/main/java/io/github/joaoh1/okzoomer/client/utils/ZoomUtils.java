@@ -82,7 +82,7 @@ public class ZoomUtils {
 				} else {
 					ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
 				}
-				client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+				client.options.keySaveToolbarActivator.setKeyCode(InputUtil.UNKNOWN_KEYCODE);
 				client.options.write();
 				KeyBinding.updateKeysByCode();
 			} else {
@@ -112,7 +112,7 @@ public class ZoomUtils {
 			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
 				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
 			}
-			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
+			zoomFovMultiplier = MathHelper.method_15348(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class ZoomUtils {
 			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
 				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
 			}
-			zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
+			zoomOverlayAlpha = MathHelper.method_15348(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
 		}
 	}
 }

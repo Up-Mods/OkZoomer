@@ -17,7 +17,6 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -50,9 +49,9 @@ public class InGameHudMixin {
 	//This applies the zoom overlay itself.
 	@Inject(
 		at = @At(value = "INVOKE", target = "net/minecraft/entity/player/PlayerInventory.getArmorStack(I)Lnet/minecraft/item/ItemStack;"),
-		method = "render(Lnet/minecraft/client/util/math/MatrixStack;F)V"
+		method = "render(F)V"
 	)
-	public void injectZoomOverlay(MatrixStack matrices, float tickDelta, CallbackInfo info) {
+	public void injectZoomOverlay(float tickDelta, CallbackInfo info) {
 		if (OkZoomerConfigPojo.features.zoomOverlay) {
 			//If zoom transitions is on, apply the transition to the overlay.
 			if (!OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.OFF)) {

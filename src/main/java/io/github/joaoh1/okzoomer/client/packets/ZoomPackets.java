@@ -2,7 +2,6 @@ package io.github.joaoh1.okzoomer.client.packets;
 
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
@@ -21,7 +20,7 @@ public class ZoomPackets {
         ClientSidePacketRegistry.INSTANCE.register(DISABLE_ZOOM_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
+				client.player.addChatMessage(new TranslatableText("toast.okzoomer.title").append(" | ").append(new TranslatableText("toast.okzoomer.disable_zoom")), true);
 				disableZoom = true;
 			})
 		);
@@ -29,7 +28,7 @@ public class ZoomPackets {
 		ClientSidePacketRegistry.INSTANCE.register(DISABLE_ZOOM_SCROLLING_PACKET_ID,
             (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
 				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
+				client.player.addChatMessage(new TranslatableText("toast.okzoomer.title").append(" | ").append(new TranslatableText("toast.okzoomer.disable_zoom_scrolling")), true);
 				disableZoomScrolling = true;
 			})
 		);
