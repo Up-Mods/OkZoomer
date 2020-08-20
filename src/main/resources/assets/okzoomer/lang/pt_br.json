@@ -20,6 +20,8 @@
 	"config.okzoomer.zoom_transition.tooltip.smooth": "\"Suave\" replica o campo de visão suave do jogo.",
 	"config.okzoomer.zoom_transition.tooltip.linear": "\"Linear\" remove a suavez da transição.",
 	"config.okzoomer.zoom_mode": "Modo do zoom",
+	"config.okzoomer.zoom_mode.hold": "Segurar",
+	"config.okzoomer.zoom_mode.toggle": "Alternar",
 	"config.okzoomer.zoom_mode.persistent": "Persistente",
 	"config.okzoomer.zoom_mode.tooltip": "O comportamento da tecla de zoom.",
 	"config.okzoomer.zoom_mode.tooltip.hold": "\"Segurar\" requer a tecla de zoom a ser apertado.",

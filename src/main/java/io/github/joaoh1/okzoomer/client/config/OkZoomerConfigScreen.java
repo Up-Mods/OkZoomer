@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Identifier;
 
+@SuppressWarnings("all")
 public class OkZoomerConfigScreen {
     public static Screen getConfigScreen(Screen parentScreen) {
 		ConfigBuilder builder = ConfigBuilder.create()
@@ -81,9 +82,9 @@ public class OkZoomerConfigScreen {
 			.setDefaultValue(ZoomModes.HOLD)
 			.setNameProvider(value -> {
 				if (value.equals(ZoomModes.HOLD)) {
-					return I18n.translate("options.key.hold");
+					return I18n.translate("config.okzoomer.zoom_mode.hold");
 				} else if (value.equals(ZoomModes.TOGGLE)) {
-					return I18n.translate("options.key.toggle");
+					return I18n.translate("config.okzoomer.zoom_mode.toggle");
 				} else if (value.equals(ZoomModes.PERSISTENT)) {
 					return I18n.translate("config.okzoomer.zoom_mode.persistent");
 				}

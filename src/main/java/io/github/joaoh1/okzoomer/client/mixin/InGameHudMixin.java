@@ -1,6 +1,6 @@
 package io.github.joaoh1.okzoomer.client.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -70,11 +70,11 @@ public class InGameHudMixin {
 
 	//Renders the zoom overlay.
 	public void renderZoomOverlay(float f) {
-		RenderSystem.disableAlphaTest();
-		RenderSystem.disableDepthTest();
-		RenderSystem.depthMask(false);
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, f);
+		GlStateManager.disableAlphaTest();
+		GlStateManager.disableDepthTest();
+		GlStateManager.depthMask(false);
+		GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, f);
 		this.client.getTextureManager().bindTexture(ZOOM_OVERLAY);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
@@ -84,9 +84,9 @@ public class InGameHudMixin {
 		bufferBuilder.vertex((double)this.scaledWidth, 0.0D, -90.0D).texture(1.0F, 0.0F).next();
 		bufferBuilder.vertex(0.0D, 0.0D, -90.0D).texture(0.0F, 0.0F).next();
 		tessellator.draw();
-		RenderSystem.depthMask(true);
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.depthMask(true);
+		GlStateManager.enableDepthTest();
+		GlStateManager.enableAlphaTest();
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

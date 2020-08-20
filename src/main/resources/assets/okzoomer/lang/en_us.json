@@ -20,6 +20,8 @@
 	"config.okzoomer.zoom_transition.tooltip.smooth": "\"Smooth\" replicates Vanilla's dynamic FOV.",
 	"config.okzoomer.zoom_transition.tooltip.linear": "\"Linear\" removes the smoothness.",
 	"config.okzoomer.zoom_mode": "Zoom Mode",
+	"config.okzoomer.zoom_mode.hold": "Hold",
+	"config.okzoomer.zoom_mode.toggle": "Toggle",
 	"config.okzoomer.zoom_mode.persistent": "Persistent",
 	"config.okzoomer.zoom_mode.tooltip": "The behavior of the zoom key.",
 	"config.okzoomer.zoom_mode.tooltip.hold": "\"Hold\" needs the zoom key to be hold.",
