@@ -63,6 +63,8 @@
 	"config.okzoomer.unbind_conflicting_key.tooltip.2": "unbound if there's a conflict with the zoom key.",
 	"config.okzoomer.print_owo_on_start": "Print owo on Start",
 	"config.okzoomer.print_owo_on_start.tooltip": "Prints a random owo in the console when the game starts.",
+	"config.okzoomer.hide_zoom_overlay": "Hide Zoom Overlay",
+	"config.okzoomer.hide_zoom_overlay.tooltip": "Hides the zoom overlay while the HUD's hidden.",
 	"config.okzoomer.category.presets": "Presets",
 	"config.okzoomer.reset_to_preset": "Reset to Preset",
 	"config.okzoomer.reset_to_preset.none": "None",

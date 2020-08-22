@@ -3,6 +3,7 @@ package io.github.joaoh1.okzoomer.client.mixin;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -42,10 +43,15 @@ public class MouseMixin {
 	@Shadow
 	private double eventDeltaWheel;
 	
+	@Unique
 	private final SmoothUtil cursorXZoomSmoother = new SmoothUtil();
+
+	@Unique
 	private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
 
+	@Unique
 	private double extractedE;
+	@Unique
 	private double adjustedG;
 	
 	//This mixin handles the "Reduce Sensitivity" option and extracts the g variable for the cinematic cameras.

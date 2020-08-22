@@ -96,7 +96,9 @@ public class OkZoomerConfigPojo {
 		public boolean resetZoomWithMouse = true; 
 		@Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
 		public boolean unbindConflictingKey = true;
-		@Setting(comment = "Prints a random owo once Minecraft starts.")
+		@Setting(comment = "Prints a random owo in the console when the game starts.")
 		public boolean printOwoOnStart = false;
+		@Setting(comment = "Hides the zoom overlay while the HUD's hidden.")
+		public boolean hideZoomOverlay = false;
 	}
 }

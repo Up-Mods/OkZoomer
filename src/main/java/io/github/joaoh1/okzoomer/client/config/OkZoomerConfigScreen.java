@@ -263,6 +263,14 @@ public class OkZoomerConfigScreen {
 			.setTooltip(new TranslatableText("config.okzoomer.print_owo_on_start.tooltip"))
 			.build());
 		
+		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.hide_zoom_overlay"), OkZoomerConfigPojo.tweaks.hideZoomOverlay)
+			.setDefaultValue(false)
+			.setSaveConsumer(value -> {
+				OkZoomerConfigPojo.tweaks.hideZoomOverlay = value;
+			})
+			.setTooltip(new TranslatableText("config.okzoomer.hide_zoom_overlay.tooltip"))
+			.build());
+		
 		ConfigCategory presets = builder.getOrCreateCategory(new TranslatableText("config.okzoomer.category.presets"))
 			.setCategoryBackground(new Identifier("minecraft:textures/block/yellow_wool.png"));
 

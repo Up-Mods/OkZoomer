@@ -4,6 +4,7 @@ import java.util.Random;
 
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 
+//The most humorous part of Ok Zoomer. ^w^
 public class OwoUtils {
     public static String[] OWO_ARRAY = new String[]{
         "owo",

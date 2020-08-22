@@ -12,6 +12,7 @@ import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.math.MathHelper;
 
+//The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
     //The logger, used everywhere to print messages to the console.
 	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
