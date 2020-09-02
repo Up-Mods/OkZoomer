@@ -15,15 +15,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
     - name: Build with Gradle
       run: gradle build
-
-    # The USERNAME and PASSWORD need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      run: gradle publish
-      env:
-        USERNAME: ${{ github.actor }}
-        PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: build-artifacts
+        path: build/libs

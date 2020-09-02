@@ -10,7 +10,6 @@ This mod is available for download on the following services:
 
 - [CurseForge (recommended)](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
 - [GitHub Releases (alternative)](https://github.com/joaoh1/OkZoomer/releases)
-- [GitHub Packages (indev releases, **use at your own risk**)](https://github.com/joaoh1/OkZoomer/packages)
 
 ## License
 
