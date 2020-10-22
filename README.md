@@ -10,7 +10,8 @@ This mod is available for download on the following services:
 
 - [CurseForge (recommended)](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
 - [GitHub Releases (alternative)](https://github.com/joaoh1/OkZoomer/releases)
+- [Modrinth (WIP alternative)](https://modrinth.com/mod/aXf2OSFU)
 
 ## License
 
-This mod is licensed under the MIT license. You can freely include the mod on any modpack with no permission.
+This mod is licensed under the MIT license. You can freely include the mod on any modpack with no permission. Usage of this mod's code on other projects is allowed as long as attribution is given.
