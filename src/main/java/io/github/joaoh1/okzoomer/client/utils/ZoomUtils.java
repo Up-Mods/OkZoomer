@@ -5,26 +5,32 @@ import org.apache.logging.log4j.Logger;
 
 import io.github.joaoh1.okzoomer.client.keybinds.ZoomKeybinds;
 import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
+import io.github.joaoh1.libzoomer.api.ZoomHelper;
+import io.github.joaoh1.libzoomer.api.ZoomInstance;
+import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
+import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
+import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 //The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
     //The logger, used everywhere to print messages to the console.
 	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
-    
-    //The zoom signal, which is managed in an event and used by other mixins.
-	public static boolean zoomState = false;
 
-	//Used for post-zoom actions like updating the terrain.
-	public static boolean lastZoomState = false;
-
-	//The zoom divisor, managed by the zoom press and zoom scrolling. Used by other mixins.
-	public static double zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+	public static ZoomInstance zoomerZoom = ZoomHelper.registerInstance(new ZoomInstance(
+			new Identifier("okzoomer:zoom"),
+			4.0F,
+			new SmoothTransitionMode(0.75f),
+			new ZoomDivisorMouseModifier(),
+			new NoZoomOverlay()
+		));
 
 	//The zoom FOV multipliers. Used by the GameRenderer mixin.
 	public static float zoomFovMultiplier = 1.0F;
@@ -41,6 +47,7 @@ public class ZoomUtils {
 			return;
 		}
 
+		double zoomDivisor = zoomerZoom.getZoomDivisor();
 		double changedZoomDivisor;
 		double lesserChangedZoomDivisor;
 
@@ -50,16 +57,16 @@ public class ZoomUtils {
 		} else {
 			changedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.scrollStep;
 			lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.lesserScrollStep;
-			lastZoomState = true;
 		}
 
-		if (lesserChangedZoomDivisor <= OkZoomerConfigPojo.values.zoomDivisor) {
+		if (lesserChangedZoomDivisor <= zoomerZoom.getDefaultZoomDivisor()) {
 			changedZoomDivisor = lesserChangedZoomDivisor;
 		}
 
 		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
 			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
-				zoomDivisor = changedZoomDivisor;
+				MinecraftClient.getInstance().player.sendMessage(new LiteralText("Zoom Divisor: " + changedZoomDivisor), true);
+				zoomerZoom.setZoomDivisor(changedZoomDivisor);
 			}
 		}
 	}
@@ -70,8 +77,7 @@ public class ZoomUtils {
 			return;
 		}
 
-		zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
-		lastZoomState = true;
+		zoomerZoom.resetZoomDivisor();
 	}
 
 	//The method used for unbinding the "Save Toolbar Activator"
@@ -95,9 +101,9 @@ public class ZoomUtils {
 	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by zoom transitions.
 	public static final void updateZoomFovMultiplier() {
 		float zoomMultiplier = 1.0F;
-		double dividedZoomMultiplier = 1.0 / ZoomUtils.zoomDivisor;
+		double dividedZoomMultiplier = 1.0 / zoomerZoom.getZoomDivisor();
 
-		if (ZoomUtils.zoomState) {
+		if (zoomerZoom.getZoom()) {
 			zoomMultiplier = (float)dividedZoomMultiplier;
 		}
 
@@ -121,7 +127,7 @@ public class ZoomUtils {
 	public static final void updateZoomOverlayAlpha() {
 		float zoomMultiplier = 0.0F;
 
-		if (ZoomUtils.zoomState) {
+		if (zoomerZoom.getZoom()) {
 			zoomMultiplier = 1.0F;
 		}
 
@@ -130,7 +136,7 @@ public class ZoomUtils {
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			double linearStep = 1.0F / zoomDivisor;
+			double linearStep = 1.0F / zoomerZoom.getZoomDivisor();
 			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
 				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
 			}

@@ -62,7 +62,10 @@ public class OwoUtils {
         "}w{",
         "_w_",
         "=w=",
-        "!w!"
+        "!w!",
+        "YwY",
+        "vwv",
+        "VwV"
     };
 
     public static void printOwo() {

@@ -256,7 +256,7 @@ public class OkZoomerConfigScreen {
 			.build());
 		
 		tweaks.addEntry(entryBuilder.startBooleanToggle(new TranslatableText("config.okzoomer.print_owo_on_start"), OkZoomerConfigPojo.tweaks.printOwoOnStart)
-			.setDefaultValue(false)
+			.setDefaultValue(true)
 			.setSaveConsumer(value -> {
 				OkZoomerConfigPojo.tweaks.printOwoOnStart = value;
 			})

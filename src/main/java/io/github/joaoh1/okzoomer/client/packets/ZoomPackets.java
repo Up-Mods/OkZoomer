@@ -1,7 +1,6 @@
 package io.github.joaoh1.okzoomer.client.packets;
 
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -18,21 +17,31 @@ public class ZoomPackets {
 	
 	//Registers all the packets
     public static void registerPackets() {
-        ClientSidePacketRegistry.INSTANCE.register(DISABLE_ZOOM_PACKET_ID,
-            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom")));
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, responseSender) -> {
+			client.execute(() -> {
+				client.getToastManager().add(
+					SystemToast.create(
+						client, SystemToast.Type.TUTORIAL_HINT,
+						new TranslatableText("toast.okzoomer.title"),
+						new TranslatableText("toast.okzoomer.disable_zoom")
+					)
+				);
 				disableZoom = true;
-			})
-		);
+			});
+		});
 
-		ClientSidePacketRegistry.INSTANCE.register(DISABLE_ZOOM_SCROLLING_PACKET_ID,
-            (packetContext, attachedData) -> packetContext.getTaskQueue().execute(() -> {
-				MinecraftClient client = MinecraftClient.getInstance();
-				client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.disable_zoom_scrolling")));
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, responseSender) -> {
+			client.execute(() -> {
+				client.getToastManager().add(
+					SystemToast.create(
+						client, SystemToast.Type.TUTORIAL_HINT,
+						new TranslatableText("toast.okzoomer.title"),
+						new TranslatableText("toast.okzoomer.disable_zoom_scrolling")
+					)
+				);
 				disableZoomScrolling = true;
-			})
-		);
+			});
+		});
 	}
 	
 	//The method used to reset the signals once left the server.

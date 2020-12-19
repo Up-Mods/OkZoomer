@@ -6,6 +6,7 @@ import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.text.LiteralText;
 
 //This event is responsible for managing the zoom signal.
 public class ManageZoomEvent {
@@ -27,7 +28,7 @@ public class ManageZoomEvent {
 				if (!persistentZoom) {
 					persistentZoom = true;
 					lastZoomPress = true;
-					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+					ZoomUtils.zoomerZoom.resetZoomDivisor();
 				}
 			} else {
 				if (persistentZoom) {
@@ -43,25 +44,20 @@ public class ManageZoomEvent {
 
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
 				//If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not.
-				ZoomUtils.zoomState = ZoomKeybinds.zoomKey.isPressed();
-				ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+				ZoomUtils.zoomerZoom.setZoom(ZoomKeybinds.zoomKey.isPressed());
+				ZoomUtils.zoomerZoom.resetZoomDivisor();
 			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.TOGGLE)) {
 				//If the zoom needs to be toggled, toggle the zoom signal instead.
 				if (ZoomKeybinds.zoomKey.isPressed()) {
-					ZoomUtils.zoomState = !ZoomUtils.zoomState;
-					ZoomUtils.zoomDivisor = OkZoomerConfigPojo.values.zoomDivisor;
+					ZoomUtils.zoomerZoom.setZoom(!ZoomUtils.zoomerZoom.getZoom());
+					ZoomUtils.zoomerZoom.resetZoomDivisor();
 				}
 			} else if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 				//If persistent zoom is enabled, just keep the zoom on.
-				ZoomUtils.zoomState = true;
+				ZoomUtils.zoomerZoom.setZoom(true);
 			}
 
-			//Manage the post-zoom signal.
-			if (!ZoomUtils.zoomState && lastZoomPress) {
-				ZoomUtils.lastZoomState = true;
-			} else {
-				ZoomUtils.lastZoomState = false;
-			}
+			client.player.sendMessage(new LiteralText("Zoom Divisor: " + ZoomUtils.zoomerZoom.getZoomDivisor()), true);
 
 			//Set the previous zoom signal for the next tick.
 			lastZoomPress = ZoomKeybinds.zoomKey.isPressed();
