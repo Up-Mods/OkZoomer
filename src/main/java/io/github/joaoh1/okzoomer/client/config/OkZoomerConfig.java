@@ -10,6 +10,9 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
+import io.github.joaoh1.libzoomer.api.ZoomOverlay;
+import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
+import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.client.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
@@ -34,7 +37,7 @@ public class OkZoomerConfig {
 			try {
 				ANNOTATED_SETTINGS.applyToNode(TREE, POJO);
 				FiberSerialization.deserialize(TREE, Files.newInputStream(CONFIG_PATH), serializer);
-				ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
+				configureZoomInstance();
 				isConfigLoaded = true;
 			} catch (IOException | FiberException e) {
 				e.printStackTrace();
@@ -49,12 +52,20 @@ public class OkZoomerConfig {
 		try {
 			ANNOTATED_SETTINGS.applyToNode(TREE, POJO);
 			FiberSerialization.serialize(TREE, Files.newOutputStream(CONFIG_PATH), serializer);
-			ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
-			if (OkZoomerConfigPojo.features.zoomOverlay) {
-				ZoomUtils.zoomerZoom.setZoomOverlay(new ZoomerZoomOverlay());
-			}
+			configureZoomInstance();
 		} catch (IOException | FiberException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void configureZoomInstance() {
+		ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
+		ZoomUtils.zoomerZoom.setTransitionMode(new SmoothTransitionMode((float) OkZoomerConfigPojo.values.smoothMultiplier));
+		ZoomOverlay overlay = ZoomUtils.zoomerZoom.getZoomOverlay();
+		if (OkZoomerConfigPojo.features.zoomOverlay && overlay instanceof NoZoomOverlay) {
+			ZoomUtils.zoomerZoom.setZoomOverlay(new ZoomerZoomOverlay());
+		} else if (!OkZoomerConfigPojo.features.zoomOverlay  && overlay instanceof ZoomerZoomOverlay) {
+			ZoomUtils.zoomerZoom.setZoomOverlay(new NoZoomOverlay());
 		}
 	}
 }

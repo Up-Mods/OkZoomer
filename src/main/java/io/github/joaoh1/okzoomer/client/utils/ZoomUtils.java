@@ -122,28 +122,4 @@ public class ZoomUtils {
 			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
 		}
 	}
-
-	//Handles the zoom overlay transparency with transitions. Used by zoom overlay.
-	public static final void updateZoomOverlayAlpha() {
-		float zoomMultiplier = 0.0F;
-
-		if (zoomerZoom.getZoom()) {
-			zoomMultiplier = 1.0F;
-		}
-
-		lastZoomOverlayAlpha = zoomOverlayAlpha;
-		
-		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
-		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			double linearStep = 1.0F / zoomerZoom.getZoomDivisor();
-			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
-			}
-			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
-			}
-			zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
-		}
-	}
 }
