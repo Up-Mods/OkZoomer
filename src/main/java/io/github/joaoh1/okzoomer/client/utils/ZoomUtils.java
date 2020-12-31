@@ -13,7 +13,7 @@ import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
@@ -65,7 +65,8 @@ public class ZoomUtils {
 
 		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
 			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
-				MinecraftClient.getInstance().player.sendMessage(new LiteralText("Zoom Divisor: " + changedZoomDivisor), true);
+				MinecraftClient client = MinecraftClient.getInstance();
+				client.player.sendMessage(new LiteralText("Zoom Divisor: " + changedZoomDivisor), true);
 				zoomerZoom.setZoomDivisor(changedZoomDivisor);
 			}
 		}

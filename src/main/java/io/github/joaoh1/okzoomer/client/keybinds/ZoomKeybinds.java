@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 //Manages the zoom keybinds themselves.
