@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "Ok Zoomer",
   "description": "Adds a highly configurable zoom button. By default, this mod provides its own take on zooming, however, with configuration, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
-  "authors": ["joaoh1"],
+  "authors": ["boredomh1"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
     "issues": "https://github.com/joaoh1/OkZoomer/issues",

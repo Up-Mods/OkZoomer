@@ -1,5 +1,6 @@
 package io.github.joaoh1.okzoomer.client.packets;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.TranslatableText;
@@ -41,6 +42,10 @@ public class ZoomPackets {
 				);
 				disableZoomScrolling = true;
 			});
+		});
+
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			ZoomPackets.resetPacketSignals();
 		});
 	}
 	
