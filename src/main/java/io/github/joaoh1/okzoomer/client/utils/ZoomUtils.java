@@ -11,13 +11,11 @@ import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 //The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
@@ -94,33 +92,8 @@ public class ZoomUtils {
 				client.options.write();
 				KeyBinding.updateKeysByCode();
 			} else {
-				ZoomUtils.modLogger.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind was found!");
+				ZoomUtils.modLogger.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 			}
-		}
-	}
-
-	//The equivalent of GameRenderer's updateFovMultiplier but for zooming. Used by zoom transitions.
-	public static final void updateZoomFovMultiplier() {
-		float zoomMultiplier = 1.0F;
-		double dividedZoomMultiplier = 1.0 / zoomerZoom.getZoomDivisor();
-
-		if (zoomerZoom.getZoom()) {
-			zoomMultiplier = (float)dividedZoomMultiplier;
-		}
-
-		lastZoomFovMultiplier = zoomFovMultiplier;
-		
-		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			zoomFovMultiplier += (zoomMultiplier - zoomFovMultiplier) * OkZoomerConfigPojo.values.smoothMultiplier;
-		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			double linearStep = dividedZoomMultiplier;
-			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
-			}
-			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
-			}
-			zoomFovMultiplier = MathHelper.stepTowards(zoomFovMultiplier, zoomMultiplier, (float)linearStep);
 		}
 	}
 }
