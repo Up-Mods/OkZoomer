@@ -10,13 +10,20 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
+import io.github.joaoh1.libzoomer.api.MouseModifier;
 import io.github.joaoh1.libzoomer.api.ZoomOverlay;
+import io.github.joaoh1.libzoomer.api.modifiers.CinematicCameraMouseModifier;
+import io.github.joaoh1.libzoomer.api.modifiers.ContainingMouseModifier;
+import io.github.joaoh1.libzoomer.api.modifiers.NoMouseModifier;
+import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.joaoh1.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.client.zoom.LinearTransitionMode;
+import io.github.joaoh1.okzoomer.client.zoom.MultipliedCinematicCameraMouseModifier;
 import io.github.joaoh1.okzoomer.client.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -62,8 +69,33 @@ public class OkZoomerConfig {
 	}
 
 	public static void configureZoomInstance() {
+		//TODO - Clean up config, it's a huge mess
+		//Sets zoom divisor
 		ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
-		System.out.println(OkZoomerConfigPojo.features.zoomTransition);
+		//Sets mouse modifier
+		MouseModifier cinematicModifier;
+		switch (OkZoomerConfigPojo.features.cinematicCamera) {
+			case VANILLA:
+				cinematicModifier = new CinematicCameraMouseModifier();
+				break;
+			case MULTIPLIED:
+				cinematicModifier = new MultipliedCinematicCameraMouseModifier(OkZoomerConfigPojo.values.cinematicMultiplier);
+				break;
+			default:
+				cinematicModifier = null;
+				break;
+		}
+		if (OkZoomerConfigPojo.features.cinematicCamera != CinematicCameraOptions.OFF && !OkZoomerConfigPojo.features.reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(cinematicModifier);
+		} else if (OkZoomerConfigPojo.features.cinematicCamera == CinematicCameraOptions.OFF && OkZoomerConfigPojo.features.reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(new ZoomDivisorMouseModifier());
+		} else if (OkZoomerConfigPojo.features.cinematicCamera != CinematicCameraOptions.OFF && OkZoomerConfigPojo.features.reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(new ContainingMouseModifier(new MouseModifier[]{new ZoomDivisorMouseModifier(), cinematicModifier}));
+			System.out.println("The container is on");
+		} else {
+			ZoomUtils.zoomerZoom.setMouseModifier(new NoMouseModifier());
+		}
+		//Sets zoom transition
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
 			ZoomUtils.zoomerZoom.setTransitionMode(new SmoothTransitionMode((float) OkZoomerConfigPojo.values.smoothMultiplier));
 		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
@@ -71,6 +103,7 @@ public class OkZoomerConfig {
 		} else {
 			ZoomUtils.zoomerZoom.setTransitionMode(new InstantTransitionMode());
 		}
+		//Sets zoom overlay
 		ZoomOverlay overlay = ZoomUtils.zoomerZoom.getZoomOverlay();
 		if (OkZoomerConfigPojo.features.zoomOverlay && overlay instanceof NoZoomOverlay) {
 			ZoomUtils.zoomerZoom.setZoomOverlay(new ZoomerZoomOverlay());
