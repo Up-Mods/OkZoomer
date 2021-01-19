@@ -1,5 +1,6 @@
 package io.github.joaoh1.okzoomer.client.packets;
 
+import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -14,12 +15,12 @@ public class ZoomPackets {
     //The IDs for packets that allows the server to have some control on the zoom.
 	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
 	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
-	public static final Identifier ALLOWED_MOUSE_MODIFIERS_PACKET_ID = new Identifier("okzoomer", "allowed_mouse_modifiers");
+	public static final Identifier FORCE_CLASSIC_MODE_PACKET_ID = new Identifier("okzoomer", "force_classic_mode");
 
     //The signals used by other parts of the zoom in order to enforce the packets. 
 	public static boolean disableZoom = false;
 	public static boolean disableZoomScrolling = false;
-	public static boolean[] allowedMouseModifiers = {true, true, true};
+	public static boolean forceClassicMode = false;
 	
 	//Registers all the packets
     public static void registerPackets() {
@@ -49,51 +50,54 @@ public class ZoomPackets {
 			});
 		});
 
-		ClientPlayNetworking.registerGlobalReceiver(ALLOWED_MOUSE_MODIFIERS_PACKET_ID, (client, handler, buf, responseSender) -> {
-			boolean enableNoMouseModifier = buf.readBoolean();
-			boolean enableReducedMouseSensitivity = buf.readBoolean();
-			boolean enableCinematicCamera = buf.readBoolean();
+		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, responseSender) -> {
 			client.execute(() -> {
 				client.getToastManager().add(
 					SystemToast.create(
 						client, SystemToast.Type.TUTORIAL_HINT,
 						new TranslatableText("toast.okzoomer.title"),
-						new TranslatableText("toast.okzoomer.allowed_mouse_modifiers")
+						new TranslatableText("toast.okzoomer.force_classic_mode")
 					)
 				);
-				allowedMouseModifiers = new boolean[]{
-					enableNoMouseModifier,
-					enableReducedMouseSensitivity,
-					enableCinematicCamera
-				};
+				forceClassicMode = true;
+				OkZoomerConfig.configureZoomInstance();
 			});
 		});
 
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, responseSender) -> {
+		/*
+		ClientPlayNetworking.registerGlobalReceiver(FORCE_REDUCE_SENSITIVITY_PACKET_ID, (client, handler, buf, responseSender) -> {
+			boolean forcedReducedSensitivity = buf.readBoolean();
+			TranslatableText toastDescription;
+			toastDescription = forcedReducedSensitivity
+				? new TranslatableText("toast.okzoomer.force_enable_reduce_sensitivity")
+				: new TranslatableText("toast.okzoomer.force_disable_reduce_sensitivity");
 			client.execute(() -> {
 				client.getToastManager().add(
 					SystemToast.create(
 						client, SystemToast.Type.TUTORIAL_HINT,
 						new TranslatableText("toast.okzoomer.title"),
-						new TranslatableText("toast.okzoomer.disable_zoom")
+						toastDescription
 					)
 				);
-				disableZoom = true;
 			});
+			forceReducedSensitivity = forcedReducedSensitivity ? 1 : 2;
 		});
+		*/
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			/* PacketByteBuf disableScrollingBuf = PacketByteBufs.empty();
-			sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, disableScrollingBuf);
-			PacketByteBuf buf = PacketByteBufs.create();
-			buf.writeBoolean(true);
-			buf.writeBoolean(false);
-			buf.writeBoolean(true);
-			sender.sendPacket(ALLOWED_MOUSE_MODIFIERS_PACKET_ID, buf); */
+			PacketByteBuf emptyBuf = PacketByteBufs.empty();
+			//sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
+			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
+			sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
+			//PacketByteBuf buf = PacketByteBufs.create();
+			//buf.writeInt(1);
+			//sender.sendPacket(FORCE_REDUCE_SENSITIVITY_PACKET_ID, buf);
 		});
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			ZoomPackets.resetPacketSignals();
+			if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {
+				ZoomPackets.resetPacketSignals();	
+			}
 		});
 	}
 	
@@ -101,6 +105,9 @@ public class ZoomPackets {
 	public static void resetPacketSignals() {
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
-		ZoomPackets.allowedMouseModifiers = new boolean[]{true, true, true};
+		if (ZoomPackets.forceClassicMode) {
+			ZoomPackets.forceClassicMode = false;
+			OkZoomerConfig.configureZoomInstance();
+		}
 	}
 }

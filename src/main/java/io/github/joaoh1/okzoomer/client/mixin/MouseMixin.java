@@ -34,7 +34,7 @@ public class MouseMixin {
 	)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (this.eventDeltaWheel != 0.0) {
-			if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.disableZoomScrolling) {
+			if (OkZoomerConfigPojo.features.zoomScrolling && (!ZoomPackets.disableZoomScrolling && !ZoomPackets.forceClassicMode)) {
 				if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeybinds.zoomKey.isPressed()) {
 						return;
@@ -62,7 +62,7 @@ public class MouseMixin {
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
 	private void zoomerOnMouseButton(long window, int button, int action, int mods, CallbackInfo info, boolean bl, int i) {
-		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.disableZoomScrolling) {
+		if (OkZoomerConfigPojo.features.zoomScrolling && (!ZoomPackets.disableZoomScrolling && !ZoomPackets.forceClassicMode)) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
 				if (!ZoomKeybinds.zoomKey.isPressed()) {
 					return;

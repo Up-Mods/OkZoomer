@@ -11,7 +11,7 @@ public class ManageExtraKeysEvent {
         //Register the event only if the "Extra Keybinds" option is enabled.
         if (ZoomKeybinds.areExtraKeybindsEnabled()) {
 			ClientTickEvents.END_CLIENT_TICK.register(client -> {
-                if (ZoomPackets.disableZoomScrolling) {
+                if (ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {
                     return;
                 };
     

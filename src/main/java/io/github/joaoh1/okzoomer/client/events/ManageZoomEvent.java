@@ -6,7 +6,6 @@ import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.text.LiteralText;
 
 //This event is responsible for managing the zoom signal.
 public class ManageZoomEvent {
@@ -56,8 +55,6 @@ public class ManageZoomEvent {
 				//If persistent zoom is enabled, just keep the zoom on.
 				ZoomUtils.zoomerZoom.setZoom(true);
 			}
-
-			client.player.sendMessage(new LiteralText("Zoom Divisor: " + ZoomUtils.zoomerZoom.getZoomDivisor()), true);
 
 			//Set the previous zoom signal for the next tick.
 			lastZoomPress = ZoomKeybinds.zoomKey.isPressed();

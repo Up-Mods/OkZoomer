@@ -79,7 +79,7 @@
 	"toast.okzoomer.title": "Ok Zoomer",
 	"toast.okzoomer.disable_zoom": "Disabled zooming",
 	"toast.okzoomer.disable_zoom_scrolling": "Disabled zoom scrolling",
-	"toast.okzoomer.allowed_mouse_modifiers": "Restricted mouse modifiers",
+	"toast.okzoomer.force_classic_mode": "Enabled classic mode",
 	"key.okzoomer.category": "Zoom",
 	"key.okzoomer.decrease_zoom": "Decrease Zoom",
 	"key.okzoomer.increase_zoom": "Increase Zoom",

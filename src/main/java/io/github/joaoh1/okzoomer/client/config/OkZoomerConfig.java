@@ -21,6 +21,7 @@ import io.github.joaoh1.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
 import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
 import io.github.joaoh1.okzoomer.client.zoom.LinearTransitionMode;
 import io.github.joaoh1.okzoomer.client.zoom.MultipliedCinematicCameraMouseModifier;
@@ -70,30 +71,15 @@ public class OkZoomerConfig {
 
 	public static void configureZoomInstance() {
 		//TODO - Clean up config, it's a huge mess
-		//Sets zoom divisor
-		ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
-		//Sets mouse modifier
-		MouseModifier cinematicModifier;
-		switch (OkZoomerConfigPojo.features.cinematicCamera) {
-			case VANILLA:
-				cinematicModifier = new CinematicCameraMouseModifier();
-				break;
-			case MULTIPLIED:
-				cinematicModifier = new MultipliedCinematicCameraMouseModifier(OkZoomerConfigPojo.values.cinematicMultiplier);
-				break;
-			default:
-				cinematicModifier = null;
-				break;
-		}
-		if (OkZoomerConfigPojo.features.cinematicCamera != CinematicCameraOptions.OFF && !OkZoomerConfigPojo.features.reduceSensitivity) {
-			ZoomUtils.zoomerZoom.setMouseModifier(cinematicModifier);
-		} else if (OkZoomerConfigPojo.features.cinematicCamera == CinematicCameraOptions.OFF && OkZoomerConfigPojo.features.reduceSensitivity) {
-			ZoomUtils.zoomerZoom.setMouseModifier(new ZoomDivisorMouseModifier());
-		} else if (OkZoomerConfigPojo.features.cinematicCamera != CinematicCameraOptions.OFF && OkZoomerConfigPojo.features.reduceSensitivity) {
-			ZoomUtils.zoomerZoom.setMouseModifier(new ContainingMouseModifier(new MouseModifier[]{new ZoomDivisorMouseModifier(), cinematicModifier}));
-			System.out.println("The container is on");
+		if (ZoomPackets.forceClassicMode) {
+			ZoomUtils.zoomerZoom.setDefaultZoomDivisor(4.0D);
+			ZoomUtils.zoomerZoom.setMouseModifier(new CinematicCameraMouseModifier());
+			ZoomUtils.zoomerZoom.setZoomOverlay(new NoZoomOverlay());
 		} else {
-			ZoomUtils.zoomerZoom.setMouseModifier(new NoMouseModifier());
+			//Sets zoom divisor
+			ZoomUtils.zoomerZoom.setDefaultZoomDivisor(OkZoomerConfigPojo.values.zoomDivisor);
+			//Sets mouse modifier
+			configureZoomModifier();
 		}
 		//Sets zoom transition
 		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
@@ -109,6 +95,32 @@ public class OkZoomerConfig {
 			ZoomUtils.zoomerZoom.setZoomOverlay(new ZoomerZoomOverlay());
 		} else if (!OkZoomerConfigPojo.features.zoomOverlay  && overlay instanceof ZoomerZoomOverlay) {
 			ZoomUtils.zoomerZoom.setZoomOverlay(new NoZoomOverlay());
+		}
+	}
+
+	public static void configureZoomModifier() {
+		MouseModifier cinematicModifier;
+		switch (OkZoomerConfigPojo.features.cinematicCamera) {
+			case VANILLA:
+				cinematicModifier = new CinematicCameraMouseModifier();
+				break;
+			case MULTIPLIED:
+				cinematicModifier = new MultipliedCinematicCameraMouseModifier(OkZoomerConfigPojo.values.cinematicMultiplier);
+				break;
+			default:
+				cinematicModifier = null;
+				break;
+		}
+		CinematicCameraOptions cinematicCamera = OkZoomerConfigPojo.features.cinematicCamera;
+		boolean reduceSensitivity = OkZoomerConfigPojo.features.reduceSensitivity;
+		if (cinematicCamera != CinematicCameraOptions.OFF && !reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(cinematicModifier);
+		} else if (cinematicCamera == CinematicCameraOptions.OFF && reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(new ZoomDivisorMouseModifier());
+		} else if (cinematicCamera != CinematicCameraOptions.OFF && reduceSensitivity) {
+			ZoomUtils.zoomerZoom.setMouseModifier(new ContainingMouseModifier(new MouseModifier[]{new ZoomDivisorMouseModifier(), cinematicModifier}));
+		} else {
+			ZoomUtils.zoomerZoom.setMouseModifier(new NoMouseModifier());
 		}
 	}
 }
