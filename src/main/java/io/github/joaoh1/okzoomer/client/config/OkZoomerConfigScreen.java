@@ -295,7 +295,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
 				} else if (value.equals("Classic")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
 					OkZoomerConfigPojo.features.reduceSensitivity = false;
@@ -314,7 +314,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = false;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
 				} else if (value.equals("Persistent")) {
 					OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
 					OkZoomerConfigPojo.features.reduceSensitivity = true;
@@ -333,7 +333,7 @@ public class OkZoomerConfigScreen {
 					OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
 					OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
 					OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
-					OkZoomerConfigPojo.tweaks.printOwoOnStart = false;
+					OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
 				}
 				value = presetArray[0];
 			})
