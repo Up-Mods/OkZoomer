@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import io.github.joaoh1.okzoomer.client.keybinds.ZoomKeybinds;
 import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
-import io.github.joaoh1.libzoomer.api.ZoomHelper;
+import io.github.joaoh1.libzoomer.api.ZoomRegistry;
 import io.github.joaoh1.libzoomer.api.ZoomInstance;
 import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
@@ -21,7 +21,7 @@ public class ZoomUtils {
     //The logger, used everywhere to print messages to the console.
 	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 
-	public static ZoomInstance zoomerZoom = ZoomHelper.registerInstance(new ZoomInstance(
+	public static ZoomInstance zoomerZoom = ZoomRegistry.registerInstance(new ZoomInstance(
 			new Identifier("okzoomer:zoom"),
 			4.0F,
 			new SmoothTransitionMode(0.75f),

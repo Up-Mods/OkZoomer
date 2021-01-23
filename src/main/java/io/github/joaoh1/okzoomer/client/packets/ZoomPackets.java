@@ -64,27 +64,7 @@ public class ZoomPackets {
 			});
 		});
 
-		/*
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_REDUCE_SENSITIVITY_PACKET_ID, (client, handler, buf, responseSender) -> {
-			boolean forcedReducedSensitivity = buf.readBoolean();
-			TranslatableText toastDescription;
-			toastDescription = forcedReducedSensitivity
-				? new TranslatableText("toast.okzoomer.force_enable_reduce_sensitivity")
-				: new TranslatableText("toast.okzoomer.force_disable_reduce_sensitivity");
-			client.execute(() -> {
-				client.getToastManager().add(
-					SystemToast.create(
-						client, SystemToast.Type.TUTORIAL_HINT,
-						new TranslatableText("toast.okzoomer.title"),
-						toastDescription
-					)
-				);
-			});
-			forceReducedSensitivity = forcedReducedSensitivity ? 1 : 2;
-		});
-		*/
-
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+		/* ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			PacketByteBuf emptyBuf = PacketByteBufs.empty();
 			//sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
 			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
@@ -92,7 +72,7 @@ public class ZoomPackets {
 			//PacketByteBuf buf = PacketByteBufs.create();
 			//buf.writeInt(1);
 			//sender.sendPacket(FORCE_REDUCE_SENSITIVITY_PACKET_ID, buf);
-		});
+		}); */
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
 			if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {

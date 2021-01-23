@@ -117,8 +117,8 @@ public class OkZoomerConfig {
 			if (reduceSensitivity) {
 				ZoomUtils.zoomerZoom.setMouseModifier(
 					new ContainingMouseModifier(new MouseModifier[]{
-						new ZoomDivisorMouseModifier(),
-						cinematicModifier
+						cinematicModifier,
+						new ZoomDivisorMouseModifier()
 					}
 				));
 			} else {
