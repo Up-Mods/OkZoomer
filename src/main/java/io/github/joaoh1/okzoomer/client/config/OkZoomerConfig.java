@@ -32,7 +32,6 @@ import net.fabricmc.loader.api.FabricLoader;
 public class OkZoomerConfig {
 	public static boolean isConfigLoaded = false;
 	public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
-	public static final Path LEGACY_CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer-legacy.json5");
 	private static final AnnotatedSettings ANNOTATED_SETTINGS = AnnotatedSettings.builder()
 		.useNamingConvention(SettingNamingConvention.SNAKE_CASE)
 		.build();
@@ -71,7 +70,7 @@ public class OkZoomerConfig {
 
 	public static void configureZoomInstance() {
 		//TODO - Clean up config, it probably could be better
-		if (ZoomPackets.forceClassicMode) {
+		if (ZoomPackets.getForceClassicMode()) {
 			ZoomUtils.zoomerZoom.setDefaultZoomDivisor(4.0D);
 			ZoomUtils.zoomerZoom.setMouseModifier(new CinematicCameraMouseModifier());
 			ZoomUtils.zoomerZoom.setZoomOverlay(new NoZoomOverlay());

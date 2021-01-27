@@ -19,10 +19,13 @@ public class ZoomPackets {
 	public static final Identifier FORCE_ZOOM_DIVISOR_PACKET_ID = new Identifier("okzoomer", "force_zoom_divisor");
 
     //The signals used by other parts of the zoom in order to enforce the packets. 
-	public static boolean disableZoom = false;
-	public static boolean disableZoomScrolling = false;
-	public static boolean forceClassicMode = false;
-	
+	private static boolean disableZoom = false;
+	private static boolean disableZoomScrolling = false;
+	private static boolean forceClassicMode = false;
+	private static boolean forceZoomDivisors = false;
+	public static double maximumZoomDivisor = 0.0D;
+	public static double minimumZoomDivisor = 0.0D;
+
 	//Registers all the packets
     public static void registerPackets() {
 		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, responseSender) -> {
@@ -60,6 +63,7 @@ public class ZoomPackets {
 						new TranslatableText("toast.okzoomer.force_classic_mode")
 					)
 				);
+				disableZoomScrolling = true;
 				forceClassicMode = true;
 				OkZoomerConfig.configureZoomInstance();
 			});
@@ -80,6 +84,22 @@ public class ZoomPackets {
 				ZoomPackets.resetPacketSignals();	
 			}
 		});
+	}
+
+	public static boolean getDisableZoom() {
+		return disableZoom;
+	}
+	
+	public static boolean getDisableZoomScrolling() {
+		return disableZoomScrolling;
+	}
+
+	public static boolean getForceClassicMode() {
+		return forceClassicMode;
+	}
+
+	public static boolean getForceZoomDivisors() {
+		return forceZoomDivisors;
 	}
 	
 	//The method used to reset the signals once left the server.

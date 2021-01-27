@@ -18,7 +18,7 @@ public class ManageZoomEvent {
     public static void registerEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			//If zoom is disabled, do not allow for zooming at all.
-			if (ZoomPackets.disableZoom) {
+			if (ZoomPackets.getDisableZoom()) {
 				return;
 			}
 
