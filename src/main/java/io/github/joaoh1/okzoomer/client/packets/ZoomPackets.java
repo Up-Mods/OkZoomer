@@ -16,6 +16,7 @@ public class ZoomPackets {
 	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
 	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
 	public static final Identifier FORCE_CLASSIC_MODE_PACKET_ID = new Identifier("okzoomer", "force_classic_mode");
+	public static final Identifier FORCE_ZOOM_DIVISOR_PACKET_ID = new Identifier("okzoomer", "force_zoom_divisor");
 
     //The signals used by other parts of the zoom in order to enforce the packets. 
 	public static boolean disableZoom = false;
@@ -82,7 +83,7 @@ public class ZoomPackets {
 	}
 	
 	//The method used to reset the signals once left the server.
-	public static void resetPacketSignals() {
+	private static void resetPacketSignals() {
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
 		if (ZoomPackets.forceClassicMode) {
