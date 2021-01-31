@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.client.zoom;
+package io.github.joaoh1.okzoomer.zoom;
 
 import io.github.joaoh1.libzoomer.api.MouseModifier;
 import net.minecraft.client.util.SmoothUtil;

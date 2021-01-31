@@ -1,9 +1,9 @@
-package io.github.joaoh1.okzoomer.client.events;
+package io.github.joaoh1.okzoomer.events;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.utils.OwoUtils;
-import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.utils.OwoUtils;
+import io.github.joaoh1.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
 //The event that makes sure to load the config and puts any load-once options in effect if enabled through the config file.

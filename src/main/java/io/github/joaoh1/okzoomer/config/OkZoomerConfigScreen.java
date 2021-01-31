@@ -1,9 +1,9 @@
-package io.github.joaoh1.okzoomer.client.config;
+package io.github.joaoh1.okzoomer.config;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
-import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.joaoh1.okzoomer.utils.ZoomUtils;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;

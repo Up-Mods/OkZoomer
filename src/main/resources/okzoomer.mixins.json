@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "io.github.joaoh1.okzoomer.client.mixin",
+	"package": "io.github.joaoh1.okzoomer.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"client": [
 		"MouseMixin"

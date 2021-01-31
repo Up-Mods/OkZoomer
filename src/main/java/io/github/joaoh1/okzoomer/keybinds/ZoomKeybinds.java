@@ -1,9 +1,9 @@
-package io.github.joaoh1.okzoomer.client.keybinds;
+package io.github.joaoh1.okzoomer.keybinds;
 
 import org.lwjgl.glfw.GLFW;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfig;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;

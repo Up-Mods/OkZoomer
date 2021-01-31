@@ -1,8 +1,8 @@
-package io.github.joaoh1.okzoomer.client.utils;
+package io.github.joaoh1.okzoomer.utils;
 
 import java.util.Random;
 
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
 
 //The most humorous part of Ok Zoomer. ^w^
 public class OwoUtils {

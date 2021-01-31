@@ -1,10 +1,10 @@
-package io.github.joaoh1.okzoomer.client.events;
+package io.github.joaoh1.okzoomer.events;
 
-import io.github.joaoh1.okzoomer.client.keybinds.ZoomKeybinds;
-import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
-import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.keybinds.ZoomKeybinds;
+import io.github.joaoh1.okzoomer.packets.ZoomPackets;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.joaoh1.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 //This event is responsible for managing the zoom signal.

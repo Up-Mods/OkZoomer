@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.client.config;
+package io.github.joaoh1.okzoomer.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,13 +19,13 @@ import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.joaoh1.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
-import io.github.joaoh1.okzoomer.client.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
-import io.github.joaoh1.okzoomer.client.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.client.utils.ZoomUtils;
-import io.github.joaoh1.okzoomer.client.zoom.LinearTransitionMode;
-import io.github.joaoh1.okzoomer.client.zoom.MultipliedCinematicCameraMouseModifier;
-import io.github.joaoh1.okzoomer.client.zoom.ZoomerZoomOverlay;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
+import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.joaoh1.okzoomer.packets.ZoomPackets;
+import io.github.joaoh1.okzoomer.utils.ZoomUtils;
+import io.github.joaoh1.okzoomer.zoom.LinearTransitionMode;
+import io.github.joaoh1.okzoomer.zoom.MultipliedCinematicCameraMouseModifier;
+import io.github.joaoh1.okzoomer.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
 
 //The class responsible for loading and saving the config.

@@ -14,8 +14,8 @@
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.joaoh1.okzoomer.client.OkZoomerClientMod"],
-    "modmenu": ["io.github.joaoh1.okzoomer.client.config.modmenu.OkZoomerModMenuEntry"]
+    "client": ["io.github.joaoh1.okzoomer.OkZoomerClientMod"],
+    "modmenu": ["io.github.joaoh1.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [
     "okzoomer.mixins.json"
