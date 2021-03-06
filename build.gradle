@@ -17,7 +17,8 @@ if (System.env.GITHUB_ACTIONS == "true") {
 
 repositories {
 	maven { url "https://jitpack.io" }
-	jcenter()
+	maven { url "https://maven.shedaniel.me/" }
+	maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 dependencies {
@@ -28,7 +29,7 @@ dependencies {
 	
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "com.github.joaoh1:LibZoomer:${project.libzoomer_version}"
-	modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
+	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
 	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
 	

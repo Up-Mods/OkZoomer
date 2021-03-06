@@ -61,10 +61,10 @@ public class ZoomPackets {
 		});
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			PacketByteBuf emptyBuf = PacketByteBufs.empty();
+			//PacketByteBuf emptyBuf = PacketByteBufs.empty();
 			//sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
 			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
-			sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
+			//sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
 			//PacketByteBuf buf = PacketByteBufs.create();
 			//buf.writeInt(1);
 			//sender.sendPacket(FORCE_REDUCE_SENSITIVITY_PACKET_ID, buf);

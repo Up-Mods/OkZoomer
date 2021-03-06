@@ -64,6 +64,10 @@ public class OkZoomerConfigPojo {
 		@Setting(comment = "The maximum value that you can scroll up.")
 		public double maximumZoomDivisor = 50.0;
 
+		public double minimumZoomedFOV = 30.0;
+
+		public double maximumZoomedFOV = 110.0;
+
 		@Setting.Constrain.Range(min = 0.0)
 		@Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is above the starting point.")
 		public double scrollStep = 1.0;
