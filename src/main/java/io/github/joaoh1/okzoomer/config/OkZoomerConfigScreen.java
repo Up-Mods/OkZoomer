@@ -1,3 +1,4 @@
+/*
 package io.github.joaoh1.okzoomer.config;
 
 import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
@@ -365,3 +366,4 @@ public class OkZoomerConfigScreen {
 		return builder.build();
     }
 }
+*/

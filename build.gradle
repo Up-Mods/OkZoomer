@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -18,6 +18,7 @@ if (System.env.GITHUB_ACTIONS == "true") {
 repositories {
 	maven { url "https://jitpack.io" }
 	maven { url "https://maven.shedaniel.me/" }
+	maven { url "https://aperlambda.github.io/maven" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
@@ -30,11 +31,11 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "com.github.joaoh1:LibZoomer:${project.libzoomer_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
+	modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
 	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
 	
 	include "com.github.joaoh1:LibZoomer:${project.libzoomer_version}"
-	include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
+	include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
     include "me.zeroeightsix:fiber:${project.fiber_version}"
 }
 

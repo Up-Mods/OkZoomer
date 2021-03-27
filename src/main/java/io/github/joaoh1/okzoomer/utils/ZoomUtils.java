@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier;
 
 //The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
-    //The logger, used everywhere to print messages to the console.
+	//The logger, used everywhere to print messages to the console.
 	public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 
 	public static ZoomInstance zoomerZoom = ZoomRegistry.registerInstance(new ZoomInstance(
@@ -37,7 +37,7 @@ public class ZoomUtils {
 	public static float zoomOverlayAlpha = 0.0F;
 	public static float lastZoomOverlayAlpha = 0.0F;
 
-    //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
+	//The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
 	public static final void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
 		if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
@@ -45,8 +45,15 @@ public class ZoomUtils {
 		}
 
 		double zoomDivisor = zoomerZoom.getZoomDivisor();
+		double minimumZoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
+		double maximumZoomDivisor = OkZoomerConfigPojo.values.maximumZoomDivisor;
 		double changedZoomDivisor;
 		double lesserChangedZoomDivisor;
+
+		if (ZoomPackets.getForceZoomDivisors()) {
+			minimumZoomDivisor = ZoomPackets.getMinimumZoomDivisor();
+			maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
+		}
 
 		if (increase) {
 			changedZoomDivisor = zoomDivisor + OkZoomerConfigPojo.values.scrollStep;
@@ -60,8 +67,8 @@ public class ZoomUtils {
 			changedZoomDivisor = lesserChangedZoomDivisor;
 		}
 
-		if (changedZoomDivisor >= OkZoomerConfigPojo.values.minimumZoomDivisor) {
-			if (changedZoomDivisor <= OkZoomerConfigPojo.values.maximumZoomDivisor) {
+		if (changedZoomDivisor >= minimumZoomDivisor) {
+			if (changedZoomDivisor <= maximumZoomDivisor) {
 				zoomerZoom.setZoomDivisor(changedZoomDivisor);
 			}
 		}

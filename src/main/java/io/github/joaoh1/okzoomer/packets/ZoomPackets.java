@@ -37,25 +37,45 @@ public class ZoomPackets {
 
 	//Registers all the packets
     public static void registerPackets() {
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, responseSender) -> {
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom"));
 				disableZoom = true;
 			});
 		});
 
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, responseSender) -> {
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom_scrolling"));
 				disableZoomScrolling = true;
 			});
 		});
 
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, responseSender) -> {
+		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.force_classic_mode"));
 				disableZoomScrolling = true;
 				forceClassicMode = true;
+				OkZoomerConfig.configureZoomInstance();
+			});
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(FORCE_ZOOM_DIVISOR_PACKET_ID, (client, handler, buf, sender) -> {
+			client.execute(() -> {
+				sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
+				// TODO - Why is this even failing?
+				if (buf.readableBytes() == 8) {
+					double divisor = buf.readDouble();
+					maximumZoomDivisor = divisor;
+					minimumZoomDivisor = divisor;
+					forceZoomDivisors = true;
+				} else if (buf.readableBytes() == 16) {
+					double maxDivisor = buf.readDouble();
+					double minDivisor = buf.readDouble();
+					maximumZoomDivisor = maxDivisor;
+					minimumZoomDivisor = minDivisor;
+					forceZoomDivisors = true;
+				}
 				OkZoomerConfig.configureZoomInstance();
 			});
 		});
@@ -65,9 +85,9 @@ public class ZoomPackets {
 			//sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
 			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
 			//sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
-			//PacketByteBuf buf = PacketByteBufs.create();
-			//buf.writeInt(1);
-			//sender.sendPacket(FORCE_REDUCE_SENSITIVITY_PACKET_ID, buf);
+			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeDouble(4.0D);
+			sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
 		}); 
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
@@ -92,11 +112,22 @@ public class ZoomPackets {
 	public static boolean getForceZoomDivisors() {
 		return forceZoomDivisors;
 	}
+
+	public static double getMaximumZoomDivisor() {
+		return maximumZoomDivisor;
+	}
+
+	public static double getMinimumZoomDivisor() {
+		return minimumZoomDivisor;
+	}
 	
 	//The method used to reset the signals once left the server.
 	private static void resetPacketSignals() {
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
+		ZoomPackets.forceZoomDivisors = false;
+		ZoomPackets.maximumZoomDivisor = 0.0D;
+		ZoomPackets.minimumZoomDivisor = 0.0D;
 		if (ZoomPackets.forceClassicMode) {
 			ZoomPackets.forceClassicMode = false;
 			OkZoomerConfig.configureZoomInstance();

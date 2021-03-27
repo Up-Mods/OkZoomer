@@ -7,6 +7,7 @@ import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
 import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
@@ -22,7 +23,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     private MinecraftClient client;
 
     public float zoomOverlayAlpha = 0.0F;
-	public float lastZoomOverlayAlpha = 0.0F;
+    public float lastZoomOverlayAlpha = 0.0F;
 
     public ZoomerZoomOverlay() {
         this.active = false;
@@ -47,24 +48,23 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     @Override
     public void renderOverlay() {
         if (!this.active) return;
-        RenderSystem.disableAlphaTest();
-		RenderSystem.disableDepthTest();
-		RenderSystem.depthMask(false);
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.zoomOverlayAlpha);
-		this.client.getTextureManager().bindTexture(OVERLAY_TEXTURE_ID);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferBuilder = tessellator.getBuffer();
-		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-		bufferBuilder.vertex(0.0D, (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(0.0F, 1.0F).next();
-		bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(1.0F, 1.0F).next();
-		bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), 0.0D, -90.0D).texture(1.0F, 0.0F).next();
-		bufferBuilder.vertex(0.0D, 0.0D, -90.0D).texture(0.0F, 0.0F).next();
-		tessellator.draw();
-		RenderSystem.depthMask(true);
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.zoomOverlayAlpha);
+        RenderSystem.setShaderTexture(0, OVERLAY_TEXTURE_ID);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(0.0D, (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(0.0F, 1.0F).next();
+        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(1.0F, 1.0F).next();
+        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), 0.0D, -90.0D).texture(1.0F, 0.0F).next();
+        bufferBuilder.vertex(0.0D, 0.0D, -90.0D).texture(0.0F, 0.0F).next();
+        tessellator.draw();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Override
@@ -82,23 +82,23 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         }
         float zoomMultiplier = 0.0F;
 
-		if (this.zoomActive) {
-			zoomMultiplier = 1.0F;
-		}
+        if (this.zoomActive) {
+            zoomMultiplier = 1.0F;
+        }
 
-		lastZoomOverlayAlpha = zoomOverlayAlpha;
-		
-		if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-			zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
-		} else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-			double linearStep = 1.0F / this.divisor;
-			if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
-			}
-			if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
-				linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
-			}
-			zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
+        lastZoomOverlayAlpha = zoomOverlayAlpha;
+        
+        if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
+            zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
+        } else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
+            double linearStep = 1.0F / this.divisor;
+            if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
+                linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
+            }
+            if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
+                linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
+            }
+            zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
         }
     }
 
