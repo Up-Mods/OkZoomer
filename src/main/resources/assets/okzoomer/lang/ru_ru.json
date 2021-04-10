@@ -49,7 +49,7 @@
     "config.okzoomer.cinematic_multiplier":"Множитель кинематографичности",
     "config.okzoomer.cinematic_multiplier.tooltip":"Множитель, используемый для \"Умноженной\" кинематографической камеры.",
     "config.okzoomer.smooth_multiplier":"Множитель сглаживания",
-    "config.okzoomer.smooth_multiplier.tooltip":"Множитель, используемый для гладких переходов  .",
+    "config.okzoomer.smooth_multiplier.tooltip":"Множитель, используемый для гладких переходов.",
     "config.okzoomer.minimum_linear_step":"Начальный линейный шаг",
     "config.okzoomer.minimum_linear_step.tooltip":"Начальная \"скорость\" приближения линейного сглаживания.",
     "config.okzoomer.maximum_linear_step":"Конечный линейный шаг",
