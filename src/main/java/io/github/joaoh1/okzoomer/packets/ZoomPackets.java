@@ -11,17 +11,18 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-//Manages the zoom packets and their signals.
+/* 	Manages the zoom packets and their signals.
+	These packets are intended to be used by the future "Zoomer Boomer" server-side mod,
+	although developers are welcome to independently transmit them for other loaders */
 public class ZoomPackets {
-    //The IDs for packets that allows the server to have some control on the zoom.
+	//The IDs for packets that allows the server to have some control on the zoom.
 	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
 	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
 	public static final Identifier FORCE_CLASSIC_MODE_PACKET_ID = new Identifier("okzoomer", "force_classic_mode");
-	//TODO - Force Zoom Divisor (allows for either a single divisor or a maximum and minimum)
 	public static final Identifier FORCE_ZOOM_DIVISOR_PACKET_ID = new Identifier("okzoomer", "force_zoom_divisor");
-	//TODO - Reset (allows to reset the other restrictions, allowing Zoomer Boomer to change restrictions without kicking the user)
+	public static final Identifier ACKNOWLEDGE_MOD_PACKET_ID = new Identifier("okzoomer", "acknowledge_mod");
 
-    //The signals used by other parts of the zoom in order to enforce the packets. 
+	//The signals used by other parts of the zoom in order to enforce the packets.
 	private static boolean disableZoom = false;
 	private static boolean disableZoomScrolling = false;
 	private static boolean forceClassicMode = false;
@@ -36,7 +37,11 @@ public class ZoomPackets {
 	}
 
 	//Registers all the packets
-    public static void registerPackets() {
+	public static void registerPackets() {
+		/*	The "Disable Zoom" packet,
+			If this packet is received, Ok Zoomer's zoom will be disabled completely while in the server
+			Supported since Ok Zoomer 4.0.0 (1.16)
+			Arguments: None */
 		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom"));
@@ -44,6 +49,10 @@ public class ZoomPackets {
 			});
 		});
 
+		/*	The "Disable Zoom Scrolling" packet,
+			If this packet is received, zoom scrolling will be disabled while in the server
+			Supported since Ok Zoomer 4.0.0 (1.16)
+			Arguments: None */
 		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom_scrolling"));
@@ -51,6 +60,11 @@ public class ZoomPackets {
 			});
 		});
 
+		/*	The "Force Classic Mode" packet,
+			If this packet is received, the Classic Mode will be activated while connected to the server,
+			under the Classic mode, the Classic preset will be forced on all non-cosmetic options
+			Supported since Ok Zoomer 5.0.0-beta.1 (1.17)
+			Arguments: None */
 		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.force_classic_mode"));
@@ -60,10 +74,15 @@ public class ZoomPackets {
 			});
 		});
 
+		/*	The "Force Zoom Divisor" packet,
+			If this packet is received, the minimum and maximum zoom divisor values will be overriden
+			with the provided arguments
+			Will be supported by Ok Zoomer 5.0.0-beta.2 (1.17)
+			Arguments: One double (max & min) or two doubles (first is max, second is min) */
 		ClientPlayNetworking.registerGlobalReceiver(FORCE_ZOOM_DIVISOR_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
-				// TODO - Why is this even failing?
+				// TODO - Find out why this is not working
 				if (buf.readableBytes() == 8) {
 					double divisor = buf.readDouble();
 					maximumZoomDivisor = divisor;
@@ -79,6 +98,11 @@ public class ZoomPackets {
 				OkZoomerConfig.configureZoomInstance();
 			});
 		});
+
+		/*	TODO - The "Acknowledge Mod" packet,
+			If received, a toast will appear, the toast will either state that
+			the server won't restrict the mod or say that the server controls will be activated
+			Will have a boolean argument, false for restricting, true for restrictionless */
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			//PacketByteBuf emptyBuf = PacketByteBufs.empty();

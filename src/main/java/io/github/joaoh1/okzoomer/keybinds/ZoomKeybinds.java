@@ -12,7 +12,7 @@ import net.minecraft.client.util.InputUtil;
 public class ZoomKeybinds {
     //The zoom keybinding, which will be registered.
 	public static final KeyBinding zoomKey = KeyBindingHelper.registerKeyBinding(
-		new KeyBinding("key.okzoomer.zoom", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C, "key.okzoomer.category"));
+		new KeyBinding("key.okzoomer.zoom", GLFW.GLFW_KEY_C, "key.okzoomer.category"));
 	
 	//The "Decrease Zoom" keybinding.
 	public static final KeyBinding decreaseZoomKey = getExtraKeybind("key.okzoomer.decrease_zoom");
@@ -39,7 +39,7 @@ public class ZoomKeybinds {
 	public static final KeyBinding getExtraKeybind(String translationKey) {
 		if (areExtraKeybindsEnabled()) {
 			return KeyBindingHelper.registerKeyBinding(
-				new KeyBinding(translationKey, InputUtil.Type.KEYSYM, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
+				new KeyBinding(translationKey, InputUtil.UNKNOWN_KEY.getCode(), "key.okzoomer.category"));
 		}
 		return null;
 	}
