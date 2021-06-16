@@ -1,16 +1,16 @@
-package io.github.joaoh1.okzoomer.utils;
+package io.github.ennuil.okzoomer.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import io.github.joaoh1.okzoomer.keybinds.ZoomKeybinds;
-import io.github.joaoh1.okzoomer.packets.ZoomPackets;
-import io.github.joaoh1.libzoomer.api.ZoomRegistry;
-import io.github.joaoh1.libzoomer.api.ZoomInstance;
-import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
-import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
+import io.github.ennuil.libzoomer.api.ZoomRegistry;
+import io.github.ennuil.libzoomer.api.ZoomInstance;
+import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
+import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
+import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;

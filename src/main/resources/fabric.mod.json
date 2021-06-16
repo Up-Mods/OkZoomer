@@ -4,26 +4,27 @@
   "version": "${version}",
   "name": "Ok Zoomer",
   "description": "Adds a highly configurable zoom button. By default, this mod provides its own take on zooming, however, with configuration, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
-  "authors": ["boredomh1"],
+  "authors": ["EnnuiL"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/ok-zoomer",
-    "issues": "https://github.com/joaoh1/OkZoomer/issues",
-    "sources": "https://github.com/joaoh1/OkZoomer"
+    "issues": "https://github.com/EnnuiL/OkZoomer/issues",
+    "sources": "https://github.com/EnnuiL/OkZoomer"
   },
   "license": "MIT",
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.joaoh1.okzoomer.OkZoomerClientMod"],
-    "modmenu": ["io.github.joaoh1.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
+    "client": ["io.github.ennuil.okzoomer.OkZoomerClientMod"],
+    "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [
     "okzoomer.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.0",
-    "fabric": ">=0.28.0",
-    "fiber": ">=0.23.0-"
+    "fabricloader": ">=0.11.3",
+    "fabric": ">=0.34.0",
+    "fiber": ">=0.23.0-",
+    "libzoomer": ">=0.2.0"
   },
   "recommends": {
     "modmenu": ">=2.0.0",

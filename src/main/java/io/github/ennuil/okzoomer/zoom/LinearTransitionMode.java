@@ -1,6 +1,6 @@
-package io.github.joaoh1.okzoomer.zoom;
+package io.github.ennuil.okzoomer.zoom;
 
-import io.github.joaoh1.libzoomer.api.TransitionMode;
+import io.github.ennuil.libzoomer.api.TransitionMode;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -33,7 +33,7 @@ public class LinearTransitionMode implements TransitionMode {
 	}
 
 	@Override
-	public double applyZoom(double fov, double divisor, float tickDelta) {
+	public double applyZoom(double fov, float tickDelta) {
         fovMultiplier = MathHelper.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
         return fov * fovMultiplier;
 	}

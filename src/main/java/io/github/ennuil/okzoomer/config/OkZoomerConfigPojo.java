@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.config;
+package io.github.ennuil.okzoomer.config;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.Setting.Group;

@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.mixin;
+package io.github.ennuil.okzoomer.mixin;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,11 +8,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import io.github.joaoh1.okzoomer.keybinds.ZoomKeybinds;
-import io.github.joaoh1.okzoomer.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
-import io.github.joaoh1.okzoomer.utils.ZoomUtils;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.packets.ZoomPackets;
+import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 

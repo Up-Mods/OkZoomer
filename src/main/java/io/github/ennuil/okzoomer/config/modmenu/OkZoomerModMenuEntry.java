@@ -1,6 +1,6 @@
-package io.github.joaoh1.okzoomer.config.modmenu;
+package io.github.ennuil.okzoomer.config.modmenu;
 
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+//import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
 import net.fabricmc.api.Environment;

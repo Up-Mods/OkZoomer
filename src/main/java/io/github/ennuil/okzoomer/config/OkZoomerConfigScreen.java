@@ -1,3 +1,4 @@
+package io.github.ennuil.okzoomer.config;
 // TODO - Move to Conrad
 /*
 package io.github.joaoh1.okzoomer.config;

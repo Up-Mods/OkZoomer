@@ -1,6 +1,6 @@
-package io.github.joaoh1.okzoomer.packets;
+package io.github.ennuil.okzoomer.packets;
 
-import io.github.joaoh1.okzoomer.config.OkZoomerConfig;
+import io.github.ennuil.okzoomer.config.OkZoomerConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -82,6 +82,7 @@ public class ZoomPackets {
 		ClientPlayNetworking.registerGlobalReceiver(FORCE_ZOOM_DIVISOR_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
+				System.out.println(buf.refCnt());
 				// TODO - Find out why this is not working
 				if (buf.readableBytes() == 8) {
 					double divisor = buf.readDouble();
@@ -110,7 +111,9 @@ public class ZoomPackets {
 			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
 			//sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
 			PacketByteBuf buf = PacketByteBufs.create();
+			buf.writeByte(0);
 			buf.writeDouble(4.0D);
+			System.out.println(buf.refCnt());
 			sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
 		}); 
 

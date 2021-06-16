@@ -1,4 +1,4 @@
-package io.github.joaoh1.okzoomer.config;
+package io.github.ennuil.okzoomer.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,22 +10,22 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.exception.FiberException;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization;
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
-import io.github.joaoh1.libzoomer.api.MouseModifier;
-import io.github.joaoh1.libzoomer.api.ZoomOverlay;
-import io.github.joaoh1.libzoomer.api.modifiers.CinematicCameraMouseModifier;
-import io.github.joaoh1.libzoomer.api.modifiers.ContainingMouseModifier;
-import io.github.joaoh1.libzoomer.api.modifiers.NoMouseModifier;
-import io.github.joaoh1.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.joaoh1.libzoomer.api.overlays.NoZoomOverlay;
-import io.github.joaoh1.libzoomer.api.transitions.InstantTransitionMode;
-import io.github.joaoh1.libzoomer.api.transitions.SmoothTransitionMode;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
-import io.github.joaoh1.okzoomer.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.utils.ZoomUtils;
-import io.github.joaoh1.okzoomer.zoom.LinearTransitionMode;
-import io.github.joaoh1.okzoomer.zoom.MultipliedCinematicCameraMouseModifier;
-import io.github.joaoh1.okzoomer.zoom.ZoomerZoomOverlay;
+import io.github.ennuil.libzoomer.api.MouseModifier;
+import io.github.ennuil.libzoomer.api.ZoomOverlay;
+import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
+import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
+import io.github.ennuil.libzoomer.api.modifiers.NoMouseModifier;
+import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
+import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
+import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
+import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.ennuil.okzoomer.packets.ZoomPackets;
+import io.github.ennuil.okzoomer.utils.ZoomUtils;
+import io.github.ennuil.okzoomer.zoom.LinearTransitionMode;
+import io.github.ennuil.okzoomer.zoom.MultipliedCinematicCameraMouseModifier;
+import io.github.ennuil.okzoomer.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
 
 //The class responsible for loading and saving the config.

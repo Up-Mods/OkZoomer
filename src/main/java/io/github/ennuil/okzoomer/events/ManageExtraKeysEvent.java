@@ -1,8 +1,8 @@
-package io.github.joaoh1.okzoomer.events;
+package io.github.ennuil.okzoomer.events;
 
-import io.github.joaoh1.okzoomer.keybinds.ZoomKeybinds;
-import io.github.joaoh1.okzoomer.packets.ZoomPackets;
-import io.github.joaoh1.okzoomer.utils.ZoomUtils;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.packets.ZoomPackets;
+import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 //This event manages the extra keybinds' behavior.

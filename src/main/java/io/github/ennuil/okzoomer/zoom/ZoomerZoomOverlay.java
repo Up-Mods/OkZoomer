@@ -1,10 +1,10 @@
-package io.github.joaoh1.okzoomer.zoom;
+package io.github.ennuil.okzoomer.zoom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import io.github.joaoh1.libzoomer.api.ZoomOverlay;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo;
-import io.github.joaoh1.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.ennuil.libzoomer.api.ZoomOverlay;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;

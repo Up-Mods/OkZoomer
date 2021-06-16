@@ -1,10 +1,11 @@
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id 'io.github.juuxel.loom-quiltflower' version '1.1.1'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 group = project.maven_group
@@ -19,20 +20,21 @@ repositories {
 	maven { url "https://jitpack.io" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://maven.quiltmc.org/repository/release" }
 }
 
 dependencies {
 	// To change the versions, see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings "org.quiltmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "com.github.joaoh1:LibZoomer:${project.libzoomer_version}"
+	modImplementation "com.github.EnnuiL:LibZoomer:${project.libzoomer_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
 	
-	include "com.github.joaoh1:LibZoomer:${project.libzoomer_version}"
+	include "com.github.EnnuiL:LibZoomer:${project.libzoomer_version}"
     include "me.zeroeightsix:fiber:${project.fiber_version}"
 }
 
@@ -51,13 +53,8 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		 it.options.release = targetVersion
-	}
+	// Minecraft 1.17 (21w19a) upwards uses Java 16.
+	it.options.release = 16
 }
 
 java {
