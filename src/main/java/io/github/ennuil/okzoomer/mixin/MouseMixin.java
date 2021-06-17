@@ -36,18 +36,11 @@ public class MouseMixin {
 		if (this.eventDeltaWheel != 0.0) {
 			if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.getDisableZoomScrolling()) {
 				if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
-					if (!ZoomKeybinds.zoomKey.isPressed()) {
-						return;
-					}
+					if (!ZoomKeybinds.zoomKey.isPressed()) return;
 				}
 				
 				if (ZoomUtils.zoomerZoom.getZoom()) {
-					if (this.eventDeltaWheel > 0.0) {
-						ZoomUtils.changeZoomDivisor(true);
-					} else if (this.eventDeltaWheel < 0.0) {
-						ZoomUtils.changeZoomDivisor(false);
-					}
-					
+					ZoomUtils.changeZoomDivisor(this.eventDeltaWheel > 0.0);
 					info.cancel();
 				}
 			}
@@ -64,9 +57,7 @@ public class MouseMixin {
 	private void zoomerOnMouseButton(long window, int button, int action, int mods, CallbackInfo info, boolean bl, int i) {
 		if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.getDisableZoomScrolling()) {
 			if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
-				if (!ZoomKeybinds.zoomKey.isPressed()) {
-					return;
-				}
+				if (!ZoomKeybinds.zoomKey.isPressed()) return;
 			}
 	
 			if (button == 2 && bl == true) {

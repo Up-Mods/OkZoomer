@@ -1,15 +1,16 @@
 package io.github.ennuil.okzoomer.config.modmenu;
 
-//import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
+import io.github.ennuil.okzoomer.config.OkZoomerSpruceConfigScreen;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 
 @Environment(EnvType.CLIENT)
 public class OkZoomerModMenuEntry implements ModMenuApi {
-	/* @Override
+	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		return screen -> new OkZoomerConfigSpruceScreen(screen);
-	} */
+		return screen -> new OkZoomerSpruceConfigScreen(screen);
+	}
 }
