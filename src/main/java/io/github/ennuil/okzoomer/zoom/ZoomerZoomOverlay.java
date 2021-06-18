@@ -75,16 +75,18 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
             this.active = active;
         }
 
+        /*
+        Due to how LibZoomer is implemented, it's always going to disappear when the HUD's hidden,
+        this is not good for cinematic purposes...
+        // TODO - Restore this feature
         if (this.client.options.hudHidden) {
             if (OkZoomerConfigPojo.tweaks.hideZoomOverlay) {
                 return;
             }
         }
-        float zoomMultiplier = 0.0F;
+        */
 
-        if (this.zoomActive) {
-            zoomMultiplier = 1.0F;
-        }
+        float zoomMultiplier = this.zoomActive ? 1.0F : 0.0F;
 
         lastZoomOverlayAlpha = zoomOverlayAlpha;
         

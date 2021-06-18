@@ -11,7 +11,6 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.FiberSerialization
 import io.github.fablabsmc.fablabs.api.fiber.v1.serialization.JanksonValueSerializer;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import io.github.ennuil.libzoomer.api.MouseModifier;
-import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.NoMouseModifier;
@@ -20,6 +19,7 @@ import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
@@ -42,6 +42,12 @@ public class OkZoomerConfig {
 		.build();
 	
 	private static JanksonValueSerializer serializer = new JanksonValueSerializer(false);
+
+	public enum ZoomPresets {
+        DEFAULT,
+        CLASSIC,
+        PERSISTENT
+    }
 
 	public static void loadModConfig() {
 		if (Files.exists(CONFIG_PATH)) {
@@ -111,7 +117,7 @@ public class OkZoomerConfig {
 				default -> null;
 			};
 			ZoomUtils.zoomerZoom.setMouseModifier(reduceSensitivity
-				? new ContainingMouseModifier(new MouseModifier[]{cinematicModifier, new ZoomDivisorMouseModifier()})
+				? new ContainingMouseModifier(cinematicModifier, new ZoomDivisorMouseModifier())
 				: cinematicModifier
 			);
 		} else {
@@ -121,4 +127,50 @@ public class OkZoomerConfig {
 			);
 		}
 	}
+
+	public static void resetToPreset(ZoomPresets preset) {
+        switch (preset) {
+            case DEFAULT -> {
+                OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
+                OkZoomerConfigPojo.features.reduceSensitivity = true;
+                OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
+                OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
+                OkZoomerConfigPojo.features.zoomScrolling = true;
+                OkZoomerConfigPojo.features.extraKeybinds = true;
+                OkZoomerConfigPojo.values.zoomDivisor = 4.0;
+                OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
+            }
+            case CLASSIC -> {
+                OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.VANILLA;
+                OkZoomerConfigPojo.features.reduceSensitivity = false;
+                OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.OFF;
+                OkZoomerConfigPojo.features.zoomMode = ZoomModes.HOLD;
+                OkZoomerConfigPojo.features.zoomScrolling = false;
+                OkZoomerConfigPojo.features.extraKeybinds = false;
+                OkZoomerConfigPojo.values.zoomDivisor = 4.0;
+                OkZoomerConfigPojo.tweaks.resetZoomWithMouse = false;
+            }
+            case PERSISTENT -> {
+                OkZoomerConfigPojo.features.cinematicCamera = CinematicCameraOptions.OFF;
+                OkZoomerConfigPojo.features.reduceSensitivity = true;
+                OkZoomerConfigPojo.features.zoomTransition = ZoomTransitionOptions.SMOOTH;
+                OkZoomerConfigPojo.features.zoomMode = ZoomModes.PERSISTENT;
+                OkZoomerConfigPojo.features.zoomScrolling = true;
+                OkZoomerConfigPojo.features.extraKeybinds = true;
+                OkZoomerConfigPojo.values.zoomDivisor = 1.0;
+                OkZoomerConfigPojo.tweaks.resetZoomWithMouse = true;
+            }
+            default -> {}
+        }
+        OkZoomerConfigPojo.features.zoomOverlay = false;
+        OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
+        OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
+        OkZoomerConfigPojo.values.scrollStep = 1.0;
+        OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
+        OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
+        OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
+        OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
+        OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
+        OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
+    }
 }
