@@ -32,7 +32,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public Identifier getIdentifier() {
-        return OVERLAY_ID;
+        return this.OVERLAY_ID;
     }
 
     @Override
