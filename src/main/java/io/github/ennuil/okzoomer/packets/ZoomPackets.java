@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
@@ -32,7 +33,7 @@ public class ZoomPackets {
 
     private static TranslatableText toastTitle = new TranslatableText("toast.okzoomer.title");
 
-    private static void sendToast(MinecraftClient client, TranslatableText description) {
+    private static void sendToast(MinecraftClient client, Text description) {
         SystemToast.add(client.getToastManager(), SystemToast.Type.TUTORIAL_HINT, toastTitle, description);
     }
 
@@ -94,27 +95,30 @@ public class ZoomPackets {
             }
         });
 
-        /*	TODO - The "Acknowledge Mod" packet,
+        /*	The "Acknowledge Mod" packet,
             If received, a toast will appear, the toast will either state that
             the server won't restrict the mod or say that the server controls will be activated
-            Will have a boolean argument, false for restricting, true for restrictionless */
+            Supported since Ok Zoomer 5.0.0-beta.2 (1.17)
+            Arguments: one boolean, false for restricting, true for restrictionless */
         ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
             boolean restricting = buf.readBoolean();
             client.execute(() -> {
                 sendToast(client, restricting
-                ? new TranslatableText("toast.okzoomer.acknoledge_mod_restrictions")
-                : new TranslatableText("toast.okzoomer.acknoledge_mod"));
+                ? new TranslatableText("toast.okzoomer.acknowledge_mod_restrictions")
+                : new TranslatableText("toast.okzoomer.acknowledge_mod"));
             });
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            //PacketByteBuf emptyBuf = PacketByteBufs.empty();
+            PacketByteBuf boolBuf = PacketByteBufs.create();
+            boolBuf.writeBoolean(true);
+            sender.sendPacket(ACKNOWLEDGE_MOD_PACKET_ID, boolBuf);
+            PacketByteBuf emptyBuf = PacketByteBufs.empty();
             //sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
             //sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
-            //sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
+            sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeDouble(4.0D);
-            System.out.println(buf.refCnt());
             sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
         }); 
 

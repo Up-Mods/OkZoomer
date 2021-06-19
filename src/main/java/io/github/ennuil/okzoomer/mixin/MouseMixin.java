@@ -54,7 +54,7 @@ public class MouseMixin {
                 if (!ZoomKeybinds.zoomKey.isPressed()) return;
             }
             
-            if (button == 2 && bl == true) {
+            if (button == 2 && bl) {
                 if (ZoomKeybinds.zoomKey.isPressed()) {
                     if (OkZoomerConfigPojo.tweaks.resetZoomWithMouse) {
                         ZoomUtils.resetZoomDivisor();
