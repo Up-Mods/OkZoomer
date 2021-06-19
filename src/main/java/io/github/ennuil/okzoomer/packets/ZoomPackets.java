@@ -77,33 +77,35 @@ public class ZoomPackets {
         /*	The "Force Zoom Divisor" packet,
             If this packet is received, the minimum and maximum zoom divisor values will be overriden
             with the provided arguments
-            Will be supported by Ok Zoomer 5.0.0-beta.2 (1.17)
+            Supported since Ok Zoomer 5.0.0-beta.2 (1.17)
             Arguments: One double (max & min) or two doubles (first is max, second is min) */
         ClientPlayNetworking.registerGlobalReceiver(FORCE_ZOOM_DIVISOR_PACKET_ID, (client, handler, buf, sender) -> {
-            client.execute(() -> {
-                sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
-                System.out.println(buf.refCnt());
-                // TODO - Find out why this is not working
-                if (buf.readableBytes() == 8) {
-                    double divisor = buf.readDouble();
-                    maximumZoomDivisor = divisor;
-                    minimumZoomDivisor = divisor;
+            int readableBytes = buf.readableBytes();
+            if (readableBytes == 8 || readableBytes == 16) {
+                double maxDouble = buf.readDouble();
+                double minDouble = (readableBytes == 16) ? buf.readDouble() : maxDouble;
+                client.execute(() -> {
+                    sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
+                    maximumZoomDivisor = maxDouble;
+                    minimumZoomDivisor = minDouble;
                     forceZoomDivisors = true;
-                } else if (buf.readableBytes() == 16) {
-                    double maxDivisor = buf.readDouble();
-                    double minDivisor = buf.readDouble();
-                    maximumZoomDivisor = maxDivisor;
-                    minimumZoomDivisor = minDivisor;
-                    forceZoomDivisors = true;
-                }
-                OkZoomerConfig.configureZoomInstance();
-            });
+                    OkZoomerConfig.configureZoomInstance();
+                });
+            }
         });
 
         /*	TODO - The "Acknowledge Mod" packet,
             If received, a toast will appear, the toast will either state that
             the server won't restrict the mod or say that the server controls will be activated
             Will have a boolean argument, false for restricting, true for restrictionless */
+        ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
+            boolean restricting = buf.readBoolean();
+            client.execute(() -> {
+                sendToast(client, restricting
+                ? new TranslatableText("toast.okzoomer.acknoledge_mod_restrictions")
+                : new TranslatableText("toast.okzoomer.acknoledge_mod"));
+            });
+        });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             //PacketByteBuf emptyBuf = PacketByteBufs.empty();
