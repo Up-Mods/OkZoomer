@@ -103,7 +103,7 @@ public class OkZoomerConfigPojo {
         // TODO - Revert this once 5.0.0 is properly released
         @Setting(comment = "Prints a random owo in the console when the game starts. Enabled by default until full release.")
         public boolean printOwoOnStart = true;
-        @Setting(comment = "Hides the zoom overlay while the HUD's hidden.")
-        public boolean hideZoomOverlay = false;
+        // @Setting(comment = "Hides the zoom overlay while the HUD's hidden.")
+        // public boolean hideZoomOverlay = false;
     }
 }
