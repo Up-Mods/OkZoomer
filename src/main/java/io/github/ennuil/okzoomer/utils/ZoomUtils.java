@@ -16,9 +16,9 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 
-//The class that contains most of the logic behind the zoom itself.
+// The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
-    //The logger, used everywhere to print messages to the console.
+    // The logger, used everywhere to print messages to the console.
     public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
 
     public static ZoomInstance zoomerZoom = ZoomRegistry.registerInstance(new ZoomInstance(
@@ -29,15 +29,15 @@ public class ZoomUtils {
             new NoZoomOverlay()
         ));
 
-    //The zoom FOV multipliers. Used by the GameRenderer mixin.
+    // The zoom FOV multipliers. Used by the GameRenderer mixin.
     public static float zoomFovMultiplier = 1.0F;
     public static float lastZoomFovMultiplier = 1.0F;
 
-    //The zoom overlay's alpha. Used by the InGameHud mixin.
+    // The zoom overlay's alpha. Used by the InGameHud mixin.
     public static float zoomOverlayAlpha = 0.0F;
     public static float lastZoomOverlayAlpha = 0.0F;
 
-    //The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
+    // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
     public static final void changeZoomDivisor(boolean increase) {
         //If the zoom is disabled, don't allow for zoom scrolling
         if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
@@ -74,7 +74,7 @@ public class ZoomUtils {
         }
     }
 
-    //The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak.
+    // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak.
     public static final void resetZoomDivisor() {
         if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
             return;
@@ -83,7 +83,7 @@ public class ZoomUtils {
         zoomerZoom.resetZoomDivisor();
     }
 
-    //The method used for unbinding the "Save Toolbar Activator"
+    // The method used for unbinding the "Save Toolbar Activator"
     public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
         if (ZoomKeybinds.zoomKey.isDefault()) {
             if (client.options.keySaveToolbarActivator.isDefault()) {

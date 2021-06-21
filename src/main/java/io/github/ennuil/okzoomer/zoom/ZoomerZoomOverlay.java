@@ -14,6 +14,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+// Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
     private Identifier OVERLAY_ID = new Identifier("okzoomer:zoom_overlay");
     private Identifier OVERLAY_TEXTURE_ID = new Identifier("okzoomer:textures/misc/zoom_overlay.png");
@@ -47,7 +48,6 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public void renderOverlay() {
-        if (!this.active) return;
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.defaultBlendFunc();
@@ -102,10 +102,5 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
             }
             zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
         }
-    }
-
-    @Override
-    public void tickBeforeRender() {
-        
     }
 }

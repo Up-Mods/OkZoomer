@@ -3,11 +3,11 @@ package io.github.ennuil.okzoomer.packets;
 import io.github.ennuil.okzoomer.config.OkZoomerConfig;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+// import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+// import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.network.PacketByteBuf;
+// import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -16,14 +16,16 @@ import net.minecraft.util.Identifier;
     These packets are intended to be used by the future "Zoomer Boomer" server-side mod,
     although developers are welcome to independently transmit them for other loaders */
 public class ZoomPackets {
-    //The IDs for packets that allows the server to have some control on the zoom.
+    // The IDs for packets that allows the server to have some control on the zoom.
     public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("okzoomer", "disable_zoom");
     public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("okzoomer", "disable_zoom_scrolling");
     public static final Identifier FORCE_CLASSIC_MODE_PACKET_ID = new Identifier("okzoomer", "force_classic_mode");
     public static final Identifier FORCE_ZOOM_DIVISOR_PACKET_ID = new Identifier("okzoomer", "force_zoom_divisor");
     public static final Identifier ACKNOWLEDGE_MOD_PACKET_ID = new Identifier("okzoomer", "acknowledge_mod");
+    // Reserved for later
+    public static final Identifier FORCE_SPYGLASS_PACKET_ID = new Identifier("okzoomer", "force_spyglass");
 
-    //The signals used by other parts of the zoom in order to enforce the packets.
+    // The signals used by other parts of the zoom in order to enforce the packets.
     private static boolean disableZoom = false;
     private static boolean disableZoomScrolling = false;
     private static boolean forceClassicMode = false;
@@ -34,7 +36,7 @@ public class ZoomPackets {
     private static TranslatableText toastTitle = new TranslatableText("toast.okzoomer.title");
 
     private static void sendToast(MinecraftClient client, Text description) {
-        SystemToast.add(client.getToastManager(), SystemToast.Type.TUTORIAL_HINT, toastTitle, description);
+        client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
     }
 
     //Registers all the packets
@@ -109,6 +111,18 @@ public class ZoomPackets {
             });
         });
 
+        /*	TODO - The "Force Spyglass" packet,
+            This packet will let the server restrict the mod to spyglass-only usage
+            Not supported yet!
+            Arguments: probably some, we'll see */
+        ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
+            client.execute(() -> {
+                sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom"));
+                disableZoom = true;
+            });
+        });
+
+        /*
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             PacketByteBuf boolBuf = PacketByteBufs.create();
             boolBuf.writeBoolean(true);
@@ -120,7 +134,8 @@ public class ZoomPackets {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeDouble(4.0D);
             sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
-        }); 
+        });
+        */ 
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {

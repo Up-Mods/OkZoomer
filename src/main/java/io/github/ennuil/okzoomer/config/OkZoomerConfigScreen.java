@@ -20,6 +20,8 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
+// The lack of the yellow background is boring
+// TODO - Restore the yellow background
 public class OkZoomerConfigScreen extends SpruceScreen {
     private final Screen parent;
     private SpruceOptionListWidget list;
@@ -47,7 +49,10 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
 
         // "Features" category separator
-        var featuresSeparator = new SpruceSeparatorOption("config.okzoomer.category.features", true, null);
+        var featuresSeparator = new SpruceSeparatorOption(
+            "config.okzoomer.category.features",
+            true,
+            new TranslatableText("config.okzoomer.category.features.tooltip"));
 
         // Cinematic Camera
         var cinematicCameraOption = new SpruceCyclingOption(
@@ -129,7 +134,10 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             new TranslatableText("config.okzoomer.zoom_overlay.tooltip"));
         
         // "Values" category separator
-        var valuesSeparator = new SpruceSeparatorOption("config.okzoomer.category.values", true, null);
+        var valuesSeparator = new SpruceSeparatorOption(
+            "config.okzoomer.category.values",
+            true,
+            new TranslatableText("config.okzoomer.category.values.tooltip"));
 
         // Zoom Divisor
         var zoomDivisorOption = new SpruceDoubleInputOption(
@@ -195,7 +203,10 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             new TranslatableText("config.okzoomer.maximum_linear_step.tooltip"));
         
         // "Tweaks" category separator
-        var tweaksSeparator = new SpruceSeparatorOption("config.okzoomer.category.tweaks", true, null);
+        var tweaksSeparator = new SpruceSeparatorOption(
+            "config.okzoomer.category.tweaks",
+            true,
+            new TranslatableText("config.okzoomer.category.tweaks.tooltip"));
 
         // Reset Zoom with Mouse
         var resetZoomWithMouseOption = new SpruceBooleanOption(
@@ -218,8 +229,11 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             value -> OkZoomerConfigPojo.tweaks.printOwoOnStart = value,
             new TranslatableText("config.okzoomer.print_owo_on_start.tooltip"));
         
-        // "Tweaks" category separator
-        var presetsSeparator = new SpruceSeparatorOption("config.okzoomer.category.presets", true, null);
+        // "Reset" category separator
+        var resetSeparator = new SpruceSeparatorOption(
+            "config.okzoomer.category.reset",
+            true,
+            new TranslatableText("config.okzoomer.category.reset.tooltip"));
 
         // Preset
         var presetOption = new SpruceCyclingOption(
@@ -267,7 +281,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list.addOptionEntry(resetZoomWithMouseOption, unbindConflictingKeyOption);
         this.list.addSingleOptionEntry(printOwoOnStartOption);
 
-        this.list.addSingleOptionEntry(presetsSeparator);
+        this.list.addSingleOptionEntry(resetSeparator);
         this.list.addOptionEntry(presetOption, resetSettingsOption);
 
         this.addDrawableChild(this.list);

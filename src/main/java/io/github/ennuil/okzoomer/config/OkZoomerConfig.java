@@ -29,7 +29,7 @@ import io.github.ennuil.okzoomer.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
 
 // TODO - Move to whatever Config API gets standarized for Quilt
-//The class responsible for loading and saving the config.
+// The class responsible for loading and saving the config.
 public class OkZoomerConfig {
     public static boolean isConfigLoaded = false;
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");

@@ -4,6 +4,7 @@ import io.github.ennuil.libzoomer.api.TransitionMode;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+// The implementation of the linear transition
 public class LinearTransitionMode implements TransitionMode {
     private Identifier transitionId = new Identifier("okzoomer:linear_transition");
     private boolean active;
@@ -61,5 +62,4 @@ public class LinearTransitionMode implements TransitionMode {
 	public double getInternalMultiplier() {
 		return this.internalMultiplier;
 	}
-    
 }

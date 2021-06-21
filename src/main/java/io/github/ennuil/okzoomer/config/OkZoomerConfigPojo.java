@@ -69,10 +69,10 @@ public class OkZoomerConfigPojo {
         public double maximumZoomedFOV = 110.0;
 
         @Setting.Constrain.Range(min = 0.0)
-        @Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is above the starting point.")
+        @Setting(comment = "The number which is decremented or incremented by zoom scrolling. Used when the zoom divisor is above the starting point.")
         public double scrollStep = 1.0;
 
-        @Setting(comment = "The number which is de/incremented by zoom scrolling. Used when the zoom divisor is below the starting point.")
+        @Setting(comment = "The number which is decremented or incremented by zoom scrolling. Used when the zoom divisor is below the starting point.")
         public double lesserScrollStep = 0.5;
 
         @Setting.Constrain.Range(min = Double.MIN_NORMAL, max = 1.0)
@@ -100,7 +100,7 @@ public class OkZoomerConfigPojo {
         public boolean resetZoomWithMouse = true; 
         @Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
         public boolean unbindConflictingKey = true;
-        //TODO - Revert this once 5.0.0 is properly released
+        // TODO - Revert this once 5.0.0 is properly released
         @Setting(comment = "Prints a random owo in the console when the game starts. Enabled by default until full release.")
         public boolean printOwoOnStart = true;
         @Setting(comment = "Hides the zoom overlay while the HUD's hidden.")

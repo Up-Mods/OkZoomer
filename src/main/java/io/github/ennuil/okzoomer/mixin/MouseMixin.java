@@ -14,13 +14,13 @@ import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.Mouse;
 
-//This mixin is responsible for the mouse-behavior-changing part of the zoom.
+// This mixin is responsible for the mouse-behavior-changing part of the zoom.
 @Mixin(Mouse.class)
 public class MouseMixin {
     @Shadow
     private double eventDeltaWheel;
     
-    //Handles zoom scrolling.
+    // Handles zoom scrolling.
     @Inject(
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;eventDeltaWheel:D", ordinal = 7),
         method = "onMouseScroll(JDD)V",
@@ -41,7 +41,7 @@ public class MouseMixin {
         }
     }
 
-    //Handles the zoom scrolling reset through the middle button.
+    // Handles the zoom scrolling reset through the middle button.
     @Inject(
         at = @At(value = "INVOKE", target = "net/minecraft/client/option/KeyBinding.setKeyPressed(Lnet/minecraft/client/util/InputUtil$Key;Z)V"),
         method = "onMouseButton(JIII)V",
