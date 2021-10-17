@@ -1,32 +1,36 @@
-package io.github.ennuil.okzoomer.config;
+package io.github.ennuil.okzoomer.config.screen;
+
+import java.util.Optional;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.option.SpruceBooleanOption;
 import dev.lambdaurora.spruceui.option.SpruceCyclingOption;
-import dev.lambdaurora.spruceui.option.SpruceDoubleInputOption;
 import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
 import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
+import io.github.ennuil.okzoomer.config.OkZoomerConfig;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
 import io.github.ennuil.okzoomer.config.OkZoomerConfig.ZoomPresets;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 
-// The lack of the yellow background is boring
-// TODO - Restore the yellow background
 public class OkZoomerConfigScreen extends SpruceScreen {
     private final Screen parent;
     private SpruceOptionListWidget list;
-
     private ZoomPresets preset;
+    private CustomTextureBackground normalBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_concrete.png"), 64, 64, 64, 255);
+    private CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_concrete.png"), 32, 32, 32, 255);
 
     public OkZoomerConfigScreen(Screen parent) {
         super(new TranslatableText("config.okzoomer.title"));
@@ -47,6 +51,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
     protected void init() {
         super.init();
         this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
+        this.list.setBackground(darkenedBackground);
 
         // "Features" category separator
         var featuresSeparator = new SpruceSeparatorOption(
@@ -140,64 +145,73 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             new TranslatableText("config.okzoomer.category.values.tooltip"));
 
         // Zoom Divisor
-        var zoomDivisorOption = new SpruceDoubleInputOption(
+        var zoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.zoom_divisor",
+            4.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
             () -> OkZoomerConfigPojo.values.zoomDivisor,
             value -> OkZoomerConfigPojo.values.zoomDivisor = value,
             new TranslatableText("config.okzoomer.zoom_divisor.tooltip"));
         
         // Minimum Zoom Divisor
-        var minimumZoomDivisorOption = new SpruceDoubleInputOption(
+        var minimumZoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.minimum_zoom_divisor",
+            1.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
             () -> OkZoomerConfigPojo.values.minimumZoomDivisor,
             value -> OkZoomerConfigPojo.values.minimumZoomDivisor = value,
             new TranslatableText("config.okzoomer.minimum_zoom_divisor.tooltip"));
 
         // Maximum Zoom Divisor
-        var maximumZoomDivisorOption = new SpruceDoubleInputOption(
+        var maximumZoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.maximum_zoom_divisor",
+            50.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
             () -> OkZoomerConfigPojo.values.maximumZoomDivisor,
             value -> OkZoomerConfigPojo.values.maximumZoomDivisor = value,
             new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"));
         
         // Scroll Step
-        var scrollStepOption = new SpruceDoubleInputOption(
+        var scrollStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.scroll_step",
+            1.0D, Optional.of(0.0D), Optional.empty(),
             () -> OkZoomerConfigPojo.values.scrollStep,
             value -> OkZoomerConfigPojo.values.scrollStep = value,
             new TranslatableText("config.okzoomer.scroll_step.tooltip"));
         
         // Lesser Scroll Step
-        var lesserScrollStepOption = new SpruceDoubleInputOption(
+        var lesserScrollStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.lesser_scroll_step",
+            0.5D, Optional.of(0.0D), Optional.empty(),
             () -> OkZoomerConfigPojo.values.lesserScrollStep,
             value -> OkZoomerConfigPojo.values.lesserScrollStep = value,
             new TranslatableText("config.okzoomer.lesser_scroll_step.tooltip"));
         
         // Smooth Multiplier
-        var smoothMultiplierOption = new SpruceDoubleInputOption(
+        var smoothMultiplierOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.smooth_multiplier",
+            0.75D, Optional.of(Double.MIN_NORMAL), Optional.of(1.0D),
             () -> OkZoomerConfigPojo.values.smoothMultiplier,
             value -> OkZoomerConfigPojo.values.smoothMultiplier = value,
             new TranslatableText("config.okzoomer.smooth_multiplier.tooltip"));
         
         // Cinematic Multiplier
-        var cinematicMultiplierOption = new SpruceDoubleInputOption(
+        var cinematicMultiplierOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.cinematic_multiplier",
+            4.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
             () -> OkZoomerConfigPojo.values.cinematicMultiplier,
             value -> OkZoomerConfigPojo.values.cinematicMultiplier = value,
             new TranslatableText("config.okzoomer.cinematic_multiplier.tooltip"));
         
         // Minimum Linear Step
-        var minimumLinearStepOption = new SpruceDoubleInputOption(
+        var minimumLinearStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.minimum_linear_step",
+            0.125D, Optional.of(0.0D), Optional.empty(),
             () -> OkZoomerConfigPojo.values.minimumLinearStep,
             value -> OkZoomerConfigPojo.values.minimumLinearStep = value,
             new TranslatableText("config.okzoomer.minimum_linear_step.tooltip"));
         
         // Maximum Linear Step
-        var maximumLinearStepOption = new SpruceDoubleInputOption(
+        var maximumLinearStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.maximum_linear_step",
+            0.25D, Optional.of(0.25D), Optional.empty(),
             () -> OkZoomerConfigPojo.values.maximumLinearStep,
             value -> OkZoomerConfigPojo.values.maximumLinearStep = value,
             new TranslatableText("config.okzoomer.maximum_linear_step.tooltip"));
@@ -216,10 +230,9 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             new TranslatableText("config.okzoomer.reset_zoom_with_mouse.tooltip"));
         
         // Unbind Conflicting Key
-        var unbindConflictingKeyOption = new SpruceBooleanOption(
+        var unbindConflictingKeyOption = SpruceSimpleActionOption.of(
             "config.okzoomer.unbind_conflicting_key",
-            () -> OkZoomerConfigPojo.tweaks.unbindConflictingKey,
-            value -> OkZoomerConfigPojo.tweaks.unbindConflictingKey = value,
+            button -> ZoomUtils.unbindConflictingKey(client, true),
             new TranslatableText("config.okzoomer.unbind_conflicting_key.tooltip"));
         
         // Print owo on Start
@@ -299,6 +312,11 @@ public class OkZoomerConfigScreen extends SpruceScreen {
     @Override
     public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+    }
+
+    @Override
+    public void renderBackground(MatrixStack matrices, int vOffset) {
+        normalBackground.render(matrices, this, vOffset);
     }
 
     @Override

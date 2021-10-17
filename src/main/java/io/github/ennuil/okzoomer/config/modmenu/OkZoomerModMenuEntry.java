@@ -3,7 +3,7 @@ package io.github.ennuil.okzoomer.config.modmenu;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
-import io.github.ennuil.okzoomer.config.OkZoomerConfigScreen;
+import io.github.ennuil.okzoomer.config.screen.OkZoomerConfigScreen;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvType;
 
