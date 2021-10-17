@@ -9,7 +9,7 @@ Ok Zoomer is a mod that adds a highly configurable zoom packed with tons of feat
 This mod is available for download on the following services:
 
 - [CurseForge (recommended)](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
-- [Modrinth (WIP alternative)](https://modrinth.com/mod/ok-zoomer)
+- [Modrinth](https://modrinth.com/mod/ok-zoomer)
 - [GitHub Releases (alternative)](https://github.com/EnnuiL/OkZoomer/releases)
 
 ## License
