@@ -293,7 +293,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
                 this.list.setScrollAmount(scrollAmount);
             }).asVanilla());
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
-            btn -> this.client.openScreen(this.parent)).asVanilla());
+            btn -> this.client.setScreen(this.parent)).asVanilla());
     }
 
     @Override
@@ -308,6 +308,6 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
     @Override
     public void onClose() {
-        this.client.openScreen(this.parent);
+        this.client.setScreen(this.parent);
     }
 }
