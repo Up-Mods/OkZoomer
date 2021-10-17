@@ -16,6 +16,7 @@ import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
 import io.github.ennuil.okzoomer.config.OkZoomerConfig.ZoomPresets;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.gui.screen.Screen;
@@ -132,10 +133,20 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             new TranslatableText("config.okzoomer.extra_keybinds.tooltip"));
         
         // Zoom Overlay
-        var zoomOverlayOption = new SpruceBooleanOption(
+        var zoomOverlayOption = new SpruceCyclingOption(
             "config.okzoomer.zoom_overlay",
-            () -> OkZoomerConfigPojo.features.zoomOverlay,
-            value -> OkZoomerConfigPojo.features.zoomOverlay = value,
+            amount -> OkZoomerConfigPojo.features.zoomOverlay = switch (OkZoomerConfigPojo.features.zoomOverlay) {
+                case OFF -> ZoomOverlays.VIGNETTE;
+                case VIGNETTE -> ZoomOverlays.SPYGLASS;
+                case SPYGLASS -> ZoomOverlays.OFF;
+                default -> ZoomOverlays.OFF;
+            },
+            option -> switch (OkZoomerConfigPojo.features.zoomOverlay) {
+                case OFF -> getCyclingOptionText("config.okzoomer.zoom_overlay.off", option.getPrefix());
+                case VIGNETTE -> getCyclingOptionText("config.okzoomer.zoom_overlay.vignette", option.getPrefix());
+                case SPYGLASS -> getCyclingOptionText("config.okzoomer.zoom_overlay.spyglass", option.getPrefix());
+                default -> getCyclingOptionText(null, option.getPrefix());
+            },
             new TranslatableText("config.okzoomer.zoom_overlay.tooltip"));
         
         // "Values" category separator
@@ -235,6 +246,20 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             button -> ZoomUtils.unbindConflictingKey(client, true),
             new TranslatableText("config.okzoomer.unbind_conflicting_key.tooltip"));
         
+        // Use Spyglass Texture
+        var useSpyglassTextureOption = new SpruceBooleanOption(
+            "config.okzoomer.use_spyglass_texture",
+            () -> OkZoomerConfigPojo.tweaks.useSpyglassTexture,
+            value -> OkZoomerConfigPojo.tweaks.useSpyglassTexture = value,
+            new TranslatableText("config.okzoomer.use_spyglass_texture.tooltip"));
+        
+        // Use Spyglass Texture
+        var useSpyglassSoundsOption = new SpruceBooleanOption(
+            "config.okzoomer.use_spyglass_sounds",
+            () -> OkZoomerConfigPojo.tweaks.useSpyglassSounds,
+            value -> OkZoomerConfigPojo.tweaks.useSpyglassSounds = value,
+            new TranslatableText("config.okzoomer.use_spyglass_sounds.tooltip"));
+        
         // Print owo on Start
         var printOwoOnStartOption = new SpruceBooleanOption(
             "config.okzoomer.print_owo_on_start",
@@ -254,13 +279,15 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             amount -> this.preset = switch (this.preset) {
                 case DEFAULT -> ZoomPresets.CLASSIC;
                 case CLASSIC -> ZoomPresets.PERSISTENT;
-                case PERSISTENT -> ZoomPresets.DEFAULT;
+                case PERSISTENT -> ZoomPresets.SPYGLASS;
+                case SPYGLASS -> ZoomPresets.DEFAULT;
                 default -> ZoomPresets.DEFAULT;
             },
             option -> switch (this.preset) {
                 case DEFAULT -> getCyclingOptionText("config.okzoomer.preset.default", option.getPrefix());
                 case CLASSIC -> getCyclingOptionText("config.okzoomer.preset.classic", option.getPrefix());
                 case PERSISTENT -> getCyclingOptionText("config.okzoomer.preset.persistent", option.getPrefix());
+                case SPYGLASS -> getCyclingOptionText("config.okzoomer.preset.spyglass", option.getPrefix());
                 default -> getCyclingOptionText(null, option.getPrefix());
             },
             new TranslatableText("config.okzoomer.preset.tooltip"));
@@ -292,6 +319,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
         this.list.addSingleOptionEntry(tweaksSeparator);
         this.list.addOptionEntry(resetZoomWithMouseOption, unbindConflictingKeyOption);
+        this.list.addOptionEntry(useSpyglassTextureOption, useSpyglassSoundsOption);
         this.list.addSingleOptionEntry(printOwoOnStartOption);
 
         this.list.addSingleOptionEntry(resetSeparator);

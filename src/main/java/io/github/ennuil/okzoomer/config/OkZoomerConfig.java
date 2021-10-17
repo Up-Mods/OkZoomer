@@ -16,10 +16,12 @@ import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.NoMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
+import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
@@ -27,6 +29,7 @@ import io.github.ennuil.okzoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.okzoomer.zoom.MultipliedCinematicCameraMouseModifier;
 import io.github.ennuil.okzoomer.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
 // TODO - Move to whatever Config API gets standarized for Quilt
 // The class responsible for loading and saving the config.
@@ -46,7 +49,8 @@ public class OkZoomerConfig {
     public enum ZoomPresets {
         DEFAULT,
         CLASSIC,
-        PERSISTENT
+        PERSISTENT,
+        SPYGLASS
     }
 
     public static void loadModConfig() {
@@ -100,10 +104,17 @@ public class OkZoomerConfig {
         configureZoomModifier();
 
         // Sets zoom overlay
+        Identifier overlayTextureId = new Identifier(
+            OkZoomerConfigPojo.tweaks.useSpyglassTexture
+            ? "textures/misc/spyglass_scope.png"
+            : "okzoomer:textures/misc/zoom_overlay.png");
+
         ZoomUtils.zoomerZoom.setZoomOverlay(
-            OkZoomerConfigPojo.features.zoomOverlay
-            ? new ZoomerZoomOverlay()
-            : new NoZoomOverlay()
+            switch (OkZoomerConfigPojo.features.zoomOverlay) {
+                case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
+                case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
+                default -> new NoZoomOverlay();
+            }
         );
     }
 
@@ -129,47 +140,35 @@ public class OkZoomerConfig {
     }
 
     public static void resetToPreset(ZoomPresets preset) {
-        OkZoomerConfigPojo.features.cinematicCamera = switch (preset) {
-            case CLASSIC -> CinematicCameraOptions.VANILLA;
-            default -> CinematicCameraOptions.OFF;
-        };
-        OkZoomerConfigPojo.features.reduceSensitivity = switch (preset) {
-            case CLASSIC -> false;
-            default -> true;
-        };
-        OkZoomerConfigPojo.features.zoomTransition = switch (preset) {
-            case CLASSIC -> ZoomTransitionOptions.OFF;
-            default -> ZoomTransitionOptions.SMOOTH;
-        };
-        OkZoomerConfigPojo.features.zoomMode = switch (preset) {
-            case PERSISTENT -> ZoomModes.PERSISTENT;
-            default -> ZoomModes.HOLD;
-        };
+        OkZoomerConfigPojo.features.cinematicCamera = preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF;
+        OkZoomerConfigPojo.features.reduceSensitivity = preset == ZoomPresets.CLASSIC ? false : true;
+        OkZoomerConfigPojo.features.zoomTransition = preset == ZoomPresets.CLASSIC ? ZoomTransitionOptions.OFF : ZoomTransitionOptions.SMOOTH;
+        OkZoomerConfigPojo.features.zoomMode = preset == ZoomPresets.PERSISTENT ? ZoomModes.PERSISTENT : ZoomModes.HOLD;
         OkZoomerConfigPojo.features.zoomScrolling = switch (preset) {
             case CLASSIC -> false;
+            case SPYGLASS -> false;
             default -> true;
         };
-        OkZoomerConfigPojo.features.extraKeybinds = switch (preset) {
-            case CLASSIC -> false;
-            default -> true;
+        OkZoomerConfigPojo.features.extraKeybinds = preset == ZoomPresets.CLASSIC ? false : true;
+        OkZoomerConfigPojo.features.zoomOverlay = preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF;
+        OkZoomerConfigPojo.values.zoomDivisor  = switch (preset) {
+            case PERSISTENT -> 1.0D;
+            case SPYGLASS -> 10.0D;
+            default -> 4.0D;
         };
-        OkZoomerConfigPojo.values.zoomDivisor = switch (preset) {
-            case PERSISTENT -> 1.0;
-            default -> 4.0;
-        };
-        OkZoomerConfigPojo.tweaks.resetZoomWithMouse = switch (preset) {
-            case CLASSIC -> false;
-            default -> true;
-        };
-        OkZoomerConfigPojo.features.zoomOverlay = false;
-        OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0;
-        OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0;
-        OkZoomerConfigPojo.values.scrollStep = 1.0;
-        OkZoomerConfigPojo.values.lesserScrollStep = 0.5;
-        OkZoomerConfigPojo.values.cinematicMultiplier = 4.0;
-        OkZoomerConfigPojo.values.smoothMultiplier = 0.75;
-        OkZoomerConfigPojo.values.minimumLinearStep = 0.125;
-        OkZoomerConfigPojo.values.maximumLinearStep = 0.25;
+        OkZoomerConfigPojo.values.smoothMultiplier = preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D;
+        OkZoomerConfigPojo.tweaks.useSpyglassTexture = preset == ZoomPresets.SPYGLASS ? true : false;
+        OkZoomerConfigPojo.tweaks.useSpyglassSounds = preset == ZoomPresets.SPYGLASS ? true : false;
+        OkZoomerConfigPojo.tweaks.resetZoomWithMouse = preset == ZoomPresets.CLASSIC ? false : true;
+
+        OkZoomerConfigPojo.values.minimumZoomDivisor = 1.0D;
+        OkZoomerConfigPojo.values.maximumZoomDivisor = 50.0D;
+        OkZoomerConfigPojo.values.scrollStep = 1.0D;
+        OkZoomerConfigPojo.values.lesserScrollStep = 0.5D;
+        OkZoomerConfigPojo.values.cinematicMultiplier = 4.0D;
+        OkZoomerConfigPojo.values.minimumLinearStep = 0.125D;
+        OkZoomerConfigPojo.values.maximumLinearStep = 0.25D;
+        OkZoomerConfigPojo.tweaks.unbindConflictingKey = false;
         OkZoomerConfigPojo.tweaks.printOwoOnStart = true;
     }
 }

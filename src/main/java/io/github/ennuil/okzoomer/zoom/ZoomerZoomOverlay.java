@@ -17,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
     private Identifier OVERLAY_ID = new Identifier("okzoomer:zoom_overlay");
-    private Identifier OVERLAY_TEXTURE_ID = new Identifier("okzoomer:textures/misc/zoom_overlay.png");
+    private Identifier textureId;
     private boolean active;
     private boolean zoomActive;
     private double divisor;
@@ -26,7 +26,8 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     public float zoomOverlayAlpha = 0.0F;
     public float lastZoomOverlayAlpha = 0.0F;
 
-    public ZoomerZoomOverlay() {
+    public ZoomerZoomOverlay(Identifier textureId) {
+        this.textureId = textureId;
         this.active = false;
         this.client = MinecraftClient.getInstance();
     }
@@ -53,7 +54,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.zoomOverlayAlpha);
-        RenderSystem.setShaderTexture(0, OVERLAY_TEXTURE_ID);
+        RenderSystem.setShaderTexture(0, this.textureId);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);

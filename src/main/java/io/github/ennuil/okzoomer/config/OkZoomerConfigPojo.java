@@ -44,8 +44,14 @@ public class OkZoomerConfigPojo {
         @Setting(comment = "Adds zoom manipulation keys along with the zoom key.")
         public boolean extraKeybinds = true;
 
-        @Setting(comment = "Adds an overlay in the screen during zoom. The overlay texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png")
-        public boolean zoomOverlay = false;
+        public enum ZoomOverlays {
+            OFF,
+            VIGNETTE,
+            SPYGLASS
+        }
+
+        @Setting(comment = "Adds an overlay in the screen during zoom.\n\"VIGNETTE\" uses a vignette as the overlay.\n\"SPYGLASS\" uses the spyglass overlay with the vignette texture.\nThe overlay texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png")
+        public ZoomOverlays zoomOverlay = ZoomOverlays.OFF;
     }
 
     @Group
@@ -98,8 +104,12 @@ public class OkZoomerConfigPojo {
     public static class TweaksGroup {
         @Setting(comment = "Allows for resetting the zoom with the middle mouse button.")
         public boolean resetZoomWithMouse = true; 
-        @Setting(comment = "If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
+        @Setting(comment = "If pressed, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
         public boolean unbindConflictingKey = true;
+        @Setting(comment = "If enabled, the spyglass overlay texture is used instead of Ok Zoomer's overlay texture.")
+        public boolean useSpyglassTexture = false;
+        @Setting(comment = "If enabled, the zoom will use spyglass sounds on zooming in and out.")
+        public boolean useSpyglassSounds = false;
         // TODO - Revert this once 5.0.0 is properly released
         @Setting(comment = "Prints a random owo in the console when the game starts. Enabled by default until full release.")
         public boolean printOwoOnStart = true;

@@ -6,6 +6,7 @@ import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.sound.SoundEvents;
 
 // This event is responsible for managing the zoom signal.
 public class ManageZoomEvent {
@@ -54,6 +55,10 @@ public class ManageZoomEvent {
                     // If persistent zoom is enabled, just keep the zoom on.
                     ZoomUtils.zoomerZoom.setZoom(true);
                 }
+            }
+
+            if (OkZoomerConfigPojo.tweaks.useSpyglassSounds) {
+                client.player.playSound(ZoomUtils.zoomerZoom.getZoom() ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
             }
 
             // Set the previous zoom signal for the next tick.
