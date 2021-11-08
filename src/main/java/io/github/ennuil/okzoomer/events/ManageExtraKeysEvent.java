@@ -10,7 +10,7 @@ public class ManageExtraKeysEvent {
     public static void registerEvent() {
         // Register the event only if the "Extra Keybinds" option is enabled.
         if (ZoomKeybinds.areExtraKeybindsEnabled()) {
-			ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            ClientTickEvents.END_CLIENT_TICK.register(client -> {
                 if (ZoomPackets.getDisableZoomScrolling()) return;
     
                 if (ZoomKeybinds.decreaseZoomKey.isPressed()) {
@@ -25,6 +25,6 @@ public class ManageExtraKeysEvent {
                     ZoomUtils.resetZoomDivisor();
                 }
             });
-		}
+        }
     }
 }

@@ -23,43 +23,43 @@ public class LinearTransitionMode implements TransitionMode {
         this.lastInternalMultiplier = 1.0F;
     }
 
-	@Override
-	public Identifier getIdentifier() {
-		return this.transitionId;
-	}
+    @Override
+    public Identifier getIdentifier() {
+        return this.transitionId;
+    }
 
-	@Override
-	public boolean getActive() {
-		return this.active;
-	}
+    @Override
+    public boolean getActive() {
+        return this.active;
+    }
 
-	@Override
-	public double applyZoom(double fov, float tickDelta) {
+    @Override
+    public double applyZoom(double fov, float tickDelta) {
         fovMultiplier = MathHelper.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
         return fov * fovMultiplier;
-	}
+    }
 
-	@Override
-	public void tick(boolean active, double divisor) {
-		double zoomMultiplier = 1.0D / divisor;
+    @Override
+    public void tick(boolean active, double divisor) {
+        double zoomMultiplier = 1.0D / divisor;
 
         this.lastInternalMultiplier = this.internalMultiplier;
         
         this.linearStep = zoomMultiplier;
-		if (this.linearStep > this.maximumLinearStep) {
-			this.linearStep = this.maximumLinearStep;
+        if (this.linearStep > this.maximumLinearStep) {
+            this.linearStep = this.maximumLinearStep;
         } else if (this.linearStep < this.minimumLinearStep) {
-			this.linearStep = this.minimumLinearStep;
-		}
+            this.linearStep = this.minimumLinearStep;
+        }
         this.internalMultiplier = MathHelper.stepTowards((float)this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
 
         if ((!active && fovMultiplier == this.internalMultiplier) || active) {
             this.active = active;
         }
-	}
+    }
 
-	@Override
-	public double getInternalMultiplier() {
-		return this.internalMultiplier;
-	}
+    @Override
+    public double getInternalMultiplier() {
+        return this.internalMultiplier;
+    }
 }
