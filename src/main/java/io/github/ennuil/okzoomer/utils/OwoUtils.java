@@ -66,7 +66,9 @@ public class OwoUtils {
         "VwV",
         "<w>",
         "çwç",
-        "ÇwÇ"
+        "ÇwÇ",
+        ">w>",
+        "<w<"
     };
 
     public static void printOwo() {
