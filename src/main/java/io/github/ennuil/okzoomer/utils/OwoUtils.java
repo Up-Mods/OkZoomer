@@ -68,11 +68,12 @@ public class OwoUtils {
         "çwç",
         "ÇwÇ",
         ">w>",
-        "<w<"
+        "<w<",
+        "—w—"
     };
 
     public static void printOwo() {
         Random random = new Random();
-		ZoomUtils.modLogger.info("[Ok Zoomer] " + OWO_ARRAY[random.nextInt(OWO_ARRAY.length)] + " what's this");
+		ZoomUtils.LOGGER.info("[Ok Zoomer] " + OWO_ARRAY[random.nextInt(OWO_ARRAY.length)] + " what's this");
     }
 }

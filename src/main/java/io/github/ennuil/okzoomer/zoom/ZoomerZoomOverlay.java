@@ -16,12 +16,12 @@ import net.minecraft.util.math.MathHelper;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-    private Identifier OVERLAY_ID = new Identifier("okzoomer:zoom_overlay");
+    private static final Identifier OVERLAY_ID = new Identifier("okzoomer:zoom_overlay");
     private Identifier textureId;
     private boolean active;
     private boolean zoomActive;
     private double divisor;
-    private MinecraftClient client;
+    private final MinecraftClient client;
 
     public float zoomOverlayAlpha = 0.0F;
     public float lastZoomOverlayAlpha = 0.0F;
@@ -34,17 +34,12 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public Identifier getIdentifier() {
-        return this.OVERLAY_ID;
+        return OVERLAY_ID;
     }
 
     @Override
     public boolean getActive() {
         return this.active;
-    }
-
-    @Override
-    public MinecraftClient setClient(MinecraftClient newClient) {
-        return this.client;
     }
 
     @Override
@@ -94,13 +89,8 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
             zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
         } else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-            double linearStep = 1.0F / this.divisor;
-            if (linearStep < OkZoomerConfigPojo.values.minimumLinearStep) {
-                linearStep = OkZoomerConfigPojo.values.minimumLinearStep;
-            }
-            if (linearStep > OkZoomerConfigPojo.values.maximumLinearStep) {
-                linearStep = OkZoomerConfigPojo.values.maximumLinearStep;
-            }
+            double linearStep = MathHelper.clamp(1.0F / this.divisor, OkZoomerConfigPojo.values.minimumLinearStep, OkZoomerConfigPojo.values.maximumLinearStep);
+            
             zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
         }
     }

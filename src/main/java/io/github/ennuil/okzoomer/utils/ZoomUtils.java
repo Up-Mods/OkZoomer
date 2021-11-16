@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import io.github.ennuil.libzoomer.api.ZoomRegistry;
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
 import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
@@ -21,14 +20,14 @@ import net.minecraft.util.Identifier;
 // The class that contains most of the logic behind the zoom itself.
 public class ZoomUtils {
     // The logger, used everywhere to print messages to the console.
-    public static final Logger modLogger = LogManager.getFormatterLogger("Ok Zoomer");
+    public static final Logger LOGGER = LogManager.getFormatterLogger("Ok Zoomer");
 
     public static ZoomInstance zoomerZoom = ZoomRegistry.registerInstance(new ZoomInstance(
             new Identifier("okzoomer:zoom"),
             4.0F,
             new SmoothTransitionMode(0.75f),
             new ZoomDivisorMouseModifier(),
-            new NoZoomOverlay()
+            null
         ));
 
     // The zoom FOV multipliers. Used by the GameRenderer mixin.
@@ -90,16 +89,16 @@ public class ZoomUtils {
         if (ZoomKeybinds.zoomKey.isDefault()) {
             if (client.options.keySaveToolbarActivator.isDefault()) {
                 if (userPrompted) {
-                    ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
+                    ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
                     client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.unbind_conflicting_key.success")));
                 } else {
-                    ZoomUtils.modLogger.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
+                    ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
                 }
                 client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
                 client.options.write();
                 KeyBinding.updateKeysByCode();
             } else {
-                ZoomUtils.modLogger.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
+                ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
                 if (userPrompted) {
                     client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.unbind_conflicting_key.no_conflict")));
                 }

@@ -6,7 +6,7 @@ import net.minecraft.util.math.MathHelper;
 
 // The implementation of the linear transition
 public class LinearTransitionMode implements TransitionMode {
-    private Identifier transitionId = new Identifier("okzoomer:linear_transition");
+    private static final Identifier TRANSITION_ID = new Identifier("okzoomer:linear_transition");
     private boolean active;
     private double minimumLinearStep;
     private double maximumLinearStep;
@@ -25,7 +25,7 @@ public class LinearTransitionMode implements TransitionMode {
 
     @Override
     public Identifier getIdentifier() {
-        return this.transitionId;
+        return TRANSITION_ID;
     }
 
     @Override
@@ -45,12 +45,7 @@ public class LinearTransitionMode implements TransitionMode {
 
         this.lastInternalMultiplier = this.internalMultiplier;
         
-        this.linearStep = zoomMultiplier;
-        if (this.linearStep > this.maximumLinearStep) {
-            this.linearStep = this.maximumLinearStep;
-        } else if (this.linearStep < this.minimumLinearStep) {
-            this.linearStep = this.minimumLinearStep;
-        }
+        this.linearStep = MathHelper.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
         this.internalMultiplier = MathHelper.stepTowards((float)this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
 
         if ((!active && fovMultiplier == this.internalMultiplier) || active) {

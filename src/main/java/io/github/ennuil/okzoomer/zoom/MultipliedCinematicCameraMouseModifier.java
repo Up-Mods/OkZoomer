@@ -7,23 +7,22 @@ import net.minecraft.util.Identifier;
 
 // The implementation of the multiplied cinematic camera
 public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
-    private Identifier transitionId = new Identifier("okzoomer:multiplied_cinematic_camera");
+    private static final Identifier MODIFIER_ID = new Identifier("okzoomer:multiplied_cinematic_camera");
     private boolean active;
-    private MinecraftClient client;
+    private final MinecraftClient client;
     private boolean cinematicCameraEnabled;
     private final SmoothUtil cursorXZoomSmoother = new SmoothUtil();
     private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
     private double cinematicCameraMultiplier;
 
     public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {
-        super();
         this.cinematicCameraMultiplier = cinematicCameraMultiplier;
         this.client = MinecraftClient.getInstance();
     }
     
     @Override
     public Identifier getIdentifier() {
-        return this.transitionId;
+        return MODIFIER_ID;
     }
 
     @Override
@@ -54,10 +53,10 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     @Override
     public void tick(boolean active) {
         this.cinematicCameraEnabled = this.client.options.smoothCameraEnabled;
-        this.active = active;
-        if (!this.active) {
+        if (!active && active != this.active) {
             this.cursorXZoomSmoother.clear();
             this.cursorYZoomSmoother.clear();
         }
+        this.active = active;
     }
 }

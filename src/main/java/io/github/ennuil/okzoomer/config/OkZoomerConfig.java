@@ -13,9 +13,7 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigTree;
 import io.github.ennuil.libzoomer.api.MouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
-import io.github.ennuil.libzoomer.api.modifiers.NoMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.ennuil.libzoomer.api.overlays.NoZoomOverlay;
 import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
@@ -93,7 +91,7 @@ public class OkZoomerConfig {
         if (ZoomPackets.getForceClassicMode()) {
             ZoomUtils.zoomerZoom.setDefaultZoomDivisor(4.0D);
             ZoomUtils.zoomerZoom.setMouseModifier(new CinematicCameraMouseModifier());
-            ZoomUtils.zoomerZoom.setZoomOverlay(new NoZoomOverlay());
+            ZoomUtils.zoomerZoom.setZoomOverlay(null);
             return;
         }
 
@@ -113,7 +111,7 @@ public class OkZoomerConfig {
             switch (OkZoomerConfigPojo.features.zoomOverlay) {
                 case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
                 case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
-                default -> new NoZoomOverlay();
+                default -> null;
             }
         );
     }
@@ -134,7 +132,7 @@ public class OkZoomerConfig {
         } else {
             ZoomUtils.zoomerZoom.setMouseModifier(reduceSensitivity
                 ? new ZoomDivisorMouseModifier()
-                : new NoMouseModifier()
+                : null
             );
         }
     }
