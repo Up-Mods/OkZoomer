@@ -27,7 +27,7 @@ public class ZoomKeybinds {
 
     // The method used to check if the zoom manipulation keybinds should be disabled, can be used by other mods.
     public static final boolean areExtraKeybindsEnabled() {
-        if (!OkZoomerConfigManager.isConfigLoaded) {
+        if (!OkZoomerConfigManager.isConfigLoaded.isPresent()) {
             OkZoomerConfigManager.loadModConfig();
         }
         extraKeybinds = OkZoomerConfigManager.INSTANCE.features().extraKeybinds();

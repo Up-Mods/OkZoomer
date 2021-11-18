@@ -11,9 +11,12 @@ public class LoadConfigEvent {
     public static void registerEvent() {
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             // Attempt to load the config if it hasn't been loaded yet, which is unlikely due to extra keybinds.
-            if (!OkZoomerConfigManager.isConfigLoaded) {
+            if (!OkZoomerConfigManager.isConfigLoaded.isPresent()) {
                 OkZoomerConfigManager.loadModConfig();
             }
+
+            // If it failed, stop. With the default settings, the conflicting key check will destroy the failed config
+            if (OkZoomerConfigManager.isConfigLoaded.isPresent() && !OkZoomerConfigManager.isConfigLoaded.get()) return;
             
             // uwu
             if (OkZoomerConfigManager.INSTANCE.tweaks().printOwoOnStart()) {
@@ -24,7 +27,6 @@ public class LoadConfigEvent {
             if (OkZoomerConfigManager.INSTANCE.tweaks().unbindConflictingKey()) {
                 ZoomUtils.unbindConflictingKey(client, false);
                 OkZoomerConfigManager.INSTANCE = OkZoomerConfig.disableUnbindConflictingKey(OkZoomerConfigManager.INSTANCE);
-                //OkZoomerConfigManager.INSTANCE.tweaks().unbindConflictingKey() = false;
                 OkZoomerConfigManager.saveModConfig();
             }
         });

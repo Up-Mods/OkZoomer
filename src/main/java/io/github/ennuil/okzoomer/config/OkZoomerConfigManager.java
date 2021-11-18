@@ -3,6 +3,7 @@ package io.github.ennuil.okzoomer.config;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import com.mojang.serialization.JsonOps;
 
@@ -35,7 +36,7 @@ import net.minecraft.util.Identifier;
 
 // The class responsible for loading and saving the config.
 public class OkZoomerConfigManager {
-    public static boolean isConfigLoaded = false;
+    public static Optional<Boolean> isConfigLoaded = Optional.empty();
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
     public static OkZoomerConfig INSTANCE = OkZoomerConfig.getDefaultSettings();
 
@@ -55,14 +56,17 @@ public class OkZoomerConfigManager {
                 if (result.isPresent()) {
                     INSTANCE = result.get();
                     configureZoomInstance();
-                    isConfigLoaded = true;
+                    isConfigLoaded = Optional.of(true);
+                } else {
+                    ZoomUtils.LOGGER.error("Failed to load the settings!");
+                    isConfigLoaded = Optional.of(false);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             saveModConfig();
-            isConfigLoaded = true;
+            isConfigLoaded = Optional.of(true);
         }
     }
 
@@ -144,7 +148,7 @@ public class OkZoomerConfigManager {
                     .comment("""
                         The number which is decremented or incremented by zoom scrolling.
                         Used when the zoom divisor is below the starting point.
-                        """).name("lesser_scroll_step").value(INSTANCE.values().scrollStep())
+                        """).name("lesser_scroll_step").value(INSTANCE.values().lesserScrollStep())
 
                     // Smooth Multiplier
                     .comment("The multiplier used for smooth transitions.")
