@@ -62,6 +62,7 @@
   "config.okzoomer.preset.tooltip": "A préconfiguração que será utilizada após a redefinição.\n\"Padrão\" reinicia para os padrões.\n\"Clássica\" faz o zoom imitar o zoom do OptiFine.\n\"Persistente\" é baseada no modo de zoom \"Persistente\".",
   "config.okzoomer.reset_settings": "Redefinir definições",
   "config.okzoomer.reset_settings.tooltip": "Redefine as definições com a predefinição.",
+  "config.okzoomer.discard_changes": "Descartar Mudanças",
   "toast.okzoomer.title": "Ok Zoomer",
   "toast.okzoomer.unbind_conflicting_key.success": "Tecla conflitante corrigida",
   "toast.okzoomer.unbind_conflicting_key.no_conflict": "Tecla conflitante não foi encontrada",

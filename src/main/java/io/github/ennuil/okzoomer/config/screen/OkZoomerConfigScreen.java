@@ -374,7 +374,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list.addOptionEntry(presetOption, resetSettingsOption);
 
         this.addDrawableChild(this.list);
-        this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, SpruceTexts.RESET_TEXT,
+        this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, new TranslatableText("config.okzoomer.discard_changes"),
             btn -> {
                 this.resetVariables();
                 OkZoomerConfigManager.loadModConfig();

@@ -70,6 +70,7 @@
   "config.okzoomer.preset.tooltip": "The preconfiguration which will be used after a reset.\n\"Default\" resets to the default settings.\n\"Classic\" makes the mod imitate OptiFine's zoom.\n\"Persistent\" is based on the \"Persistent\" zoom mode.\n\"Spyglass\" emulates the spyglass zoom.",
   "config.okzoomer.reset_settings": "Reset Settings",
   "config.okzoomer.reset_settings.tooltip": "Resets the settings to the preset.",
+  "config.okzoomer.discard_changes": "Discard Changes",
   "toast.okzoomer.title": "Ok Zoomer",
   "toast.okzoomer.unbind_conflicting_key.success": "Unbounded conflicting key",
   "toast.okzoomer.unbind_conflicting_key.no_conflict": "No conflicting keys found",
