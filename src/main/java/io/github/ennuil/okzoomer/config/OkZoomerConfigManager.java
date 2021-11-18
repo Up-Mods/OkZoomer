@@ -25,7 +25,7 @@ import io.github.ennuil.okzoomer.config.codec.FeaturesConfig;
 import io.github.ennuil.okzoomer.config.codec.OkZoomerConfig;
 import io.github.ennuil.okzoomer.config.codec.TweaksConfig;
 import io.github.ennuil.okzoomer.config.codec.ValuesConfig;
-import io.github.ennuil.okzoomer.config.codec.json5.Json5Helper;
+import io.github.ennuil.okzoomer.config.json5.Json5Helper;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import io.github.ennuil.okzoomer.zoom.LinearTransitionMode;

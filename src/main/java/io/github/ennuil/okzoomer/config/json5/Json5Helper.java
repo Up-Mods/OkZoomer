@@ -1,4 +1,4 @@
-package io.github.ennuil.okzoomer.config.codec.json5;
+package io.github.ennuil.okzoomer.config.json5;
 
 import java.io.IOException;
 
