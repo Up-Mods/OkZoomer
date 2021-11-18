@@ -15,6 +15,9 @@ public class ManageZoomEvent {
 
     // Used internally in order to make persistent zoom less buggy.
     private static boolean persistentZoom = false;
+
+    // Used internally in order to avoid sound problems.
+    private static boolean doSpyglassSound = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds();
     
     public static void registerEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -38,6 +41,8 @@ public class ManageZoomEvent {
             // If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
             if (ZoomKeybinds.zoomKey.isPressed() == lastZoomPress) return;
 
+            doSpyglassSound = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds();
+
             switch (OkZoomerConfigManager.INSTANCE.features().zoomMode()) {
                 case HOLD -> {
                     // If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not.
@@ -49,6 +54,8 @@ public class ManageZoomEvent {
                     if (ZoomKeybinds.zoomKey.isPressed()) {
                         ZoomUtils.zoomerZoom.setZoom(!ZoomUtils.zoomerZoom.getZoom());
                         ZoomUtils.zoomerZoom.resetZoomDivisor();
+                    } else {
+                        doSpyglassSound = false;
                     }
                 }
                 case PERSISTENT -> {
@@ -57,9 +64,9 @@ public class ManageZoomEvent {
                 }
             }
 
-            // FIXME - Huh, apparently it happens multiple times with other zoom modes. Needs fix
-            if (client.player != null && OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds()) {
-                client.player.playSound(ZoomUtils.zoomerZoom.getZoom() ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
+            if (client.player != null && doSpyglassSound) {
+                boolean soundDirection = !OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.PERSISTENT) ? ZoomUtils.zoomerZoom.getZoom() : ZoomKeybinds.zoomKey.isPressed();
+                client.player.playSound(soundDirection ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
             }
 
             // Set the previous zoom signal for the next tick.
