@@ -13,11 +13,11 @@ public class ManageExtraKeysEvent {
             ClientTickEvents.END_CLIENT_TICK.register(client -> {
                 if (ZoomPackets.getDisableZoomScrolling()) return;
     
-                if (ZoomKeybinds.decreaseZoomKey.isPressed()) {
+                if (ZoomKeybinds.decreaseZoomKey.isPressed() && !ZoomKeybinds.increaseZoomKey.isPressed()) {
                     ZoomUtils.changeZoomDivisor(false);
                 }
     
-                if (ZoomKeybinds.increaseZoomKey.isPressed()) {
+                if (ZoomKeybinds.increaseZoomKey.isPressed() && !ZoomKeybinds.decreaseZoomKey.isPressed()) {
                     ZoomUtils.changeZoomDivisor(true);
                 }
     

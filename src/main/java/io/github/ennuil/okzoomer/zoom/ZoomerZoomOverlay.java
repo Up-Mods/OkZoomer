@@ -3,8 +3,8 @@ package io.github.ennuil.okzoomer.zoom;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import io.github.ennuil.libzoomer.api.ZoomOverlay;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
@@ -86,11 +86,11 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
         lastZoomOverlayAlpha = zoomOverlayAlpha;
         
-        if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.SMOOTH)) {
-            zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigPojo.values.smoothMultiplier;
-        } else if (OkZoomerConfigPojo.features.zoomTransition.equals(ZoomTransitionOptions.LINEAR)) {
-            double linearStep = MathHelper.clamp(1.0F / this.divisor, OkZoomerConfigPojo.values.minimumLinearStep, OkZoomerConfigPojo.values.maximumLinearStep);
-            
+        if (OkZoomerConfigManager.INSTANCE.features().zoomTransition().equals(ZoomTransitionOptions.SMOOTH)) {
+            zoomOverlayAlpha += (zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.INSTANCE.values().smoothMultiplier();
+        } else if (OkZoomerConfigManager.INSTANCE.features().zoomTransition().equals(ZoomTransitionOptions.LINEAR)) {
+            double linearStep = MathHelper.clamp(1.0F / this.divisor, OkZoomerConfigManager.INSTANCE.values().minimumLinearStep(), OkZoomerConfigManager.INSTANCE.values().maximumLinearStep());
+
             zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
         }
     }

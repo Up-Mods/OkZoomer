@@ -1,7 +1,7 @@
 package io.github.ennuil.okzoomer.events;
 
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
@@ -22,7 +22,7 @@ public class ManageZoomEvent {
             if (ZoomPackets.getDisableZoom()) return;
 
             // Handle zoom mode changes.
-            if (!OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.HOLD)) {
+            if (!OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.HOLD)) {
                 if (!persistentZoom) {
                     persistentZoom = true;
                     lastZoomPress = true;
@@ -38,7 +38,7 @@ public class ManageZoomEvent {
             // If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
             if (ZoomKeybinds.zoomKey.isPressed() == lastZoomPress) return;
 
-            switch (OkZoomerConfigPojo.features.zoomMode) {
+            switch (OkZoomerConfigManager.INSTANCE.features().zoomMode()) {
                 case HOLD -> {
                     // If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not.
                     ZoomUtils.zoomerZoom.setZoom(ZoomKeybinds.zoomKey.isPressed());
@@ -57,7 +57,8 @@ public class ManageZoomEvent {
                 }
             }
 
-            if (OkZoomerConfigPojo.tweaks.useSpyglassSounds) {
+            // FIXME - Huh, apparently it happens multiple times with other zoom modes. Needs fix
+            if (client.player != null && OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds()) {
                 client.player.playSound(ZoomUtils.zoomerZoom.getZoom() ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
             }
 

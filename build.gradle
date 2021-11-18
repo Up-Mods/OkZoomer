@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'io.github.juuxel.loom-quiltflower-mini' version '1.1.0'
+	id "org.quiltmc.quilt-mappings-on-loom" version "3.1.0"
 	id 'maven-publish'
 }
 
@@ -20,23 +21,26 @@ repositories {
 	maven { url "https://maven.gegy.dev" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://maven.quiltmc.org/repository/release" }
 }
 
 dependencies {
 	// To change the versions, see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings loom.layered {
+		addLayer quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.mappings_version}:v2")
+	}
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "io.github.ennuil:LibZoomer:${project.libzoomer_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
-	modImplementation "me.zeroeightsix:fiber:${project.fiber_version}"
+	modImplementation "org.quiltmc:quilt-json5:${project.json5_version}"
 	
 	include "io.github.ennuil:LibZoomer:${project.libzoomer_version}"
 	include "dev.lambdaurora:spruceui:${project.spruceui_version}"
-	include "me.zeroeightsix:fiber:${project.fiber_version}"
+	include "org.quiltmc:quilt-json5:${project.json5_version}"
 }
 
 processResources {

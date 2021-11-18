@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
@@ -28,8 +28,8 @@ public class MouseMixin {
     )
     private void zoomerOnMouseScroll(CallbackInfo info) {
         if (this.eventDeltaWheel != 0.0) {
-            if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.getDisableZoomScrolling()) {
-                if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
+            if (OkZoomerConfigManager.INSTANCE.features().zoomScrolling() && !ZoomPackets.getDisableZoomScrolling()) {
+                if (OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.PERSISTENT)) {
                     if (!ZoomKeybinds.zoomKey.isPressed()) return;
                 }
                 
@@ -49,14 +49,14 @@ public class MouseMixin {
         locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void zoomerOnMouseButton(long window, int button, int action, int mods, CallbackInfo info, boolean bl, int i) {
-        if (OkZoomerConfigPojo.features.zoomScrolling && !ZoomPackets.getDisableZoomScrolling()) {
-            if (OkZoomerConfigPojo.features.zoomMode.equals(ZoomModes.PERSISTENT)) {
+        if (OkZoomerConfigManager.INSTANCE.features().zoomScrolling() && !ZoomPackets.getDisableZoomScrolling()) {
+            if (OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.PERSISTENT)) {
                 if (!ZoomKeybinds.zoomKey.isPressed()) return;
             }
             
             if (button == 2 && bl) {
                 if (ZoomKeybinds.zoomKey.isPressed()) {
-                    if (OkZoomerConfigPojo.tweaks.resetZoomWithMouse) {
+                    if (OkZoomerConfigManager.INSTANCE.tweaks().resetZoomWithMouse()) {
                         ZoomUtils.resetZoomDivisor();
                         info.cancel();
                     }

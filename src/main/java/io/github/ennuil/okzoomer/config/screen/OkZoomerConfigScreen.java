@@ -11,13 +11,16 @@ import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
-import io.github.ennuil.okzoomer.config.OkZoomerConfig;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
-import io.github.ennuil.okzoomer.config.OkZoomerConfig.ZoomPresets;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.CinematicCameraOptions;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomModes;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomOverlays;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo.FeaturesGroup.ZoomTransitionOptions;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.okzoomer.config.ConfigEnums.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomOverlays;
+import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager.ZoomPresets;
+import io.github.ennuil.okzoomer.config.codec.FeaturesConfig;
+import io.github.ennuil.okzoomer.config.codec.OkZoomerConfig;
+import io.github.ennuil.okzoomer.config.codec.TweaksConfig;
+import io.github.ennuil.okzoomer.config.codec.ValuesConfig;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -33,6 +36,27 @@ public class OkZoomerConfigScreen extends SpruceScreen {
     private CustomTextureBackground normalBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_concrete.png"), 64, 64, 64, 255);
     private CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_concrete.png"), 32, 32, 32, 255);
 
+    private CinematicCameraOptions cinematicCameraValue;
+    private boolean reduceSensitivityValue;
+    private ZoomTransitionOptions zoomTransitionValue;
+    private ZoomModes zoomModeValue;
+    private boolean zoomScrollingValue;
+    private boolean extraKeybindsValue;
+    private ZoomOverlays zoomOverlayValue;
+    private double zoomDivisorValue;
+    private double minimumZoomDivisorValue;
+    private double maximumZoomDivisorValue;
+    private double scrollStepValue;
+    private double lesserScrollStepValue;
+    private double smoothMultiplierValue;
+    private double cinematicMultiplierValue;
+    private double minimumLinearStepValue;
+    private double maximumLinearStepValue;
+    private boolean resetZoomWithMouseValue;
+    private boolean useSpyglassTextureValue;
+    private boolean useSpyglassSoundsValue;
+    private boolean printOwoOnStartValue;
+
     public OkZoomerConfigScreen(Screen parent) {
         super(new TranslatableText("config.okzoomer.title"));
         this.parent = parent;
@@ -47,12 +71,36 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             prefix,
             text != null ? new TranslatableText(text) : new LiteralText("Error"));
     }
+
+    private void resetVariables() {
+        cinematicCameraValue = OkZoomerConfigManager.INSTANCE.features().cinematicCamera();
+        reduceSensitivityValue = OkZoomerConfigManager.INSTANCE.features().reduceSensitivity();
+        zoomTransitionValue = OkZoomerConfigManager.INSTANCE.features().zoomTransition();
+        zoomModeValue = OkZoomerConfigManager.INSTANCE.features().zoomMode();
+        zoomScrollingValue = OkZoomerConfigManager.INSTANCE.features().zoomScrolling();
+        extraKeybindsValue = OkZoomerConfigManager.INSTANCE.features().extraKeybinds();
+        zoomOverlayValue = OkZoomerConfigManager.INSTANCE.features().zoomOverlay();
+        zoomDivisorValue = OkZoomerConfigManager.INSTANCE.values().zoomDivisor();
+        minimumZoomDivisorValue = OkZoomerConfigManager.INSTANCE.values().minimumZoomDivisor();
+        maximumZoomDivisorValue = OkZoomerConfigManager.INSTANCE.values().maximumZoomDivisor();
+        scrollStepValue = OkZoomerConfigManager.INSTANCE.values().scrollStep();
+        lesserScrollStepValue = OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
+        smoothMultiplierValue = OkZoomerConfigManager.INSTANCE.values().smoothMultiplier();
+        cinematicMultiplierValue = OkZoomerConfigManager.INSTANCE.values().cinematicMultiplier();
+        minimumLinearStepValue = OkZoomerConfigManager.INSTANCE.values().minimumLinearStep();
+        maximumLinearStepValue = OkZoomerConfigManager.INSTANCE.values().maximumLinearStep();
+        resetZoomWithMouseValue = OkZoomerConfigManager.INSTANCE.tweaks().resetZoomWithMouse();
+        useSpyglassTextureValue = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassTexture();
+        useSpyglassSoundsValue = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds();
+        printOwoOnStartValue = OkZoomerConfigManager.INSTANCE.tweaks().printOwoOnStart();
+    }
     
     @Override
     protected void init() {
         super.init();
         this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
         this.list.setBackground(darkenedBackground);
+        this.resetVariables();
 
         // "Features" category separator
         var featuresSeparator = new SpruceSeparatorOption(
@@ -63,13 +111,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Cinematic Camera
         var cinematicCameraOption = new SpruceCyclingOption(
             "config.okzoomer.cinematic_camera",
-            amount -> OkZoomerConfigPojo.features.cinematicCamera = switch (OkZoomerConfigPojo.features.cinematicCamera) {
+            amount -> cinematicCameraValue = switch (cinematicCameraValue) {
                 case OFF -> CinematicCameraOptions.VANILLA;
                 case VANILLA -> CinematicCameraOptions.MULTIPLIED;
                 case MULTIPLIED -> CinematicCameraOptions.OFF;
                 default -> CinematicCameraOptions.OFF;
             },
-            option -> switch (OkZoomerConfigPojo.features.cinematicCamera) {
+            option -> switch (cinematicCameraValue) {
                 case OFF -> getCyclingOptionText("config.okzoomer.cinematic_camera.off", option.getPrefix());
                 case VANILLA -> getCyclingOptionText("config.okzoomer.cinematic_camera.vanilla", option.getPrefix());
                 case MULTIPLIED -> getCyclingOptionText("config.okzoomer.cinematic_camera.multiplied", option.getPrefix());
@@ -80,20 +128,20 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Reduce Sensitivity
         var reduceSensitivityOption = new SpruceBooleanOption(
             "config.okzoomer.reduce_sensitivity",
-            () -> OkZoomerConfigPojo.features.reduceSensitivity,
-            value -> OkZoomerConfigPojo.features.reduceSensitivity = value,
+            () -> reduceSensitivityValue,
+            value -> reduceSensitivityValue = value,
             new TranslatableText("config.okzoomer.reduce_sensitivity.tooltip"));
 
         // Zoom Transition
         var zoomTransitionOption = new SpruceCyclingOption(
             "config.okzoomer.zoom_transition",
-            amount -> OkZoomerConfigPojo.features.zoomTransition = switch (OkZoomerConfigPojo.features.zoomTransition) {
+            amount -> zoomTransitionValue = switch (zoomTransitionValue) {
                 case OFF -> ZoomTransitionOptions.SMOOTH;
                 case SMOOTH -> ZoomTransitionOptions.LINEAR;
                 case LINEAR -> ZoomTransitionOptions.OFF;
                 default -> ZoomTransitionOptions.OFF;
             },
-            option -> switch (OkZoomerConfigPojo.features.zoomTransition) {
+            option -> switch (zoomTransitionValue) {
                 case OFF -> getCyclingOptionText("config.okzoomer.zoom_transition.off", option.getPrefix());
                 case SMOOTH -> getCyclingOptionText("config.okzoomer.zoom_transition.smooth", option.getPrefix());
                 case LINEAR -> getCyclingOptionText("config.okzoomer.zoom_transition.linear", option.getPrefix());
@@ -104,13 +152,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Zoom Mode
         var zoomModeOption = new SpruceCyclingOption(
             "config.okzoomer.zoom_mode",
-            amount -> OkZoomerConfigPojo.features.zoomMode = switch (OkZoomerConfigPojo.features.zoomMode) {
+            amount -> zoomModeValue = switch (zoomModeValue) {
                 case HOLD -> ZoomModes.TOGGLE;
                 case TOGGLE -> ZoomModes.PERSISTENT;
                 case PERSISTENT -> ZoomModes.HOLD;
                 default -> ZoomModes.HOLD;
             },
-            option -> switch (OkZoomerConfigPojo.features.zoomMode) {
+            option -> switch (zoomModeValue) {
                 case HOLD -> getCyclingOptionText("options.key.hold", option.getPrefix());
                 case TOGGLE -> getCyclingOptionText("options.key.toggle", option.getPrefix());
                 case PERSISTENT -> getCyclingOptionText("config.okzoomer.zoom_mode.persistent", option.getPrefix());
@@ -121,27 +169,27 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Zoom Scrolling
         var zoomScrollingOption = new SpruceBooleanOption(
             "config.okzoomer.zoom_scrolling",
-            () -> OkZoomerConfigPojo.features.zoomScrolling,
-            value -> OkZoomerConfigPojo.features.zoomScrolling = value,
+            () -> zoomScrollingValue,
+            value -> zoomScrollingValue = value,
             new TranslatableText("config.okzoomer.zoom_scrolling.tooltip"));
         
         // Extra Keybinds
         var extraKeybindsOption = new SpruceBooleanOption(
             "config.okzoomer.extra_keybinds",
-            () -> OkZoomerConfigPojo.features.extraKeybinds,
-            value -> OkZoomerConfigPojo.features.extraKeybinds = value,
+            () -> extraKeybindsValue,
+            value -> extraKeybindsValue = value,
             new TranslatableText("config.okzoomer.extra_keybinds.tooltip"));
         
         // Zoom Overlay
         var zoomOverlayOption = new SpruceCyclingOption(
             "config.okzoomer.zoom_overlay",
-            amount -> OkZoomerConfigPojo.features.zoomOverlay = switch (OkZoomerConfigPojo.features.zoomOverlay) {
+            amount -> zoomOverlayValue = switch (zoomOverlayValue) {
                 case OFF -> ZoomOverlays.VIGNETTE;
                 case VIGNETTE -> ZoomOverlays.SPYGLASS;
                 case SPYGLASS -> ZoomOverlays.OFF;
                 default -> ZoomOverlays.OFF;
             },
-            option -> switch (OkZoomerConfigPojo.features.zoomOverlay) {
+            option -> switch (zoomOverlayValue) {
                 case OFF -> getCyclingOptionText("config.okzoomer.zoom_overlay.off", option.getPrefix());
                 case VIGNETTE -> getCyclingOptionText("config.okzoomer.zoom_overlay.vignette", option.getPrefix());
                 case SPYGLASS -> getCyclingOptionText("config.okzoomer.zoom_overlay.spyglass", option.getPrefix());
@@ -159,72 +207,72 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         var zoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.zoom_divisor",
             4.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.zoomDivisor,
-            value -> OkZoomerConfigPojo.values.zoomDivisor = value,
+            () -> zoomDivisorValue,
+            value -> zoomDivisorValue = value,
             new TranslatableText("config.okzoomer.zoom_divisor.tooltip"));
         
         // Minimum Zoom Divisor
         var minimumZoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.minimum_zoom_divisor",
             1.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.minimumZoomDivisor,
-            value -> OkZoomerConfigPojo.values.minimumZoomDivisor = value,
+            () -> minimumZoomDivisorValue,
+            value -> minimumZoomDivisorValue = value,
             new TranslatableText("config.okzoomer.minimum_zoom_divisor.tooltip"));
 
         // Maximum Zoom Divisor
         var maximumZoomDivisorOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.maximum_zoom_divisor",
             50.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.maximumZoomDivisor,
-            value -> OkZoomerConfigPojo.values.maximumZoomDivisor = value,
+            () -> maximumZoomDivisorValue,
+            value -> maximumZoomDivisorValue = value,
             new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"));
         
         // Scroll Step
         var scrollStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.scroll_step",
             1.0D, Optional.of(0.0D), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.scrollStep,
-            value -> OkZoomerConfigPojo.values.scrollStep = value,
+            () -> scrollStepValue,
+            value -> scrollStepValue = value,
             new TranslatableText("config.okzoomer.scroll_step.tooltip"));
         
-        // Lesser Scroll Step
+        // Lesser Scroll Step        
         var lesserScrollStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.lesser_scroll_step",
             0.5D, Optional.of(0.0D), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.lesserScrollStep,
-            value -> OkZoomerConfigPojo.values.lesserScrollStep = value,
+            () -> lesserScrollStepValue,
+            value -> lesserScrollStepValue = value,
             new TranslatableText("config.okzoomer.lesser_scroll_step.tooltip"));
         
         // Smooth Multiplier
         var smoothMultiplierOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.smooth_multiplier",
             0.75D, Optional.of(Double.MIN_NORMAL), Optional.of(1.0D),
-            () -> OkZoomerConfigPojo.values.smoothMultiplier,
-            value -> OkZoomerConfigPojo.values.smoothMultiplier = value,
+            () -> smoothMultiplierValue,
+            value -> smoothMultiplierValue = value,
             new TranslatableText("config.okzoomer.smooth_multiplier.tooltip"));
         
         // Cinematic Multiplier
         var cinematicMultiplierOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.cinematic_multiplier",
             4.0D, Optional.of(Double.MIN_NORMAL), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.cinematicMultiplier,
-            value -> OkZoomerConfigPojo.values.cinematicMultiplier = value,
+            () -> cinematicMultiplierValue,
+            value -> cinematicMultiplierValue = value,
             new TranslatableText("config.okzoomer.cinematic_multiplier.tooltip"));
         
         // Minimum Linear Step
         var minimumLinearStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.minimum_linear_step",
             0.125D, Optional.of(0.0D), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.minimumLinearStep,
-            value -> OkZoomerConfigPojo.values.minimumLinearStep = value,
+            () -> minimumLinearStepValue,
+            value -> minimumLinearStepValue = value,
             new TranslatableText("config.okzoomer.minimum_linear_step.tooltip"));
         
         // Maximum Linear Step
         var maximumLinearStepOption = new SpruceBoundedDoubleInputOption(
             "config.okzoomer.maximum_linear_step",
             0.25D, Optional.of(0.25D), Optional.empty(),
-            () -> OkZoomerConfigPojo.values.maximumLinearStep,
-            value -> OkZoomerConfigPojo.values.maximumLinearStep = value,
+            () -> maximumLinearStepValue,
+            value -> maximumLinearStepValue = value,
             new TranslatableText("config.okzoomer.maximum_linear_step.tooltip"));
         
         // "Tweaks" category separator
@@ -236,8 +284,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Reset Zoom with Mouse
         var resetZoomWithMouseOption = new SpruceBooleanOption(
             "config.okzoomer.reset_zoom_with_mouse",
-            () -> OkZoomerConfigPojo.tweaks.resetZoomWithMouse,
-            value -> OkZoomerConfigPojo.tweaks.resetZoomWithMouse = value,
+            () -> resetZoomWithMouseValue,
+            value -> resetZoomWithMouseValue = value,
             new TranslatableText("config.okzoomer.reset_zoom_with_mouse.tooltip"));
         
         // Unbind Conflicting Key
@@ -249,22 +297,22 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         // Use Spyglass Texture
         var useSpyglassTextureOption = new SpruceBooleanOption(
             "config.okzoomer.use_spyglass_texture",
-            () -> OkZoomerConfigPojo.tweaks.useSpyglassTexture,
-            value -> OkZoomerConfigPojo.tweaks.useSpyglassTexture = value,
+            () -> useSpyglassTextureValue,
+            value -> useSpyglassTextureValue = value,
             new TranslatableText("config.okzoomer.use_spyglass_texture.tooltip"));
         
-        // Use Spyglass Texture
+        // Use Spyglass Sounds
         var useSpyglassSoundsOption = new SpruceBooleanOption(
             "config.okzoomer.use_spyglass_sounds",
-            () -> OkZoomerConfigPojo.tweaks.useSpyglassSounds,
-            value -> OkZoomerConfigPojo.tweaks.useSpyglassSounds = value,
+            () -> useSpyglassSoundsValue,
+            value -> useSpyglassSoundsValue = value,
             new TranslatableText("config.okzoomer.use_spyglass_sounds.tooltip"));
         
         // Print owo on Start
         var printOwoOnStartOption = new SpruceBooleanOption(
             "config.okzoomer.print_owo_on_start",
-            () -> OkZoomerConfigPojo.tweaks.printOwoOnStart,
-            value -> OkZoomerConfigPojo.tweaks.printOwoOnStart = value,
+            () -> printOwoOnStartValue,
+            value -> printOwoOnStartValue = value,
             new TranslatableText("config.okzoomer.print_owo_on_start.tooltip"));
         
         // "Reset" category separator
@@ -296,7 +344,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         var resetSettingsOption = SpruceSimpleActionOption.of(
             "config.okzoomer.reset_settings",
             button -> {
-                OkZoomerConfig.resetToPreset(this.preset);
+                OkZoomerConfigManager.resetToPreset(this.preset);
                 double scrollAmount = this.list.getScrollAmount();
                 this.init(client, width, height);
                 this.list.setScrollAmount(scrollAmount);
@@ -328,13 +376,45 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.addDrawableChild(this.list);
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, SpruceTexts.RESET_TEXT,
             btn -> {
-                OkZoomerConfig.loadModConfig();
+                this.resetVariables();
+                OkZoomerConfigManager.loadModConfig();
                 double scrollAmount = this.list.getScrollAmount();
                 this.init(client, width, height);
                 this.list.setScrollAmount(scrollAmount);
             }).asVanilla());
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
-            btn -> this.client.setScreen(this.parent)).asVanilla());
+            btn -> {
+                OkZoomerConfigManager.INSTANCE = new OkZoomerConfig(
+                    new FeaturesConfig(
+                        cinematicCameraValue,
+                        reduceSensitivityValue,
+                        zoomTransitionValue,
+                        zoomModeValue,
+                        zoomScrollingValue,
+                        extraKeybindsValue,
+                        zoomOverlayValue
+                    ),
+                    new ValuesConfig(
+                        zoomDivisorValue,
+                        minimumZoomDivisorValue,
+                        maximumZoomDivisorValue,
+                        scrollStepValue,
+                        lesserScrollStepValue,
+                        smoothMultiplierValue,
+                        cinematicMultiplierValue,
+                        minimumLinearStepValue,
+                        maximumLinearStepValue
+                    ),
+                    new TweaksConfig(
+                        resetZoomWithMouseValue,
+                        false,
+                        useSpyglassTextureValue,
+                        useSpyglassSoundsValue,
+                        printOwoOnStartValue
+                    )
+                );
+                this.client.setScreen(this.parent);
+            }).asVanilla());
     }
 
     @Override
@@ -349,7 +429,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
     @Override
 	public void removed() {
-		OkZoomerConfig.saveModConfig();
+		OkZoomerConfigManager.saveModConfig();
 	}
 
     @Override

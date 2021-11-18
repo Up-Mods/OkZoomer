@@ -1,6 +1,6 @@
 package io.github.ennuil.okzoomer.packets;
 
-import io.github.ennuil.okzoomer.config.OkZoomerConfig;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 // import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -73,7 +73,7 @@ public class ZoomPackets {
                 sendToast(client, new TranslatableText("toast.okzoomer.force_classic_mode"));
                 disableZoomScrolling = true;
                 forceClassicMode = true;
-                OkZoomerConfig.configureZoomInstance();
+                OkZoomerConfigManager.configureZoomInstance();
             });
         });
 
@@ -92,7 +92,7 @@ public class ZoomPackets {
                     maximumZoomDivisor = maxDouble;
                     minimumZoomDivisor = minDouble;
                     forceZoomDivisors = true;
-                    OkZoomerConfig.configureZoomInstance();
+                    OkZoomerConfigManager.configureZoomInstance();
                 });
             }
         });
@@ -177,7 +177,7 @@ public class ZoomPackets {
         ZoomPackets.minimumZoomDivisor = 0.0D;
         if (ZoomPackets.forceClassicMode) {
             ZoomPackets.forceClassicMode = false;
-            OkZoomerConfig.configureZoomInstance();
+            OkZoomerConfigManager.configureZoomInstance();
         }
     }
 }

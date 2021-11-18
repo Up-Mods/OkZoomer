@@ -7,7 +7,7 @@ import io.github.ennuil.libzoomer.api.ZoomRegistry;
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
-import io.github.ennuil.okzoomer.config.OkZoomerConfigPojo;
+import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
@@ -46,8 +46,8 @@ public class ZoomUtils {
         }
 
         double zoomDivisor = zoomerZoom.getZoomDivisor();
-        double minimumZoomDivisor = OkZoomerConfigPojo.values.minimumZoomDivisor;
-        double maximumZoomDivisor = OkZoomerConfigPojo.values.maximumZoomDivisor;
+        double minimumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().minimumZoomDivisor();
+        double maximumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().maximumZoomDivisor();
         double changedZoomDivisor;
         double lesserChangedZoomDivisor;
 
@@ -57,21 +57,19 @@ public class ZoomUtils {
         }
 
         if (increase) {
-            changedZoomDivisor = zoomDivisor + OkZoomerConfigPojo.values.scrollStep;
-            lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigPojo.values.lesserScrollStep;
+            changedZoomDivisor = zoomDivisor + OkZoomerConfigManager.INSTANCE.values().scrollStep();
+            lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
         } else {
-            changedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.scrollStep;
-            lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigPojo.values.lesserScrollStep;
+            changedZoomDivisor = zoomDivisor - OkZoomerConfigManager.INSTANCE.values().scrollStep();
+            lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
         }
 
         if (lesserChangedZoomDivisor <= zoomerZoom.getDefaultZoomDivisor()) {
             changedZoomDivisor = lesserChangedZoomDivisor;
         }
 
-        if (changedZoomDivisor >= minimumZoomDivisor) {
-            if (changedZoomDivisor <= maximumZoomDivisor) {
-                zoomerZoom.setZoomDivisor(changedZoomDivisor);
-            }
+        if (changedZoomDivisor >= minimumZoomDivisor && changedZoomDivisor <= maximumZoomDivisor) {
+            zoomerZoom.setZoomDivisor(changedZoomDivisor);
         }
     }
 

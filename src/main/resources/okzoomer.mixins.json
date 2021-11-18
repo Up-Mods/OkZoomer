@@ -1,11 +1,11 @@
 {
-	"required": true,
-	"package": "io.github.ennuil.okzoomer.mixin",
-	"compatibilityLevel": "JAVA_8",
-	"client": [
-		"MouseMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "io.github.ennuil.okzoomer.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "MouseMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
