@@ -30,15 +30,8 @@ public class ZoomUtils {
             null
         ));
 
-    // The zoom FOV multipliers. Used by the GameRenderer mixin.
-    public static float zoomFovMultiplier = 1.0F;
-    public static float lastZoomFovMultiplier = 1.0F;
-
-    // The zoom overlay's alpha. Used by the InGameHud mixin.
-    public static float zoomOverlayAlpha = 0.0F;
-    public static float lastZoomOverlayAlpha = 0.0F;
-
     // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
+    // TODO - Overhaul the scrolling system; I have an idea
     public static final void changeZoomDivisor(boolean increase) {
         //If the zoom is disabled, don't allow for zoom scrolling
         if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
@@ -48,6 +41,7 @@ public class ZoomUtils {
         double zoomDivisor = zoomerZoom.getZoomDivisor();
         double minimumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().minimumZoomDivisor();
         double maximumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().maximumZoomDivisor();
+
         double changedZoomDivisor;
         double lesserChangedZoomDivisor;
 

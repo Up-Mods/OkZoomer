@@ -34,6 +34,7 @@ public record OkZoomerConfig(
                 false,
                 config.tweaks().useSpyglassTexture(),
                 config.tweaks().useSpyglassSounds(),
+                config.tweaks().showRestrictionToasts(),
                 config.tweaks().printOwoOnStart()
             )
         );

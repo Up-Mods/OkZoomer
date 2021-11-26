@@ -9,6 +9,7 @@ import com.mojang.serialization.JsonOps;
 
 import org.quiltmc.json5.JsonReader;
 import org.quiltmc.json5.JsonWriter;
+import org.quiltmc.json5.exception.MalformedSyntaxException;
 
 import io.github.ennuil.libzoomer.api.MouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
@@ -61,8 +62,8 @@ public class OkZoomerConfigManager {
                     ZoomUtils.LOGGER.error("Failed to load the settings!");
                     isConfigLoaded = Optional.of(false);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (MalformedSyntaxException | IOException e) {
+                ZoomUtils.LOGGER.error("Failed to load the settings!\n" + e.toString());
             }
         } else {
             saveModConfig();
@@ -119,7 +120,7 @@ public class OkZoomerConfigManager {
                         Adds an overlay in the screen during zoom.
                         "VIGNETTE" uses a vignette as the overlay.
                         "SPYGLASS" uses the spyglass overlay with the vignette texture.
-                        The overlay texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png
+                        The vignette texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png
                         """).name("zoom_overlay").value(INSTANCE.features().zoomOverlay().asString())
 
                 .endObject()
@@ -184,6 +185,10 @@ public class OkZoomerConfigManager {
                     // Use Spyglass Sounds
                     .comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
                     .name("use_spyglass_sounds").value(INSTANCE.tweaks().useSpyglassSounds())
+
+                    // Show Restriction Toasts
+                    .comment("Shows toasts when the server imposes a restriction.")
+                    .name("show_restriction_toasts").value(INSTANCE.tweaks().showRestrictionToasts())
 
                     // Print owo on Start
                     // TODO - Revert on 5.0.0
@@ -295,6 +300,7 @@ public class OkZoomerConfigManager {
                 false,
                 preset == ZoomPresets.SPYGLASS ? true : false,
                 preset == ZoomPresets.SPYGLASS ? true : false,
+                true,
                 preset == ZoomPresets.CLASSIC ? false : true
             )
         );

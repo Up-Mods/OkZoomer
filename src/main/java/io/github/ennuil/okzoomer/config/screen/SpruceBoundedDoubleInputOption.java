@@ -16,6 +16,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class SpruceBoundedDoubleInputOption extends SpruceOption {
@@ -43,26 +44,31 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
         textField.setTextPredicate(SpruceTextFieldWidget.DOUBLE_INPUT_PREDICATE);
         textField.setRenderTextProvider((displayedText, offset) -> {
             try {
+                MutableText tooltipText = new LiteralText("").append(this.tooltip);
+                Style tooltipStyle = Style.EMPTY;
                 double value = Double.parseDouble(textField.getText());
-                boundCheck(value);
-                textField.setTooltip(this.tooltip);
-                return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY);
-            } catch (NumberFormatException | OutOfBoundsException e) {
-                if (e instanceof OutOfBoundsException) {
-                    // TODO - Clean this up, make it translatable
-                    MutableText tooltipText = new LiteralText("").append(this.tooltip);
-                    if (minimum.isPresent() && Double.parseDouble(textField.getText()) < minimum.get()) {
-                        String minimumText = minimum.get().toString();
-                        if (minimum.get() == Double.MIN_NORMAL) {
-                            minimumText = "above 0";
+                Optional<Boolean> bound = boundCheck(value);
+                if (bound.isPresent()) {
+                    tooltipStyle = Style.EMPTY.withColor(Formatting.RED);
+                    if (minimum.isPresent()) {
+                        if (!bound.get()) {
+                            boolean aboveZero = minimum.get() == Double.MIN_NORMAL;
+                            tooltipText = tooltipText.append("\n");
+                            tooltipText = tooltipText.append(new TranslatableText(
+                                "config.okzoomer.widget.bounded_double.below_range",
+                                aboveZero ? new TranslatableText("config.okzoomer.widget.bounded_double.above_zero") : minimum.get().toString()
+                            ).setStyle(tooltipStyle));
+                        } else {
+                            tooltipText = tooltipText.append(new TranslatableText(
+                                "config.okzoomer.widget.bounded_double.above_range",
+                                maximum.get().toString()
+                            ).setStyle(tooltipStyle));
                         }
-                        tooltipText = tooltipText.append(new LiteralText("\nThe number is below the allowed range! The minimum is " + minimumText + "!").setStyle(Style.EMPTY.withColor(Formatting.RED)));
                     }
-                    if (maximum.isPresent() && Double.parseDouble(textField.getText()) < maximum.get()) {
-                        tooltipText = tooltipText.append(new LiteralText("\nThe number is above the allowed range! The maximum is " + maximum.get() + "!").setStyle(Style.EMPTY.withColor(Formatting.RED)));
-                    }
-                    textField.setTooltip(tooltipText);
                 }
+                textField.setTooltip(tooltipText);
+                return OrderedText.styledForwardsVisitedString(displayedText, tooltipStyle);
+            } catch (NumberFormatException e) {
                 return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY.withColor(Formatting.RED));
             }
         });
@@ -70,8 +76,10 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
             double value;
             try {
                 value = Double.parseDouble(textField.getText());
-                boundCheck(value);
-            } catch (NumberFormatException | OutOfBoundsException e) {
+                if (boundCheck(value).isPresent()) {
+                    value = this.defaultValue;
+                };
+            } catch (NumberFormatException e) {
                 value = this.defaultValue;
             }
             this.set(value);
@@ -88,18 +96,13 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
         return this.getter.get();
     }
 
-    private void boundCheck(Double value) throws OutOfBoundsException {
+    private Optional<Boolean> boundCheck(double value) {
         if (minimum.isPresent() && value < minimum.get()) {
-            throw new OutOfBoundsException("The number is below the allowed range!");
+            return Optional.of(false);
         }
         if (maximum.isPresent() && value > maximum.get()) {
-            throw new OutOfBoundsException("The number is above the allowed range!");
+            return Optional.of(true);
         }
-    }
-
-    private class OutOfBoundsException extends Exception {
-        public OutOfBoundsException(String string) {
-            super(string);
-        }
+        return Optional.empty();
     }
 }

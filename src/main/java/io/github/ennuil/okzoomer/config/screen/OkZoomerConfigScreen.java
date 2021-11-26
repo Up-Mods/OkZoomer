@@ -55,6 +55,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
     private boolean resetZoomWithMouseValue;
     private boolean useSpyglassTextureValue;
     private boolean useSpyglassSoundsValue;
+    private boolean showRestrictionToastsValue;
     private boolean printOwoOnStartValue;
 
     public OkZoomerConfigScreen(Screen parent) {
@@ -92,6 +93,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         resetZoomWithMouseValue = OkZoomerConfigManager.INSTANCE.tweaks().resetZoomWithMouse();
         useSpyglassTextureValue = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassTexture();
         useSpyglassSoundsValue = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds();
+        showRestrictionToastsValue = OkZoomerConfigManager.INSTANCE.tweaks().showRestrictionToasts();
         printOwoOnStartValue = OkZoomerConfigManager.INSTANCE.tweaks().printOwoOnStart();
     }
     
@@ -308,6 +310,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             value -> useSpyglassSoundsValue = value,
             new TranslatableText("config.okzoomer.use_spyglass_sounds.tooltip"));
         
+        // Show Restriction Toasts
+        var showRestrictionToastsOption = new SpruceBooleanOption(
+            "config.okzoomer.show_restriction_toasts",
+            () -> showRestrictionToastsValue,
+            value -> showRestrictionToastsValue = value,
+            new TranslatableText("config.okzoomer.show_restriction_toasts.tooltip"));
+        
         // Print owo on Start
         var printOwoOnStartOption = new SpruceBooleanOption(
             "config.okzoomer.print_owo_on_start",
@@ -368,7 +377,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list.addSingleOptionEntry(tweaksSeparator);
         this.list.addOptionEntry(resetZoomWithMouseOption, unbindConflictingKeyOption);
         this.list.addOptionEntry(useSpyglassTextureOption, useSpyglassSoundsOption);
-        this.list.addSingleOptionEntry(printOwoOnStartOption);
+        this.list.addOptionEntry(showRestrictionToastsOption, printOwoOnStartOption);
 
         this.list.addSingleOptionEntry(resetSeparator);
         this.list.addOptionEntry(presetOption, resetSettingsOption);
@@ -410,6 +419,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
                         false,
                         useSpyglassTextureValue,
                         useSpyglassSoundsValue,
+                        showRestrictionToastsValue,
                         printOwoOnStartValue
                     )
                 );

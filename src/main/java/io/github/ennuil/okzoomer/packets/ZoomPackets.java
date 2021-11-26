@@ -1,13 +1,11 @@
 package io.github.ennuil.okzoomer.packets;
 
 import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-// import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-// import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
-// import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -36,7 +34,9 @@ public class ZoomPackets {
     private static TranslatableText toastTitle = new TranslatableText("toast.okzoomer.title");
 
     private static void sendToast(MinecraftClient client, Text description) {
-        client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
+        if (OkZoomerConfigManager.INSTANCE.tweaks().showRestrictionToasts()) {
+            client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
+        }
     }
 
     //Registers all the packets
@@ -48,6 +48,7 @@ public class ZoomPackets {
         ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> {
             client.execute(() -> {
                 sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom"));
+                ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zooming");
                 disableZoom = true;
             });
         });
@@ -59,6 +60,7 @@ public class ZoomPackets {
         ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
             client.execute(() -> {
                 sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom_scrolling"));
+                ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zoom scrolling");
                 disableZoomScrolling = true;
             });
         });
@@ -70,6 +72,7 @@ public class ZoomPackets {
             Arguments: None */
         ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> {
             client.execute(() -> {
+                ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed classic mode");
                 sendToast(client, new TranslatableText("toast.okzoomer.force_classic_mode"));
                 disableZoomScrolling = true;
                 forceClassicMode = true;
@@ -88,11 +91,16 @@ public class ZoomPackets {
                 double maxDouble = buf.readDouble();
                 double minDouble = (readableBytes == 16) ? buf.readDouble() : maxDouble;
                 client.execute(() -> {
-                    sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
-                    maximumZoomDivisor = maxDouble;
-                    minimumZoomDivisor = minDouble;
-                    forceZoomDivisors = true;
-                    OkZoomerConfigManager.configureZoomInstance();
+                    if (minimumZoomDivisor != 0 || maximumZoomDivisor != 0) {
+                        ZoomUtils.LOGGER.info("[Ok Zoomer] This server has attempted to set invalid divisor values! (min %s, max %s)", minDouble, maxDouble);    
+                    } else {
+                        ZoomUtils.LOGGER.info("[Ok Zoomer] This server has set the zoom divisors to minimum %s and maximum %s", minDouble, maxDouble);
+                        sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
+                        maximumZoomDivisor = maxDouble;
+                        minimumZoomDivisor = minDouble;
+                        forceZoomDivisors = true;
+                        OkZoomerConfigManager.configureZoomInstance();
+                    }
                 });
             }
         });
@@ -105,9 +113,13 @@ public class ZoomPackets {
         ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
             boolean restricting = buf.readBoolean();
             client.execute(() -> {
-                sendToast(client, restricting
-                ? new TranslatableText("toast.okzoomer.acknowledge_mod_restrictions")
-                : new TranslatableText("toast.okzoomer.acknowledge_mod"));
+                if (restricting) {
+                    ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and has established some restrictions");
+                    sendToast(client, new TranslatableText("toast.okzoomer.acknowledge_mod_restrictions"));
+                } else {
+                    ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and establishes no restrictions");
+                    sendToast(client, new TranslatableText("toast.okzoomer.acknowledge_mod"));
+                }
             });
         });
 
@@ -115,8 +127,9 @@ public class ZoomPackets {
             This packet will let the server restrict the mod to spyglass-only usage
             Not supported yet!
             Arguments: probably some, we'll see */
-        ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_PACKET_ID, (client, handler, buf, sender) -> {
             client.execute(() -> {
+                ZoomUtils.LOGGER.info("[Ok Zoomer] This server has forced the spyglass mode, but it hasn't been implemented on this version! Disabling zoom");
                 sendToast(client, new TranslatableText("toast.okzoomer.disable_zoom"));
                 disableZoom = true;
             });
@@ -135,7 +148,7 @@ public class ZoomPackets {
             buf.writeDouble(4.0D);
             sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
         });
-        */ 
+        */
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {
