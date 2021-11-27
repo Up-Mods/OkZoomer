@@ -46,8 +46,16 @@ public class ZoomUtils {
         double lesserChangedZoomDivisor;
 
         if (ZoomPackets.getForceZoomDivisors()) {
-            minimumZoomDivisor = ZoomPackets.getMinimumZoomDivisor();
-            maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
+            double packetMinimumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
+            double packetMaximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
+
+            if (packetMinimumZoomDivisor < minimumZoomDivisor) {
+                minimumZoomDivisor = packetMinimumZoomDivisor;
+            }
+            
+            if (packetMaximumZoomDivisor > maximumZoomDivisor) {
+                maximumZoomDivisor = packetMaximumZoomDivisor;
+            }
         }
 
         if (increase) {
