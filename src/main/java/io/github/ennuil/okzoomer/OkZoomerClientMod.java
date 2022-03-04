@@ -6,7 +6,7 @@ import io.github.ennuil.okzoomer.events.ManageZoomEvent;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.fabricmc.api.ClientModInitializer;
 
-// This class is responsible for registering the events and packets.
+// This class is responsible for registering the events and packets
 public class OkZoomerClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {

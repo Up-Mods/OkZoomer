@@ -35,11 +35,11 @@ import io.github.ennuil.okzoomer.zoom.ZoomerZoomOverlay;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 
-// The class responsible for loading and saving the config.
+// The class responsible for loading and saving the config
 public class OkZoomerConfigManager {
     public static Optional<Boolean> isConfigLoaded = Optional.empty();
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("okzoomer.json5");
-    public static OkZoomerConfig INSTANCE = OkZoomerConfig.getDefaultSettings();
+    public static OkZoomerConfig configInstance = OkZoomerConfig.getDefaultSettings();
 
     public enum ZoomPresets {
         DEFAULT,
@@ -55,7 +55,7 @@ public class OkZoomerConfigManager {
                 var result = OkZoomerConfig.CODEC.parse(JsonOps.INSTANCE, Json5Helper.parseJson5Reader(reader)).result();
                 reader.close();
                 if (result.isPresent()) {
-                    INSTANCE = result.get();
+                    configInstance = result.get();
                     configureZoomInstance();
                     isConfigLoaded = Optional.of(true);
                 } else {
@@ -72,7 +72,7 @@ public class OkZoomerConfigManager {
     }
 
     public static void saveModConfig() {
-        var result = OkZoomerConfig.CODEC.encodeStart(JsonOps.INSTANCE, INSTANCE).result();
+        var result = OkZoomerConfig.CODEC.encodeStart(JsonOps.INSTANCE, configInstance).result();
         if (result.isPresent()) {
             try {
                 JsonWriter writer = JsonWriter.json5(CONFIG_PATH);
@@ -85,11 +85,11 @@ public class OkZoomerConfigManager {
                         "OFF" disables the cinematic camera.
                         "VANILLA" uses Vanilla's cinematic camera.
                         "MULTIPLIED" is a multiplied variant of "VANILLA".
-                        """).name("cinematic_camera").value(INSTANCE.features().cinematicCamera().asString())
+                        """).name("cinematic_camera").value(configInstance.features().getCinematicCamera().asString())
                     
                     // Reduce Sensitivity
                     .comment("Reduces the mouse sensitivity when zooming.")
-                    .name("reduce_sensitivity").value(INSTANCE.features().reduceSensitivity())
+                    .name("reduce_sensitivity").value(configInstance.features().getReduceSensitivity())
 
                     // Zoom Transition
                     .comment("""
@@ -97,7 +97,7 @@ public class OkZoomerConfigManager {
                         "OFF" disables transitions.
                         "SMOOTH" replicates Vanilla's dynamic FOV.
                         "LINEAR" removes the smoothiness.
-                        """).name("zoom_transition").value(INSTANCE.features().zoomTransition().asString())
+                        """).name("zoom_transition").value(configInstance.features().getZoomTransition().asString())
 
                     // Zoom Mode
                     .comment("""
@@ -105,15 +105,15 @@ public class OkZoomerConfigManager {
                         "HOLD" needs the zoom key to be hold.
                         "TOGGLE" has the zoom key toggle the zoom.
                         "PERSISTENT" makes the zoom permanent.
-                        """).name("zoom_mode").value(INSTANCE.features().zoomMode().asString())
+                        """).name("zoom_mode").value(configInstance.features().getZoomMode().asString())
 
                     // Zoom Scrolling
                     .comment("Allows to increase or decrease zoom by scrolling.")
-                    .name("zoom_scrolling").value(INSTANCE.features().zoomScrolling())
+                    .name("zoom_scrolling").value(configInstance.features().getZoomScrolling())
 
                     // Extra Keybinds
                     .comment("Adds zoom manipulation keys along with the zoom key.")
-                    .name("extra_keybinds").value(INSTANCE.features().extraKeybinds())
+                    .name("extra_key_binds").value(configInstance.features().getExtraKeyBinds())
                     
                     // Zoom Overlay
                     .comment("""
@@ -121,7 +121,7 @@ public class OkZoomerConfigManager {
                         "VIGNETTE" uses a vignette as the overlay.
                         "SPYGLASS" uses the spyglass overlay with the vignette texture.
                         The vignette texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png
-                        """).name("zoom_overlay").value(INSTANCE.features().zoomOverlay().asString())
+                        """).name("zoom_overlay").value(configInstance.features().getZoomOverlay().asString())
 
                 .endObject()
 
@@ -129,71 +129,71 @@ public class OkZoomerConfigManager {
                 .name("values").beginObject()
                     // Zoom Divisor
                     .comment("The divisor applied to the FOV when zooming.")
-                    .name("zoom_divisor").value(INSTANCE.values().zoomDivisor())
+                    .name("zoom_divisor").value(configInstance.values().getZoomDivisor())
 
                     // Minimum Zoom Divisor
                     .comment("The minimum value that you can scroll down.")
-                    .name("minimum_zoom_divisor").value(INSTANCE.values().minimumZoomDivisor())
+                    .name("minimum_zoom_divisor").value(configInstance.values().getMinimumZoomDivisor())
 
                     // Maximum Zoom Divisor
                     .comment("The maximum value that you can scroll down.")
-                    .name("maximum_zoom_divisor").value(INSTANCE.values().maximumZoomDivisor())
+                    .name("maximum_zoom_divisor").value(configInstance.values().getMaximumZoomDivisor())
 
                     // Scroll Step
                     .comment("""
                         The number which is decremented or incremented by zoom scrolling.
                         Used when the zoom divisor is above the starting point.
-                        """).name("scroll_step").value(INSTANCE.values().scrollStep())
+                        """).name("scroll_step").value(configInstance.values().getScrollStep())
 
                     // Lesser Scroll Step
                     .comment("""
                         The number which is decremented or incremented by zoom scrolling.
                         Used when the zoom divisor is below the starting point.
-                        """).name("lesser_scroll_step").value(INSTANCE.values().lesserScrollStep())
+                        """).name("lesser_scroll_step").value(configInstance.values().getLesserScrollStep())
 
                     // Smooth Multiplier
                     .comment("The multiplier used for smooth transitions.")
-                    .name("smooth_multiplier").value(INSTANCE.values().smoothMultiplier())
+                    .name("smooth_multiplier").value(configInstance.values().getSmoothMultiplier())
 
                     // Cinematic Multiplier
                     .comment("The multiplier used for the multiplied cinematic camera.")
-                    .name("cinematic_multiplier").value(INSTANCE.values().cinematicMultiplier())
+                    .name("cinematic_multiplier").value(configInstance.values().getCinematicMultiplier())
 
                     // Minimum Linear Step
                     .comment("The minimum value which the linear transition step can reach.")
-                    .name("minimum_linear_step").value(INSTANCE.values().minimumLinearStep())
+                    .name("minimum_linear_step").value(configInstance.values().getMinimumLinearStep())
 
                     // Maximum Linear Step
                     .comment("The maximum value which the linear transition step can reach.")
-                    .name("maximum_linear_step").value(INSTANCE.values().maximumLinearStep())
+                    .name("maximum_linear_step").value(configInstance.values().getMaximumLinearStep())
                 .endObject()
 
                 // Tweaks
                 .name("tweaks").beginObject()
                     // Reset Zoom with Mouse
                     .comment("Allows for resetting the zoom with the middle mouse button.")
-                    .name("reset_zoom_with_mouse").value(INSTANCE.tweaks().resetZoomWithMouse())
+                    .name("reset_zoom_with_mouse").value(configInstance.tweaks().getResetZoomWithMouse())
 
                     // Unbind Conflicting Key
                     .comment("If pressed, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
-                    .name("unbind_conflicting_key").value(INSTANCE.tweaks().unbindConflictingKey())
+                    .name("unbind_conflicting_key").value(configInstance.tweaks().getUnbindConflictingKey())
 
                     // Use Spyglass Texture
                     .comment("If enabled, the spyglass overlay texture is used instead of Ok Zoomer's overlay texture.")
-                    .name("use_spyglass_texture").value(INSTANCE.tweaks().useSpyglassTexture())
+                    .name("use_spyglass_texture").value(configInstance.tweaks().getUseSpyglassTexture())
 
                     // Use Spyglass Sounds
                     .comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
-                    .name("use_spyglass_sounds").value(INSTANCE.tweaks().useSpyglassSounds())
+                    .name("use_spyglass_sounds").value(configInstance.tweaks().getUseSpyglassSounds())
 
                     // Show Restriction Toasts
                     .comment("Shows toasts when the server imposes a restriction.")
-                    .name("show_restriction_toasts").value(INSTANCE.tweaks().showRestrictionToasts())
+                    .name("show_restriction_toasts").value(configInstance.tweaks().getShowRestrictionToasts())
 
                     // Print owo on Start
                     // TODO - Revert on 5.0.0
                     .comment("Prints a random owo in the console when the game starts. Enabled by default until full release.")
-                    .name("print_owo_on_start").value(INSTANCE.tweaks().printOwoOnStart())
+                    .name("print_owo_on_start").value(configInstance.tweaks().getPrintOwoOnStart())
                 .endObject()
 
                 .endObject();
@@ -208,9 +208,9 @@ public class OkZoomerConfigManager {
     public static void configureZoomInstance() {
         // Sets zoom transition
         ZoomUtils.ZOOMER_ZOOM.setTransitionMode(
-            switch (INSTANCE.features().zoomTransition()) {
-                case SMOOTH -> new SmoothTransitionMode((float) INSTANCE.values().smoothMultiplier());
-                case LINEAR -> new LinearTransitionMode(INSTANCE.values().minimumLinearStep(), INSTANCE.values().maximumLinearStep());
+            switch (configInstance.features().getZoomTransition()) {
+                case SMOOTH -> new SmoothTransitionMode((float) configInstance.values().getSmoothMultiplier());
+                case LINEAR -> new LinearTransitionMode(configInstance.values().getMinimumLinearStep(), configInstance.values().getMaximumLinearStep());
                 default -> new InstantTransitionMode();
             }
         );
@@ -224,19 +224,19 @@ public class OkZoomerConfigManager {
         }
 
         // Sets zoom divisor
-        ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(INSTANCE.values().zoomDivisor());
+        ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(configInstance.values().getZoomDivisor());
 
         // Sets mouse modifier
         configureZoomModifier();
 
         // Sets zoom overlay
         Identifier overlayTextureId = new Identifier(
-            INSTANCE.tweaks().useSpyglassTexture()
+            configInstance.tweaks().getUseSpyglassTexture()
             ? "textures/misc/spyglass_scope.png"
             : "okzoomer:textures/misc/zoom_overlay.png");
 
         ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
-            switch (INSTANCE.features().zoomOverlay()) {
+            switch (configInstance.features().getZoomOverlay()) {
                 case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
                 case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
                 default -> null;
@@ -245,12 +245,12 @@ public class OkZoomerConfigManager {
     }
 
     public static void configureZoomModifier() {
-        CinematicCameraOptions cinematicCamera = INSTANCE.features().cinematicCamera();
-        boolean reduceSensitivity = INSTANCE.features().reduceSensitivity();
+        CinematicCameraOptions cinematicCamera = configInstance.features().getCinematicCamera();
+        boolean reduceSensitivity = configInstance.features().getReduceSensitivity();
         if (cinematicCamera != CinematicCameraOptions.OFF) {
             MouseModifier cinematicModifier = switch (cinematicCamera) {
                 case VANILLA -> new CinematicCameraMouseModifier();
-                case MULTIPLIED -> new MultipliedCinematicCameraMouseModifier(INSTANCE.values().cinematicMultiplier());
+                case MULTIPLIED -> new MultipliedCinematicCameraMouseModifier(configInstance.values().getCinematicMultiplier());
                 default -> null;
             };
             ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity
@@ -266,7 +266,7 @@ public class OkZoomerConfigManager {
     }
 
     public static void resetToPreset(ZoomPresets preset) {
-        OkZoomerConfigManager.INSTANCE = new OkZoomerConfig(
+        OkZoomerConfigManager.configInstance = new OkZoomerConfig(
             new FeaturesConfig(
                 preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF,
                 preset == ZoomPresets.CLASSIC ? false : true,

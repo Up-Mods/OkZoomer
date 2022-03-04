@@ -19,24 +19,9 @@ public record OkZoomerConfig(
 
     public static OkZoomerConfig getDefaultSettings() {
         return new OkZoomerConfig(
-            FeaturesConfig.getDefaultSettings(),
-            ValuesConfig.getDefaultSettings(),
-            TweaksConfig.getDefaultSettings()
-        );
-    }
-
-    public static OkZoomerConfig disableUnbindConflictingKey(OkZoomerConfig config) {
-        return new OkZoomerConfig(
-            config.features(),
-            config.values(),
-            new TweaksConfig(
-                config.tweaks().resetZoomWithMouse(),
-                false,
-                config.tweaks().useSpyglassTexture(),
-                config.tweaks().useSpyglassSounds(),
-                config.tweaks().showRestrictionToasts(),
-                config.tweaks().printOwoOnStart()
-            )
+            new FeaturesConfig(),
+            new ValuesConfig(),
+            new TweaksConfig()
         );
     }
 }

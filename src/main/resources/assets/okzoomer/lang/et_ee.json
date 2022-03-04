@@ -16,7 +16,7 @@
     "config.okzoomer.zoom_mode.persistent": "Püsiv",
     "config.okzoomer.zoom_mode.tooltip": "Suumimisklahvi käitumine.\n\"Hoidmine\" nõuab suumimisklahvi hoidmist.\n\"Lülitus\" lülitab suumi klahvivajutusega.\n\"Püsiv\" teeb suumi püsivaks.",
     "config.okzoomer.zoom_scrolling": "Suumi kerimine",
-    "config.okzoomer.extra_keybinds": "Täiendavad juhtnupud",
+    "config.okzoomer.extra_key_binds": "Täiendavad juhtnupud",
     "config.okzoomer.zoom_overlay": "Suumi ülekate",
     "config.okzoomer.category.values": "Väärtused",
     "config.okzoomer.zoom_divisor": "Suumi jagaja",

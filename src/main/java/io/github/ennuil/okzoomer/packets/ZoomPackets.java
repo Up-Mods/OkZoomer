@@ -23,7 +23,7 @@ public class ZoomPackets {
     // Reserved for later
     public static final Identifier FORCE_SPYGLASS_PACKET_ID = new Identifier("okzoomer", "force_spyglass");
 
-    // The signals used by other parts of the zoom in order to enforce the packets.
+    // The signals used by other parts of the zoom in order to enforce the packets
     private static boolean disableZoom = false;
     private static boolean disableZoomScrolling = false;
     private static boolean forceClassicMode = false;
@@ -34,7 +34,7 @@ public class ZoomPackets {
     private static TranslatableText toastTitle = new TranslatableText("toast.okzoomer.title");
 
     private static void sendToast(MinecraftClient client, Text description) {
-        if (OkZoomerConfigManager.INSTANCE.tweaks().showRestrictionToasts()) {
+        if (OkZoomerConfigManager.configInstance.tweaks().getShowRestrictionToasts()) {
             client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
         }
     }

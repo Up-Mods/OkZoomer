@@ -2,7 +2,7 @@ package io.github.ennuil.okzoomer.utils;
 
 import java.util.Random;
 
-// The most humorous part of Ok Zoomer. ^w^
+// The most humorous part of Ok Zoomer ^w^
 public class OwoUtils {
     public static final String[] OWO_ARRAY = {
         "owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO",

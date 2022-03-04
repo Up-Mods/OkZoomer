@@ -9,7 +9,7 @@ import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.okzoomer.keybinds.ZoomKeyBinds;
+import io.github.ennuil.okzoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBind;
@@ -17,9 +17,9 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
-// The class that contains most of the logic behind the zoom itself.
+// The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
-    // The logger, used everywhere to print messages to the console.
+    // The logger, used everywhere to print messages to the console
     public static final Logger LOGGER = LogManager.getFormatterLogger("Ok Zoomer");
 
     public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
@@ -30,7 +30,7 @@ public class ZoomUtils {
         null
     );
 
-    // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
+    // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds
     // TODO - Overhaul the scrolling system; I have an idea
     public static final void changeZoomDivisor(boolean increase) {
         //If the zoom is disabled, don't allow for zoom scrolling
@@ -39,8 +39,8 @@ public class ZoomUtils {
         }
 
         double zoomDivisor = ZOOMER_ZOOM.getZoomDivisor();
-        double minimumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().minimumZoomDivisor();
-        double maximumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().maximumZoomDivisor();
+        double minimumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMinimumZoomDivisor();
+        double maximumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMaximumZoomDivisor();
 
         double changedZoomDivisor;
         double lesserChangedZoomDivisor;
@@ -59,11 +59,11 @@ public class ZoomUtils {
         }
 
         if (increase) {
-            changedZoomDivisor = zoomDivisor + OkZoomerConfigManager.INSTANCE.values().scrollStep();
-            lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
+            changedZoomDivisor = zoomDivisor + OkZoomerConfigManager.configInstance.values().getScrollStep();
+            lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigManager.configInstance.values().getLesserScrollStep();
         } else {
-            changedZoomDivisor = zoomDivisor - OkZoomerConfigManager.INSTANCE.values().scrollStep();
-            lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
+            changedZoomDivisor = zoomDivisor - OkZoomerConfigManager.configInstance.values().getScrollStep();
+            lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigManager.configInstance.values().getLesserScrollStep();
         }
 
         if (lesserChangedZoomDivisor <= ZOOMER_ZOOM.getDefaultZoomDivisor()) {
@@ -75,7 +75,7 @@ public class ZoomUtils {
         }
     }
 
-    // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak.
+    // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
     public static final void resetZoomDivisor() {
         if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
             return;

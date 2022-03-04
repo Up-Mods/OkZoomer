@@ -9,49 +9,121 @@ import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
 import net.minecraft.util.StringIdentifiable;
 
-public record FeaturesConfig(
-    CinematicCameraOptions cinematicCamera,
-    boolean reduceSensitivity,
-    ZoomTransitionOptions zoomTransition,
-    ZoomModes zoomMode,
-    boolean zoomScrolling,
-    boolean extraKeybinds,
-    ZoomOverlays zoomOverlay
-) {
+public class FeaturesConfig {
     public static final Codec<FeaturesConfig> CODEC = RecordCodecBuilder.create(
         instance -> instance.group(
             StringIdentifiable.createCodec(
                 CinematicCameraOptions::values,
                 CinematicCameraOptions::valueOf
-            ).fieldOf("cinematic_camera").orElse(CinematicCameraOptions.OFF).forGetter(FeaturesConfig::cinematicCamera),
-            Codec.BOOL.fieldOf("reduce_sensitivity").orElse(true).forGetter(FeaturesConfig::reduceSensitivity),
+            ).fieldOf("cinematic_camera").orElse(CinematicCameraOptions.OFF).forGetter(FeaturesConfig::getCinematicCamera),
+            Codec.BOOL.fieldOf("reduce_sensitivity").orElse(true).forGetter(FeaturesConfig::getReduceSensitivity),
             StringIdentifiable.createCodec(
                 ZoomTransitionOptions::values,
                 ZoomTransitionOptions::valueOf
-            ).fieldOf("zoom_transition").orElse(ZoomTransitionOptions.SMOOTH).forGetter(FeaturesConfig::zoomTransition),
+            ).fieldOf("zoom_transition").orElse(ZoomTransitionOptions.SMOOTH).forGetter(FeaturesConfig::getZoomTransition),
             StringIdentifiable.createCodec(
                 ZoomModes::values,
                 ZoomModes::valueOf
-            ).fieldOf("zoom_mode").orElse(ZoomModes.HOLD).forGetter(FeaturesConfig::zoomMode),
-            Codec.BOOL.fieldOf("zoom_scrolling").orElse(true).forGetter(FeaturesConfig::zoomScrolling),
-            Codec.BOOL.fieldOf("extra_keybinds").orElse(true).forGetter(FeaturesConfig::extraKeybinds),
+            ).fieldOf("zoom_mode").orElse(ZoomModes.HOLD).forGetter(FeaturesConfig::getZoomMode),
+            Codec.BOOL.fieldOf("zoom_scrolling").orElse(true).forGetter(FeaturesConfig::getZoomScrolling),
+            Codec.BOOL.fieldOf("extra_keybinds").orElse(true).forGetter(FeaturesConfig::getExtraKeyBinds),
             StringIdentifiable.createCodec(
                 ZoomOverlays::values,
                 ZoomOverlays::valueOf
-            ).fieldOf("zoom_overlay").orElse(ZoomOverlays.OFF).forGetter(FeaturesConfig::zoomOverlay)
+            ).fieldOf("zoom_overlay").orElse(ZoomOverlays.OFF).forGetter(FeaturesConfig::getZoomOverlay)
         )
         .apply(instance, FeaturesConfig::new)
     );
 
-    public static FeaturesConfig getDefaultSettings() {
-        return new FeaturesConfig(
-            CinematicCameraOptions.OFF,
-            true,
-            ZoomTransitionOptions.SMOOTH,
-            ZoomModes.HOLD,
-            true,
-            true,
-            ZoomOverlays.OFF
-        );
+    private CinematicCameraOptions cinematicCamera;
+    private boolean reduceSensitivity;
+    private ZoomTransitionOptions zoomTransition;
+    private ZoomModes zoomMode;
+    private boolean zoomScrolling;
+    private boolean extraKeyBinds;
+    private ZoomOverlays zoomOverlay;
+
+    public FeaturesConfig(
+        CinematicCameraOptions cinematicCamera,
+        boolean reduceSensitivity,
+        ZoomTransitionOptions zoomTransition,
+        ZoomModes zoomMode,
+        boolean zoomScrolling,
+        boolean extraKeyBinds,
+        ZoomOverlays zoomOverlay
+    ) {
+        this.cinematicCamera = cinematicCamera;
+        this.reduceSensitivity = reduceSensitivity;
+        this.zoomTransition = zoomTransition;
+        this.zoomMode = zoomMode;
+        this.zoomScrolling = zoomScrolling;
+        this.extraKeyBinds = extraKeyBinds;
+        this.zoomOverlay = zoomOverlay;
+    }
+
+    public FeaturesConfig() {
+        this.cinematicCamera = CinematicCameraOptions.OFF;
+        this.reduceSensitivity = true;
+        this.zoomTransition = ZoomTransitionOptions.SMOOTH;
+        this.zoomMode = ZoomModes.HOLD;
+        this.zoomScrolling = true;
+        this.extraKeyBinds = true;
+        this.zoomOverlay = ZoomOverlays.OFF;
+    }
+
+    public CinematicCameraOptions getCinematicCamera() {
+        return cinematicCamera;
+    }
+
+    public void setCinematicCamera(CinematicCameraOptions cinematicCamera) {
+        this.cinematicCamera = cinematicCamera;
+    }
+
+    public boolean getReduceSensitivity() {
+        return reduceSensitivity;
+    }
+
+    public void setReduceSensitivity(boolean reduceSensitivity) {
+        this.reduceSensitivity = reduceSensitivity;
+    }
+
+    public ZoomTransitionOptions getZoomTransition() {
+        return zoomTransition;
+    }
+
+    public void setZoomTransition(ZoomTransitionOptions zoomTransition) {
+        this.zoomTransition = zoomTransition;
+    }
+
+    public ZoomModes getZoomMode() {
+        return zoomMode;
+    }
+
+    public void setZoomMode(ZoomModes zoomMode) {
+        this.zoomMode = zoomMode;
+    }
+
+    public boolean getZoomScrolling() {
+        return zoomScrolling;
+    }
+
+    public void setZoomScrolling(boolean zoomScrolling) {
+        this.zoomScrolling = zoomScrolling;
+    }
+
+    public boolean getExtraKeyBinds() {
+        return extraKeyBinds;
+    }
+
+    public void setExtraKeyBinds(boolean extraKeyBinds) {
+        this.extraKeyBinds = extraKeyBinds;
+    }
+
+    public ZoomOverlays getZoomOverlay() {
+        return zoomOverlay;
+    }
+    
+    public void setZoomOverlay(ZoomOverlays zoomOverlay) {
+        this.zoomOverlay = zoomOverlay;
     }
 }
