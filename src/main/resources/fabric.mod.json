@@ -21,13 +21,13 @@
     "okzoomer.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": ">=0.34.0",
-    "java": ">=16",
+    "fabricloader": ">=0.13.3",
+    "fabric": ">=0.47.9",
+    "java": ">=17",
     "libzoomer": ">=0.4.0"
   },
   "recommends": {
-    "modmenu": ">=2.0.0",
-    "minecraft": ">1.16.5"
+    "modmenu": ">=3.1.0",
+    "minecraft": ">=1.18.2"
   }
 }
