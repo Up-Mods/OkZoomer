@@ -22,7 +22,7 @@ public class ManageExtraKeysEvent {
                 }
     
                 if (ZoomKeyBinds.RESET_ZOOM_KEY.isPressed()) {
-                    ZoomUtils.resetZoomDivisor();
+                    ZoomUtils.resetZoomDivisor(true);
                 }
             });
         }

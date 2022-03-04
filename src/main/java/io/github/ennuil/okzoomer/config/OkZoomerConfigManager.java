@@ -141,15 +141,15 @@ public class OkZoomerConfigManager {
 
                     // Scroll Step
                     .comment("""
-                        The number which is decremented or incremented by zoom scrolling.
-                        Used when the zoom divisor is above the starting point.
-                        """).name("scroll_step").value(configInstance.values().getScrollStep())
+                        The number of steps between the zoom divisor and the maximum zoom divisor.
+                        Used by zoom scrolling.
+                        """).name("upper_scroll_step").value(configInstance.values().getUpperScrollStep())
 
                     // Lesser Scroll Step
                     .comment("""
-                        The number which is decremented or incremented by zoom scrolling.
-                        Used when the zoom divisor is below the starting point.
-                        """).name("lesser_scroll_step").value(configInstance.values().getLesserScrollStep())
+                        The number of steps between the zoom divisor and the minimum zoom divisor.
+                        Used by zoom scrolling.
+                        """).name("lower_scroll_step").value(configInstance.values().getLowerScrollStep())
 
                     // Smooth Multiplier
                     .comment("The multiplier used for smooth transitions.")
@@ -288,8 +288,8 @@ public class OkZoomerConfigManager {
                 },
                 1.0D,
                 50.0D,
-                1.0D,
-                0.5D,
+                20,
+                4,
                 preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D,
                 4.0D,
                 0.125D,

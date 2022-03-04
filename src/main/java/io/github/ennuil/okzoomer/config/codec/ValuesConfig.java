@@ -9,8 +9,8 @@ public class ValuesConfig {
             Codec.doubleRange(Double.MIN_NORMAL, Double.MAX_VALUE).fieldOf("zoom_divisor").orElse(4.0).forGetter(ValuesConfig::getZoomDivisor),
             Codec.doubleRange(Double.MIN_NORMAL, Double.MAX_VALUE).fieldOf("minimum_zoom_divisor").orElse(1.0).forGetter(ValuesConfig::getMinimumZoomDivisor),
             Codec.doubleRange(Double.MIN_NORMAL, Double.MAX_VALUE).fieldOf("maximum_zoom_divisor").orElse(50.0).forGetter(ValuesConfig::getMaximumZoomDivisor),
-            Codec.doubleRange(0.0, Double.MAX_VALUE).fieldOf("scroll_step").orElse(1.0).forGetter(ValuesConfig::getScrollStep),
-            Codec.DOUBLE.fieldOf("lesser_scroll_step").orElse(0.5).forGetter(ValuesConfig::getLesserScrollStep),
+            Codec.intRange(0, Integer.MAX_VALUE).fieldOf("upper_scroll_step").orElse(20).forGetter(ValuesConfig::getUpperScrollStep),
+            Codec.INT.fieldOf("lower_scroll_step").orElse(4).forGetter(ValuesConfig::getLowerScrollStep),
             Codec.doubleRange(Double.MIN_NORMAL, 1.0).fieldOf("smooth_multiplier").orElse(0.75).forGetter(ValuesConfig::getSmoothMultiplier),
             Codec.doubleRange(Double.MIN_NORMAL, 4.0).fieldOf("cinematic_multiplier").orElse(4.0).forGetter(ValuesConfig::getCinematicMultiplier),
             Codec.doubleRange(0.0, Double.MAX_VALUE).fieldOf("minimum_linear_step").orElse(0.125).forGetter(ValuesConfig::getMinimumLinearStep),
@@ -22,8 +22,8 @@ public class ValuesConfig {
     private double zoomDivisor;
     private double minimumZoomDivisor;
     private double maximumZoomDivisor;
-    private double scrollStep;
-    private double lesserScrollStep;
+    private int upperScrollStep;
+    private int lowerScrollStep;
     private double smoothMultiplier;
     private double cinematicMultiplier;
     private double minimumLinearStep;
@@ -33,8 +33,8 @@ public class ValuesConfig {
         double zoomDivisor,
         double minimumZoomDivisor,
         double maximumZoomDivisor,
-        double scrollStep,
-        double lesserScrollStep,
+        int upperScrollStep,
+        int lowerScrollStep,
         double smoothMultiplier,
         double cinematicMultiplier,
         double minimumLinearStep,
@@ -43,8 +43,8 @@ public class ValuesConfig {
         this.zoomDivisor = zoomDivisor;
         this.minimumZoomDivisor = minimumZoomDivisor;
         this.maximumZoomDivisor = maximumZoomDivisor;
-        this.scrollStep = scrollStep;
-        this.lesserScrollStep = lesserScrollStep;
+        this.upperScrollStep = upperScrollStep;
+        this.lowerScrollStep = lowerScrollStep;
         this.smoothMultiplier = smoothMultiplier;
         this.cinematicMultiplier = cinematicMultiplier;
         this.minimumLinearStep = minimumLinearStep;
@@ -55,8 +55,8 @@ public class ValuesConfig {
         this.zoomDivisor = 4.0;
         this.minimumZoomDivisor = 1.0;
         this.maximumZoomDivisor = 50.0;
-        this.scrollStep = 1.0;
-        this.lesserScrollStep = 0.5;
+        this.upperScrollStep = 10;
+        this.lowerScrollStep = 5;
         this.smoothMultiplier = 0.75;
         this.cinematicMultiplier = 4.0;
         this.minimumLinearStep = 0.125;
@@ -87,20 +87,20 @@ public class ValuesConfig {
         this.maximumZoomDivisor = maximumZoomDivisor;
     }
 
-    public double getScrollStep() {
-        return scrollStep;
+    public int getUpperScrollStep() {
+        return upperScrollStep;
     }
 
-    public void setScrollStep(double scrollStep) {
-        this.scrollStep = scrollStep;
+    public void setUpperScrollStep(int upperScrollStep) {
+        this.upperScrollStep = upperScrollStep;
     }
 
-    public double getLesserScrollStep() {
-        return lesserScrollStep;
+    public int getLowerScrollStep() {
+        return lowerScrollStep;
     }
 
-    public void setLesserScrollStep(double lesserScrollStep) {
-        this.lesserScrollStep = lesserScrollStep;
+    public void setLowerScrollStep(int lowerScrollStep) {
+        this.lowerScrollStep = lowerScrollStep;
     }
 
     public double getSmoothMultiplier() {

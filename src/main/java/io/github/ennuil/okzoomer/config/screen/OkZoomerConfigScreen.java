@@ -6,6 +6,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.option.SpruceBooleanOption;
 import dev.lambdaurora.spruceui.option.SpruceCyclingOption;
+import dev.lambdaurora.spruceui.option.SpruceIntegerInputOption;
 import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
 import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
@@ -199,21 +200,22 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             value -> valuesConfig.setMaximumZoomDivisor(value),
             new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"));
         
-        // Scroll Step
-        var scrollStepOption = new SpruceBoundedDoubleInputOption(
-            "config.okzoomer.scroll_step",
-            1.0D, Optional.of(0.0D), Optional.empty(),
-            () -> valuesConfig.getScrollStep(),
-            value -> valuesConfig.setScrollStep(value),
-            new TranslatableText("config.okzoomer.scroll_step.tooltip"));
+        // TODO - SpruceBoundedIntegerInputOption
+        // Upper Scroll Step
+        var scrollStepOption = new SpruceIntegerInputOption(
+            "config.okzoomer.upper_scroll_step",
+            //1.0D, Optional.of(0.0D), Optional.empty(),
+            () -> valuesConfig.getUpperScrollStep(),
+            value -> valuesConfig.setUpperScrollStep(value),
+            new TranslatableText("config.okzoomer.upper_scroll_step.tooltip"));
         
-        // Lesser Scroll Step        
-        var lesserScrollStepOption = new SpruceBoundedDoubleInputOption(
-            "config.okzoomer.lesser_scroll_step",
-            0.5D, Optional.of(0.0D), Optional.empty(),
-            () -> valuesConfig.getLesserScrollStep(),
-            value -> valuesConfig.setLesserScrollStep(value),
-            new TranslatableText("config.okzoomer.lesser_scroll_step.tooltip"));
+        // Lower Scroll Step        
+        var lowerScrollStepOption = new SpruceIntegerInputOption(
+            "config.okzoomer.lower_scroll_step",
+            //0.5D, Optional.of(0.0D), Optional.empty(),
+            () -> valuesConfig.getLowerScrollStep(),
+            value -> valuesConfig.setLowerScrollStep(value),
+            new TranslatableText("config.okzoomer.lower_scroll_step.tooltip"));
         
         // Smooth Multiplier
         var smoothMultiplierOption = new SpruceBoundedDoubleInputOption(
@@ -340,7 +342,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list.addSingleOptionEntry(valuesSeparator);
         this.list.addSingleOptionEntry(zoomDivisorOption);
         this.list.addOptionEntry(minimumZoomDivisorOption, maximumZoomDivisorOption);
-        this.list.addOptionEntry(scrollStepOption, lesserScrollStepOption);
+        this.list.addOptionEntry(scrollStepOption, lowerScrollStepOption);
         this.list.addOptionEntry(smoothMultiplierOption, cinematicMultiplierOption);
         this.list.addOptionEntry(minimumLinearStepOption, maximumLinearStepOption);
 

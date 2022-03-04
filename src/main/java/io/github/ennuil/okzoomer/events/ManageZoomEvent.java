@@ -48,13 +48,13 @@ public class ManageZoomEvent {
                 case HOLD -> {
                     // If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
                     ZoomUtils.ZOOMER_ZOOM.setZoom(ZoomKeyBinds.ZOOM_KEY.isPressed());
-                    ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
+                    ZoomUtils.resetZoomDivisor(false);
                 }
                 case TOGGLE -> {
                     // If the zoom needs to be toggled, toggle the zoom signal instead
                     if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
                         ZoomUtils.ZOOMER_ZOOM.setZoom(!ZoomUtils.ZOOMER_ZOOM.getZoom());
-                        ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
+                        ZoomUtils.resetZoomDivisor(false);
                     } else {
                         doSpyglassSound = false;
                     }
@@ -62,11 +62,15 @@ public class ManageZoomEvent {
                 case PERSISTENT -> {
                     // If persistent zoom is enabled, just keep the zoom on
                     ZoomUtils.ZOOMER_ZOOM.setZoom(true);
+                    ZoomUtils.keepZoomStepsWithinBounds();
                 }
             }
 
             if (client.player != null && doSpyglassSound) {
-                boolean soundDirection = !OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.PERSISTENT) ? ZoomUtils.ZOOMER_ZOOM.getZoom() : ZoomKeyBinds.ZOOM_KEY.isPressed();
+                boolean soundDirection = !OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.PERSISTENT)
+                    ? ZoomUtils.ZOOMER_ZOOM.getZoom()
+                    : ZoomKeyBinds.ZOOM_KEY.isPressed();
+
                 client.player.playSound(soundDirection ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
             }
 

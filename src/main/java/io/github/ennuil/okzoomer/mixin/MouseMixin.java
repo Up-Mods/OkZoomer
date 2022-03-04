@@ -58,7 +58,7 @@ public abstract class MouseMixin {
             if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl) {
                 if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
                     if (OkZoomerConfigManager.configInstance.tweaks().getResetZoomWithMouse()) {
-                        ZoomUtils.resetZoomDivisor();
+                        ZoomUtils.resetZoomDivisor(true);
                         info.cancel();
                     }
                 }

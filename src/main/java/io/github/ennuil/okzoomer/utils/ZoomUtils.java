@@ -16,6 +16,7 @@ import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
 // The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
@@ -30,20 +31,20 @@ public class ZoomUtils {
         null
     );
 
-    // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds
-    // TODO - Overhaul the scrolling system; I have an idea
+    public static int zoomStep = 0;
+
+    // The method used for changing the zoom divisor, used by zoom scrolling and the key binds
     public static final void changeZoomDivisor(boolean increase) {
         //If the zoom is disabled, don't allow for zoom scrolling
         if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
             return;
         }
 
-        double zoomDivisor = ZOOMER_ZOOM.getZoomDivisor();
+        double zoomDivisor = OkZoomerConfigManager.configInstance.values().getZoomDivisor();
         double minimumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMinimumZoomDivisor();
         double maximumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMaximumZoomDivisor();
-
-        double changedZoomDivisor;
-        double lesserChangedZoomDivisor;
+        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollStep();
+        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollStep();
 
         if (ZoomPackets.getForceZoomDivisors()) {
             double packetMinimumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
@@ -59,29 +60,41 @@ public class ZoomUtils {
         }
 
         if (increase) {
-            changedZoomDivisor = zoomDivisor + OkZoomerConfigManager.configInstance.values().getScrollStep();
-            lesserChangedZoomDivisor = zoomDivisor + OkZoomerConfigManager.configInstance.values().getLesserScrollStep();
+            zoomStep = Math.min(zoomStep + 1, upperScrollStep);
         } else {
-            changedZoomDivisor = zoomDivisor - OkZoomerConfigManager.configInstance.values().getScrollStep();
-            lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigManager.configInstance.values().getLesserScrollStep();
+            zoomStep = Math.max(zoomStep - 1, -lowerScrollStep);
         }
 
-        if (lesserChangedZoomDivisor <= ZOOMER_ZOOM.getDefaultZoomDivisor()) {
-            changedZoomDivisor = lesserChangedZoomDivisor;
+        if (zoomStep > 0) {
+            ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
+        } else if (zoomStep == 0) {
+            ZOOMER_ZOOM.setZoomDivisor(zoomDivisor);
+        } else {
+            ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
         }
 
-        if (changedZoomDivisor >= minimumZoomDivisor && changedZoomDivisor <= maximumZoomDivisor) {
-            ZOOMER_ZOOM.setZoomDivisor(changedZoomDivisor);
-        }
+        // FIXME - Remove me!
+        System.out.println(zoomStep);
+        System.out.println(ZOOMER_ZOOM.getZoomDivisor());
     }
 
     // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
-    public static final void resetZoomDivisor() {
-        if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
+    public static final void resetZoomDivisor(boolean userPrompted) {
+        // TODO - wait, why am i doing this check at all? Investigate
+        if (userPrompted && (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling())) {
             return;
         }
 
+        zoomStep = 0;
+
         ZOOMER_ZOOM.resetZoomDivisor();
+    }
+
+    public static final void keepZoomStepsWithinBounds() {
+        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollStep();
+        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollStep();
+
+        zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
     }
 
     // The method used for unbinding the "Save Toolbar Activator"

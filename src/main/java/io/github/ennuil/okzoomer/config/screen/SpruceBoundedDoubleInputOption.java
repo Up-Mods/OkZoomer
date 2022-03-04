@@ -44,12 +44,12 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
         textField.setTextPredicate(SpruceTextFieldWidget.DOUBLE_INPUT_PREDICATE);
         textField.setRenderTextProvider((displayedText, offset) -> {
             try {
-                MutableText tooltipText = new LiteralText("").append(this.tooltip);
+                MutableText tooltipText = LiteralText.EMPTY.shallowCopy().append(this.tooltip);
                 Style tooltipStyle = Style.EMPTY;
                 double value = Double.parseDouble(textField.getText());
                 Optional<Boolean> bound = boundCheck(value);
                 if (bound.isPresent()) {
-                    tooltipStyle = Style.EMPTY.withColor(Formatting.RED);
+                    tooltipStyle = tooltipStyle.withColor(Formatting.RED);
                     if (minimum.isPresent()) {
                         if (!bound.get()) {
                             boolean aboveZero = minimum.get() == Double.MIN_NORMAL;
@@ -78,7 +78,7 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
                 value = Double.parseDouble(textField.getText());
                 if (boundCheck(value).isPresent()) {
                     value = this.defaultValue;
-                };
+                }
             } catch (NumberFormatException e) {
                 value = this.defaultValue;
             }
