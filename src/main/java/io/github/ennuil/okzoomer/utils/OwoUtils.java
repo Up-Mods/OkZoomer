@@ -4,7 +4,7 @@ import java.util.Random;
 
 // The most humorous part of Ok Zoomer. ^w^
 public class OwoUtils {
-    public static String[] OWO_ARRAY = {
+    public static final String[] OWO_ARRAY = {
         "owo", "OwO", "uwu", "nwn", "^w^", ">w<", "Owo", "owO",
         ";w;", "0w0", "QwQ", "TwT", "-w-", "$w$", "@w@", "*w*",
         ":w:", "°w°", "ºwº", "ówò", "òwó", "`w´", "´w`", "~w~",

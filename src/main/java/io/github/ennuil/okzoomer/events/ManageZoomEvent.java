@@ -2,7 +2,7 @@ package io.github.ennuil.okzoomer.events;
 
 import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
-import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeyBinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -29,7 +29,7 @@ public class ManageZoomEvent {
                 if (!persistentZoom) {
                     persistentZoom = true;
                     lastZoomPress = true;
-                    ZoomUtils.zoomerZoom.resetZoomDivisor();
+                    ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
                 }
             } else {
                 if (persistentZoom) {
@@ -39,38 +39,38 @@ public class ManageZoomEvent {
             }
 
             // If the press state is the same as the previous tick's, cancel the rest. Makes toggling usable and the zoom divisor adjustable.
-            if (ZoomKeybinds.zoomKey.isPressed() == lastZoomPress) return;
+            if (ZoomKeyBinds.ZOOM_KEY.isPressed() == lastZoomPress) return;
 
             doSpyglassSound = OkZoomerConfigManager.INSTANCE.tweaks().useSpyglassSounds();
 
             switch (OkZoomerConfigManager.INSTANCE.features().zoomMode()) {
                 case HOLD -> {
                     // If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not.
-                    ZoomUtils.zoomerZoom.setZoom(ZoomKeybinds.zoomKey.isPressed());
-                    ZoomUtils.zoomerZoom.resetZoomDivisor();
+                    ZoomUtils.ZOOMER_ZOOM.setZoom(ZoomKeyBinds.ZOOM_KEY.isPressed());
+                    ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
                 }
                 case TOGGLE -> {
                     // If the zoom needs to be toggled, toggle the zoom signal instead.
-                    if (ZoomKeybinds.zoomKey.isPressed()) {
-                        ZoomUtils.zoomerZoom.setZoom(!ZoomUtils.zoomerZoom.getZoom());
-                        ZoomUtils.zoomerZoom.resetZoomDivisor();
+                    if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
+                        ZoomUtils.ZOOMER_ZOOM.setZoom(!ZoomUtils.ZOOMER_ZOOM.getZoom());
+                        ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
                     } else {
                         doSpyglassSound = false;
                     }
                 }
                 case PERSISTENT -> {
                     // If persistent zoom is enabled, just keep the zoom on.
-                    ZoomUtils.zoomerZoom.setZoom(true);
+                    ZoomUtils.ZOOMER_ZOOM.setZoom(true);
                 }
             }
 
             if (client.player != null && doSpyglassSound) {
-                boolean soundDirection = !OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.PERSISTENT) ? ZoomUtils.zoomerZoom.getZoom() : ZoomKeybinds.zoomKey.isPressed();
+                boolean soundDirection = !OkZoomerConfigManager.INSTANCE.features().zoomMode().equals(ZoomModes.PERSISTENT) ? ZoomUtils.ZOOMER_ZOOM.getZoom() : ZoomKeyBinds.ZOOM_KEY.isPressed();
                 client.player.playSound(soundDirection ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
             }
 
             // Set the previous zoom signal for the next tick.
-            lastZoomPress = ZoomKeybinds.zoomKey.isPressed();
+            lastZoomPress = ZoomKeyBinds.ZOOM_KEY.isPressed();
         });
     }
 }

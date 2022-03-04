@@ -207,7 +207,7 @@ public class OkZoomerConfigManager {
 
     public static void configureZoomInstance() {
         // Sets zoom transition
-        ZoomUtils.zoomerZoom.setTransitionMode(
+        ZoomUtils.ZOOMER_ZOOM.setTransitionMode(
             switch (INSTANCE.features().zoomTransition()) {
                 case SMOOTH -> new SmoothTransitionMode((float) INSTANCE.values().smoothMultiplier());
                 case LINEAR -> new LinearTransitionMode(INSTANCE.values().minimumLinearStep(), INSTANCE.values().maximumLinearStep());
@@ -217,14 +217,14 @@ public class OkZoomerConfigManager {
 
         // Forces Classic Mode settings
         if (ZoomPackets.getForceClassicMode()) {
-            ZoomUtils.zoomerZoom.setDefaultZoomDivisor(4.0D);
-            ZoomUtils.zoomerZoom.setMouseModifier(new CinematicCameraMouseModifier());
-            ZoomUtils.zoomerZoom.setZoomOverlay(null);
+            ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(4.0D);
+            ZoomUtils.ZOOMER_ZOOM.setMouseModifier(new CinematicCameraMouseModifier());
+            ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(null);
             return;
         }
 
         // Sets zoom divisor
-        ZoomUtils.zoomerZoom.setDefaultZoomDivisor(INSTANCE.values().zoomDivisor());
+        ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(INSTANCE.values().zoomDivisor());
 
         // Sets mouse modifier
         configureZoomModifier();
@@ -235,7 +235,7 @@ public class OkZoomerConfigManager {
             ? "textures/misc/spyglass_scope.png"
             : "okzoomer:textures/misc/zoom_overlay.png");
 
-        ZoomUtils.zoomerZoom.setZoomOverlay(
+        ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
             switch (INSTANCE.features().zoomOverlay()) {
                 case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
                 case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
@@ -253,12 +253,12 @@ public class OkZoomerConfigManager {
                 case MULTIPLIED -> new MultipliedCinematicCameraMouseModifier(INSTANCE.values().cinematicMultiplier());
                 default -> null;
             };
-            ZoomUtils.zoomerZoom.setMouseModifier(reduceSensitivity
+            ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity
                 ? new ContainingMouseModifier(cinematicModifier, new ZoomDivisorMouseModifier())
                 : cinematicModifier
             );
         } else {
-            ZoomUtils.zoomerZoom.setMouseModifier(reduceSensitivity
+            ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity
                 ? new ZoomDivisorMouseModifier()
                 : null
             );

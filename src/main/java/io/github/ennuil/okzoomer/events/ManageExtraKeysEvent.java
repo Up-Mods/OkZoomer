@@ -1,6 +1,6 @@
 package io.github.ennuil.okzoomer.events;
 
-import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeyBinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -9,19 +9,19 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 public class ManageExtraKeysEvent {
     public static void registerEvent() {
         // Register the event only if the "Extra Keybinds" option is enabled.
-        if (ZoomKeybinds.areExtraKeybindsEnabled()) {
+        if (ZoomKeyBinds.areExtraKeybindsEnabled()) {
             ClientTickEvents.END_CLIENT_TICK.register(client -> {
                 if (ZoomPackets.getDisableZoomScrolling()) return;
     
-                if (ZoomKeybinds.decreaseZoomKey.isPressed() && !ZoomKeybinds.increaseZoomKey.isPressed()) {
+                if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed()) {
                     ZoomUtils.changeZoomDivisor(false);
                 }
     
-                if (ZoomKeybinds.increaseZoomKey.isPressed() && !ZoomKeybinds.decreaseZoomKey.isPressed()) {
+                if (ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed()) {
                     ZoomUtils.changeZoomDivisor(true);
                 }
     
-                if (ZoomKeybinds.resetZoomKey.isPressed()) {
+                if (ZoomKeyBinds.RESET_ZOOM_KEY.isPressed()) {
                     ZoomUtils.resetZoomDivisor();
                 }
             });

@@ -1,0 +1,21 @@
+[versions]
+minecraft = "1.18.2"
+quilt-mappings = "1.18.2+build.3" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
+fabric-loader = "0.13.3" # Latest version is available at https://fabricmc.net/versions.html
+
+fabric-api = "0.47.9+1.18.2"
+libzoomer = "0.4.0+1.18.2"
+mod_menu = "3.1.0"
+spruceui = "3.3.2+1.17"
+quilt_json5 = "1.0.0"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+quilt-mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt-mappings" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
+mod_menu = { module = "com.terraformersmc:modmenu", version.ref = "mod_menu" }
+spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
+quilt_json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt_json5" }

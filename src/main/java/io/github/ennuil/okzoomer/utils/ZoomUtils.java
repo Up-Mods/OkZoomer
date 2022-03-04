@@ -1,19 +1,19 @@
 package io.github.ennuil.okzoomer.utils;
 
+import com.mojang.blaze3d.platform.InputUtil;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import io.github.ennuil.libzoomer.api.ZoomRegistry;
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.okzoomer.keybinds.ZoomKeybinds;
+import io.github.ennuil.okzoomer.keybinds.ZoomKeyBinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
@@ -22,13 +22,13 @@ public class ZoomUtils {
     // The logger, used everywhere to print messages to the console.
     public static final Logger LOGGER = LogManager.getFormatterLogger("Ok Zoomer");
 
-    public static ZoomInstance zoomerZoom = ZoomRegistry.registerInstance(new ZoomInstance(
-            new Identifier("okzoomer:zoom"),
-            4.0F,
-            new SmoothTransitionMode(0.75f),
-            new ZoomDivisorMouseModifier(),
-            null
-        ));
+    public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
+        new Identifier("okzoomer:zoom"),
+        4.0F,
+        new SmoothTransitionMode(0.75f),
+        new ZoomDivisorMouseModifier(),
+        null
+    );
 
     // The method used for changing the zoom divisor, used by zoom scrolling and the keybinds.
     // TODO - Overhaul the scrolling system; I have an idea
@@ -38,7 +38,7 @@ public class ZoomUtils {
             return;
         }
 
-        double zoomDivisor = zoomerZoom.getZoomDivisor();
+        double zoomDivisor = ZOOMER_ZOOM.getZoomDivisor();
         double minimumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().minimumZoomDivisor();
         double maximumZoomDivisor = OkZoomerConfigManager.INSTANCE.values().maximumZoomDivisor();
 
@@ -66,12 +66,12 @@ public class ZoomUtils {
             lesserChangedZoomDivisor = zoomDivisor - OkZoomerConfigManager.INSTANCE.values().lesserScrollStep();
         }
 
-        if (lesserChangedZoomDivisor <= zoomerZoom.getDefaultZoomDivisor()) {
+        if (lesserChangedZoomDivisor <= ZOOMER_ZOOM.getDefaultZoomDivisor()) {
             changedZoomDivisor = lesserChangedZoomDivisor;
         }
 
         if (changedZoomDivisor >= minimumZoomDivisor && changedZoomDivisor <= maximumZoomDivisor) {
-            zoomerZoom.setZoomDivisor(changedZoomDivisor);
+            ZOOMER_ZOOM.setZoomDivisor(changedZoomDivisor);
         }
     }
 
@@ -81,22 +81,22 @@ public class ZoomUtils {
             return;
         }
 
-        zoomerZoom.resetZoomDivisor();
+        ZOOMER_ZOOM.resetZoomDivisor();
     }
 
     // The method used for unbinding the "Save Toolbar Activator"
     public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
-        if (ZoomKeybinds.zoomKey.isDefault()) {
-            if (client.options.keySaveToolbarActivator.isDefault()) {
+        if (ZoomKeyBinds.ZOOM_KEY.isDefault()) {
+            if (client.options.saveToolbarActivatorKey.isDefault()) {
                 if (userPrompted) {
                     ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
                     client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.okzoomer.title"), new TranslatableText("toast.okzoomer.unbind_conflicting_key.success")));
                 } else {
                     ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
                 }
-                client.options.keySaveToolbarActivator.setBoundKey(InputUtil.UNKNOWN_KEY);
+                client.options.saveToolbarActivatorKey.setBoundKey(InputUtil.UNKNOWN_KEY);
                 client.options.write();
-                KeyBinding.updateKeysByCode();
+                KeyBind.updateBoundKeys();
             } else {
                 ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
                 if (userPrompted) {

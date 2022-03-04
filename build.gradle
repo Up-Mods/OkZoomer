@@ -1,14 +1,14 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
-	id 'io.github.juuxel.loom-quiltflower-mini' version '1.1.0'
-	id "org.quiltmc.quilt-mappings-on-loom" version "3.1.0"
+	id 'fabric-loom' version '0.11-SNAPSHOT'
+	id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+	id "org.quiltmc.quilt-mappings-on-loom" version "4.0.0"
 	id 'maven-publish'
 }
 
 // Visual Studio Code completely ignores options.release.
 // So, we still have those two.
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = System.env.GITHUB_ACTIONS == "true"
@@ -25,21 +25,21 @@ repositories {
 
 dependencies {
 	// To change the versions, see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	minecraft libs.minecraft
 	mappings loom.layered {
-		addLayer quiltMappings.mappings("org.quiltmc:quilt-mappings:${project.mappings_version}:v2")
+		addLayer quiltMappings.mappings("org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:v2")
 	}
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation libs.fabric.loader
 	
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "io.github.ennuil:LibZoomer:${project.libzoomer_version}"
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-	modImplementation "dev.lambdaurora:spruceui:${project.spruceui_version}"
-	modImplementation "org.quiltmc:quilt-json5:${project.json5_version}"
+	modImplementation libs.fabric.api
+	modImplementation libs.mod.menu
+	modImplementation libs.libzoomer
+	modImplementation libs.spruceui
+	modImplementation libs.quilt.json5
 	
-	include "io.github.ennuil:LibZoomer:${project.libzoomer_version}"
-	include "dev.lambdaurora:spruceui:${project.spruceui_version}"
-	include "org.quiltmc:quilt-json5:${project.json5_version}"
+	include libs.libzoomer
+	include libs.spruceui
+	include libs.quilt.json5
 }
 
 processResources {
@@ -57,8 +57,8 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	it.options.release = 16
+	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+	it.options.release = 17
 }
 
 java {
