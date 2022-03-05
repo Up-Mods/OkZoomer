@@ -49,7 +49,7 @@ public class TweaksConfig {
     }
 
     public boolean getResetZoomWithMouse() {
-        return resetZoomWithMouse;
+        return this.resetZoomWithMouse;
     }
 
     public void setResetZoomWithMouse(boolean resetZoomWithMouse) {
@@ -57,7 +57,7 @@ public class TweaksConfig {
     }
 
     public boolean getUnbindConflictingKey() {
-        return unbindConflictingKey;
+        return this.unbindConflictingKey;
     }
 
     public void setUnbindConflictingKey(boolean unbindConflictingKey) {
@@ -65,7 +65,7 @@ public class TweaksConfig {
     }
 
     public boolean getUseSpyglassTexture() {
-        return useSpyglassTexture;
+        return this.useSpyglassTexture;
     }
 
     public void setUseSpyglassTexture(boolean useSpyglassTexture) {
@@ -73,7 +73,7 @@ public class TweaksConfig {
     }
 
     public boolean getUseSpyglassSounds() {
-        return useSpyglassSounds;
+        return this.useSpyglassSounds;
     }
 
     public void setUseSpyglassSounds(boolean useSpyglassSounds) {
@@ -81,7 +81,7 @@ public class TweaksConfig {
     }
 
     public boolean getShowRestrictionToasts() {
-        return showRestrictionToasts;
+        return this.showRestrictionToasts;
     }
 
     public void setShowRestrictionToasts(boolean showRestrictionToasts) {
@@ -89,7 +89,7 @@ public class TweaksConfig {
     }
 
     public boolean getPrintOwoOnStart() {
-        return printOwoOnStart;
+        return this.printOwoOnStart;
     }
 
     public void setPrintOwoOnStart(boolean printOwoOnStart) {

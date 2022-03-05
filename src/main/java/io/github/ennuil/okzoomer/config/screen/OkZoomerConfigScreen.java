@@ -6,7 +6,6 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.option.SpruceBooleanOption;
 import dev.lambdaurora.spruceui.option.SpruceCyclingOption;
-import dev.lambdaurora.spruceui.option.SpruceIntegerInputOption;
 import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
 import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
@@ -14,6 +13,7 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import io.github.ennuil.okzoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.okzoomer.config.ConfigEnums.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
@@ -170,6 +170,27 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             },
             new TranslatableText("config.okzoomer.zoom_overlay.tooltip"));
         
+        // Zoom Overlay
+        var spyglassDependencyOption = new SpruceCyclingOption(
+            "config.okzoomer.spyglass_dependency",
+            amount -> featuresConfig.setSpyglassDependency(
+                switch (featuresConfig.getSpyglassDependency()) {
+                    case OFF -> SpyglassDependency.REQUIRE_ITEM;
+                    case REQUIRE_ITEM -> SpyglassDependency.REPLACE_ZOOM;
+                    case REPLACE_ZOOM -> SpyglassDependency.BOTH;
+                    case BOTH -> SpyglassDependency.OFF;
+                    default -> SpyglassDependency.OFF;
+                }
+            ),
+            option -> switch (featuresConfig.getSpyglassDependency()) {
+                case OFF -> getCyclingOptionText("config.okzoomer.spyglass_dependency.off", option.getPrefix());
+                case REQUIRE_ITEM -> getCyclingOptionText("config.okzoomer.spyglass_dependency.require_item", option.getPrefix());
+                case REPLACE_ZOOM -> getCyclingOptionText("config.okzoomer.spyglass_dependency.require_zoom", option.getPrefix());
+                case BOTH -> getCyclingOptionText("config.okzoomer.spyglass_dependency.both", option.getPrefix());
+                default -> getCyclingOptionText(null, option.getPrefix());
+            },
+            new TranslatableText("config.okzoomer.spyglass_dependency.tooltip"));
+        
         // "Values" category separator
         var valuesSeparator = new SpruceSeparatorOption(
             "config.okzoomer.category.values",
@@ -200,20 +221,19 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             value -> valuesConfig.setMaximumZoomDivisor(value),
             new TranslatableText("config.okzoomer.maximum_zoom_divisor.tooltip"));
         
-        // TODO - SpruceBoundedIntegerInputOption
         // Upper Scroll Step
-        var scrollStepOption = new SpruceIntegerInputOption(
+        var scrollStepOption = new SpruceBoundedIntegerInputOption(
             "config.okzoomer.upper_scroll_step",
-            //1.0D, Optional.of(0.0D), Optional.empty(),
-            () -> valuesConfig.getUpperScrollStep(),
+            20, Optional.of(0), Optional.empty(),
+            () -> valuesConfig.getUpperScrollSteps(),
             value -> valuesConfig.setUpperScrollStep(value),
             new TranslatableText("config.okzoomer.upper_scroll_step.tooltip"));
         
         // Lower Scroll Step        
-        var lowerScrollStepOption = new SpruceIntegerInputOption(
+        var lowerScrollStepOption = new SpruceBoundedIntegerInputOption(
             "config.okzoomer.lower_scroll_step",
-            //0.5D, Optional.of(0.0D), Optional.empty(),
-            () -> valuesConfig.getLowerScrollStep(),
+            4, Optional.of(0), Optional.empty(),
+            () -> valuesConfig.getLowerScrollSteps(),
             value -> valuesConfig.setLowerScrollStep(value),
             new TranslatableText("config.okzoomer.lower_scroll_step.tooltip"));
         
@@ -338,6 +358,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         this.list.addSingleOptionEntry(zoomTransitionOption);
         this.list.addOptionEntry(zoomModeOption, zoomScrollingOption);
         this.list.addOptionEntry(extraKeyBindsOption, zoomOverlayOption);
+        this.list.addSingleOptionEntry(spyglassDependencyOption);
 
         this.list.addSingleOptionEntry(valuesSeparator);
         this.list.addSingleOptionEntry(zoomDivisorOption);

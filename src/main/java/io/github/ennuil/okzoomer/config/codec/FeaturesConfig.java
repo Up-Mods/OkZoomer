@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.github.ennuil.okzoomer.config.ConfigEnums.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
@@ -30,7 +31,11 @@ public class FeaturesConfig {
             StringIdentifiable.createCodec(
                 ZoomOverlays::values,
                 ZoomOverlays::valueOf
-            ).fieldOf("zoom_overlay").orElse(ZoomOverlays.OFF).forGetter(FeaturesConfig::getZoomOverlay)
+            ).fieldOf("zoom_overlay").orElse(ZoomOverlays.OFF).forGetter(FeaturesConfig::getZoomOverlay),
+            StringIdentifiable.createCodec(
+                SpyglassDependency::values,
+                SpyglassDependency::valueOf
+            ).fieldOf("zoom_overlay").orElse(SpyglassDependency.OFF).forGetter(FeaturesConfig::getSpyglassDependency)
         )
         .apply(instance, FeaturesConfig::new)
     );
@@ -42,6 +47,7 @@ public class FeaturesConfig {
     private boolean zoomScrolling;
     private boolean extraKeyBinds;
     private ZoomOverlays zoomOverlay;
+    private SpyglassDependency spyglassDependency;
 
     public FeaturesConfig(
         CinematicCameraOptions cinematicCamera,
@@ -50,7 +56,8 @@ public class FeaturesConfig {
         ZoomModes zoomMode,
         boolean zoomScrolling,
         boolean extraKeyBinds,
-        ZoomOverlays zoomOverlay
+        ZoomOverlays zoomOverlay,
+        SpyglassDependency spyglassDependency
     ) {
         this.cinematicCamera = cinematicCamera;
         this.reduceSensitivity = reduceSensitivity;
@@ -59,6 +66,7 @@ public class FeaturesConfig {
         this.zoomScrolling = zoomScrolling;
         this.extraKeyBinds = extraKeyBinds;
         this.zoomOverlay = zoomOverlay;
+        this.spyglassDependency = spyglassDependency;
     }
 
     public FeaturesConfig() {
@@ -72,7 +80,7 @@ public class FeaturesConfig {
     }
 
     public CinematicCameraOptions getCinematicCamera() {
-        return cinematicCamera;
+        return this.cinematicCamera;
     }
 
     public void setCinematicCamera(CinematicCameraOptions cinematicCamera) {
@@ -80,7 +88,7 @@ public class FeaturesConfig {
     }
 
     public boolean getReduceSensitivity() {
-        return reduceSensitivity;
+        return this.reduceSensitivity;
     }
 
     public void setReduceSensitivity(boolean reduceSensitivity) {
@@ -88,7 +96,7 @@ public class FeaturesConfig {
     }
 
     public ZoomTransitionOptions getZoomTransition() {
-        return zoomTransition;
+        return this.zoomTransition;
     }
 
     public void setZoomTransition(ZoomTransitionOptions zoomTransition) {
@@ -96,7 +104,7 @@ public class FeaturesConfig {
     }
 
     public ZoomModes getZoomMode() {
-        return zoomMode;
+        return this.zoomMode;
     }
 
     public void setZoomMode(ZoomModes zoomMode) {
@@ -104,7 +112,7 @@ public class FeaturesConfig {
     }
 
     public boolean getZoomScrolling() {
-        return zoomScrolling;
+        return this.zoomScrolling;
     }
 
     public void setZoomScrolling(boolean zoomScrolling) {
@@ -112,7 +120,7 @@ public class FeaturesConfig {
     }
 
     public boolean getExtraKeyBinds() {
-        return extraKeyBinds;
+        return this.extraKeyBinds;
     }
 
     public void setExtraKeyBinds(boolean extraKeyBinds) {
@@ -120,10 +128,18 @@ public class FeaturesConfig {
     }
 
     public ZoomOverlays getZoomOverlay() {
-        return zoomOverlay;
+        return this.zoomOverlay;
     }
     
     public void setZoomOverlay(ZoomOverlays zoomOverlay) {
         this.zoomOverlay = zoomOverlay;
+    }
+
+    public SpyglassDependency getSpyglassDependency() {
+        return spyglassDependency;
+    }
+
+    public void setSpyglassDependency(SpyglassDependency spyglassDependency) {
+        this.spyglassDependency = spyglassDependency;
     }
 }

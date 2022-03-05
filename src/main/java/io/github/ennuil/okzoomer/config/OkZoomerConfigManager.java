@@ -19,6 +19,7 @@ import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.okzoomer.config.ConfigEnums.CinematicCameraOptions;
+import io.github.ennuil.okzoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.okzoomer.config.ConfigEnums.ZoomTransitionOptions;
@@ -122,6 +123,12 @@ public class OkZoomerConfigManager {
                         "SPYGLASS" uses the spyglass overlay with the vignette texture.
                         The vignette texture can be found at: assets/okzoomer/textures/misc/zoom_overlay.png
                         """).name("zoom_overlay").value(configInstance.features().getZoomOverlay().asString())
+                    
+                    // Spyglass Dependency
+                    // TODO - Description
+                    .comment("""
+                        a
+                        """).name("spyglass_dependency").value(configInstance.features().getSpyglassDependency().asString())
 
                 .endObject()
 
@@ -143,13 +150,13 @@ public class OkZoomerConfigManager {
                     .comment("""
                         The number of steps between the zoom divisor and the maximum zoom divisor.
                         Used by zoom scrolling.
-                        """).name("upper_scroll_step").value(configInstance.values().getUpperScrollStep())
+                        """).name("upper_scroll_step").value(configInstance.values().getUpperScrollSteps())
 
                     // Lesser Scroll Step
                     .comment("""
                         The number of steps between the zoom divisor and the minimum zoom divisor.
                         Used by zoom scrolling.
-                        """).name("lower_scroll_step").value(configInstance.values().getLowerScrollStep())
+                        """).name("lower_scroll_step").value(configInstance.values().getLowerScrollSteps())
 
                     // Smooth Multiplier
                     .comment("The multiplier used for smooth transitions.")
@@ -278,7 +285,8 @@ public class OkZoomerConfigManager {
                     default -> true;
                 },
                 preset == ZoomPresets.CLASSIC ? false : true,
-                preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF
+                preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF,
+                preset == ZoomPresets.SPYGLASS ? SpyglassDependency.REQUIRE_ITEM : SpyglassDependency.OFF
             ),
             new ValuesConfig(
                 switch (preset) {

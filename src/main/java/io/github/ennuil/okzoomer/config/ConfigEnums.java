@@ -46,4 +46,16 @@ public class ConfigEnums {
             return this.toString();
         }
     }
+
+    public enum SpyglassDependency implements StringIdentifiable {
+        OFF,
+        REQUIRE_ITEM,
+        REPLACE_ZOOM,
+        BOTH;
+
+        @Override
+        public String asString() {
+            return this.toString();
+        }
+    }
 }

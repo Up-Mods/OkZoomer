@@ -43,8 +43,8 @@ public class ZoomUtils {
         double zoomDivisor = OkZoomerConfigManager.configInstance.values().getZoomDivisor();
         double minimumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMinimumZoomDivisor();
         double maximumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMaximumZoomDivisor();
-        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollStep();
-        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollStep();
+        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollSteps();
+        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollSteps();
 
         if (ZoomPackets.getForceZoomDivisors()) {
             double packetMinimumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
@@ -80,19 +80,17 @@ public class ZoomUtils {
 
     // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
     public static final void resetZoomDivisor(boolean userPrompted) {
-        // TODO - wait, why am i doing this check at all? Investigate
         if (userPrompted && (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling())) {
             return;
         }
 
-        zoomStep = 0;
-
         ZOOMER_ZOOM.resetZoomDivisor();
+        zoomStep = 0;
     }
 
     public static final void keepZoomStepsWithinBounds() {
-        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollStep();
-        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollStep();
+        int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollSteps();
+        int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollSteps();
 
         zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
     }

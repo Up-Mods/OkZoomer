@@ -65,6 +65,8 @@
   "config.okzoomer.widget.bounded_double.below_range": "O valor está abaixo dos limites! O mínimo é %s!",
   "config.okzoomer.widget.bounded_double.above_range": "O valor está acima dos limites! O máximo é %s!",
   "config.okzoomer.widget.bounded_double.above_zero": "acima de zero",
+  "config.okzoomer.widget.bounded_int.below_range": "O valor está abaixo dos limites! O mínimo é %s!",
+  "config.okzoomer.widget.bounded_int.above_range": "O valor está acima dos limites! O máximo é %s!",
   "config.okzoomer.category.reset": "Redefinição",
   "config.okzoomer.category.reset.tooltip": "Contém uma maneira de redefinir as definições do mod.",
   "config.okzoomer.preset": "Predefinição",
