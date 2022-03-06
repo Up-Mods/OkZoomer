@@ -35,7 +35,7 @@ public class FeaturesConfig {
             StringIdentifiable.createCodec(
                 SpyglassDependency::values,
                 SpyglassDependency::valueOf
-            ).fieldOf("zoom_overlay").orElse(SpyglassDependency.OFF).forGetter(FeaturesConfig::getSpyglassDependency)
+            ).fieldOf("spyglass_dependency").orElse(SpyglassDependency.OFF).forGetter(FeaturesConfig::getSpyglassDependency)
         )
         .apply(instance, FeaturesConfig::new)
     );
@@ -77,6 +77,7 @@ public class FeaturesConfig {
         this.zoomScrolling = true;
         this.extraKeyBinds = true;
         this.zoomOverlay = ZoomOverlays.OFF;
+        this.spyglassDependency = SpyglassDependency.OFF;
     }
 
     public CinematicCameraOptions getCinematicCamera() {

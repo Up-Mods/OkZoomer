@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -14,6 +15,7 @@ import io.github.ennuil.okzoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import io.github.ennuil.okzoomer.utils.ZoomUtils;
 import net.minecraft.client.Mouse;
+import net.minecraft.client.network.ClientPlayerEntity;
 
 // This mixin is responsible for the mouse-behavior-changing part of the zoom
 @Mixin(Mouse.class)
@@ -24,7 +26,7 @@ public abstract class MouseMixin {
     // Handles zoom scrolling
     @Inject(
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;scrollDelta:D", ordinal = 7),
-        method = "onMouseScroll(JDD)V",
+        method = "onMouseScroll",
         cancellable = true
     )
     private void zoomerOnMouseScroll(CallbackInfo info) {
@@ -45,7 +47,7 @@ public abstract class MouseMixin {
     // Handles the zoom scrolling reset through the middle button
     @Inject(
         at = @At(value = "INVOKE", target = "net/minecraft/client/option/KeyBind.setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V"),
-        method = "onMouseButton(JIII)V",
+        method = "onMouseButton",
         cancellable = true,
         locals = LocalCapture.CAPTURE_FAILHARD
     )
@@ -63,6 +65,23 @@ public abstract class MouseMixin {
                     }
                 }
             }
+        }
+    }
+
+    // Prevents the spyglass from working if zooming replaces its zoom
+    @Redirect(
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
+        method = "updateLookDirection"
+    )
+    private boolean replaceSpyglassMouseMovement(ClientPlayerEntity player) {
+        if (switch (OkZoomerConfigManager.configInstance.features().getSpyglassDependency()) {
+            case REPLACE_ZOOM -> true;
+            case BOTH -> true;
+            default -> false;
+        }) {
+            return false;
+        } else {
+            return player.isUsingSpyglass();
         }
     }
 }

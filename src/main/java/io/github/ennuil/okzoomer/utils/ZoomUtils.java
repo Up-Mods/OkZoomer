@@ -14,9 +14,12 @@ import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.toast.SystemToast;
+import net.minecraft.item.Item;
+import net.minecraft.tag.TagKey;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
 
 // The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
@@ -30,6 +33,8 @@ public class ZoomUtils {
         new ZoomDivisorMouseModifier(),
         null
     );
+
+    public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.of(Registry.ITEM_KEY, new Identifier("okzoomer", "zoom_dependencies"));
 
     public static int zoomStep = 0;
 

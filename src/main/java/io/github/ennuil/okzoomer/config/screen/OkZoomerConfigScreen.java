@@ -185,7 +185,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
             option -> switch (featuresConfig.getSpyglassDependency()) {
                 case OFF -> getCyclingOptionText("config.okzoomer.spyglass_dependency.off", option.getPrefix());
                 case REQUIRE_ITEM -> getCyclingOptionText("config.okzoomer.spyglass_dependency.require_item", option.getPrefix());
-                case REPLACE_ZOOM -> getCyclingOptionText("config.okzoomer.spyglass_dependency.require_zoom", option.getPrefix());
+                case REPLACE_ZOOM -> getCyclingOptionText("config.okzoomer.spyglass_dependency.replace_zoom", option.getPrefix());
                 case BOTH -> getCyclingOptionText("config.okzoomer.spyglass_dependency.both", option.getPrefix());
                 default -> getCyclingOptionText(null, option.getPrefix());
             },
@@ -223,19 +223,19 @@ public class OkZoomerConfigScreen extends SpruceScreen {
         
         // Upper Scroll Step
         var scrollStepOption = new SpruceBoundedIntegerInputOption(
-            "config.okzoomer.upper_scroll_step",
+            "config.okzoomer.upper_scroll_steps",
             20, Optional.of(0), Optional.empty(),
             () -> valuesConfig.getUpperScrollSteps(),
             value -> valuesConfig.setUpperScrollStep(value),
-            new TranslatableText("config.okzoomer.upper_scroll_step.tooltip"));
+            new TranslatableText("config.okzoomer.upper_scroll_steps.tooltip"));
         
         // Lower Scroll Step        
         var lowerScrollStepOption = new SpruceBoundedIntegerInputOption(
-            "config.okzoomer.lower_scroll_step",
+            "config.okzoomer.lower_scroll_steps",
             4, Optional.of(0), Optional.empty(),
             () -> valuesConfig.getLowerScrollSteps(),
             value -> valuesConfig.setLowerScrollStep(value),
-            new TranslatableText("config.okzoomer.lower_scroll_step.tooltip"));
+            new TranslatableText("config.okzoomer.lower_scroll_steps.tooltip"));
         
         // Smooth Multiplier
         var smoothMultiplierOption = new SpruceBoundedDoubleInputOption(

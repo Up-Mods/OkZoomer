@@ -125,9 +125,12 @@ public class OkZoomerConfigManager {
                         """).name("zoom_overlay").value(configInstance.features().getZoomOverlay().asString())
                     
                     // Spyglass Dependency
-                    // TODO - Description
                     .comment("""
-                        a
+                        Determines how the zoom will depend on the spyglass.
+                        "REQUIRE_ITEM" will make zooming require a spyglass.
+                        "REPLACE_ZOOM" will replace spyglass's zoom with Ok Zoomer's zoom.
+                        "BOTH" will apply both options at the same time.
+                        The "REQUIRE_ITEM" option is configurable through the okzoomer:zoom_dependencies item tag.
                         """).name("spyglass_dependency").value(configInstance.features().getSpyglassDependency().asString())
 
                 .endObject()
@@ -150,13 +153,13 @@ public class OkZoomerConfigManager {
                     .comment("""
                         The number of steps between the zoom divisor and the maximum zoom divisor.
                         Used by zoom scrolling.
-                        """).name("upper_scroll_step").value(configInstance.values().getUpperScrollSteps())
+                        """).name("upper_scroll_steps").value(configInstance.values().getUpperScrollSteps())
 
                     // Lesser Scroll Step
                     .comment("""
                         The number of steps between the zoom divisor and the minimum zoom divisor.
                         Used by zoom scrolling.
-                        """).name("lower_scroll_step").value(configInstance.values().getLowerScrollSteps())
+                        """).name("lower_scroll_steps").value(configInstance.values().getLowerScrollSteps())
 
                     // Smooth Multiplier
                     .comment("The multiplier used for smooth transitions.")
@@ -286,7 +289,7 @@ public class OkZoomerConfigManager {
                 },
                 preset == ZoomPresets.CLASSIC ? false : true,
                 preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF,
-                preset == ZoomPresets.SPYGLASS ? SpyglassDependency.REQUIRE_ITEM : SpyglassDependency.OFF
+                preset == ZoomPresets.SPYGLASS ? SpyglassDependency.BOTH : SpyglassDependency.OFF
             ),
             new ValuesConfig(
                 switch (preset) {
@@ -296,8 +299,8 @@ public class OkZoomerConfigManager {
                 },
                 1.0D,
                 50.0D,
-                20,
-                4,
+                preset == ZoomPresets.SPYGLASS ? 16 : 20,
+                preset == ZoomPresets.SPYGLASS ? 8 : 4,
                 preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D,
                 4.0D,
                 0.125D,
