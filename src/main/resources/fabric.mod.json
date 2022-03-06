@@ -14,7 +14,12 @@
   "icon": "assets/okzoomer/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["io.github.ennuil.okzoomer.OkZoomerClientMod"],
+    "client_init": ["io.github.ennuil.okzoomer.OkZoomerClientMod"],
+    "client_events": [
+      "io.github.ennuil.okzoomer.events.LoadConfigEvent",
+      "io.github.ennuil.okzoomer.events.ManageZoomEvent",
+      "io.github.ennuil.okzoomer.events.ManageExtraKeysEvent"
+    ],
     "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
   },
   "mixins": [

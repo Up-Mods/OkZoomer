@@ -2,8 +2,10 @@ package io.github.ennuil.okzoomer.utils;
 
 import com.mojang.blaze3d.platform.InputUtil;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.quiltmc.qsl.tag.api.QuiltTagKey;
+import org.quiltmc.qsl.tag.api.TagType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
@@ -24,7 +26,7 @@ import net.minecraft.util.registry.Registry;
 // The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
     // The logger, used everywhere to print messages to the console
-    public static final Logger LOGGER = LogManager.getFormatterLogger("Ok Zoomer");
+    public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
 
     public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
         new Identifier("okzoomer:zoom"),
@@ -34,7 +36,7 @@ public class ZoomUtils {
         null
     );
 
-    public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.of(Registry.ITEM_KEY, new Identifier("okzoomer", "zoom_dependencies"));
+    public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(Registry.ITEM_KEY, new Identifier("okzoomer", "zoom_dependencies"), TagType.CLIENT_FALLBACK);
 
     public static int zoomStep = 0;
 

@@ -4,10 +4,15 @@ quilt-mappings = "1.18.2+build.3" # Latest version is available at https://lambd
 fabric-loader = "0.13.3" # Latest version is available at https://fabricmc.net/versions.html
 
 fabric-api = "0.47.9+1.18.2"
+qsl-tags = "1.0.0+1.18.2-SNAPSHOT"
+qsl-resource-loader = "1.0.0+1.18.2-SNAPSHOT"
+qsl-fapi-resource-loader = "1.0.1+1.18.2-SNAPSHOT"
+qsl-fapi-lifecycle-events = "2.0.1+1.18.2-SNAPSHOT"
+qsl-fapi-base = "1.0.0+1.18.2-SNAPSHOT"
 libzoomer = "0.4.0+1.18.2"
-mod_menu = "3.1.0"
+mod-menu = "3.1.0"
 spruceui = "3.3.2+1.17"
-quilt_json5 = "1.0.0"
+quilt-json5 = "1.0.0"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -15,7 +20,15 @@ quilt-mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt-m
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+qsl-tags = { module = "org.quiltmc.qsl.data:tags", version.ref = "qsl-tags" }
+qsl-resource-loader = { module = "org.quiltmc.qsl.core:resource_loader", version.ref = "qsl-resource-loader" }
+qsl-fapi-resource-loader = { module = "org.quiltmc.fabric_api_qsl:fabric-resource-loader-v0", version.ref = "qsl-fapi-resource-loader" }
+qsl-fapi-lifecycle-events = { module = "org.quiltmc.fabric_api_qsl:fabric-lifecycle-events-v1", version.ref = "qsl-fapi-lifecycle-events" }
+qsl-fapi-base = { module = "org.quiltmc.fabric_api_qsl:fabric-api-base", version.ref = "qsl-fapi-base" }
 libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
-mod_menu = { module = "com.terraformersmc:modmenu", version.ref = "mod_menu" }
+mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
 spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
-quilt_json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt_json5" }
+quilt-json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt-json5" }
+
+[bundles]
+qsl = ["qsl-tags", "qsl-resource-loader", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]

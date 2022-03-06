@@ -92,9 +92,9 @@ public class ZoomPackets {
                 double minDouble = (readableBytes == 16) ? buf.readDouble() : maxDouble;
                 client.execute(() -> {
                     if (minimumZoomDivisor != 0 || maximumZoomDivisor != 0) {
-                        ZoomUtils.LOGGER.info("[Ok Zoomer] This server has attempted to set invalid divisor values! (min %s, max %s)", minDouble, maxDouble);    
+                        ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has attempted to set invalid divisor values! (min %s, max %s)", minDouble, maxDouble));    
                     } else {
-                        ZoomUtils.LOGGER.info("[Ok Zoomer] This server has set the zoom divisors to minimum %s and maximum %s", minDouble, maxDouble);
+                        ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has set the zoom divisors to minimum %s and maximum %s", minDouble, maxDouble));
                         sendToast(client, new TranslatableText("toast.okzoomer.force_zoom_divisor"));
                         maximumZoomDivisor = maxDouble;
                         minimumZoomDivisor = minDouble;

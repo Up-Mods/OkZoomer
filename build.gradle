@@ -32,11 +32,13 @@ dependencies {
 	modImplementation libs.fabric.loader
 	
 	modImplementation libs.fabric.api
+	modImplementation libs.bundles.qsl
 	modImplementation libs.mod.menu
 	modImplementation libs.libzoomer
 	modImplementation libs.spruceui
 	modImplementation libs.quilt.json5
 	
+	include libs.bundles.qsl
 	include libs.libzoomer
 	include libs.spruceui
 	include libs.quilt.json5
