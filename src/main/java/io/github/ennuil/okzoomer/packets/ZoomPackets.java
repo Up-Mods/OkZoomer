@@ -171,9 +171,8 @@ public class ZoomPackets {
                     checkRestrictions();
                 });
             });
-        
-        // TODO - The "Force Spyglass Overlay" packet
 
+        /*
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             PacketByteBuf emptyBuf = PacketByteBufs.empty();
             //sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
@@ -192,6 +191,7 @@ public class ZoomPackets {
             boolBuf.writeBoolean(false);
             sender.sendPacket(ACKNOWLEDGE_MOD_PACKET_ID, boolBuf);
         });
+        */
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {
