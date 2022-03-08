@@ -22,8 +22,6 @@
     "config.okzoomer.zoom_divisor": "Suumi jagaja",
     "config.okzoomer.minimum_zoom_divisor": "Minimaalne suumi jagaja",
     "config.okzoomer.maximum_zoom_divisor": "Maksimaalne suumi jagaja",
-    "config.okzoomer.scroll_step": "Kerimissamm",
-    "config.okzoomer.lesser_scroll_step": "Väiksem kerimissamm",
     "config.okzoomer.smooth_multiplier": "Sujuva mitmekordistus",
     "config.okzoomer.cinematic_multiplier": "Kinemaatilise mitmekordistus",
     "config.okzoomer.minimum_linear_step": "Minimaalne lineaarse samm",

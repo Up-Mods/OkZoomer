@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import io.github.ennuil.okzoomer.packets.ZoomPackets;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 
+// TODO - I hate Redirects; How am I going to get rid of it?
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class AbstractClientPlayerEntityMixin {
     @Redirect(

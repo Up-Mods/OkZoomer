@@ -12,7 +12,6 @@ import org.quiltmc.json5.JsonWriter;
 import org.quiltmc.json5.exception.MalformedSyntaxException;
 
 import io.github.ennuil.libzoomer.api.MouseModifier;
-import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
