@@ -151,7 +151,7 @@ public class ZoomPackets {
                 
                 spyglassDependency = requireItem 
                     ? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
-                    : (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : SpyglassDependency.OFF);
+                    : (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null);
 
                 checkRestrictions();
             });
