@@ -54,8 +54,6 @@
   "config.okzoomer.reset_to_preset.classic":"Klasik",
   "config.okzoomer.reset_to_preset.persistent":"Devamlı",
   "toast.okzoomer.title":"Ok Zoomer (Peki, Zoomer)",
-  "toast.okzoomer.disable_zoom":"Büyütme devre dışı",
-  "toast.okzoomer.disable_zoom_scrolling":"Büyütmeyi kaydırma devre dışı",
   "key.okzoomer.category":"Büyütme",
   "key.okzoomer.decrease_zoom":"Büyütmeyi Arttır",
   "key.okzoomer.increase_zoom":"Büyütmeyi Azalt",

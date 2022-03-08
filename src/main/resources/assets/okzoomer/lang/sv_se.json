@@ -54,8 +54,6 @@
   "config.okzoomer.preset.classic": "Klassisk",
   "config.okzoomer.preset.persistent": "Beständig",
   "toast.okzoomer.title": "Ok Zoomer",
-  "toast.okzoomer.disable_zoom": "Avaktiverar zoomning",
-  "toast.okzoomer.disable_zoom_scrolling": "Avaktiverar zoomskrollning",
   "key.okzoomer.category": "Zoom",
   "key.okzoomer.decrease_zoom": "Minska zoom",
   "key.okzoomer.increase_zoom": "Öka zoom",

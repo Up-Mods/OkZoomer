@@ -74,7 +74,7 @@ public abstract class MouseMixin {
         method = "updateLookDirection"
     )
     private boolean replaceSpyglassMouseMovement(ClientPlayerEntity player) {
-        if (switch (OkZoomerConfigManager.configInstance.features().getSpyglassDependency()) {
+        if (switch (ZoomPackets.getSpyglassDependency()) {
             case REPLACE_ZOOM -> true;
             case BOTH -> true;
             default -> false;

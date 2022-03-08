@@ -1,11 +1,10 @@
 [versions]
 minecraft = "1.18.2"
-quilt-mappings = "1.18.2+build.3" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
+quilt-mappings = "1.18.2+build.7" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 fabric-loader = "0.13.3" # Latest version is available at https://fabricmc.net/versions.html
 
-fabric-api = "0.47.9+1.18.2"
+fabric-api = "0.47.10+1.18.2"
 qsl-tags = "1.0.0+1.18.2-SNAPSHOT"
-qsl-resource-loader = "1.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-resource-loader = "1.0.1+1.18.2-SNAPSHOT"
 qsl-fapi-lifecycle-events = "2.0.1+1.18.2-SNAPSHOT"
 qsl-fapi-base = "1.0.0+1.18.2-SNAPSHOT"
@@ -21,7 +20,6 @@ fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-l
 
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
 qsl-tags = { module = "org.quiltmc.qsl.data:tags", version.ref = "qsl-tags" }
-qsl-resource-loader = { module = "org.quiltmc.qsl.core:resource_loader", version.ref = "qsl-resource-loader" }
 qsl-fapi-resource-loader = { module = "org.quiltmc.fabric_api_qsl:fabric-resource-loader-v0", version.ref = "qsl-fapi-resource-loader" }
 qsl-fapi-lifecycle-events = { module = "org.quiltmc.fabric_api_qsl:fabric-lifecycle-events-v1", version.ref = "qsl-fapi-lifecycle-events" }
 qsl-fapi-base = { module = "org.quiltmc.fabric_api_qsl:fabric-api-base", version.ref = "qsl-fapi-base" }
@@ -31,4 +29,4 @@ spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 quilt-json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt-json5" }
 
 [bundles]
-qsl = ["qsl-tags", "qsl-resource-loader", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]
+qsl = ["qsl-tags", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]

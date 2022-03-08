@@ -40,6 +40,8 @@ public class ZoomUtils {
 
     public static int zoomStep = 0;
 
+    private static boolean openCommandScreen = false;
+
     // The method used for changing the zoom divisor, used by zoom scrolling and the key binds
     public static final void changeZoomDivisor(boolean increase) {
         //If the zoom is disabled, don't allow for zoom scrolling
@@ -79,10 +81,6 @@ public class ZoomUtils {
         } else {
             ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
         }
-
-        // FIXME - Remove me!
-        System.out.println(zoomStep);
-        System.out.println(ZOOMER_ZOOM.getZoomDivisor());
     }
 
     // The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
@@ -122,5 +120,13 @@ public class ZoomUtils {
                 }
             }
         }
+    }
+
+    public static boolean shouldOpenCommandScreen() {
+        return openCommandScreen;
+    }
+
+    public static void setOpenCommandScreen(boolean openCommandScreen) {
+        ZoomUtils.openCommandScreen = openCommandScreen;
     }
 }

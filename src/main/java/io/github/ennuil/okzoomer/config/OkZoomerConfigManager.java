@@ -12,6 +12,7 @@ import org.quiltmc.json5.JsonWriter;
 import org.quiltmc.json5.exception.MalformedSyntaxException;
 
 import io.github.ennuil.libzoomer.api.MouseModifier;
+import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
@@ -244,9 +245,12 @@ public class OkZoomerConfigManager {
             configInstance.tweaks().getUseSpyglassTexture()
             ? "textures/misc/spyglass_scope.png"
             : "okzoomer:textures/misc/zoom_overlay.png");
+        
+        // Enforce spyglass overlay if necessary
+        ZoomOverlays overlay = ZoomPackets.getSpyglassOverlay() ? ZoomOverlays.SPYGLASS : configInstance.features().getZoomOverlay(); 
 
         ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
-            switch (configInstance.features().getZoomOverlay()) {
+            switch (overlay) {
                 case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
                 case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
                 default -> null;

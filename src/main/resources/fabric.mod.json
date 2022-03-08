@@ -18,7 +18,8 @@
     "client_events": [
       "io.github.ennuil.okzoomer.events.LoadConfigEvent",
       "io.github.ennuil.okzoomer.events.ManageZoomEvent",
-      "io.github.ennuil.okzoomer.events.ManageExtraKeysEvent"
+      "io.github.ennuil.okzoomer.events.ManageExtraKeysEvent",
+      "io.github.ennuil.okzoomer.events.OpenScreenEvent"
     ],
     "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
   },
@@ -29,7 +30,9 @@
     "fabricloader": ">=0.13.3",
     "fabric": ">=0.47.9",
     "java": ">=17",
-    "libzoomer": ">=0.4.0"
+    "libzoomer": ">=0.4.0",
+    "quilted-fabric-resource-loader-v0": "*",
+    "quilt_tags": "*"
   },
   "recommends": {
     "modmenu": ">=3.1.0",

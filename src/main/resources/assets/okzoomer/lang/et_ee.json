@@ -37,8 +37,6 @@
     "config.okzoomer.preset.classic": "Klassikaline",
     "config.okzoomer.preset.persistent": "Püsiv",
     "toast.okzoomer.title": "Ok Zoomer",
-    "toast.okzoomer.disable_zoom": "Suum keelatud",
-    "toast.okzoomer.disable_zoom_scrolling": "Suumi kerimine keelatud",
     "key.okzoomer.category": "Suum",
     "key.okzoomer.decrease_zoom": "Vähenda suumi",
     "key.okzoomer.increase_zoom": "Suurenda suumi",
