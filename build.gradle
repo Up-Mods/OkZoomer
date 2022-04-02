@@ -31,9 +31,15 @@ dependencies {
 	}
 	modImplementation libs.fabric.loader
 	
-	modImplementation libs.fabric.api
+	// TODO - Abandon explicit dependency on FAPI in favor of depending on its submodules
+	modImplementation(libs.fabric.api) {
+		transitive = false
+	}
+	modImplementation libs.bundles.fabric.api
 	modImplementation libs.bundles.qsl
-	modImplementation libs.mod.menu
+	modImplementation(libs.mod.menu) {
+		transitive = false
+	}
 	modImplementation libs.libzoomer
 	modImplementation libs.spruceui
 	modImplementation libs.quilt.json5
@@ -78,13 +84,7 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			// Add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 

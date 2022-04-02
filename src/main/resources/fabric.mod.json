@@ -28,9 +28,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.13.3",
-    "fabric": ">=0.47.9",
     "java": ">=17",
     "libzoomer": ">=0.4.0",
+    "quilted-fabric-command-api-v1": "*",
     "quilted-fabric-resource-loader-v0": "*",
     "quilt_tags": "*"
   },
