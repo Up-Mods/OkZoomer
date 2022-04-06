@@ -3,18 +3,17 @@ minecraft = "1.18.2"
 quilt-mappings = "1.18.2+build.21" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 fabric-loader = "0.13.3" # Latest version is available at https://fabricmc.net/versions.html
 
-fabric-api = "0.48.0+1.18.2"
-fapi-commands = "1.1.9+d7c144a8fc"
 fapi-key-binding = "1.0.9+d7c144a852"
 fapi-networking = "1.0.19+d7c144a852"
-qsl-client-command = "1.0.0+1.18.2-SNAPSHOT"
-qsl-command = "1.0.0+1.18.2-SNAPSHOT"
+# qsl-client-command = "1.0.0+1.18.2-SNAPSHOT"
+# qsl-command = "1.0.0+1.18.2-SNAPSHOT"
 qsl-tags = "1.0.0+1.18.2-SNAPSHOT"
+# qsl-networking = "1.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-command = "2.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-resource-loader = "1.0.2+1.18.2-SNAPSHOT"
 qsl-fapi-lifecycle-events = "3.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-base = "1.0.0+1.18.2-SNAPSHOT"
-libzoomer = "0.4.1+1.18.2"
+libzoomer = "0.4.2+1.18.2"
 mod-menu = "3.1.0"
 spruceui = "3.3.3+1.18"
 quilt-json5 = "1.0.0"
@@ -24,12 +23,12 @@ minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt-mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt-mappings" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 
-fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+# qsl-client-command = { module = "org.quiltmc.qsl.command:client_command", version.ref = "qsl-client-command" }
+# qsl-command = { module = "org.quiltmc.qsl.command:command", version.ref = "qsl-command" }
 fapi-key-binding = { module = "net.fabricmc.fabric-api:fabric-key-binding-api-v1", version.ref = "fapi-key-binding" }
 fapi-networking = { module = "net.fabricmc.fabric-api:fabric-networking-api-v1", version.ref = "fapi-networking" }
-qsl-client-command = { module = "org.quiltmc.qsl.command:client_command", version.ref = "qsl-client-command" }
-qsl-command = { module = "org.quiltmc.qsl.command:command", version.ref = "qsl-command" }
 qsl-tags = { module = "org.quiltmc.qsl.data:tags", version.ref = "qsl-tags" }
+# qsl-networking = { module = "org.quiltmc.qsl.core:networking", version.ref = "qsl-networking" }
 qsl-fapi-command = { module = "org.quiltmc.fabric_api_qsl:fabric-command-api-v1", version.ref = "qsl-fapi-command" }
 qsl-fapi-resource-loader = { module = "org.quiltmc.fabric_api_qsl:fabric-resource-loader-v0", version.ref = "qsl-fapi-resource-loader" }
 qsl-fapi-lifecycle-events = { module = "org.quiltmc.fabric_api_qsl:fabric-lifecycle-events-v1", version.ref = "qsl-fapi-lifecycle-events" }
@@ -40,5 +39,5 @@ spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 quilt-json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt-json5" }
 
 [bundles]
-fabric-api = ["fapi-key-binding", "fapi-networking"]
-qsl = ["qsl-client-command", "qsl-command", "qsl-tags", "qsl-fapi-command", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]
+fabric_api = ["fapi-key-binding", "fapi-networking"]
+qsl = ["qsl-tags", "qsl-fapi-command", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]

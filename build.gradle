@@ -1,6 +1,6 @@
 plugins {
 	id 'fabric-loom' version '0.11-SNAPSHOT'
-	id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+	id 'io.github.juuxel.loom-quiltflower' version '1.7.0'
 	id "org.quiltmc.quilt-mappings-on-loom" version "4.0.0"
 	id 'maven-publish'
 }
@@ -31,15 +31,9 @@ dependencies {
 	}
 	modImplementation libs.fabric.loader
 	
-	// TODO - Abandon explicit dependency on FAPI in favor of depending on its submodules
-	modImplementation(libs.fabric.api) {
-		transitive = false
-	}
-	modImplementation libs.bundles.fabric.api
 	modImplementation libs.bundles.qsl
-	modImplementation(libs.mod.menu) {
-		transitive = false
-	}
+	modImplementation libs.bundles.fabric.api
+	modImplementation libs.mod.menu
 	modImplementation libs.libzoomer
 	modImplementation libs.spruceui
 	modImplementation libs.quilt.json5
