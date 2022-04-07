@@ -19,7 +19,8 @@
       "io.github.ennuil.okzoomer.events.LoadConfigEvent",
       "io.github.ennuil.okzoomer.events.ManageZoomEvent",
       "io.github.ennuil.okzoomer.events.ManageExtraKeysEvent",
-      "io.github.ennuil.okzoomer.events.OpenScreenEvent"
+      "io.github.ennuil.okzoomer.events.OpenScreenEvent",
+      "io.github.ennuil.okzoomer.events.RegisterCommands"
     ],
     "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
   },

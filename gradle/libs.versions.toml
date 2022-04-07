@@ -5,8 +5,8 @@ fabric-loader = "0.13.3" # Latest version is available at https://fabricmc.net/v
 
 fapi-key-binding = "1.0.9+d7c144a852"
 fapi-networking = "1.0.19+d7c144a852"
-# qsl-client-command = "1.0.0+1.18.2-SNAPSHOT"
-# qsl-command = "1.0.0+1.18.2-SNAPSHOT"
+qsl-client-command = "1.0.0+1.18.2-SNAPSHOT"
+qsl-command = "1.0.0+1.18.2-SNAPSHOT"
 qsl-tags = "1.0.0+1.18.2-SNAPSHOT"
 # qsl-networking = "1.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-command = "2.0.0+1.18.2-SNAPSHOT"
@@ -23,8 +23,8 @@ minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt-mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt-mappings" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
 
-# qsl-client-command = { module = "org.quiltmc.qsl.command:client_command", version.ref = "qsl-client-command" }
-# qsl-command = { module = "org.quiltmc.qsl.command:command", version.ref = "qsl-command" }
+qsl-client-command = { module = "org.quiltmc.qsl.command:client_command", version.ref = "qsl-client-command" }
+qsl-command = { module = "org.quiltmc.qsl.command:command", version.ref = "qsl-command" }
 fapi-key-binding = { module = "net.fabricmc.fabric-api:fabric-key-binding-api-v1", version.ref = "fapi-key-binding" }
 fapi-networking = { module = "net.fabricmc.fabric-api:fabric-networking-api-v1", version.ref = "fapi-networking" }
 qsl-tags = { module = "org.quiltmc.qsl.data:tags", version.ref = "qsl-tags" }
@@ -41,3 +41,4 @@ quilt-json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt-json5" 
 [bundles]
 fabric_api = ["fapi-key-binding", "fapi-networking"]
 qsl = ["qsl-tags", "qsl-fapi-command", "qsl-fapi-resource-loader", "qsl-fapi-lifecycle-events", "qsl-fapi-base"]
+qsl-command = ["qsl-client-command", "qsl-command"]

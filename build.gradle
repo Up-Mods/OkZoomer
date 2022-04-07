@@ -31,11 +31,16 @@ dependencies {
 	}
 	modImplementation libs.fabric.loader
 	
+	// This fixes an issue with JiJ, because Fabric Loader is sooooo great /s
+	modImplementation libs.bundles.qsl.command
 	modImplementation libs.bundles.qsl
 	modImplementation libs.bundles.fabric.api
 	modImplementation libs.mod.menu
 	modImplementation libs.libzoomer
-	modImplementation libs.spruceui
+	// TODO - Fullfill the SpruceUI dependencies on the runtime
+	modImplementation(libs.spruceui) {
+		transitive = false
+	}
 	modImplementation libs.quilt.json5
 	
 	include libs.bundles.qsl
