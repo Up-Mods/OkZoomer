@@ -32,15 +32,16 @@ dependencies {
 	modImplementation libs.fabric.loader
 	
 	// This fixes an issue with JiJ, because Fabric Loader is sooooo great /s
-	modImplementation libs.bundles.qsl.command
+	modImplementation libs.bundles.qsl.commands
 	modImplementation libs.bundles.qsl
 	modImplementation libs.bundles.fabric.api
 	modImplementation libs.mod.menu
 	modImplementation libs.libzoomer
-	// TODO - Fullfill the SpruceUI dependencies on the runtime
 	modImplementation(libs.spruceui) {
 		transitive = false
 	}
+	// Currently needed due to JiJ issues
+	modRuntimeOnly libs.bundles.hacky.spruceui.shenanigans
 	modImplementation libs.quilt.json5
 	
 	include libs.bundles.qsl
@@ -58,12 +59,6 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Ensure that the encoding is set to UTF-8, no matter what the system default is.
-	// This fixes some edge cases with special characters not displaying correctly.
-	// See http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
-
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
 	it.options.release = 17
 }
