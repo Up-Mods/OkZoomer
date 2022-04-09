@@ -14,10 +14,12 @@ qsl-fapi-resource-loader = "1.0.2+1.18.2-SNAPSHOT"
 qsl-fapi-lifecycle-events = "3.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-rendering = "2.0.0+1.18.2-SNAPSHOT"
 qsl-fapi-base = "1.0.0+1.18.2-SNAPSHOT"
+
 libzoomer = "0.4.2+1.18.2"
 mod-menu = "3.1.0"
 spruceui = "3.3.3+1.18"
 quilt-json5 = "1.0.0"
+mixin-extras = "0.0.6"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -35,10 +37,12 @@ qsl-fapi-resource-loader = { module = "org.quiltmc.fabric_api_qsl:fabric-resourc
 qsl-fapi-lifecycle-events = { module = "org.quiltmc.fabric_api_qsl:fabric-lifecycle-events-v1", version.ref = "qsl-fapi-lifecycle-events" }
 qsl-fapi-rendering = { module = "org.quiltmc.fabric_api_qsl:fabric-rendering-v1", version.ref = "qsl-fapi-rendering" }
 qsl-fapi-base = { module = "org.quiltmc.fabric_api_qsl:fabric-api-base", version.ref = "qsl-fapi-base" }
+
 libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
 mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
 spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 quilt-json5 = { module = "org.quiltmc:quilt-json5", version.ref = "quilt-json5" }
+mixin-extras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixin-extras" }
 
 [bundles]
 fabric_api = ["fapi-key-binding", "fapi-networking"]

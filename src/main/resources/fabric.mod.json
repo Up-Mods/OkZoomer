@@ -22,7 +22,8 @@
       "io.github.ennuil.okzoomer.events.OpenScreenEvent",
       "io.github.ennuil.okzoomer.events.RegisterCommands"
     ],
-    "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"]
+    "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"],
+    "preLaunch": ["io.github.ennuil.okzoomer.MixinExtrasInitializer"]
   },
   "mixins": [
     "okzoomer.mixins.json"

@@ -21,6 +21,7 @@ repositories {
 	maven { url "https://maven.gegy.dev" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -43,11 +44,14 @@ dependencies {
 	// Currently needed due to JiJ issues
 	modRuntimeOnly libs.bundles.hacky.spruceui.shenanigans
 	modImplementation libs.quilt.json5
+	implementation libs.mixin.extras
+	annotationProcessor libs.mixin.extras
 	
 	include libs.bundles.qsl
 	include libs.libzoomer
 	include libs.spruceui
 	include libs.quilt.json5
+	include libs.mixin.extras
 }
 
 processResources {
