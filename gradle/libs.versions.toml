@@ -8,6 +8,7 @@ libzoomer = "0.4.2+1.18.2"
 mod-menu = "3.1.0"
 spruceui = "3.3.3+1.18"
 quilt-json5 = "1.0.0"
+mixin-extras = "0.0.6"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -18,3 +19,4 @@ quilted-fabric-api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-a
 libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
 mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
 spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
+mixin-extras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixin-extras" }

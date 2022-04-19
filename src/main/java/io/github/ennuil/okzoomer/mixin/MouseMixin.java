@@ -1,5 +1,7 @@
 package io.github.ennuil.okzoomer.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -69,11 +71,11 @@ public abstract class MouseMixin {
     }
 
     // Prevents the spyglass from working if zooming replaces its zoom
-    @Redirect(
+    @ModifyExpressionValue(
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
         method = "updateLookDirection"
     )
-    private boolean replaceSpyglassMouseMovement(ClientPlayerEntity player) {
+    private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
         if (switch (ZoomPackets.getSpyglassDependency()) {
             case REPLACE_ZOOM -> true;
             case BOTH -> true;
@@ -81,7 +83,7 @@ public abstract class MouseMixin {
         }) {
             return false;
         } else {
-            return player.isUsingSpyglass();
+            return isUsingSpyglass;
         }
     }
 }

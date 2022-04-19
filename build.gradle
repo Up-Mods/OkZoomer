@@ -19,6 +19,7 @@ repositories {
 	maven { url "https://maven.gegy.dev" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -27,15 +28,18 @@ dependencies {
 	mappings loom.layered {
 		addLayer quiltMappings.mappings("org.quiltmc:quilt-mappings:${libs.versions.quilt.mappings.get()}:v2")
 	}
-	modImplementation libs.fabric.loader
+	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
 	modImplementation libs.mod.menu
 	modImplementation libs.libzoomer
 	modImplementation libs.spruceui
+	implementation libs.mixin.extras
+	annotationProcessor libs.mixin.extras
 
 	include libs.libzoomer
 	include libs.spruceui
+	include libs.mixin.extras
 }
 
 processResources {
@@ -47,12 +51,6 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Ensure that the encoding is set to UTF-8, no matter what the system default is.
-	// This fixes some edge cases with special characters not displaying correctly.
-	// See http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-	// If Javadoc is generated, this must be specified in that task too.
-	it.options.encoding = "UTF-8"
-
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
 	it.options.release = 17
 }
