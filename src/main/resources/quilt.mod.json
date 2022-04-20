@@ -1,0 +1,61 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "io.github.ennuil",
+		"id": "ok_zoomer",
+		"version": "${version}",
+		"metadata": {
+			"name": "Ok Zoomer",
+			"description": "Adds a highly configurable zoom button. By default, this mod provides its own take on zooming, however, with configuration, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
+			"contributors": {
+				"Ennui Langeweile": "Owner"
+			},
+			"contact": {
+				"homepage": "https://modrinth.com/mod/ok-zoomer",
+				"issues": "https://github.com/EnnuiL/OkZoomer/issues",
+				"sources": "https://github.com/EnnuiL/OkZoomer"
+			},
+			"license": "MIT",
+			"icon": "assets/ok_zoomer/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": ">=0.16.0-beta.6"
+			},
+			{
+				"id": "java",
+				"versions": ">=17"
+			},
+			{
+				"id": "libzoomer",
+				"versions": ">=0.4.0"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"versions": ">=0.16.0-beta.6"
+			}
+		],
+		"entrypoints": {
+			"client_init": "io.github.ennuil.okzoomer.OkZoomerClientMod",
+			"client_events": [
+				"io.github.ennuil.okzoomer.events.LoadConfigEvent",
+				"io.github.ennuil.okzoomer.events.ManageZoomEvent",
+				"io.github.ennuil.okzoomer.events.ManageExtraKeysEvent",
+				"io.github.ennuil.okzoomer.events.OpenScreenEvent",
+				"io.github.ennuil.okzoomer.events.RegisterCommands"
+			],
+			"modmenu": "io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry",
+			"pre_launch": "io.github.ennuil.okzoomer.MixinExtrasInitializer"
+		}
+	},
+	"minecraft": {
+		"environment": "client"
+	},
+	"mixin": "ok_zoomer.mixins.json",
+	"fabric_sunset": {
+		"author": "Ennui Langeweile",
+		"title": "It's time to zoom into new horizons"
+	}
+}

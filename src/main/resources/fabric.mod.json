@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "okzoomer",
+  "id": "okzoomer-sunset",
   "version": "${version}",
-  "name": "Ok Zoomer",
-  "description": "Adds a highly configurable zoom button. By default, this mod provides its own take on zooming, however, with configuration, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
+  "name": "Ok Zoomer (Migrated to Quilt)",
+  "description": "The last Fabric-compatible version was 5.0.0-beta.6. From this version onwards, this mod will exclusively support the Quilt toolchain.",
   "authors": ["EnnuiL"],
   "contact": {
     "homepage": "https://modrinth.com/mod/ok-zoomer",
@@ -11,33 +11,24 @@
     "sources": "https://github.com/EnnuiL/OkZoomer"
   },
   "license": "MIT",
-  "icon": "assets/okzoomer/icon.png",
+  "icon": "assets/ok_zoomer/icon_sunset.png",
   "environment": "client",
   "entrypoints": {
     "client_init": ["io.github.ennuil.okzoomer.OkZoomerClientMod"],
-    "client_events": [
-      "io.github.ennuil.okzoomer.events.LoadConfigEvent",
-      "io.github.ennuil.okzoomer.events.ManageZoomEvent",
-      "io.github.ennuil.okzoomer.events.ManageExtraKeysEvent",
-      "io.github.ennuil.okzoomer.events.OpenScreenEvent",
-      "io.github.ennuil.okzoomer.events.RegisterCommands"
-    ],
+    "client_events": ["io.github.ennuil.okzoomer.events.LoadConfigEvent"],
     "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"],
     "preLaunch": ["io.github.ennuil.okzoomer.MixinExtrasInitializer"]
   },
-  "mixins": [
-    "okzoomer.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.13.3",
-    "java": ">=17",
-    "libzoomer": ">=0.4.0",
-    "quilted-fabric-command-api-v1": "*",
-    "quilted-fabric-resource-loader-v0": "*",
-    "quilt_tags": "*"
+    "java": ">=17"
   },
   "recommends": {
-    "modmenu": ">=3.1.0",
-    "minecraft": ">=1.18.2"
+    "quilt_loader": "0.16.0"
+  },
+  "custom": {
+    "fabric_sunset": {
+      "implements_self": true
+    }
   }
 }
