@@ -109,5 +109,16 @@
   "key.okzoomer.decrease_zoom": "Decrease Zoom",
   "key.okzoomer.increase_zoom": "Increase Zoom",
   "key.okzoomer.reset_zoom": "Reset Zoom",
-  "key.okzoomer.zoom": "Zoom"
+  "key.okzoomer.zoom": "Zoom",
+  "platform_migration_warning.title": "Platform Migration Warning",
+  "platform_migration_warning.explainer": "With the beta release of the Quilt toolchain, several mods are already beginning to migrate from Fabric to Quilt, which makes it incompatible with Fabric. It looks like you have attempted to install one of those mods. The following mods were detected:",
+  "platform_migration_warning.explainer2": "You can either remove these mods, or migrate your modded installation to Quilt, a process in which a great majority of Fabric mods should still work. But before you make a decision, here are the testimonials of the authors of the Quilt mods you have installed:",
+  "platform_migration_warning.mod.migrated_since": "Migrated since %s",
+  "platform_migration_warning.open_quilt_website": "Open Quilt Website",
+  "platform_migration_warning.has_developed_1": "Has developed %s",
+  "platform_migration_warning.has_developed_2": "Has developed %s and %s",
+  "platform_migration_warning.has_developed_many": "Has developed:",
+  "platform_migration_warning.has_developed_many_entry": "  - %s",
+  "platform_migration_warning.ennuil.author": "Ennui Langeweile",
+  "platform_migration_warning.ennuil.testimonial": "Hello! I've been part of the Modded Minecraft community for quite a few years, and even before then, I've always been playing with mods as a kid.\nWatching all the new innovations that those people always keep creating has always fun to me! To tinker with new mechanics to simply causing havoc on Creative Mode, modding has always been quite magic to me, and being able to be one of those magic people meant that I could finally contribute to improving this experience not just for players, but for everyone in general.\nHowever, unfortunately the past year hasn't been great. I have witnessed fellow modders being hurt by those who were meant to protect the community, I have witnessed innovation being drowned by those meant to promote it, I have witnessed a downward spiral going on and on until everything hit the rock bottom, with myself having migraines just from seeing everything falling apart. I felt like I couldn't support that place anymore, and I felt like if there's no way forward, I'd might as well retire from modding, except that I don't want to retire, I still believe that there's more to do!\nThankfully, the Quilt community has popped up as the answer to where to go: A place that can really be called a community for everyone, a place where innovation is encouraged, and a place in which I could call home. If not for it, I don't believe that I would have continued to develop my mods.\nOn my own mods, especially Ok Zoomer, I've already began to use its innovations, its better decompiler, its mappings, its ergonomic and new API, but with the beta release of the Quilt toolchain, I can finally complete this switch to Quilt. While it's still its first days, I've always loved experimenting with new things! If I didn't, I wouldn't have created Ok Zoomer with a young and new Fabric on the first place!\nThe Quilt toolchain is still a beta, with many things still being worked on, but together, we'll explore this new horizon of modding, and with it, the expanded opportunities out there."
 }

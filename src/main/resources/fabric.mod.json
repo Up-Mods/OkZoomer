@@ -3,7 +3,7 @@
   "id": "okzoomer-sunset",
   "version": "${version}",
   "name": "Ok Zoomer (Migrated to Quilt)",
-  "description": "The last Fabric-compatible version was 5.0.0-beta.6. From this version onwards, this mod will exclusively support the Quilt toolchain.",
+  "description": "The last Fabric-compatible version was 5.0.0-beta.6. From 5.0.0-beta.7 onwards, this mod will exclusively support the Quilt toolchain.",
   "authors": ["EnnuiL"],
   "contact": {
     "homepage": "https://modrinth.com/mod/ok-zoomer",
@@ -27,7 +27,9 @@
     "quilt_loader": "0.16.0"
   },
   "custom": {
-    "fabric_sunset": {
+    "platform_migration_warning": {
+      "author": "ennuil",
+      "migrated_since": "5.0.0-beta.7",
       "implements_self": true
     }
   }

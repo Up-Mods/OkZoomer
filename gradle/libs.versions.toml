@@ -1,6 +1,6 @@
 [versions]
 minecraft = "1.18.2"
-quilt_mappings = "1.18.2+build.21" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
+quilt_mappings = "1.18.2+build.22" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 quilt_loader = "0.16.0-beta.7" # Latest version is available at https://fabricmc.net/versions.html
 
 quilted_fabric_api = "1.0.0-beta.7+0.51.1-1.18.2"

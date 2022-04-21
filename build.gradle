@@ -28,9 +28,15 @@ dependencies {
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api
-	modImplementation libs.mod.menu
-	modImplementation libs.libzoomer
-	modImplementation libs.spruceui
+	modImplementation(libs.mod.menu) {
+		transitive = false
+	}
+	modImplementation(libs.libzoomer) {
+		transitive = false
+	}
+	modImplementation(libs.spruceui) {
+		transitive = false
+	}
 	implementation libs.mixin.extras
 	annotationProcessor libs.mixin.extras
 

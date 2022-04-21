@@ -5,6 +5,7 @@
   "client": [
     "AbstractClientPlayerEntityMixin",
     "InGameHudMixin",
+    "MinecraftClientMixin",
     "MouseMixin"
   ],
   "injectors": {

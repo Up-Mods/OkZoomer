@@ -1,5 +1,7 @@
 package io.github.ennuil.okzoomer.config.screen;
 
+import javax.annotation.Nullable;
+
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
@@ -15,6 +17,11 @@ public class SpruceLabelOption extends SpruceOption {
 		this(key, new TranslatableText(key), centered);
 	}
 
+	public SpruceLabelOption(String key, Text text, boolean centered, @Nullable Text tooltip) {
+		this(key, text, centered);
+		this.setTooltip(tooltip);
+	}
+
 	public SpruceLabelOption(String key, Text text, boolean centered) {
 		super(key);
 		this.text = text;
@@ -24,6 +31,7 @@ public class SpruceLabelOption extends SpruceOption {
 	@Override
 	public SpruceWidget createWidget(Position position, int width) {
 		var label = new SpruceLabelWidget(position, this.text, width, this.centered);
+		this.getOptionTooltip().ifPresent(label::setTooltip);
 		return label;
 	}
 }

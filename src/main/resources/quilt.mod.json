@@ -54,8 +54,9 @@
 		"environment": "client"
 	},
 	"mixin": "ok_zoomer.mixins.json",
-	"fabric_sunset": {
-		"author": "Ennui Langeweile",
-		"title": "It's time to zoom into new horizons"
+	"platform_migration_warning": {
+		"name": "Ok Zoomer",
+		"migrated_since": "5.0.0-beta.7",
+		"author": "ennuil"
 	}
 }
