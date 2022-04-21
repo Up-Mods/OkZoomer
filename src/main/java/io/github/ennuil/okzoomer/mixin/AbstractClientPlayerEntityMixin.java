@@ -10,19 +10,19 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class AbstractClientPlayerEntityMixin {
-    @ModifyExpressionValue(
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingSpyglass()Z"),
-        method = "getSpeed"
-    )
-    private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-        if (switch (ZoomPackets.getSpyglassDependency()) {
-            case REPLACE_ZOOM -> true;
-            case BOTH -> true;
-            default -> false;
-        }) {
-            return false;
-        } else {
-            return isUsingSpyglass;
-        }
-    }
+	@ModifyExpressionValue(
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingSpyglass()Z"),
+		method = "getSpeed"
+	)
+	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
+		if (switch (ZoomPackets.getSpyglassDependency()) {
+			case REPLACE_ZOOM -> true;
+			case BOTH -> true;
+			default -> false;
+		}) {
+			return false;
+		} else {
+			return isUsingSpyglass;
+		}
+	}
 }

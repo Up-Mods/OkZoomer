@@ -9,21 +9,21 @@ import net.minecraft.client.MinecraftClient;
 
 // This event manages the extra keybinds' behavior
 public class ManageExtraKeysEvent implements ClientTickEvents.End {
-    @Override
-    public void endClientTick(MinecraftClient client) {
-        if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
-        if (ZoomPackets.getDisableZoomScrolling()) return;
+	@Override
+	public void endClientTick(MinecraftClient client) {
+		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
+		if (ZoomPackets.getDisableZoomScrolling()) return;
 
-        if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed()) {
-            ZoomUtils.changeZoomDivisor(false);
-        }
+		if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed()) {
+			ZoomUtils.changeZoomDivisor(false);
+		}
 
-        if (ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed()) {
-            ZoomUtils.changeZoomDivisor(true);
-        }
+		if (ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed()) {
+			ZoomUtils.changeZoomDivisor(true);
+		}
 
-        if (ZoomKeyBinds.RESET_ZOOM_KEY.isPressed()) {
-            ZoomUtils.resetZoomDivisor(true);
-        }
-    }
+		if (ZoomKeyBinds.RESET_ZOOM_KEY.isPressed()) {
+			ZoomUtils.resetZoomDivisor(true);
+		}
+	}
 }

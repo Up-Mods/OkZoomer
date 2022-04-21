@@ -10,19 +10,19 @@ import net.minecraft.client.gui.hud.InGameHud;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
-    @ModifyExpressionValue(
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
-        method = "render"
-    )
-    private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-        if (switch (ZoomPackets.getSpyglassDependency()) {
-            case REPLACE_ZOOM -> true;
-            case BOTH -> true;
-            default -> false;
-        }) {
-            return false;
-        } else {
-            return isUsingSpyglass;
-        }
-    }
+	@ModifyExpressionValue(
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
+		method = "render"
+	)
+	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
+		if (switch (ZoomPackets.getSpyglassDependency()) {
+			case REPLACE_ZOOM -> true;
+			case BOTH -> true;
+			default -> false;
+		}) {
+			return false;
+		} else {
+			return isUsingSpyglass;
+		}
+	}
 }

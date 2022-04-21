@@ -9,8 +9,8 @@ import net.fabricmc.api.EnvType;
 
 @Environment(EnvType.CLIENT)
 public class OkZoomerModMenuEntry implements ModMenuApi {
-    @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return screen -> new OkZoomerConfigScreen(screen);
-    }
+	@Override
+	public ConfigScreenFactory<?> getModConfigScreenFactory() {
+		return screen -> new OkZoomerConfigScreen(screen);
+	}
 }

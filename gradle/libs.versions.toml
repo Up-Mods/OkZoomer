@@ -1,22 +1,25 @@
 [versions]
 minecraft = "1.18.2"
-quilt-mappings = "1.18.2+build.21" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
-fabric-loader = "0.16.0-beta.6" # Latest version is available at https://fabricmc.net/versions.html
+quilt_mappings = "1.18.2+build.21" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
+quilt_loader = "0.16.0-beta.7" # Latest version is available at https://fabricmc.net/versions.html
 
-quilted-fabric-api = "1.0.0-beta.2+0.48.0-1.18.2"
+quilted_fabric_api = "1.0.0-beta.7+0.51.1-1.18.2"
 libzoomer = "0.4.2+1.18.2"
-mod-menu = "3.1.0"
+mod_menu = "3.1.1"
 spruceui = "3.3.3+1.18"
-quilt-json5 = "1.0.0"
-mixin-extras = "0.0.6"
+quilt_json5 = "1.0.0"
+mixin_extras = "0.0.8"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-quilt-mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt-mappings" }
-quilt-loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt-loader" }
+quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
+quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
-quilted-fabric-api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted-fabric-api" }
+quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
 libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
-mod-menu = { module = "com.terraformersmc:modmenu", version.ref = "mod-menu" }
+mod_menu = { module = "com.terraformersmc:modmenu", version.ref = "mod_menu" }
 spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
-mixin-extras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixin-extras" }
+mixin_extras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixin_extras" }
+
+[plugins]
+quilt_loom = { id = "org.quiltmc.loom", version = "0.12.+" }
