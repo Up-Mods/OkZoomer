@@ -3,9 +3,7 @@
   "package": "io.github.ennuil.okzoomer.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "AbstractClientPlayerEntityMixin",
-    "InGameHudMixin",
-    "MouseMixin"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

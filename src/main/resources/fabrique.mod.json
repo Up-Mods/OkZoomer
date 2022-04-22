@@ -26,6 +26,7 @@
   "recommends": {
     "quilt_loader": "0.16.0"
   },
+  "mixins": ["ok_zoomer_pmw.mixins.json"],
   "custom": {
     "platform_migration_warning": {
       "author": "ennuil",
