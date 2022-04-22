@@ -109,5 +109,16 @@
   "key.okzoomer.decrease_zoom": "Diminuir zoom",
   "key.okzoomer.increase_zoom": "Aumentar zoom",
   "key.okzoomer.reset_zoom": "Reiniciar zoom",
-  "key.okzoomer.zoom": "Zoom"
+  "key.okzoomer.zoom": "Zoom",
+  "platform_migration_warning.title": "Aviso de Pôr do Sol",
+  "platform_migration_warning.explainer": "Com o lançamento beta da toolchain Quilt, alguns mods já estão começando a migrar da Fabric para a Quilt, fazendo-o incompatível com Fabric. Parece que você tentou instalar um desses mods. Os seguintes mods foram detectados:",
+  "platform_migration_warning.explainer2": "Você pode ou remover estes mods, ou migrar a sua instalação de mods para o Quilt, um processo onde a maioria dos mods para a Fabric deve ainda funcionar. Mas antes que você faça uma decisão, aqui está os depoimentos dos autores dos mods para o Quilt que você tentou instalar:",
+  "platform_migration_warning.mod.migrated_since": "Migrado desde %s",
+  "platform_migration_warning.open_quilt_website": "Abrir site do Quilt",
+  "platform_migration_warning.has_developed_1": "Desenvolveu %s",
+  "platform_migration_warning.has_developed_2": "Desenvolveu %s e %s",
+  "platform_migration_warning.has_developed_many": "Desenvolveu:",
+  "platform_migration_warning.has_developed_many_entry": "  - %s",
+  "platform_migration_warning.ennuil.author": "Ennui Langeweile",
+  "platform_migration_warning.ennuil.testimonial": "Olá! Eu fui parte da comunidade geral do Minecraft modificado faz até uns anos, e mesmo antes disso, eu sempre vim jogando com mods desde criança.\nOlhar para todas aquelas inovações que essas pessoas sempre ficavam criando foi sempre legal pra mim! De experimentar novos mecanismos para simplesmente causar uma grande bagunça no modo Criativo, o mundo dos mods sempre foi meio que mágico para mim, e poder ser uma dessas pessoas mágicas permitiu que eu finalmente pudesse contribuir para melhorar essaa experiência não só para jogadores, mas para todo mundo em geral.\nPorém, o ano passado infelizmente não foi bom. Eu testemunhei desenvolvedores como eu serem feridos por aqueles encarregados de proteger a comunidade, eu testemunhei inovação sendo sufocada por aqueles encarregados de promovê-la, eu testemunhei tudo indo por água à baixo até que o ponto onde não era possível mais piorar, com eu sofrendo de enxaquecas de apenas olhar para tudo se desmoronando. Eu senti que eu não podia apoiar mais aquele lugar, e eu senti que se não tivesse um caminho pela frente, eu teria que me aponsentar de fazer mods, exceto que eu não quero me aposentar, eu ainda acredito que há um monte de coisas para fazer!\nFelizmente, a comunidade Quilt surgiu como uma resposta para aonde ir: Um lugar que realmente pode ser chamado de uma comunidade para todos, um lugar onde a inovação é encoragada, e um lugar que eu pudesse chamar de lar. Se não fosse por isso, eu não acredito que eu continuaria a desenvolver os meus mods. Nos meus próprios mods, especialmente o Ok Zoomer, eu já começei a usar alguma de suas inovações, o seu decompilador melhor, o seu mapeamento. a sua API ergonômica e nova, mas com o lançamento beta da toolchain Quilt, eu finalmente posso concluir essa troca para a Quilt. Enquanto ainda é os seus primeiros dias, eu sempre amei experimentar com novas coisas! Se não, eu nem teria criado o Ok Zoomer com um Fabric novo e jovem em primeiro lugar!\nA toolchain Quilt ainda é um beta, com muitas coisas ainda sendo trabalhadas, mas juntos, nós iremos explorar esse novo horizonte do mundo dos mods, e com isso, as oportunidades expandidas por ela."
 }

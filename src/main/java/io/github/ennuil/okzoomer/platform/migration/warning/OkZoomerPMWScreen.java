@@ -11,6 +11,7 @@ import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
+import io.github.ennuil.okzoomer.config.screen.CustomTextureBackground;
 import io.github.ennuil.okzoomer.config.screen.SpruceLabelOption;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.CustomValue.CvObject;
@@ -20,12 +21,15 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
 // TODO - This sunset screen should be a library mod
 public class OkZoomerPMWScreen extends SpruceScreen {
 	private final Screen parent;
 	private SpruceOptionListWidget list;
+	private CustomTextureBackground normalBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 64, 64, 64, 255);
+	private CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 32, 32, 32, 255);
 
 	public OkZoomerPMWScreen(Screen parent) {
 		super(new TranslatableText("platform_migration_warning.title"));
@@ -36,6 +40,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 		this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
+		this.list.setBackground(darkenedBackground);
 
 		var explainerLabel = new SpruceLabelOption("platform_migration_warning.explainer", true);
 		this.list.addSingleOptionEntry(explainerLabel);
@@ -79,7 +84,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 			};
 
 			var restrictionsSeparator = new SpruceSeparatorOption(authorKey, true, hoverText);
-			var testimonialLabel = new SpruceLabelOption(testimonialKey, new TranslatableText(testimonialKey).styled(style -> style.withColor(0xDEDEDE)), true);
+			var testimonialLabel = new SpruceLabelOption(testimonialKey, new TranslatableText(testimonialKey).styled(style -> style.withColor(0xDEDEDE)), false);
 
 			this.list.addSingleOptionEntry(restrictionsSeparator);
 			this.list.addSingleOptionEntry(testimonialLabel);
@@ -97,6 +102,11 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	@Override
 	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	}
+
+	@Override
+	public void renderBackground(MatrixStack matrices, int vOffset) {
+		normalBackground.render(matrices, this, vOffset);
 	}
 
 	@Override
