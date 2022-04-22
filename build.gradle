@@ -5,7 +5,7 @@ plugins {
 
 archivesBaseName = project.archives_base_name
 version = System.env.GITHUB_ACTIONS == "true"
-	? "${project.mod_version}.github.${System.env.GITHUB_RUN_NUMBER}"
+	? "${project.version}.github.${System.env.GITHUB_RUN_NUMBER}"
 	: project.version
 group = project.maven_group
 
