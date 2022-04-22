@@ -38,16 +38,16 @@
 			}
 		],
 		"entrypoints": {
-			"client_init": "io.github.ennuil.okzoomer.OkZoomerClientMod",
+			"client_init": "io.github.ennuil.ok_zoomer.OkZoomerClientMod",
 			"client_events": [
-				"io.github.ennuil.okzoomer.events.LoadConfigEvent",
-				"io.github.ennuil.okzoomer.events.ManageZoomEvent",
-				"io.github.ennuil.okzoomer.events.ManageExtraKeysEvent",
-				"io.github.ennuil.okzoomer.events.OpenScreenEvent",
-				"io.github.ennuil.okzoomer.events.RegisterCommands"
+				"io.github.ennuil.ok_zoomer.events.LoadConfigEvent",
+				"io.github.ennuil.ok_zoomer.events.ManageZoomEvent",
+				"io.github.ennuil.ok_zoomer.events.ManageExtraKeysEvent",
+				"io.github.ennuil.ok_zoomer.events.OpenScreenEvent",
+				"io.github.ennuil.ok_zoomer.events.RegisterCommands"
 			],
-			"modmenu": "io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry",
-			"pre_launch": "io.github.ennuil.okzoomer.MixinExtrasInitializer"
+			"modmenu": "io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry",
+			"pre_launch": "io.github.ennuil.ok_zoomer.MixinExtrasInitializer"
 		}
 	},
 	"minecraft": {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "okzoomer-sunset",
+  "id": "ok_zoomer-sunset",
   "version": "${version}",
   "name": "Ok Zoomer (Migrated to Quilt)",
   "description": "The last Fabric-compatible version was 5.0.0-beta.6. From 5.0.0-beta.7 onwards, this mod will exclusively support the Quilt toolchain.",
@@ -14,10 +14,10 @@
   "icon": "assets/ok_zoomer/icon_sunset.png",
   "environment": "client",
   "entrypoints": {
-    "client_init": ["io.github.ennuil.okzoomer.OkZoomerClientMod"],
-    "client_events": ["io.github.ennuil.okzoomer.events.LoadConfigEvent"],
-    "modmenu": ["io.github.ennuil.okzoomer.config.modmenu.OkZoomerModMenuEntry"],
-    "preLaunch": ["io.github.ennuil.okzoomer.MixinExtrasInitializer"]
+    "client_init": ["io.github.ennuil.ok_zoomer.OkZoomerClientMod"],
+    "client_events": ["io.github.ennuil.ok_zoomer.events.LoadConfigEvent"],
+    "modmenu": ["io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"],
+    "preLaunch": ["io.github.ennuil.ok_zoomer.MixinExtrasInitializer"]
   },
   "depends": {
     "fabricloader": ">=0.13.3",
