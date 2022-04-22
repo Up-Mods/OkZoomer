@@ -53,10 +53,5 @@
 	"minecraft": {
 		"environment": "client"
 	},
-	"mixin": "ok_zoomer.mixins.json",
-	"platform_migration_warning": {
-		"name": "Ok Zoomer",
-		"migrated_since": "5.0.0-beta.7",
-		"author": "ennuil"
-	}
+	"mixin": "ok_zoomer.mixins.json"
 }

@@ -13,12 +13,6 @@
   "license": "MIT",
   "icon": "assets/ok_zoomer/icon_sunset.png",
   "environment": "client",
-  "entrypoints": {
-    "client_init": ["io.github.ennuil.ok_zoomer.OkZoomerClientMod"],
-    "client_events": ["io.github.ennuil.ok_zoomer.events.LoadConfigEvent"],
-    "modmenu": ["io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"],
-    "preLaunch": ["io.github.ennuil.ok_zoomer.MixinExtrasInitializer"]
-  },
   "depends": {
     "fabricloader": ">=0.13.3",
     "java": ">=17"
@@ -29,8 +23,9 @@
   "mixins": ["ok_zoomer_pmw.mixins.json"],
   "custom": {
     "platform_migration_warning": {
-      "author": "ennuil",
+      "name": "Ok Zoomer",
       "migrated_since": "5.0.0-beta.7",
+      "author": "ennuil",
       "implements_self": true
     }
   }

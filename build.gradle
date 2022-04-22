@@ -48,7 +48,12 @@ dependencies {
 processResources {
 	inputs.property "version", version
 
+	// Oh, for building, do the switcharoo
 	filesMatching('quilt.mod.json') {
+		expand "version": version
+	}
+
+	filesMatching('fabric.mod.json') {
 		expand "version": version
 	}
 }

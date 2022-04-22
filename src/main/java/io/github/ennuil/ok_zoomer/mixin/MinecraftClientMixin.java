@@ -11,13 +11,13 @@ import net.minecraft.client.gui.screen.Screen;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 	@ModifyArg(
-		method = "<init>",
+		method = "<init>(Lnet/minecraft/client/RunArgs;)V",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"
 		)
 	)
-	private Screen showFabricSunsetScreen(Screen titleScreen) {
+	private Screen showPMWScreen(Screen titleScreen) {
 		return new OkZoomerPMWScreen(titleScreen);
 	}
 }
