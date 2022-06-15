@@ -17,10 +17,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.CustomValue.CvObject;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
@@ -32,7 +30,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	private CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 32, 32, 32, 255);
 
 	public OkZoomerPMWScreen(Screen parent) {
-		super(new TranslatableText("platform_migration_warning.title"));
+		super(Text.translatable("platform_migration_warning.title"));
 		this.parent = parent;
 	}
 
@@ -47,20 +45,20 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 
 		Map<String, ModDeveloper> modDevelopers = new HashMap<>();
 		FabricLoader.getInstance().getAllMods().stream().filter(mod -> mod.getMetadata().containsCustomValue("platform_migration_warning")).forEach(mod -> {
-			CvObject fabricSunset = mod.getMetadata().getCustomValue("platform_migration_warning").getAsObject();
-			var modText = new LiteralText(fabricSunset.get("name").getAsString())
+			CvObject pmw = mod.getMetadata().getCustomValue("platform_migration_warning").getAsObject();
+			var modText = Text.literal(pmw.get("name").getAsString())
 				.styled(style -> style.withColor(0xFFFFFF));
-			var migratedSinceText = new TranslatableText("platform_migration_warning.mod.migrated_since", new LiteralText(fabricSunset.get("migrated_since").getAsString()));
+			var migratedSinceText = Text.translatable("platform_migration_warning.mod.migrated_since", Text.literal(pmw.get("migrated_since").getAsString()));
 			var modLabel = new SpruceLabelOption("platform_migration_warning.id_" + mod.getMetadata().getId(), modText, true, migratedSinceText);
 			this.list.addSingleOptionEntry(modLabel);
 
-			String author = fabricSunset.get("author").getAsString();
+			String author = pmw.get("author").getAsString();
 			if (!modDevelopers.containsKey(author)) {
 				List<Text> modList = new ArrayList<>();
-				modList.add(new LiteralText(fabricSunset.get("name").getAsString()));
+				modList.add(Text.literal(pmw.get("name").getAsString()));
 				modDevelopers.put(author, new ModDeveloper(author, modList));
 			} else {
-				modDevelopers.get(author).mods().add(new LiteralText(fabricSunset.get("name").getAsString()));
+				modDevelopers.get(author).mods().add(Text.literal(pmw.get("name").getAsString()));
 			}
 		});
 
@@ -72,19 +70,19 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 			String testimonialKey = String.format("platform_migration_warning.%s.testimonial", modDeveloper.author);
 			Text hoverText = switch (modDeveloper.mods.size()) {
 				case 0 -> null;
-				case 1 -> new TranslatableText("platform_migration_warning.has_developed_1", modDeveloper.mods.get(0));
-				case 2 -> new TranslatableText("platform_migration_warning.has_developed_2", modDeveloper.mods.get(0), modDeveloper.mods.get(1));
+				case 1 -> Text.translatable("platform_migration_warning.has_developed_1", modDeveloper.mods.get(0));
+				case 2 -> Text.translatable("platform_migration_warning.has_developed_2", modDeveloper.mods.get(0), modDeveloper.mods.get(1));
 				default -> {
-					MutableText mutableText = new TranslatableText("platform_migration_warning.has_developed_many");
+					MutableText mutableText = Text.translatable("platform_migration_warning.has_developed_many");
 					for (Text text : modDeveloper.mods) {
-						mutableText.append(new TranslatableText("platform_migration_warning.has_developed_many_entry", text));
+						mutableText.append(Text.translatable("platform_migration_warning.has_developed_many_entry", text));
 					}
 					yield mutableText;
 				}
 			};
 
 			var restrictionsSeparator = new SpruceSeparatorOption(authorKey, true, hoverText);
-			var testimonialLabel = new SpruceLabelOption(testimonialKey, new TranslatableText(testimonialKey).styled(style -> style.withColor(0xDEDEDE)), false);
+			var testimonialLabel = new SpruceLabelOption(testimonialKey, Text.translatable(testimonialKey).styled(style -> style.withColor(0xDEDEDE)), false);
 
 			this.list.addSingleOptionEntry(restrictionsSeparator);
 			this.list.addSingleOptionEntry(testimonialLabel);
@@ -93,7 +91,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 		//this.list.setBackground(darkenedBackground);
 
 		this.addDrawableChild(this.list);
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, new TranslatableText("platform_migration_warning.open_quilt_website"),
+		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Text.translatable("platform_migration_warning.open_quilt_website"),
 			btn -> Util.getOperatingSystem().open("https://quiltmc.org")).asVanilla());
 		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
 			btn -> this.client.setScreen(this.parent)).asVanilla());
@@ -110,7 +108,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void onClose() {
+	public void closeScreen() {
 		this.client.setScreen(this.parent);
 	}
 

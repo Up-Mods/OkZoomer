@@ -32,7 +32,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 				case REQUIRE_ITEM -> true;
 				case BOTH -> true;
 				default -> false;
-			} && !client.player.getInventory().method_7382(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
+			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
 
 		if (disableZoom) {
 			ZoomUtils.ZOOMER_ZOOM.setZoom(false);

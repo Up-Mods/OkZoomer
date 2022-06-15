@@ -9,7 +9,6 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 /* 	Manages the zoom packets and their signals.
@@ -43,7 +42,7 @@ public class ZoomPackets {
 	private static SpyglassDependency spyglassDependency = null;
 	private static boolean spyglassOverlay = false;
 
-	private static TranslatableText toastTitle = new TranslatableText("toast.ok_zoomer.title");
+	private static Text toastTitle = Text.translatable("toast.ok_zoomer.title");
 
 	private static void sendToast(MinecraftClient client, Text description) {
 		if (OkZoomerConfigManager.configInstance.tweaks().getShowRestrictionToasts()) {
@@ -129,12 +128,12 @@ public class ZoomPackets {
 				if (restricting) {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and has established some restrictions");
-						sendToast(client, new TranslatableText("toast.ok_zoomer.acknowledge_mod_restrictions"));
+						sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
 					}
 				} else {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_NO_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and establishes no restrictions");
-						sendToast(client, new TranslatableText("toast.ok_zoomer.acknowledge_mod"));
+						sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod"));
 					}
 				}
 			});

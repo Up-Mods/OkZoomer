@@ -11,12 +11,10 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class SpruceBoundedDoubleInputOption extends SpruceOption {
@@ -44,7 +42,7 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 		textField.setTextPredicate(SpruceTextFieldWidget.DOUBLE_INPUT_PREDICATE);
 		textField.setRenderTextProvider((displayedText, offset) -> {
 			try {
-				MutableText tooltipText = LiteralText.EMPTY.shallowCopy().append(this.tooltip);
+				MutableText tooltipText = Text.empty().append(this.tooltip);
 				Style tooltipStyle = Style.EMPTY;
 				double value = Double.parseDouble(textField.getText());
 				Optional<Boolean> bound = boundCheck(value);
@@ -54,12 +52,12 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 						if (!bound.get()) {
 							boolean aboveZero = minimum.get() == Double.MIN_NORMAL;
 							tooltipText = tooltipText.append("\n");
-							tooltipText = tooltipText.append(new TranslatableText(
+							tooltipText = tooltipText.append(Text.translatable(
 								"config.ok_zoomer.widget.bounded_double.below_range",
-								aboveZero ? new TranslatableText("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.get().toString()
+								aboveZero ? Text.translatable("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.get().toString()
 							).setStyle(tooltipStyle));
 						} else {
-							tooltipText = tooltipText.append(new TranslatableText(
+							tooltipText = tooltipText.append(Text.translatable(
 								"config.ok_zoomer.widget.bounded_double.above_range",
 								maximum.get().toString()
 							).setStyle(tooltipStyle));

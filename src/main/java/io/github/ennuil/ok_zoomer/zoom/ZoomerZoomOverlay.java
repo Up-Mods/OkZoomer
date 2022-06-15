@@ -1,16 +1,16 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormats;
 
 import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -51,12 +51,12 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.zoomOverlayAlpha);
         RenderSystem.setShaderTexture(0, this.textureId);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        BufferBuilder bufferBuilder = tessellator.getBufferBuilder();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(0.0D, (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(0.0F, 1.0F).next();
-        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), (double)this.client.getWindow().getScaledHeight(), -90.0D).texture(1.0F, 1.0F).next();
-        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), 0.0D, -90.0D).texture(1.0F, 0.0F).next();
-        bufferBuilder.vertex(0.0D, 0.0D, -90.0D).texture(0.0F, 0.0F).next();
+        bufferBuilder.vertex(0.0D, (double)this.client.getWindow().getScaledHeight(), -90.0D).uv(0.0F, 1.0F).next();
+        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), (double)this.client.getWindow().getScaledHeight(), -90.0D).uv(1.0F, 1.0F).next();
+        bufferBuilder.vertex((double)this.client.getWindow().getScaledWidth(), 0.0D, -90.0D).uv(1.0F, 0.0F).next();
+        bufferBuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0F, 0.0F).next();
         tessellator.draw();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();

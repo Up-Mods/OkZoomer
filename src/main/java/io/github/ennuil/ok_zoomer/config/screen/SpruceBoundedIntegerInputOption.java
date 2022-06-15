@@ -11,12 +11,10 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 public class SpruceBoundedIntegerInputOption extends SpruceOption {
@@ -44,7 +42,7 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 		textField.setTextPredicate(SpruceTextFieldWidget.INTEGER_INPUT_PREDICATE);
 		textField.setRenderTextProvider((displayedText, offset) -> {
 			try {
-				MutableText tooltipText = LiteralText.EMPTY.shallowCopy().append(this.tooltip);
+				MutableText tooltipText = Text.empty().append(this.tooltip);
 				Style tooltipStyle = Style.EMPTY;
 				int value = Integer.parseInt(textField.getText());
 				Optional<Boolean> bound = boundCheck(value);
@@ -53,12 +51,12 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 					if (minimum.isPresent()) {
 						if (!bound.get()) {
 							tooltipText = tooltipText.append("\n");
-							tooltipText = tooltipText.append(new TranslatableText(
+							tooltipText = tooltipText.append(Text.translatable(
 								"config.ok_zoomer.widget.bounded_int.below_range",
 								minimum.get().toString()
 							).setStyle(tooltipStyle));
 						} else {
-							tooltipText = tooltipText.append(new TranslatableText(
+							tooltipText = tooltipText.append(Text.translatable(
 								"config.ok_zoomer.widget.bounded_int.above_range",
 								maximum.get().toString()
 							).setStyle(tooltipStyle));

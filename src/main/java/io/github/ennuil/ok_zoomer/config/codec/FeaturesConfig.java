@@ -14,27 +14,22 @@ public class FeaturesConfig {
 	public static final Codec<FeaturesConfig> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 			StringIdentifiable.createCodec(
-				CinematicCameraOptions::values,
-				CinematicCameraOptions::valueOf
+				CinematicCameraOptions::values
 			).fieldOf("cinematic_camera").orElse(CinematicCameraOptions.OFF).forGetter(FeaturesConfig::getCinematicCamera),
 			Codec.BOOL.fieldOf("reduce_sensitivity").orElse(true).forGetter(FeaturesConfig::getReduceSensitivity),
 			StringIdentifiable.createCodec(
-				ZoomTransitionOptions::values,
-				ZoomTransitionOptions::valueOf
+				ZoomTransitionOptions::values
 			).fieldOf("zoom_transition").orElse(ZoomTransitionOptions.SMOOTH).forGetter(FeaturesConfig::getZoomTransition),
 			StringIdentifiable.createCodec(
-				ZoomModes::values,
-				ZoomModes::valueOf
+				ZoomModes::values
 			).fieldOf("zoom_mode").orElse(ZoomModes.HOLD).forGetter(FeaturesConfig::getZoomMode),
 			Codec.BOOL.fieldOf("zoom_scrolling").orElse(true).forGetter(FeaturesConfig::getZoomScrolling),
 			Codec.BOOL.fieldOf("extra_keybinds").orElse(true).forGetter(FeaturesConfig::getExtraKeyBinds),
 			StringIdentifiable.createCodec(
-				ZoomOverlays::values,
-				ZoomOverlays::valueOf
+				ZoomOverlays::values
 			).fieldOf("zoom_overlay").orElse(ZoomOverlays.OFF).forGetter(FeaturesConfig::getZoomOverlay),
 			StringIdentifiable.createCodec(
-				SpyglassDependency::values,
-				SpyglassDependency::valueOf
+				SpyglassDependency::values
 			).fieldOf("spyglass_dependency").orElse(SpyglassDependency.OFF).forGetter(FeaturesConfig::getSpyglassDependency)
 		)
 		.apply(instance, FeaturesConfig::new)

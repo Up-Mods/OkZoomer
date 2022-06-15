@@ -18,7 +18,7 @@ import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
@@ -106,7 +106,7 @@ public class ZoomUtils {
 			if (client.options.saveToolbarActivatorKey.isDefault()) {
 				if (userPrompted) {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
-					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.ok_zoomer.title"), new TranslatableText("toast.ok_zoomer.unbind_conflicting_key.success")));
+					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"), Text.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
 				} else {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
 				}
@@ -116,7 +116,7 @@ public class ZoomUtils {
 			} else {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 				if (userPrompted) {
-					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, new TranslatableText("toast.ok_zoomer.title"), new TranslatableText("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
+					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"), Text.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
 				}
 			}
 		}

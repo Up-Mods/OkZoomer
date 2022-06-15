@@ -12,14 +12,14 @@ import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.config.screen.SpruceLabelOption;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 
 public class OkZoomerCommandScreen extends SpruceScreen {
 	private SpruceOptionListWidget list;
 	private SimpleColorBackground darkenedBackground = new SimpleColorBackground(0, 0, 0, 128);
 
 	public OkZoomerCommandScreen() {
-		super(new TranslatableText("command.ok_zoomer.title"));
+		super(Text.translatable("command.ok_zoomer.title"));
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		var restrictionsSeparator = new SpruceSeparatorOption(
 			"command.ok_zoomer.restrictions",
 			true,
-			new TranslatableText("command.ok_zoomer.restrictions.tooltip"));
+			Text.translatable("command.ok_zoomer.restrictions.tooltip"));
 
 		this.list.addSingleOptionEntry(configButton);
 		this.list.addSingleOptionEntry(restrictionsSeparator);
@@ -68,8 +68,8 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			var textLabel = new SpruceLabelOption(
 				"command.ok_zoomer.restrictions.force_zoom_divisors",
 				minimumZoomDivisor == maximumZoomDivisor
-					? new TranslatableText("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
-					: new TranslatableText("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
+					? Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
+					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
 				true);
 			this.list.addSingleOptionEntry(textLabel);
 		}

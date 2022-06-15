@@ -1,14 +1,13 @@
 [versions]
-minecraft = "1.18.2"
-quilt_mappings = "1.18.2+build.22" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
-quilt_loader = "0.16.0-beta.7" # Latest version is available at https://fabricmc.net/versions.html
+minecraft = "1.19"
+quilt_mappings = "1.19+build.1" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
+quilt_loader = "0.17.0" # Latest version is available at https://fabricmc.net/versions.html
 
-quilted_fabric_api = "1.0.0-beta.7+0.51.1-1.18.2"
-libzoomer = "0.4.2+1.18.2"
-mod_menu = "3.1.1"
-spruceui = "3.3.3+1.18"
-quilt_json5 = "1.0.0"
-mixin_extras = "0.0.8"
+quilted_fabric_api = "2.0.0-alpha.3+0.55.3-1.19"
+libzoomer = "0.5.0+1.19"
+mod_menu = "4.0.0"
+spruceui = "4.0.0+1.19"
+mixin_extras = "0.0.11"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
