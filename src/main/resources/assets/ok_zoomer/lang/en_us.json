@@ -56,6 +56,8 @@
   "config.ok_zoomer.category.tweaks.tooltip": "Contains options that are unlikely to be changed from the defaults.",
   "config.ok_zoomer.reset_zoom_with_mouse": "Reset Zoom with Mouse",
   "config.ok_zoomer.reset_zoom_with_mouse.tooltip": "Allows for resetting the zoom with the middle mouse button.",
+  "config.ok_zoomer.forget_zoom_divisor": "Forget Zoom Divisor",
+  "config.ok_zoomer.forget_zoom_divisor.tooltip": "If enabled, the current zoom divisor is forgotten once zooming is done.",
   "config.ok_zoomer.unbind_conflicting_key": "Unbind Conflicting Key",
   "config.ok_zoomer.unbind_conflicting_key.tooltip": "If pressed, then the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.",
   "config.ok_zoomer.use_spyglass_texture": "Use Spyglass Texture",

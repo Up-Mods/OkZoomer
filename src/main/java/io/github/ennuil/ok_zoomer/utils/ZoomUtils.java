@@ -49,11 +49,11 @@ public class ZoomUtils {
 			return;
 		}
 
-		double zoomDivisor = OkZoomerConfigManager.configInstance.values().getZoomDivisor();
-		double minimumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMinimumZoomDivisor();
-		double maximumZoomDivisor = OkZoomerConfigManager.configInstance.values().getMaximumZoomDivisor();
-		int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollSteps();
-		int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollSteps();
+		double zoomDivisor = OkZoomerConfigManager.ZOOM_DIVISOR.value();
+		double minimumZoomDivisor = OkZoomerConfigManager.MINIMUM_ZOOM_DIVISOR.value();
+		double maximumZoomDivisor = OkZoomerConfigManager.MAXIMUM_ZOOM_DIVISOR.value();
+		int upperScrollStep = OkZoomerConfigManager.UPPER_SCROLL_STEPS.value();
+		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
 
 		if (ZoomPackets.getForceZoomDivisors()) {
 			double packetMinimumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
@@ -89,13 +89,15 @@ public class ZoomUtils {
 			return;
 		}
 
+		if (!userPrompted && OkZoomerConfigManager.FORGET_ZOOM_DIVISOR.value() == false) return;
+
 		ZOOMER_ZOOM.resetZoomDivisor();
 		zoomStep = 0;
 	}
 
 	public static final void keepZoomStepsWithinBounds() {
-		int upperScrollStep = OkZoomerConfigManager.configInstance.values().getUpperScrollSteps();
-		int lowerScrollStep = OkZoomerConfigManager.configInstance.values().getLowerScrollSteps();
+		int upperScrollStep = OkZoomerConfigManager.UPPER_SCROLL_STEPS.value();
+		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
 
 		zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
 	}

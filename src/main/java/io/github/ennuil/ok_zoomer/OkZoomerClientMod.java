@@ -3,6 +3,7 @@ package io.github.ennuil.ok_zoomer;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -11,6 +12,9 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 public class OkZoomerClientMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
+		// Initialize the config
+		new OkZoomerConfigManager();
+
 		// Register all the key binds
 		KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.ZOOM_KEY);
 		if (ZoomKeyBinds.areExtraKeyBindsEnabled()) {

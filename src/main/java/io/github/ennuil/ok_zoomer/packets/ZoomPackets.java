@@ -45,7 +45,7 @@ public class ZoomPackets {
 	private static Text toastTitle = Text.translatable("toast.ok_zoomer.title");
 
 	private static void sendToast(MinecraftClient client, Text description) {
-		if (OkZoomerConfigManager.configInstance.tweaks().getShowRestrictionToasts()) {
+		if (OkZoomerConfigManager.SHOW_RESTRICTION_TOASTS.value()) {
 			client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
 		}
 	}
@@ -246,7 +246,7 @@ public class ZoomPackets {
 	}
 
 	public static SpyglassDependency getSpyglassDependency() {
-		return spyglassDependency != null ? spyglassDependency : OkZoomerConfigManager.configInstance.features().getSpyglassDependency();
+		return spyglassDependency != null ? spyglassDependency : OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value();
 	}
 
 	public static boolean getSpyglassOverlay() {

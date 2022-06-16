@@ -19,7 +19,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 	private static boolean persistentZoom = false;
 
 	// Used internally in order to avoid sound problems
-	private static boolean doSpyglassSound = OkZoomerConfigManager.configInstance.tweaks().getUseSpyglassSounds();
+	private static boolean doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
 
 	@Override
 	public void endClientTick(MinecraftClient client) {
@@ -42,7 +42,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		}
 
 		// Handle zoom mode changes.
-		if (!OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.HOLD)) {
+		if (!OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.HOLD)) {
 			if (!persistentZoom) {
 				persistentZoom = true;
 				lastZooming = true;
@@ -69,9 +69,9 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		doSpyglassSound = OkZoomerConfigManager.configInstance.tweaks().getUseSpyglassSounds();
+		doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
 
-		switch (OkZoomerConfigManager.configInstance.features().getZoomMode()) {
+		switch (OkZoomerConfigManager.ZOOM_MODE.value()) {
 			case HOLD -> {
 				// If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
 				ZoomUtils.ZOOMER_ZOOM.setZoom(zooming);
@@ -94,7 +94,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		}
 
 		if (client.player != null && doSpyglassSound && !spyglassUse) {
-			boolean soundDirection = !OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.PERSISTENT)
+			boolean soundDirection = !OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)
 				? ZoomUtils.ZOOMER_ZOOM.getZoom()
 				: keyPress;
 

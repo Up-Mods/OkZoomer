@@ -22,7 +22,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
-// TODO - This sunset screen should be a library mod
+// TODO - This screen should be a library mod
+@SuppressWarnings("deprecation")
 public class OkZoomerPMWScreen extends SpruceScreen {
 	private final Screen parent;
 	private SpruceOptionListWidget list;

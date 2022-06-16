@@ -31,8 +31,8 @@ public abstract class MouseMixin {
 	)
 	private void zoomerOnMouseScroll(CallbackInfo info) {
 		if (this.scrollDelta != 0.0) {
-			if (OkZoomerConfigManager.configInstance.features().getZoomScrolling() && !ZoomPackets.getDisableZoomScrolling()) {
-				if (OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.PERSISTENT)) {
+			if (OkZoomerConfigManager.ZOOM_SCROLLING.value() && !ZoomPackets.getDisableZoomScrolling()) {
+				if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 				}
 
@@ -52,14 +52,14 @@ public abstract class MouseMixin {
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
 	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo info, boolean bl, int i) {
-		if (OkZoomerConfigManager.configInstance.features().getZoomScrolling() && !ZoomPackets.getDisableZoomScrolling()) {
-			if (OkZoomerConfigManager.configInstance.features().getZoomMode().equals(ZoomModes.PERSISTENT)) {
+		if (OkZoomerConfigManager.ZOOM_SCROLLING.value() && !ZoomPackets.getDisableZoomScrolling()) {
+			if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
 				if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 			}
 
 			if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl) {
 				if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
-					if (OkZoomerConfigManager.configInstance.tweaks().getResetZoomWithMouse()) {
+					if (OkZoomerConfigManager.RESET_ZOOM_WITH_MOUSE.value()) {
 						ZoomUtils.resetZoomDivisor(true);
 						info.cancel();
 					}
