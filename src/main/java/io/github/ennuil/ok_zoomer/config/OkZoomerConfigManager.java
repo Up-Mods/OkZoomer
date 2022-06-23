@@ -2,6 +2,7 @@ package io.github.ennuil.ok_zoomer.config;
 
 import java.util.List;
 
+import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessors;
 import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.loader.api.config.QuiltConfig;
 

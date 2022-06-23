@@ -39,7 +39,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 		this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
-		this.list.setBackground(darkenedBackground);
+		this.list.setBackground(this.darkenedBackground);
 
 		var explainerLabel = new SpruceLabelOption("platform_migration_warning.explainer", true);
 		this.list.addSingleOptionEntry(explainerLabel);
@@ -47,8 +47,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 		Map<String, ModDeveloper> modDevelopers = new HashMap<>();
 		FabricLoader.getInstance().getAllMods().stream().filter(mod -> mod.getMetadata().containsCustomValue("platform_migration_warning")).forEach(mod -> {
 			CvObject pmw = mod.getMetadata().getCustomValue("platform_migration_warning").getAsObject();
-			var modText = Text.literal(pmw.get("name").getAsString())
-				.styled(style -> style.withColor(0xFFFFFF));
+			var modText = Text.literal(pmw.get("name").getAsString()).styled(style -> style.withColor(0xFFFFFF));
 			var migratedSinceText = Text.translatable("platform_migration_warning.mod.migrated_since", Text.literal(pmw.get("migrated_since").getAsString()));
 			var modLabel = new SpruceLabelOption("platform_migration_warning.id_" + mod.getMetadata().getId(), modText, true, migratedSinceText);
 			this.list.addSingleOptionEntry(modLabel);
@@ -75,9 +74,7 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 				case 2 -> Text.translatable("platform_migration_warning.has_developed_2", modDeveloper.mods.get(0), modDeveloper.mods.get(1));
 				default -> {
 					MutableText mutableText = Text.translatable("platform_migration_warning.has_developed_many");
-					for (Text text : modDeveloper.mods) {
-						mutableText.append(Text.translatable("platform_migration_warning.has_developed_many_entry", text));
-					}
+					modDeveloper.mods().forEach(text -> mutableText.append(Text.translatable("platform_migration_warning.has_developed_many_entry", text)));
 					yield mutableText;
 				}
 			};
@@ -88,8 +85,6 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 			this.list.addSingleOptionEntry(restrictionsSeparator);
 			this.list.addSingleOptionEntry(testimonialLabel);
 		}
-
-		//this.list.setBackground(darkenedBackground);
 
 		this.addDrawableChild(this.list);
 		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Text.translatable("platform_migration_warning.open_quilt_website"),

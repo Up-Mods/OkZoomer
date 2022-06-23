@@ -1,6 +1,7 @@
 plugins {
 	id 'maven-publish'
 	alias(libs.plugins.quilt.loom)
+	alias(libs.plugins.machete)
 }
 
 archivesBaseName = project.archives_base_name
@@ -82,6 +83,11 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${archivesBaseName}" }
 	}
+}
+
+machete {
+	// JSON minification isn't effective on this scale and sacrifices readability
+	optimizations.json = false
 }
 
 // Configure the maven publication

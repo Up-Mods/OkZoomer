@@ -1,61 +1,34 @@
 package io.github.ennuil.ok_zoomer.config;
 
-import net.minecraft.util.StringIdentifiable;
-
 public class ConfigEnums {
-	public enum CinematicCameraOptions implements StringIdentifiable {
+	public enum CinematicCameraOptions {
 		OFF,
 		VANILLA,
 		MULTIPLIED;
-
-		@Override
-		public String asString() {
-			return this.toString();
-		}
 	}
 
-	public enum ZoomTransitionOptions implements StringIdentifiable {
+	public enum ZoomTransitionOptions {
 		OFF,
 		SMOOTH,
 		LINEAR;
-
-		@Override
-		public String asString() {
-			return this.toString();
-		}
 	}
 
-	public enum ZoomModes implements StringIdentifiable {
+	public enum ZoomModes {
 		HOLD,
 		TOGGLE,
 		PERSISTENT;
-
-		@Override
-		public String asString() {
-			return this.toString();
-		}
 	}
 
-	public enum ZoomOverlays implements StringIdentifiable {
+	public enum ZoomOverlays {
 		OFF,
 		VIGNETTE,
 		SPYGLASS;
-
-		@Override
-		public String asString() {
-			return this.toString();
-		}
 	}
 
-	public enum SpyglassDependency implements StringIdentifiable {
+	public enum SpyglassDependency {
 		OFF,
 		REQUIRE_ITEM,
 		REPLACE_ZOOM,
 		BOTH;
-
-		@Override
-		public String asString() {
-			return this.toString();
-		}
 	}
 }

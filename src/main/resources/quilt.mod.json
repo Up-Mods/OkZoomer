@@ -47,7 +47,10 @@
 				"io.github.ennuil.ok_zoomer.events.RegisterCommands"
 			],
 			"modmenu": "io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry",
-			"pre_launch": "io.github.ennuil.ok_zoomer.MixinExtrasInitializer"
+			"pre_launch": [
+				"io.github.ennuil.ok_zoomer.MixinExtrasInitializer",
+				"io.github.ennuil.ok_zoomer.OkZoomerPreLaunchMod"
+			]
 		}
 	},
 	"minecraft": {
