@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import net.minecraft.client.gui.hud.InGameHud;
 
 @Mixin(InGameHud.class)
@@ -15,7 +15,7 @@ public abstract class InGameHudMixin {
 		method = "render"
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-		if (switch (ZoomPackets.getSpyglassDependency()) {
+		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM -> true;
 			case BOTH -> true;
 			default -> false;

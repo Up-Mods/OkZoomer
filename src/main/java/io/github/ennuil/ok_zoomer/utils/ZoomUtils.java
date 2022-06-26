@@ -45,9 +45,7 @@ public class ZoomUtils {
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static final void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
-		if (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling()) {
-			return;
-		}
+		if (ZoomPackets.getDisableZoom()) return;
 
 		double zoomDivisor = OkZoomerConfigManager.ZOOM_DIVISOR.value();
 		double minimumZoomDivisor = OkZoomerConfigManager.MINIMUM_ZOOM_DIVISOR.value();
@@ -56,23 +54,11 @@ public class ZoomUtils {
 		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
 
 		if (ZoomPackets.getForceZoomDivisors()) {
-			double packetMinimumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
-			double packetMaximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
-
-			if (packetMinimumZoomDivisor < minimumZoomDivisor) {
-				minimumZoomDivisor = packetMinimumZoomDivisor;
-			}
-
-			if (packetMaximumZoomDivisor > maximumZoomDivisor) {
-				maximumZoomDivisor = packetMaximumZoomDivisor;
-			}
+			minimumZoomDivisor = Math.max(minimumZoomDivisor, ZoomPackets.getMinimumZoomDivisor());
+			maximumZoomDivisor = Math.min(maximumZoomDivisor, ZoomPackets.getMaximumZoomDivisor());
 		}
 
-		if (increase) {
-			zoomStep = Math.min(zoomStep + 1, upperScrollStep);
-		} else {
-			zoomStep = Math.max(zoomStep - 1, -lowerScrollStep);
-		}
+		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
 		if (zoomStep > 0) {
 			ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
@@ -85,11 +71,8 @@ public class ZoomUtils {
 
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
 	public static final void resetZoomDivisor(boolean userPrompted) {
-		if (userPrompted && (ZoomPackets.getDisableZoom() || ZoomPackets.getDisableZoomScrolling())) {
-			return;
-		}
-
-		if (!userPrompted && OkZoomerConfigManager.FORGET_ZOOM_DIVISOR.value() == false) return;
+		if (userPrompted && ZoomPackets.getDisableZoom()) return;
+		if (!userPrompted && !OkZoomerConfigManager.FORGET_ZOOM_DIVISOR.value()) return;
 
 		ZOOMER_ZOOM.resetZoomDivisor();
 		zoomStep = 0;
@@ -108,7 +91,9 @@ public class ZoomUtils {
 			if (client.options.saveToolbarActivatorKey.isDefault()) {
 				if (userPrompted) {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
-					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"), Text.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
+					client.getToastManager().add(SystemToast.create(
+						client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"),
+						Text.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
 				} else {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
 				}
@@ -118,7 +103,9 @@ public class ZoomUtils {
 			} else {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 				if (userPrompted) {
-					client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"), Text.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
+					client.getToastManager().add(SystemToast.create(
+						client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"),
+						Text.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
 				}
 			}
 		}

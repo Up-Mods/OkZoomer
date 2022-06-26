@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.Mouse;
 
@@ -29,16 +28,16 @@ public abstract class MouseMixin {
 		method = "onMouseScroll",
 		cancellable = true
 	)
-	private void zoomerOnMouseScroll(CallbackInfo info) {
+	private void zoomerOnMouseScroll(CallbackInfo ci) {
 		if (this.scrollDelta != 0.0) {
-			if (OkZoomerConfigManager.ZOOM_SCROLLING.value() && !ZoomPackets.getDisableZoomScrolling()) {
+			if (OkZoomerConfigManager.ZOOM_SCROLLING.value()) {
 				if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 				}
 
 				if (ZoomUtils.ZOOMER_ZOOM.getZoom()) {
 					ZoomUtils.changeZoomDivisor(this.scrollDelta > 0.0);
-					info.cancel();
+					ci.cancel();
 				}
 			}
 		}
@@ -51,8 +50,8 @@ public abstract class MouseMixin {
 		cancellable = true,
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
-	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo info, boolean bl, int i) {
-		if (OkZoomerConfigManager.ZOOM_SCROLLING.value() && !ZoomPackets.getDisableZoomScrolling()) {
+	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, boolean bl, int i) {
+		if (OkZoomerConfigManager.ZOOM_SCROLLING.value()) {
 			if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
 				if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 			}
@@ -61,7 +60,7 @@ public abstract class MouseMixin {
 				if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
 					if (OkZoomerConfigManager.RESET_ZOOM_WITH_MOUSE.value()) {
 						ZoomUtils.resetZoomDivisor(true);
-						info.cancel();
+						ci.cancel();
 					}
 				}
 			}
@@ -74,7 +73,7 @@ public abstract class MouseMixin {
 		method = "updateLookDirection"
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-		if (switch (ZoomPackets.getSpyglassDependency()) {
+		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM -> true;
 			case BOTH -> true;
 			default -> false;

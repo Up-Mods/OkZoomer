@@ -2,7 +2,6 @@ package io.github.ennuil.ok_zoomer.config;
 
 import java.util.List;
 
-import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessors;
 import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.loader.api.config.QuiltConfig;
 
@@ -18,7 +17,6 @@ import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
@@ -66,45 +64,6 @@ public class OkZoomerConfigManager {
 		});
 	}
 
-	public static void resetToPreset(ZoomPresets preset) {
-		CINEMATIC_CAMERA.setValue(preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF, false);
-		REDUCE_SENSITIVITY.setValue(preset == ZoomPresets.CLASSIC ? false : true, false);
-		ZOOM_TRANSITION.setValue(preset == ZoomPresets.CLASSIC ? ZoomTransitionOptions.OFF : ZoomTransitionOptions.SMOOTH, false);
-		ZOOM_MODE.setValue(preset == ZoomPresets.PERSISTENT ? ZoomModes.PERSISTENT : ZoomModes.HOLD, false);
-		ZOOM_SCROLLING.setValue(switch (preset) {
-			case CLASSIC -> false;
-			case SPYGLASS -> false;
-			default -> true;
-		}, false);
-		EXTRA_KEY_BINDS.setValue(preset == ZoomPresets.CLASSIC ? false : true, false);
-		ZOOM_OVERLAY.setValue(preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF, false);
-		SPYGLASS_DEPENDENCY.setValue(preset == ZoomPresets.SPYGLASS ? SpyglassDependency.BOTH : SpyglassDependency.OFF, false);
-
-		ZOOM_DIVISOR.setValue(switch (preset) {
-			case PERSISTENT -> 1.0D;
-			case SPYGLASS -> 10.0D;
-			default -> 4.0D;
-		}, false);
-		MINIMUM_ZOOM_DIVISOR.setValue(1.0D, false);
-		MAXIMUM_ZOOM_DIVISOR.setValue(50.0D, false);
-		UPPER_SCROLL_STEPS.setValue(preset == ZoomPresets.SPYGLASS ? 16 : 20, false);
-		LOWER_SCROLL_STEPS.setValue(preset == ZoomPresets.SPYGLASS ? 8 : 4, false);
-		SMOOTH_MULTIPLIER.setValue(preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D, false);
-		CINEMATIC_MULTIPLIER.setValue(4.0D, false);
-		MINIMUM_LINEAR_STEP.setValue(0.125D, false);
-		MAXIMUM_LINEAR_STEP.setValue(0.25D, false);
-
-		RESET_ZOOM_WITH_MOUSE.setValue(preset == ZoomPresets.CLASSIC ? false : true, false);
-		UNBIND_CONFLICTING_KEY.setValue(false, false);
-		USE_SPYGLASS_TEXTURE.setValue(preset == ZoomPresets.SPYGLASS ? true : false, false);
-		USE_SPYGLASS_SOUNDS.setValue(preset == ZoomPresets.SPYGLASS ? true : false, false);
-		SHOW_RESTRICTION_TOASTS.setValue(true, false);
-		PRINT_OWO_ON_START.setValue(preset == ZoomPresets.CLASSIC ? false : true, false);
-
-		CONFIG.save();
-	}
-
-	// TODO - Use Quilt Config's Override system
 	public static void configureZoomInstance() {
 		// Sets zoom transition
 		ZoomUtils.ZOOMER_ZOOM.setTransitionMode(
@@ -114,14 +73,6 @@ public class OkZoomerConfigManager {
 				default -> new InstantTransitionMode();
 			}
 		);
-
-		// Forces Classic Mode settings
-		if (ZoomPackets.getForceClassicMode()) {
-			ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(4.0D);
-			ZoomUtils.ZOOMER_ZOOM.setMouseModifier(new CinematicCameraMouseModifier());
-			ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(null);
-			return;
-		}
 
 		// Sets zoom divisor
 		ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(ZOOM_DIVISOR.value());
@@ -135,11 +86,8 @@ public class OkZoomerConfigManager {
 			? "textures/misc/spyglass_scope.png"
 			: "ok_zoomer:textures/misc/zoom_overlay.png");
 
-		// Enforce spyglass overlay if necessary
-		ZoomOverlays overlay = ZoomPackets.getSpyglassOverlay() ? ZoomOverlays.SPYGLASS : ZOOM_OVERLAY.value();
-
 		ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
-			switch (overlay) {
+			switch (ZOOM_OVERLAY.value()) {
 				case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
 				case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
 				default -> null;
@@ -161,17 +109,7 @@ public class OkZoomerConfigManager {
 				: cinematicModifier
 			);
 		} else {
-			ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity
-				? new ZoomDivisorMouseModifier()
-				: null
-			);
+			ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity ? new ZoomDivisorMouseModifier() : null);
 		}
-	}
-
-	public enum ZoomPresets {
-		DEFAULT,
-		CLASSIC,
-		PERSISTENT,
-		SPYGLASS
 	}
 }

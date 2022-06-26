@@ -46,7 +46,7 @@ public class LinearTransitionMode implements TransitionMode {
         this.lastInternalMultiplier = this.internalMultiplier;
 
         this.linearStep = MathHelper.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
-        this.internalMultiplier = MathHelper.stepTowards((float)this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
+        this.internalMultiplier = MathHelper.stepTowards(this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
 
         if ((!active && fovMultiplier == this.internalMultiplier) || active) {
             this.active = active;

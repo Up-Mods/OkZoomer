@@ -8,8 +8,9 @@ import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
-import io.github.ennuil.ok_zoomer.config.screen.SpruceLabelOption;
+import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceLabelOption;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -40,7 +41,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		this.list.addSingleOptionEntry(configButton);
 		this.list.addSingleOptionEntry(restrictionsSeparator);
 
-		boolean acknoledged = false;
+		boolean acknowledged = false;
 
 		if (ZoomPackets.getHasRestrictions()) {
 			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.acknowledgement", true);
@@ -67,15 +68,15 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			double maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
 			var textLabel = new SpruceLabelOption(
 				"command.ok_zoomer.restrictions.force_zoom_divisors",
-				minimumZoomDivisor == maximumZoomDivisor
+				minimumZoomDivisor != maximumZoomDivisor
 					? Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
 					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
 				true);
 			this.list.addSingleOptionEntry(textLabel);
 		}
 
-		if (ZoomPackets.getSpyglassDependency() != null) {
-			String key = switch (ZoomPackets.getSpyglassDependency()) {
+		if (ZoomPackets.getSpyglassDependency()) {
+			String key = switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 				case REQUIRE_ITEM -> "command.ok_zoomer.restrictions.force_spyglass.require_item";
 				case REPLACE_ZOOM -> "command.ok_zoomer.restrictions.force_spyglass.replace_zoom";
 				case BOTH -> "command.ok_zoomer.restrictions.force_spyglass.both";
@@ -91,7 +92,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		}
 
 		if (!ZoomPackets.getHasRestrictions()) {
-			if (acknoledged) {
+			if (acknowledged) {
 				var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.no_restrictions.acknowledged", true);
 				this.list.addSingleOptionEntry(textLabel);
 			} else {

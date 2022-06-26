@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen;
+package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,7 +11,6 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -21,13 +20,11 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 	private final Supplier<Double> getter;
 	private final Consumer<Double> setter;
 	private final Text tooltip;
-	private final double defaultValue;
-	private final Optional<Double> minimum;
-	private final Optional<Double> maximum;
+	private final Double minimum;
+	private final Double maximum;
 
-	public SpruceBoundedDoubleInputOption(String key, double defaultValue, Optional<Double> minimum, Optional<Double> maximum, Supplier<Double> getter, Consumer<Double> setter, @Nullable Text tooltip) {
+	public SpruceBoundedDoubleInputOption(String key, Double minimum, Double maximum, Supplier<Double> getter, Consumer<Double> setter, @Nullable Text tooltip) {
 		super(key);
-		this.defaultValue = defaultValue;
 		this.minimum = minimum;
 		this.maximum = maximum;
 		this.getter = getter;
@@ -41,27 +38,30 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 		textField.setText(String.valueOf(this.get()));
 		textField.setTextPredicate(SpruceTextFieldWidget.DOUBLE_INPUT_PREDICATE);
 		textField.setRenderTextProvider((displayedText, offset) -> {
+			textField.setTooltip(Text.empty());
+			var tooltipText = Text.empty().append(this.tooltip);
+			Style tooltipStyle = Style.EMPTY;
+
 			try {
-				MutableText tooltipText = Text.empty().append(this.tooltip);
-				Style tooltipStyle = Style.EMPTY;
 				double value = Double.parseDouble(textField.getText());
-				Optional<Boolean> bound = boundCheck(value);
+				var bound = boundCheck(value);
+
 				if (bound.isPresent()) {
 					tooltipStyle = tooltipStyle.withColor(Formatting.RED);
-					if (minimum.isPresent()) {
-						if (!bound.get()) {
-							boolean aboveZero = minimum.get() == Double.MIN_NORMAL;
-							tooltipText = tooltipText.append("\n");
-							tooltipText = tooltipText.append(Text.translatable(
-								"config.ok_zoomer.widget.bounded_double.below_range",
-								aboveZero ? Text.translatable("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.get().toString()
-							).setStyle(tooltipStyle));
-						} else {
-							tooltipText = tooltipText.append(Text.translatable(
-								"config.ok_zoomer.widget.bounded_double.above_range",
-								maximum.get().toString()
-							).setStyle(tooltipStyle));
-						}
+					if (!bound.get()) {
+						boolean aboveZero = minimum == Double.MIN_NORMAL;
+						tooltipText.append("\n");
+						tooltipText.append(minimum == Double.MIN_VALUE
+							? Text.translatable("config.ok_zoomer.widget.bounded_double.below_legal")
+							: Text.translatable("config.ok_zoomer.widget.bounded_double.below_range",
+								aboveZero ? Text.translatable("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.toString())
+						).setStyle(tooltipStyle);
+					} else {
+						tooltipText.append("\n");
+						tooltipText.append(maximum == Double.MAX_VALUE
+							? Text.translatable("config.ok_zoomer.widget.bounded_double.above_legal")
+							: Text.translatable("config.ok_zoomer.widget.bounded_double.above_range", maximum.toString())
+						).setStyle(tooltipStyle);
 					}
 				}
 				textField.setTooltip(tooltipText);
@@ -71,36 +71,31 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 			}
 		});
 		textField.setChangedListener(input -> {
-			double value;
 			try {
-				value = Double.parseDouble(textField.getText());
-				if (boundCheck(value).isPresent()) {
-					value = this.defaultValue;
-				}
+				this.set(Double.parseDouble(input));
 			} catch (NumberFormatException e) {
-				value = this.defaultValue;
+				this.set(null);
 			}
-			this.set(value);
 		});
 		this.setTooltip(this.tooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
-	public void set(double value) {
+	public void set(Double value) {
 		this.setter.accept(value);
 	}
 
-	public double get() {
+	public Double get() {
 		return this.getter.get();
 	}
 
 	private Optional<Boolean> boundCheck(double value) {
-		if (minimum.isPresent() && value < minimum.get()) {
+		if (value < minimum) {
 			return Optional.of(false);
-		}
-		if (maximum.isPresent() && value > maximum.get()) {
+		} else if (value > maximum) {
 			return Optional.of(true);
 		}
+
 		return Optional.empty();
 	}
 }

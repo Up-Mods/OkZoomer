@@ -10,7 +10,7 @@ import net.minecraft.client.option.KeyBind;
 // Manages the zoom keybinds themselves
 public class ZoomKeyBinds {
 	// TODO - Bleh, immutability; I have a plan
-	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.EXTRA_KEY_BINDS.value();
+	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.EXTRA_KEY_BINDS.getRealValue();
 
 	// The "Zoom" category
 	public static final String ZOOM_CATEGORY = "key.ok_zoomer.category";
@@ -29,12 +29,12 @@ public class ZoomKeyBinds {
 
 	// The method used to check if the zoom manipulation key binds should be disabled, can be used by other mods.
 	public static final boolean areExtraKeyBindsEnabled() {
-		return ENABLE_EXTRA_KEY_BINDS;
+		return ZoomKeyBinds.ENABLE_EXTRA_KEY_BINDS;
 	}
 
 	// The method used to get the extra keybinds, if disabled, return null.
 	public static final KeyBind getExtraKeyBind(String translationKey) {
-		if (areExtraKeyBindsEnabled()) {
+		if (ZoomKeyBinds.areExtraKeyBindsEnabled()) {
 			return new KeyBind(translationKey, InputUtil.UNKNOWN_KEY.getKeyCode(), ZOOM_CATEGORY);
 		}
 

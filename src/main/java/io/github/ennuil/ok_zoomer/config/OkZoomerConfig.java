@@ -10,7 +10,8 @@ import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
-import io.github.ennuil.ok_zoomer.config.WidgetSize.Size;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize.Size;
 
 public class OkZoomerConfig extends WrappedConfig {
 	@Comment("Contains the main zoom features.")
@@ -165,4 +166,6 @@ public class OkZoomerConfig extends WrappedConfig {
 		@Comment("Prints a random owo in the console when the game starts. Enabled by default until full release.")
 		public final boolean print_owo_on_start = true;
 	}
+
+	// TODO - What if we had a secret Debug section?
 }

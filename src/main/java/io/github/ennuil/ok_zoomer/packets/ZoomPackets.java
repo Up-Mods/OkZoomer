@@ -1,13 +1,18 @@
 package io.github.ennuil.ok_zoomer.packets;
 
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
+import org.quiltmc.qsl.networking.api.ServerPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.client.ClientPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -39,7 +44,7 @@ public class ZoomPackets {
 	private static Acknowledgement acknowledgement = Acknowledgement.NONE;
 	private static double maximumZoomDivisor = 0.0D;
 	private static double minimumZoomDivisor = 0.0D;
-	private static SpyglassDependency spyglassDependency = null;
+	private static boolean spyglassDependency = false;
 	private static boolean spyglassOverlay = false;
 
 	private static Text toastTitle = Text.translatable("toast.ok_zoomer.title");
@@ -60,7 +65,7 @@ public class ZoomPackets {
 			client.execute(() -> {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zooming");
 				disableZoom = true;
-				checkRestrictions();
+				ZoomPackets.checkRestrictions();
 			});
 		});
 
@@ -71,8 +76,9 @@ public class ZoomPackets {
 		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
 			client.execute(() -> {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zoom scrolling");
+				ZoomPackets.applyDisableZoomScrolling();
 				disableZoomScrolling = true;
-				checkRestrictions();
+				ZoomPackets.checkRestrictions();
 			});
 		});
 
@@ -86,8 +92,10 @@ public class ZoomPackets {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed classic mode");
 				disableZoomScrolling = true;
 				forceClassicMode = true;
+				ZoomPackets.applyDisableZoomScrolling();
+				ZoomPackets.applyClassicMode();
 				OkZoomerConfigManager.configureZoomInstance();
-				checkRestrictions();
+				ZoomPackets.checkRestrictions();
 			});
 		});
 
@@ -102,7 +110,7 @@ public class ZoomPackets {
 				double maxDouble = buf.readDouble();
 				double minDouble = (readableBytes == 16) ? buf.readDouble() : maxDouble;
 				client.execute(() -> {
-					if (minDouble <= 0.0 || maxDouble <= 0.0) {
+					if ((minDouble <= 0.0 || maxDouble <= 0.0) || minDouble > maxDouble) {
 						ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has attempted to set invalid divisor values! (min %s, max %s)", minDouble, maxDouble));
 					} else {
 						ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has set the zoom divisors to minimum %s and maximum %s", minDouble, maxDouble));
@@ -110,7 +118,7 @@ public class ZoomPackets {
 						minimumZoomDivisor = minDouble;
 						forceZoomDivisors = true;
 						OkZoomerConfigManager.configureZoomInstance();
-						checkRestrictions();
+						ZoomPackets.checkRestrictions();
 					}
 				});
 			}
@@ -128,12 +136,12 @@ public class ZoomPackets {
 				if (restricting) {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and has established some restrictions");
-						sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
+						ZoomPackets.sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
 					}
 				} else {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_NO_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and establishes no restrictions");
-						sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod"));
+						ZoomPackets.sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod"));
 					}
 				}
 			});
@@ -149,11 +157,12 @@ public class ZoomPackets {
 			client.execute(() -> {
 				ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has the following spyglass restrictions: Require Item: %s, Replace Zoom: %s", requireItem, replaceZoom));
 
-				spyglassDependency = requireItem
+				OkZoomerConfigManager.SPYGLASS_DEPENDENCY.setOverride(requireItem
 					? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
-					: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null);
+					: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null));
+				spyglassDependency = true;
 
-				checkRestrictions();
+				ZoomPackets.checkRestrictions();
 			});
 		});
 
@@ -164,8 +173,9 @@ public class ZoomPackets {
 			ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_OVERLAY_PACKET_ID, (client, handler, buf, sender) -> {
 				client.execute(() -> {
 					ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom"));
+					OkZoomerConfigManager.ZOOM_OVERLAY.setOverride(ZoomOverlays.SPYGLASS);
 					spyglassOverlay = true;
-					checkRestrictions();
+					ZoomPackets.checkRestrictions();
 				});
 			});
 
@@ -176,8 +186,8 @@ public class ZoomPackets {
 			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
 			//sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
 			PacketByteBuf buf = PacketByteBufs.create();
-			buf.writeDouble(1.0D);
 			buf.writeDouble(25.0D);
+			buf.writeDouble(1.0D);
 			sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
 			PacketByteBuf buffy = PacketByteBufs.create();
 			buffy.writeBoolean(true);
@@ -191,7 +201,7 @@ public class ZoomPackets {
 		*/
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			if (ZoomPackets.disableZoom || ZoomPackets.disableZoomScrolling || ZoomPackets.forceClassicMode) {
+			if (ZoomPackets.hasRestrictions) {
 				ZoomPackets.resetPacketSignals();
 			}
 		});
@@ -206,7 +216,7 @@ public class ZoomPackets {
 			|| disableZoomScrolling
 			|| forceClassicMode
 			|| forceZoomDivisors
-			|| spyglassDependency != null
+			|| spyglassDependency
 			|| spyglassOverlay;
 
 		ZoomPackets.hasRestrictions = hasRestrictions;
@@ -245,12 +255,23 @@ public class ZoomPackets {
 		return minimumZoomDivisor;
 	}
 
-	public static SpyglassDependency getSpyglassDependency() {
-		return spyglassDependency != null ? spyglassDependency : OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value();
+	public static boolean getSpyglassDependency() {
+		return spyglassDependency;
 	}
 
 	public static boolean getSpyglassOverlay() {
 		return spyglassOverlay;
+	}
+
+	private static void applyDisableZoomScrolling() {
+		OkZoomerConfigManager.ZOOM_SCROLLING.setOverride(false);
+		OkZoomerConfigManager.EXTRA_KEY_BINDS.setOverride(false);
+	}
+
+	private static void applyClassicMode() {
+		OkZoomerConfigManager.CINEMATIC_CAMERA.setOverride(CinematicCameraOptions.VANILLA);
+		OkZoomerConfigManager.REDUCE_SENSITIVITY.setOverride(false);
+		OkZoomerConfigManager.ZOOM_DIVISOR.setOverride(4.0D);
 	}
 
 	//The method used to reset the signals once left the server.
@@ -258,15 +279,19 @@ public class ZoomPackets {
 		ZoomPackets.hasRestrictions = false;
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
+		OkZoomerConfigManager.ZOOM_SCROLLING.removeOverride();
+		OkZoomerConfigManager.EXTRA_KEY_BINDS.removeOverride();
+		ZoomPackets.forceClassicMode = false;
+		OkZoomerConfigManager.CINEMATIC_CAMERA.removeOverride();
+		OkZoomerConfigManager.REDUCE_SENSITIVITY.removeOverride();
+		OkZoomerConfigManager.ZOOM_DIVISOR.removeOverride();
 		ZoomPackets.forceZoomDivisors = false;
-		ZoomPackets.acknowledgement = Acknowledgement.NONE;
 		ZoomPackets.maximumZoomDivisor = 0.0D;
 		ZoomPackets.minimumZoomDivisor = 0.0D;
-		ZoomPackets.spyglassDependency = null;
-		if (ZoomPackets.forceClassicMode || ZoomPackets.spyglassOverlay) {
-			ZoomPackets.forceClassicMode = false;
-			ZoomPackets.spyglassOverlay = false;
-			OkZoomerConfigManager.configureZoomInstance();
-		}
+		ZoomPackets.acknowledgement = Acknowledgement.NONE;
+		ZoomPackets.spyglassDependency = false;
+		OkZoomerConfigManager.SPYGLASS_DEPENDENCY.removeOverride();
+		ZoomPackets.spyglassOverlay = false;
+		OkZoomerConfigManager.ZOOM_OVERLAY.removeOverride();
 	}
 }

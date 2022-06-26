@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config;
+package io.github.ennuil.ok_zoomer.config.metadata;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

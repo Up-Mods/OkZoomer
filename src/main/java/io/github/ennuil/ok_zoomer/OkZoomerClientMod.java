@@ -1,6 +1,5 @@
 package io.github.ennuil.ok_zoomer;
 
-import org.quiltmc.config.impl.builders.TrackedValueBuilderImpl;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 

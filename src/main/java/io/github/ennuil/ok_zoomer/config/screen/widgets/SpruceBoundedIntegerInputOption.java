@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen;
+package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -11,7 +11,6 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -21,13 +20,11 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 	private final Supplier<Integer> getter;
 	private final Consumer<Integer> setter;
 	private final Text tooltip;
-	private final int defaultValue;
-	private final Optional<Integer> minimum;
-	private final Optional<Integer> maximum;
+	private final Integer minimum;
+	private final Integer maximum;
 
-	public SpruceBoundedIntegerInputOption(String key, int defaultValue, Optional<Integer> minimum, Optional<Integer> maximum, Supplier<Integer> getter, Consumer<Integer> setter, @Nullable Text tooltip) {
+	public SpruceBoundedIntegerInputOption(String key, Integer minimum, Integer maximum, Supplier<Integer> getter, Consumer<Integer> setter, @Nullable Text tooltip) {
 		super(key);
-		this.defaultValue = defaultValue;
 		this.minimum = minimum;
 		this.maximum = maximum;
 		this.getter = getter;
@@ -41,26 +38,28 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 		textField.setText(String.valueOf(this.get()));
 		textField.setTextPredicate(SpruceTextFieldWidget.INTEGER_INPUT_PREDICATE);
 		textField.setRenderTextProvider((displayedText, offset) -> {
+			textField.setTooltip(Text.empty());
+			var tooltipText = Text.empty().append(this.tooltip);
+			Style tooltipStyle = Style.EMPTY;
+
 			try {
-				MutableText tooltipText = Text.empty().append(this.tooltip);
-				Style tooltipStyle = Style.EMPTY;
 				int value = Integer.parseInt(textField.getText());
-				Optional<Boolean> bound = boundCheck(value);
+				var bound = boundCheck(value);
+
 				if (bound.isPresent()) {
 					tooltipStyle = tooltipStyle.withColor(Formatting.RED);
-					if (minimum.isPresent()) {
-						if (!bound.get()) {
-							tooltipText = tooltipText.append("\n");
-							tooltipText = tooltipText.append(Text.translatable(
-								"config.ok_zoomer.widget.bounded_int.below_range",
-								minimum.get().toString()
-							).setStyle(tooltipStyle));
-						} else {
-							tooltipText = tooltipText.append(Text.translatable(
-								"config.ok_zoomer.widget.bounded_int.above_range",
-								maximum.get().toString()
-							).setStyle(tooltipStyle));
-						}
+					if (!bound.get()) {
+						tooltipText.append("\n");
+						tooltipText.append(minimum == Integer.MIN_VALUE
+							? Text.translatable("config.ok_zoomer.widget.bounded_integer.below_legal")
+							: Text.translatable("config.ok_zoomer.widget.bounded_integer.below_range", minimum.toString())
+						).setStyle(tooltipStyle);
+					} else {
+						tooltipText.append("\n");
+						tooltipText.append(maximum == Integer.MAX_VALUE
+							? Text.translatable("config.ok_zoomer.widget.bounded_integer.above_legal")
+							: Text.translatable("config.ok_zoomer.widget.bounded_integer.above_range", maximum.toString())
+						).setStyle(tooltipStyle);
 					}
 				}
 				textField.setTooltip(tooltipText);
@@ -70,36 +69,31 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 			}
 		});
 		textField.setChangedListener(input -> {
-			int value;
 			try {
-				value = Integer.parseInt(textField.getText());
-				if (boundCheck(value).isPresent()) {
-					value = this.defaultValue;
-				}
+				this.set(Integer.parseInt(input));
 			} catch (NumberFormatException e) {
-				value = this.defaultValue;
+				this.set(null);
 			}
-			this.set(value);
 		});
 		this.setTooltip(this.tooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
-	public void set(int value) {
+	public void set(Integer value) {
 		this.setter.accept(value);
 	}
 
-	public int get() {
+	public Integer get() {
 		return this.getter.get();
 	}
 
 	private Optional<Boolean> boundCheck(int value) {
-		if (minimum.isPresent() && value < minimum.get()) {
+		if (value < minimum) {
 			return Optional.of(false);
-		}
-		if (maximum.isPresent() && value > maximum.get()) {
+		} else if (value > maximum) {
 			return Optional.of(true);
 		}
+
 		return Optional.empty();
 	}
 }

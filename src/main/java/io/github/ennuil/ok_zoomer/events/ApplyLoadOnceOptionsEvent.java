@@ -8,7 +8,7 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 
 // The event that makes sure to load the config and puts any load-once options in effect if enabled through the config file
-public class LoadConfigEvent implements ClientLifecycleEvents.Ready {
+public class ApplyLoadOnceOptionsEvent implements ClientLifecycleEvents.Ready {
 	@Override
 	public void readyClient(MinecraftClient client) {
 		// uwu

@@ -14,7 +14,7 @@ public class RegisterCommands implements ClientCommandRegistrationCallback {
 	@Override
 	public void registerCommands(CommandDispatcher<QuiltClientCommandSource> dispatcher, CommandBuildContext buildContext, RegistrationEnvironment environment) {
 		dispatcher.register(
-			ClientCommandManager.literal("okzoomer").executes(ctx -> {
+			ClientCommandManager.literal("ok_zoomer").executes(ctx -> {
 				ZoomUtils.setOpenCommandScreen(true);
 				return 0;
 			}

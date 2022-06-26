@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen;
+package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;

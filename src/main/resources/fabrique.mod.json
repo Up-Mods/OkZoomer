@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "ok_zoomer-sunset",
+  "id": "ok_zoomer-pmw",
   "version": "${version}",
   "name": "Ok Zoomer (Migrated to Quilt)",
   "description": "The last Fabric-compatible version was 5.0.0-beta.6. From 5.0.0-beta.7 onwards, this mod will exclusively support the Quilt toolchain.",
@@ -11,14 +11,14 @@
     "sources": "https://github.com/EnnuiL/OkZoomer"
   },
   "license": "MIT",
-  "icon": "assets/ok_zoomer/icon_sunset.png",
+  "icon": "assets/ok_zoomer/icon_pmw.png",
   "environment": "client",
   "depends": {
     "fabricloader": ">=0.13.3",
     "java": ">=17"
   },
   "recommends": {
-    "quilt_loader": "0.16.0"
+    "quilt_loader": "0.17.0"
   },
   "mixins": ["ok_zoomer_pmw.mixins.json"],
   "custom": {

@@ -28,7 +28,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 
 		// If zoom is disabled, do not allow for zooming at all
 		boolean disableZoom = ZoomPackets.getDisableZoom() ||
-			(switch (ZoomPackets.getSpyglassDependency()) {
+			(switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 				case REQUIRE_ITEM -> true;
 				case BOTH -> true;
 				default -> false;
@@ -46,7 +46,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 			if (!persistentZoom) {
 				persistentZoom = true;
 				lastZooming = true;
-				ZoomUtils.ZOOMER_ZOOM.resetZoomDivisor();
+				ZoomUtils.resetZoomDivisor(false);
 			}
 		} else {
 			if (persistentZoom) {
@@ -56,7 +56,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		}
 
 		// Gathers all variables about if the press was with zoom key or with the spyglass
-		boolean isUsingSpyglass = switch (ZoomPackets.getSpyglassDependency()) {
+		boolean isUsingSpyglass = switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM -> true;
 			case BOTH -> true;
 			default -> false;
@@ -93,7 +93,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 			}
 		}
 
-		if (client.player != null && doSpyglassSound && !spyglassUse) {
+		if (doSpyglassSound && !spyglassUse) {
 			boolean soundDirection = !OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)
 				? ZoomUtils.ZOOMER_ZOOM.getZoom()
 				: keyPress;

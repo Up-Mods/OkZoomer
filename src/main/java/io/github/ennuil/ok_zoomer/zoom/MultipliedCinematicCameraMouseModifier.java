@@ -8,11 +8,11 @@ import net.minecraft.util.Identifier;
 // The implementation of the multiplied cinematic camera
 public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     private static final Identifier MODIFIER_ID = new Identifier("ok_zoomer:multiplied_cinematic_camera");
-    private boolean active;
     private final MinecraftClient client;
-    private boolean cinematicCameraEnabled;
     private final SmoothUtil cursorXZoomSmoother = new SmoothUtil();
     private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
+    private boolean active;
+    private boolean cinematicCameraEnabled;
     private double cinematicCameraMultiplier;
 
     public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {

@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen;
+package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
 import javax.annotation.Nullable;
 
