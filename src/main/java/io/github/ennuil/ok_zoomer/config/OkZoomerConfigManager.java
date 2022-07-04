@@ -59,6 +59,9 @@ public class OkZoomerConfigManager {
 
 
 	public OkZoomerConfigManager() {
+		// On initialization, configure our zoom instance
+		OkZoomerConfigManager.configureZoomInstance();
+
 		CONFIG.registerCallback(config -> {
 			OkZoomerConfigManager.configureZoomInstance();
 		});
