@@ -65,9 +65,9 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 					}
 				}
 				textField.setTooltip(tooltipText);
-				return OrderedText.method_30747(displayedText, tooltipStyle);
+				return OrderedText.forward(displayedText, tooltipStyle);
 			} catch (NumberFormatException e) {
-				return OrderedText.method_30747(displayedText, Style.EMPTY.withColor(Formatting.RED));
+				return OrderedText.forward(displayedText, Style.EMPTY.withColor(Formatting.RED));
 			}
 		});
 		textField.setChangedListener(input -> {

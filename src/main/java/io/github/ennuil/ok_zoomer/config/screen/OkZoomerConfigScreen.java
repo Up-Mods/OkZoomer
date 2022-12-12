@@ -1,12 +1,10 @@
 package io.github.ennuil.ok_zoomer.config.screen;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Map;
 
 import org.quiltmc.config.api.Constraint;
 import org.quiltmc.config.api.values.TrackedValue;
-import org.quiltmc.config.api.values.ValueKey;
 import org.quiltmc.config.api.values.ValueTreeNode;
 
 import dev.lambdaurora.spruceui.Position;

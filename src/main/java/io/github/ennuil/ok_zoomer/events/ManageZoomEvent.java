@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.events;
 
 import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
+import org.quiltmc.qsl.tag.api.TagRegistry;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
@@ -68,6 +69,11 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		// If the press state is the same as the previous tick's, cancel the rest
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
+
+		System.out.println("Zoom Dependencies:");
+		for (var entry : TagRegistry.getTag(ZoomUtils.ZOOM_DEPENDENCIES_TAG)) {
+			System.out.println(entry.value().toString());
+		}
 
 		doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
 

@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.option.SpruceOption;

@@ -72,7 +72,7 @@ public abstract class MouseMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
 		method = "updateLookDirection"
 	)
-	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
+	private boolean ok_zoomer$replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM -> true;
 			case BOTH -> true;

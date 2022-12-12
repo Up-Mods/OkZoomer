@@ -14,7 +14,8 @@ public abstract class AbstractClientPlayerEntityMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingSpyglass()Z"),
 		method = "getSpeed"
 	)
-	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
+	// FIXME - ...waaaaaait, this bit is a bit cheaty!
+	private boolean ok_zoomer$replaceSpyglassPlayerMovement(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM -> true;
 			case BOTH -> true;
