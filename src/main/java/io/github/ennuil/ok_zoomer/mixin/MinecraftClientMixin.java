@@ -17,7 +17,7 @@ public class MinecraftClientMixin {
 			target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"
 		)
 	)
-	private Screen showPMWScreen(Screen titleScreen) {
+	private Screen ok_zoomer$showPMWScreen(Screen titleScreen) {
 		return new OkZoomerPMWScreen(titleScreen);
 	}
 }

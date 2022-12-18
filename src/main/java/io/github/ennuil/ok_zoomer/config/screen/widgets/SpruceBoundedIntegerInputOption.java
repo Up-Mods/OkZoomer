@@ -51,15 +51,15 @@ public class SpruceBoundedIntegerInputOption extends SpruceOption {
 					if (!bound.get()) {
 						tooltipText.append("\n");
 						tooltipText.append(minimum == Integer.MIN_VALUE
-							? Text.translatable("config.ok_zoomer.widget.bounded_integer.below_legal")
-							: Text.translatable("config.ok_zoomer.widget.bounded_integer.below_range", minimum.toString())
-						).setStyle(tooltipStyle);
+							? Text.translatable("config.ok_zoomer.widget.bounded_integer.below_legal").setStyle(tooltipStyle)
+							: Text.translatable("config.ok_zoomer.widget.bounded_integer.below_range", minimum.toString()).setStyle(tooltipStyle)
+						);
 					} else {
 						tooltipText.append("\n");
 						tooltipText.append(maximum == Integer.MAX_VALUE
-							? Text.translatable("config.ok_zoomer.widget.bounded_integer.above_legal")
-							: Text.translatable("config.ok_zoomer.widget.bounded_integer.above_range", maximum.toString())
-						).setStyle(tooltipStyle);
+							? Text.translatable("config.ok_zoomer.widget.bounded_integer.above_legal").setStyle(tooltipStyle)
+							: Text.translatable("config.ok_zoomer.widget.bounded_integer.above_range", maximum.toString()).setStyle(tooltipStyle)
+						);
 					}
 				}
 				textField.setTooltip(tooltipText);

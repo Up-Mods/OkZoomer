@@ -70,11 +70,6 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		System.out.println("Zoom Dependencies:");
-		for (var entry : TagRegistry.getTag(ZoomUtils.ZOOM_DEPENDENCIES_TAG)) {
-			System.out.println(entry.value().toString());
-		}
-
 		doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
 
 		switch (OkZoomerConfigManager.ZOOM_MODE.value()) {

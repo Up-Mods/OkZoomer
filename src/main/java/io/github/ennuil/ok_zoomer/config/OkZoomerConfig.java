@@ -122,7 +122,7 @@ public class OkZoomerConfig extends WrappedConfig {
 
 		@WidgetSize(Size.HALF)
 		@Comment("The multiplier used for the multiplied cinematic camera.")
-		@FloatRange(min = Double.MIN_NORMAL, max = 4.0)
+		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
 		public final double cinematic_multiplier = 4.0;
 
 		@WidgetSize(Size.HALF)

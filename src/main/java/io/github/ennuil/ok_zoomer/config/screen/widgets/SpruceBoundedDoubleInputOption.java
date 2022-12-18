@@ -52,16 +52,16 @@ public class SpruceBoundedDoubleInputOption extends SpruceOption {
 						boolean aboveZero = minimum == Double.MIN_NORMAL;
 						tooltipText.append("\n");
 						tooltipText.append(minimum == Double.MIN_VALUE
-							? Text.translatable("config.ok_zoomer.widget.bounded_double.below_legal")
+							? Text.translatable("config.ok_zoomer.widget.bounded_double.below_legal").setStyle(tooltipStyle)
 							: Text.translatable("config.ok_zoomer.widget.bounded_double.below_range",
-								aboveZero ? Text.translatable("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.toString())
-						).setStyle(tooltipStyle);
+								aboveZero ? Text.translatable("config.ok_zoomer.widget.bounded_double.above_zero") : minimum.toString()).setStyle(tooltipStyle)
+						);
 					} else {
 						tooltipText.append("\n");
 						tooltipText.append(maximum == Double.MAX_VALUE
-							? Text.translatable("config.ok_zoomer.widget.bounded_double.above_legal")
-							: Text.translatable("config.ok_zoomer.widget.bounded_double.above_range", maximum.toString())
-						).setStyle(tooltipStyle);
+							? Text.translatable("config.ok_zoomer.widget.bounded_double.above_legal").setStyle(tooltipStyle)
+							: Text.translatable("config.ok_zoomer.widget.bounded_double.above_range", maximum.toString()).setStyle(tooltipStyle)
+						);
 					}
 				}
 				textField.setTooltip(tooltipText);
