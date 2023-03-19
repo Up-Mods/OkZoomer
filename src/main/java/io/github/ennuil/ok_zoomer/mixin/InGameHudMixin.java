@@ -16,13 +16,12 @@ public abstract class InGameHudMixin {
 	)
 	private boolean ok_zoomer$activateSpyglassOverlay(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
-			case REPLACE_ZOOM -> true;
-			case BOTH -> true;
+			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {
 			return false;
-		} else {
-			return isUsingSpyglass;
 		}
+
+		return isUsingSpyglass;
 	}
 }

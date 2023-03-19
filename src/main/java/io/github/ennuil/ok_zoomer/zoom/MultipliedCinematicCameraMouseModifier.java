@@ -13,7 +13,7 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
     private boolean active;
     private boolean cinematicCameraEnabled;
-    private double cinematicCameraMultiplier;
+    private final double cinematicCameraMultiplier;
 
     public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {
         this.cinematicCameraMultiplier = cinematicCameraMultiplier;

@@ -5,15 +5,15 @@ plugins {
 }
 
 archivesBaseName = project.archives_base_name
-version = System.env.GITHUB_ACTIONS == "true"
-	? "${project.version}+${libs.versions.minecraft.get()}.github.${System.env.GITHUB_RUN_NUMBER}"
-	: "${project.version}+${libs.versions.minecraft.get()}"
+version = System.env.GITHUB_ACTIONS == 'true'
+	? "$project.version+${libs.versions.minecraft.get()}.github.$System.env.GITHUB_RUN_NUMBER"
+	: "$project.version+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 	maven { url 'https://maven.gegy.dev' }
-	maven { url 'https://maven.shedaniel.me/' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
 	maven { url 'https://jitpack.io' }
 }
@@ -86,7 +86,7 @@ jar {
 
 machete {
 	// JSON minification isn't effective on this scale and sacrifices readability
-	optimizations.json = false
+	json.enabled = false
 }
 
 // Configure the maven publication

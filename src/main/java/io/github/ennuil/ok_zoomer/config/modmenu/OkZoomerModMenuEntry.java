@@ -8,6 +8,6 @@ import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 public class OkZoomerModMenuEntry implements ModMenuApi {
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		return screen -> new OkZoomerConfigScreen(screen);
+		return OkZoomerConfigScreen::new;
 	}
 }

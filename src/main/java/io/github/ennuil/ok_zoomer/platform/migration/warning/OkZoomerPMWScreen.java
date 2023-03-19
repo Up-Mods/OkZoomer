@@ -27,8 +27,8 @@ import net.minecraft.util.Util;
 public class OkZoomerPMWScreen extends SpruceScreen {
 	private final Screen parent;
 	private SpruceOptionListWidget list;
-	private CustomTextureBackground normalBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 64, 64, 64, 255);
-	private CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 32, 32, 32, 255);
+	private final CustomTextureBackground normalBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 0.125F, 0.25F, 0.25F, 1.0F);
+	private final CustomTextureBackground darkenedBackground = new CustomTextureBackground(new Identifier("minecraft:textures/block/purple_concrete.png"), 0.125F, 0.25F, 0.25F, 1.0F);
 
 	public OkZoomerPMWScreen(Screen parent) {
 		super(Text.translatable("platform_migration_warning.title"));
@@ -99,8 +99,8 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void renderBackground(MatrixStack matrices, int vOffset) {
-		normalBackground.render(matrices, this, vOffset);
+	public void renderBackgroundTexture(MatrixStack matrices) {
+		normalBackground.render(matrices, this);
 	}
 
 	@Override

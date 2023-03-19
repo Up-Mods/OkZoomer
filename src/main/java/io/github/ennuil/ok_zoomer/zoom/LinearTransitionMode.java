@@ -8,9 +8,8 @@ import net.minecraft.util.math.MathHelper;
 public class LinearTransitionMode implements TransitionMode {
     private static final Identifier TRANSITION_ID = new Identifier("ok_zoomer:linear_transition");
     private boolean active;
-    private double minimumLinearStep;
-    private double maximumLinearStep;
-    private double linearStep;
+    private final double minimumLinearStep;
+    private final double maximumLinearStep;
     private double fovMultiplier;
     private float internalMultiplier;
     private float lastInternalMultiplier;
@@ -45,10 +44,10 @@ public class LinearTransitionMode implements TransitionMode {
 
         this.lastInternalMultiplier = this.internalMultiplier;
 
-        this.linearStep = MathHelper.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
+        double linearStep = MathHelper.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
         this.internalMultiplier = MathHelper.stepTowards(this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
 
-        if ((!active && fovMultiplier == this.internalMultiplier) || active) {
+        if (active || fovMultiplier == this.internalMultiplier) {
             this.active = active;
         }
     }

@@ -24,8 +24,8 @@ public abstract class MouseMixin {
 
 	// Handles zoom scrolling
 	@Inject(
-		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;scrollDelta:D", ordinal = 7),
 		method = "onMouseScroll",
+		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;scrollDelta:D", ordinal = 7),
 		cancellable = true
 	)
 	private void ok_zoomer$zoomerOnMouseScroll(CallbackInfo ci) {
@@ -45,8 +45,8 @@ public abstract class MouseMixin {
 
 	// Handles the zoom scrolling reset through the middle button
 	@Inject(
-		at = @At(value = "INVOKE", target = "net/minecraft/client/option/KeyBind.setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V"),
 		method = "onMouseButton",
+		at = @At(value = "INVOKE", target = "net/minecraft/client/option/KeyBind.setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V"),
 		cancellable = true,
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
@@ -69,18 +69,17 @@ public abstract class MouseMixin {
 
 	// Prevents the spyglass from working if zooming replaces its zoom
 	@ModifyExpressionValue(
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
-		method = "updateLookDirection"
+		method = "updateLookDirection",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z")
 	)
 	private boolean ok_zoomer$replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
-			case REPLACE_ZOOM -> true;
-			case BOTH -> true;
+			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {
 			return false;
-		} else {
-			return isUsingSpyglass;
 		}
+
+		return isUsingSpyglass;
 	}
 }

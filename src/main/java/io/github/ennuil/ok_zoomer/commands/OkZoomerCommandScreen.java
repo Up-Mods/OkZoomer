@@ -17,7 +17,7 @@ import net.minecraft.text.Text;
 
 public class OkZoomerCommandScreen extends SpruceScreen {
 	private SpruceOptionListWidget list;
-	private SimpleColorBackground darkenedBackground = new SimpleColorBackground(0, 0, 0, 128);
+	private final SimpleColorBackground darkenedBackground = new SimpleColorBackground(0, 0, 0, 128);
 
 	public OkZoomerCommandScreen() {
 		super(Text.translatable("command.ok_zoomer.title"));
@@ -41,7 +41,6 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		this.list.addSingleOptionEntry(configButton);
 		this.list.addSingleOptionEntry(restrictionsSeparator);
 
-		boolean acknowledged = false;
 
 		if (ZoomPackets.getHasRestrictions()) {
 			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.acknowledgement", true);
@@ -92,6 +91,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		}
 
 		if (!ZoomPackets.getHasRestrictions()) {
+			boolean acknowledged = ZoomPackets.getAcknowledgement().equals(ZoomPackets.Acknowledgement.HAS_NO_RESTRICTIONS);
 			if (acknowledged) {
 				var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.no_restrictions.acknowledged", true);
 				this.list.addSingleOptionEntry(textLabel);

@@ -43,7 +43,7 @@ public class ZoomUtils {
 	private static boolean openCommandScreen = false;
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
-	public static final void changeZoomDivisor(boolean increase) {
+	public static void changeZoomDivisor(boolean increase) {
 		//If the zoom is disabled, don't allow for zoom scrolling
 		if (ZoomPackets.getDisableZoom()) return;
 
@@ -70,7 +70,7 @@ public class ZoomUtils {
 	}
 
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
-	public static final void resetZoomDivisor(boolean userPrompted) {
+	public static void resetZoomDivisor(boolean userPrompted) {
 		if (userPrompted && ZoomPackets.getDisableZoom()) return;
 		if (!userPrompted && !OkZoomerConfigManager.FORGET_ZOOM_DIVISOR.value()) return;
 
@@ -78,7 +78,7 @@ public class ZoomUtils {
 		zoomStep = 0;
 	}
 
-	public static final void keepZoomStepsWithinBounds() {
+	public static void keepZoomStepsWithinBounds() {
 		int upperScrollStep = OkZoomerConfigManager.UPPER_SCROLL_STEPS.value();
 		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
 
@@ -86,7 +86,7 @@ public class ZoomUtils {
 	}
 
 	// The method used for unbinding the "Save Toolbar Activator"
-	public static final void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
+	public static void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
 		if (ZoomKeyBinds.ZOOM_KEY.isDefault()) {
 			if (client.options.saveToolbarActivatorKey.isDefault()) {
 				if (userPrompted) {

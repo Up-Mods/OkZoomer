@@ -1,7 +1,6 @@
 package io.github.ennuil.ok_zoomer.events;
 
 import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
-import org.quiltmc.qsl.tag.api.TagRegistry;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
@@ -19,9 +18,6 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 	// Used internally in order to make persistent zoom less buggy
 	private static boolean persistentZoom = false;
 
-	// Used internally in order to avoid sound problems
-	private static boolean doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
-
 	@Override
 	public void endClientTick(MinecraftClient client) {
 		// We need the player for spyglass shenanigans
@@ -30,8 +26,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		// If zoom is disabled, do not allow for zooming at all
 		boolean disableZoom = ZoomPackets.getDisableZoom() ||
 			(switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
-				case REQUIRE_ITEM -> true;
-				case BOTH -> true;
+				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
 			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
 
@@ -58,8 +53,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 
 		// Gathers all variables about if the press was with zoom key or with the spyglass
 		boolean isUsingSpyglass = switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
-			case REPLACE_ZOOM -> true;
-			case BOTH -> true;
+			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		};
 		boolean keyPress = ZoomKeyBinds.ZOOM_KEY.isPressed();
@@ -70,7 +64,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
+		boolean doSpyglassSound = OkZoomerConfigManager.USE_SPYGLASS_SOUNDS.value();
 
 		switch (OkZoomerConfigManager.ZOOM_MODE.value()) {
 			case HOLD -> {

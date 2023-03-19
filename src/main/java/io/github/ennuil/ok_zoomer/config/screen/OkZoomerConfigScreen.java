@@ -38,8 +38,8 @@ import net.minecraft.util.Identifier;
 
 // TODO - Use a completely different approach that allows for a more user-friendly config screen and that yet is easy to make/edit
 public class OkZoomerConfigScreen extends SpruceScreen {
-	private static final CustomTextureBackground NORMAL_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 64, 64, 64, 255);
-	private static final CustomTextureBackground DARKENED_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 32, 32, 32, 255);
+	private static final CustomTextureBackground NORMAL_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 0.25F, 0.25F, 0.25F, 1.0F);
+	private static final CustomTextureBackground DARKENED_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 0.125F, 0.125F, 0.125F, 1.0F);
 
 	private SpruceOptionListWidget list;
 	private final Screen parent;
@@ -99,8 +99,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void renderBackground(MatrixStack matrices, int vOffset) {
-		NORMAL_BACKGROUND.render(matrices, this, vOffset);
+	public void renderBackgroundTexture(MatrixStack matrices) {
+		NORMAL_BACKGROUND.render(matrices, this);
 	}
 
 	@Override
