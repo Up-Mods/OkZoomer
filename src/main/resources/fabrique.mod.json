@@ -18,7 +18,7 @@
     "java": ">=17"
   },
   "recommends": {
-    "quilt_loader": "0.17.0"
+    "quilt_loader": "0.18.1"
   },
   "mixins": ["ok_zoomer_pmw.mixins.json"],
   "custom": {

@@ -170,8 +170,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 										minField.setAccessible(true);
 										maxField.setAccessible(true);
 
-										minimum = Math.max(((Double) minField.get(constraint)).doubleValue(), minimum);
-										maximum = Math.min(((Double) maxField.get(constraint)).doubleValue(), maximum);
+										minimum = Math.max((Double) minField.get(constraint), minimum);
+										maximum = Math.min((Double) maxField.get(constraint), maximum);
 									} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 										e.printStackTrace();
 									}
@@ -197,8 +197,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 										minField.setAccessible(true);
 										maxField.setAccessible(true);
 
-										minimum = Math.max(((Integer) minField.get(constraint)).intValue(), minimum);
-										maximum = Math.min(((Integer) maxField.get(constraint)).intValue(), maximum);
+										minimum = Math.max((Integer) minField.get(constraint), minimum);
+										maximum = Math.min((Integer) maxField.get(constraint), maximum);
 									} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 										e.printStackTrace();
 									}
