@@ -15,14 +15,14 @@ import io.github.ennuil.ok_zoomer.config.screen.widgets.CustomTextureBackground;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceLabelOption;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.CustomValue.CvObject;
+
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
-// TODO - This screen should be a library mod
 @SuppressWarnings("deprecation")
 public class OkZoomerPMWScreen extends SpruceScreen {
 	private final Screen parent;
@@ -94,13 +94,13 @@ public class OkZoomerPMWScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
 	}
 
 	@Override
-	public void renderBackgroundTexture(MatrixStack matrices) {
-		normalBackground.render(matrices, this);
+	public void renderBackgroundTexture(GuiGraphics graphics) {
+		normalBackground.render(graphics, this);
 	}
 
 	@Override

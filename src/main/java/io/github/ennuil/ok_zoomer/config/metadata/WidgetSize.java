@@ -17,14 +17,14 @@ public @interface WidgetSize {
 
 	WidgetSize.Size value();
 
-	public final class Processor implements ConfigFieldAnnotationProcessor<WidgetSize> {
+	final class Processor implements ConfigFieldAnnotationProcessor<WidgetSize> {
 		@Override
 		public void process(WidgetSize annotation, MetadataContainerBuilder<?> builder) {
 			builder.metadata(TYPE, size -> size.set(annotation.value()));
 		}
 	}
 
-	public final class Builder implements MetadataType.Builder<Size> {
+	final class Builder implements MetadataType.Builder<Size> {
 		private Size size = Size.FULL;
 
 		public void set(Size size) {

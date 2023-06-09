@@ -22,7 +22,7 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.18.1"
+				"versions": ">=0.18.10"
 			},
 			{
 				"id": "java",
@@ -30,11 +30,11 @@
 			},
 			{
 				"id": "libzoomer",
-				"versions": ">=0.6.0"
+				"versions": ">=0.7.0"
 			},
 			{
 				"id": "quilted_fabric_api",
-				"versions": ">=6.0.0-"
+				"versions": ">=7.0.0-"
 			}
 		],
 		"entrypoints": {

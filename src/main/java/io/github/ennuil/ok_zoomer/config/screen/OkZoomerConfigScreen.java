@@ -31,8 +31,9 @@ import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedDoubleInput
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedIntegerInputOption;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
+
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -94,13 +95,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
 	}
 
 	@Override
-	public void renderBackgroundTexture(MatrixStack matrices) {
-		NORMAL_BACKGROUND.render(matrices, this);
+	public void renderBackgroundTexture(GuiGraphics graphics) {
+		NORMAL_BACKGROUND.render(graphics, this);
 	}
 
 	@Override

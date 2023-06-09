@@ -12,7 +12,8 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceLabelOption;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
-import net.minecraft.client.util.math.MatrixStack;
+
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.text.Text;
 
 public class OkZoomerCommandScreen extends SpruceScreen {
@@ -109,7 +110,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
 	}
 }

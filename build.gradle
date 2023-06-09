@@ -11,6 +11,7 @@ version = System.env.GITHUB_ACTIONS == 'true'
 group = project.maven_group
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 	maven { url 'https://maven.gegy.dev' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
@@ -29,9 +30,7 @@ dependencies {
 	modImplementation(libs.mod.menu) {
 		transitive = false
 	}
-	modImplementation(libs.libzoomer) {
-		transitive = false
-	}
+	modImplementation libs.libzoomer
 	modImplementation(libs.spruceui) {
 		transitive = false
 	}
@@ -47,12 +46,8 @@ processResources {
 	inputs.property 'version', version
 
 	// Oh, for building, do the switcharoo
-	filesMatching('quilt.mod.json') {
-		expand "version": version
-	}
-
-	filesMatching('fabric.mod.json') {
-		expand "version": version
+	filesMatching(['quilt.mod.json', 'fabric.mod.json']) {
+		expand 'version': version
 	}
 }
 
@@ -77,8 +72,8 @@ java {
 }
 
 jar {
-	filesMatching('LICENSE') {
-		rename '^(LICENSE.*?)(\\..*)?$', "\$1_${archivesBaseName}\$2"
+	from('LICENSE') {
+		rename { "${it}_${archivesBaseName}" }
 	}
 }
 

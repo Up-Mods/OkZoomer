@@ -7,7 +7,7 @@ import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 
-// This event manages the extra keybinds' behavior
+// This event manages the extra key binds' behavior
 public class ManageExtraKeysEvent implements ClientTickEvents.End {
 	@Override
 	public void endClientTick(MinecraftClient client) {

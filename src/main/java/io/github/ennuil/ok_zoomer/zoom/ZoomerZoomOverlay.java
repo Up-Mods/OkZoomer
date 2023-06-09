@@ -6,8 +6,7 @@ import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -38,15 +37,15 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     }
 
     @Override
-    public void renderOverlay(MatrixStack matrices) {
+    public void renderOverlay(GuiGraphics graphics) {
 		int scaledWidth = this.client.getWindow().getScaledWidth();
 		int scaledHeight = this.client.getWindow().getScaledHeight();
 
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.zoomOverlayAlpha);
-		RenderSystem.setShaderTexture(0, this.textureId);
-		DrawableHelper.drawTexture(matrices, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+		float lerpedOverlayAlpha = MathHelper.lerp(this.client.getTickDelta(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, lerpedOverlayAlpha);
+		graphics.drawTexture(this.textureId, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

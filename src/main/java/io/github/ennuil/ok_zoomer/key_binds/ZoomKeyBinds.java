@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFW;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import net.minecraft.client.option.KeyBind;
 
-// Manages the zoom keybinds themselves
+// Manages the zoom key binds themselves
 public class ZoomKeyBinds {
 	// TODO - Bleh, immutability; I have a plan
 	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.EXTRA_KEY_BINDS.getRealValue();
