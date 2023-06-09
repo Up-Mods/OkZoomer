@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screen.Screen;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 	@ModifyArg(
-		method = "<init>(Lnet/minecraft/client/RunArgs;)V",
+		method = "connectQuickPlay",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/MinecraftClient;setScreen(Lnet/minecraft/client/gui/screen/Screen;)V"
