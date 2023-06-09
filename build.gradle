@@ -11,7 +11,6 @@ version = System.env.GITHUB_ACTIONS == 'true'
 group = project.maven_group
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 	maven { url 'https://maven.gegy.dev' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
