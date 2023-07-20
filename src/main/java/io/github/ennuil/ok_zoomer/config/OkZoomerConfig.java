@@ -164,7 +164,7 @@ public class OkZoomerConfig extends WrappedConfig {
 		// TODO - Revert default value on 5.0.0
 		@WidgetSize(Size.HALF)
 		@Comment("Prints a random owo in the console when the game starts. Enabled by default until full release.")
-		public final boolean print_owo_on_start = true;
+		public final boolean print_owo_on_start = false;
 	}
 
 	// TODO - What if we had a secret Debug section?
