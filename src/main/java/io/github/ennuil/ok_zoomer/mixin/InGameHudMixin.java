@@ -14,7 +14,7 @@ public abstract class InGameHudMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
 		method = "render"
 	)
-	private boolean ok_zoomer$activateSpyglassOverlay(boolean isUsingSpyglass) {
+	private boolean activateSpyglassOverlay(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;

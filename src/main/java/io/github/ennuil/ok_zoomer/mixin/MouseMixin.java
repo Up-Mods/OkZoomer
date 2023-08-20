@@ -28,7 +28,7 @@ public abstract class MouseMixin {
 		at = @At(value = "FIELD", target = "Lnet/minecraft/client/Mouse;scrollDelta:D", ordinal = 7),
 		cancellable = true
 	)
-	private void ok_zoomer$zoomerOnMouseScroll(CallbackInfo ci) {
+	private void zoomerOnMouseScroll(CallbackInfo ci) {
 		if (this.scrollDelta != 0.0) {
 			if (OkZoomerConfigManager.ZOOM_SCROLLING.value()) {
 				if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
@@ -50,7 +50,7 @@ public abstract class MouseMixin {
 		cancellable = true,
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
-	private void ok_zoomer$zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, boolean bl, int i) {
+	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, boolean bl, int i) {
 		if (OkZoomerConfigManager.ZOOM_SCROLLING.value()) {
 			if (OkZoomerConfigManager.ZOOM_MODE.value().equals(ZoomModes.PERSISTENT)) {
 				if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
@@ -72,7 +72,7 @@ public abstract class MouseMixin {
 		method = "updateLookDirection",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z")
 	)
-	private boolean ok_zoomer$replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
+	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
