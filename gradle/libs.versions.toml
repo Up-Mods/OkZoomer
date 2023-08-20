@@ -1,7 +1,7 @@
 [versions]
 minecraft = "1.20.1"
 quilt_mappings = "1.20.1+build.23" # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
-quilt_loader = "0.19.5"
+quilt_loader = "0.20.0-beta.15"
 
 quilted_fabric_api = "7.1.2+0.87.0-1.20.1"
 libzoomer = "0.7.0+1.20"

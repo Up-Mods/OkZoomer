@@ -1,7 +1,5 @@
 package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
@@ -23,10 +21,6 @@ public record CustomTextureBackground(Identifier textureId, float red, float gre
 
 	public void render(GuiGraphics graphics, Screen screen) {
 		this.renderBackgroundTexture(graphics, 0, 0, screen.width, screen.height, 0);
-	}
-
-	public void render(GuiGraphics graphics, Screen screen, int vOffset) {
-		this.renderBackgroundTexture(graphics, 0, 0, screen.width, screen.height, vOffset);
 	}
 
 	public void renderBackgroundTexture(GuiGraphics graphics, int x, int y, int width, int height, int vOffset) {

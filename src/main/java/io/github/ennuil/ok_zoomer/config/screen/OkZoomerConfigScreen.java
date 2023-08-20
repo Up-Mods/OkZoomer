@@ -128,7 +128,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
 	@SuppressWarnings("unchecked")
 	private void initializeOptionList(SpruceOptionListWidget options) {
-		for (ValueTreeNode node : OkZoomerConfigManager.CONFIG.nodes()) {
+		for (var node : OkZoomerConfigManager.CONFIG.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
 				var separator = new SpruceSeparatorOption(
 					String.format("config.ok_zoomer.%s", section.key()),
@@ -136,8 +136,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 					Text.translatable(String.format("config.ok_zoomer.%s.tooltip", section.key())));
 				this.addOptionToList(options, separator, WidgetSize.Size.FULL);
 
-				for (ValueTreeNode subNode : section) {
-					WidgetSize.Size size = subNode.metadata(WidgetSize.TYPE);
+				for (var subNode : section) {
+					var size = subNode.metadata(WidgetSize.TYPE);
 
 					if (subNode instanceof TrackedValue<?> trackedValue) {
 						var trackie = (TrackedValue<Object>) trackedValue;
@@ -145,7 +145,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
 						if (trackedValue.value() instanceof Boolean) {
 							SpruceOption option;
-							if (!trackedValue.equals(OkZoomerConfigManager.UNBIND_CONFLICTING_KEY)) {
+							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key)) {
 								option = new SpruceBooleanOption(
 									String.format("config.ok_zoomer.%s", trackedValue.key()),
 									() -> (Boolean) this.newValues.get(trackie),
@@ -282,38 +282,38 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	@SuppressWarnings("unchecked")
 	public void resetToPreset(ZoomPresets preset) {
 		Map<TrackedValue<?>, Object> presets = Map.ofEntries(
-			Map.entry(OkZoomerConfigManager.CINEMATIC_CAMERA, preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF),
-			Map.entry(OkZoomerConfigManager.REDUCE_SENSITIVITY, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.ZOOM_TRANSITION, preset == ZoomPresets.CLASSIC ? ZoomTransitionOptions.OFF : ZoomTransitionOptions.SMOOTH),
-			Map.entry(OkZoomerConfigManager.ZOOM_MODE, preset == ZoomPresets.PERSISTENT ? ZoomModes.PERSISTENT : ZoomModes.HOLD),
-			Map.entry(OkZoomerConfigManager.ZOOM_SCROLLING, switch (preset) {
+			Map.entry(OkZoomerConfigManager.CONFIG.features.cinematic_camera, preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.reduce_sensitivity, preset == ZoomPresets.CLASSIC ? false : true),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_transition, preset == ZoomPresets.CLASSIC ? ZoomTransitionOptions.OFF : ZoomTransitionOptions.SMOOTH),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_mode, preset == ZoomPresets.PERSISTENT ? ZoomModes.PERSISTENT : ZoomModes.HOLD),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_scrolling, switch (preset) {
 				case CLASSIC -> false;
 				case SPYGLASS -> false;
 				default -> true;
 			}),
-			Map.entry(OkZoomerConfigManager.EXTRA_KEY_BINDS, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.ZOOM_OVERLAY, preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF),
-			Map.entry(OkZoomerConfigManager.SPYGLASS_DEPENDENCY, preset == ZoomPresets.SPYGLASS ? SpyglassDependency.BOTH : SpyglassDependency.OFF),
-			Map.entry(OkZoomerConfigManager.ZOOM_DIVISOR, switch (preset) {
+			Map.entry(OkZoomerConfigManager.CONFIG.features.extra_key_binds, preset == ZoomPresets.CLASSIC ? false : true),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_overlay, preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF),
+			Map.entry(OkZoomerConfigManager.CONFIG.features.spyglass_dependency, preset == ZoomPresets.SPYGLASS ? SpyglassDependency.BOTH : SpyglassDependency.OFF),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.zoom_divisor, switch (preset) {
 				case PERSISTENT -> 1.0D;
 				case SPYGLASS -> 10.0D;
 				default -> 4.0D;
 			}),
-			Map.entry(OkZoomerConfigManager.MINIMUM_ZOOM_DIVISOR, 1.0D),
-			Map.entry(OkZoomerConfigManager.MAXIMUM_ZOOM_DIVISOR, 50.0D),
-			Map.entry(OkZoomerConfigManager.UPPER_SCROLL_STEPS, preset == ZoomPresets.SPYGLASS ? 16 : 20),
-			Map.entry(OkZoomerConfigManager.LOWER_SCROLL_STEPS, preset == ZoomPresets.SPYGLASS ? 8 : 4),
-			Map.entry(OkZoomerConfigManager.SMOOTH_MULTIPLIER, preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D),
-			Map.entry(OkZoomerConfigManager.CINEMATIC_MULTIPLIER, 4.0D),
-			Map.entry(OkZoomerConfigManager.MINIMUM_LINEAR_STEP, 0.125D),
-			Map.entry(OkZoomerConfigManager.MAXIMUM_LINEAR_STEP, 0.25D),
-			Map.entry(OkZoomerConfigManager.RESET_ZOOM_WITH_MOUSE, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.FORGET_ZOOM_DIVISOR, true),
-			Map.entry(OkZoomerConfigManager.UNBIND_CONFLICTING_KEY, false),
-			Map.entry(OkZoomerConfigManager.USE_SPYGLASS_TEXTURE, preset == ZoomPresets.SPYGLASS ? true : false),
-			Map.entry(OkZoomerConfigManager.USE_SPYGLASS_SOUNDS, preset == ZoomPresets.SPYGLASS ? true : false),
-			Map.entry(OkZoomerConfigManager.SHOW_RESTRICTION_TOASTS, true),
-			Map.entry(OkZoomerConfigManager.PRINT_OWO_ON_START, preset == ZoomPresets.CLASSIC ? false : true)
+			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor, 1.0D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor, 50.0D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.upper_scroll_steps, preset == ZoomPresets.SPYGLASS ? 16 : 20),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.lower_scroll_steps, preset == ZoomPresets.SPYGLASS ? 8 : 4),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.cinematic_multiplier, 4.0D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_linear_step, 0.125D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_linear_step, 0.25D),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.reset_zoom_with_mouse, preset == ZoomPresets.CLASSIC ? false : true),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forget_zoom_divisor, true),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key, false),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_texture, preset == ZoomPresets.SPYGLASS ? true : false),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_sounds, preset == ZoomPresets.SPYGLASS ? true : false),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts, true),
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, preset == ZoomPresets.CLASSIC ? false : true)
 		);
 
 		this.newValues = new Reference2ObjectArrayMap<>();

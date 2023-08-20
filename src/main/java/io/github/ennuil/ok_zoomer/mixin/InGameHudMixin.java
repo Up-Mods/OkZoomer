@@ -15,7 +15,7 @@ public abstract class InGameHudMixin {
 		method = "render"
 	)
 	private boolean activateSpyglassOverlay(boolean isUsingSpyglass) {
-		if (switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {

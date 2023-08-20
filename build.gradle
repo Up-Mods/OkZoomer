@@ -4,7 +4,10 @@ plugins {
 	alias libs.plugins.machete
 }
 
-archivesBaseName = project.archives_base_name
+base {
+	archivesName = project.archives_base_name
+}
+
 version = System.env.GITHUB_ACTIONS == 'true'
 	? "$project.version+${libs.versions.minecraft.get()}.github.$System.env.GITHUB_RUN_NUMBER"
 	: "$project.version+${libs.versions.minecraft.get()}"
@@ -44,8 +47,7 @@ dependencies {
 processResources {
 	inputs.property 'version', version
 
-	// Oh, for building, do the switcharoo
-	filesMatching(['quilt.mod.json', 'fabric.mod.json']) {
+	filesMatching('quilt.mod.json') {
 		expand 'version': version
 	}
 }
@@ -72,7 +74,7 @@ java {
 
 jar {
 	from('LICENSE') {
-		rename { "${it}_${archivesBaseName}" }
+		rename { "${it}_${base.archivesName.get()}" }
 	}
 }
 

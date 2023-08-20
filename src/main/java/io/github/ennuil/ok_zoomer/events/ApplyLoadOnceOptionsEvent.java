@@ -12,14 +12,14 @@ public class ApplyLoadOnceOptionsEvent implements ClientLifecycleEvents.Ready {
 	@Override
 	public void readyClient(MinecraftClient client) {
 		// uwu
-		if (OkZoomerConfigManager.PRINT_OWO_ON_START.value()) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start.value()) {
 			OwoUtils.printOwo();
 		}
 
 		// This handles the unbinding of the "Save Toolbar Activator" key
-		if (OkZoomerConfigManager.UNBIND_CONFLICTING_KEY.value()) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key.value()) {
 			ZoomUtils.unbindConflictingKey(client, false);
-			OkZoomerConfigManager.UNBIND_CONFLICTING_KEY.setValue(false, true);
+			OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key.setValue(false, true);
 		}
 	}
 }

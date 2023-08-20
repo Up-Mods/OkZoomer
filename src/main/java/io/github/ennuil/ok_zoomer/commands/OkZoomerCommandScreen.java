@@ -76,7 +76,7 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 		}
 
 		if (ZoomPackets.getSpyglassDependency()) {
-			String key = switch (OkZoomerConfigManager.SPYGLASS_DEPENDENCY.value()) {
+			String key = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
 				case REQUIRE_ITEM -> "command.ok_zoomer.restrictions.force_spyglass.require_item";
 				case REPLACE_ZOOM -> "command.ok_zoomer.restrictions.force_spyglass.replace_zoom";
 				case BOTH -> "command.ok_zoomer.restrictions.force_spyglass.both";

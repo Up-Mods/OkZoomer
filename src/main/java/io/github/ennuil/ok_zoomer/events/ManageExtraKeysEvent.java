@@ -12,8 +12,8 @@ public class ManageExtraKeysEvent implements ClientTickEvents.End {
 	@Override
 	public void endClientTick(MinecraftClient client) {
 		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
-		if (!OkZoomerConfigManager.EXTRA_KEY_BINDS.value()) return;
-		if (OkZoomerConfigManager.ZOOM_SCROLLING.isBeingOverridden()) return;
+		if (!OkZoomerConfigManager.CONFIG.features.extra_key_binds.value()) return;
+		if (OkZoomerConfigManager.CONFIG.features.zoom_scrolling.isBeingOverridden()) return;
 
 		if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isPressed() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isPressed()) {
 			ZoomUtils.changeZoomDivisor(false);

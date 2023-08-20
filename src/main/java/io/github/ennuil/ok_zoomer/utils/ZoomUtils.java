@@ -47,11 +47,11 @@ public class ZoomUtils {
 		//If the zoom is disabled, don't allow for zoom scrolling
 		if (ZoomPackets.getDisableZoom()) return;
 
-		double zoomDivisor = OkZoomerConfigManager.ZOOM_DIVISOR.value();
-		double minimumZoomDivisor = OkZoomerConfigManager.MINIMUM_ZOOM_DIVISOR.value();
-		double maximumZoomDivisor = OkZoomerConfigManager.MAXIMUM_ZOOM_DIVISOR.value();
-		int upperScrollStep = OkZoomerConfigManager.UPPER_SCROLL_STEPS.value();
-		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
+		double zoomDivisor = OkZoomerConfigManager.CONFIG.values.zoom_divisor.value();
+		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor.value();
+		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.values.upper_scroll_steps.value();
+		int lowerScrollStep = OkZoomerConfigManager.CONFIG.values.lower_scroll_steps.value();
 
 		if (ZoomPackets.getForceZoomDivisors()) {
 			minimumZoomDivisor = Math.max(minimumZoomDivisor, ZoomPackets.getMinimumZoomDivisor());
@@ -72,15 +72,15 @@ public class ZoomUtils {
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
 	public static void resetZoomDivisor(boolean userPrompted) {
 		if (userPrompted && ZoomPackets.getDisableZoom()) return;
-		if (!userPrompted && !OkZoomerConfigManager.FORGET_ZOOM_DIVISOR.value()) return;
+		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forget_zoom_divisor.value()) return;
 
 		ZOOMER_ZOOM.resetZoomDivisor();
 		zoomStep = 0;
 	}
 
 	public static void keepZoomStepsWithinBounds() {
-		int upperScrollStep = OkZoomerConfigManager.UPPER_SCROLL_STEPS.value();
-		int lowerScrollStep = OkZoomerConfigManager.LOWER_SCROLL_STEPS.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.values.upper_scroll_steps.value();
+		int lowerScrollStep = OkZoomerConfigManager.CONFIG.values.lower_scroll_steps.value();
 
 		zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
 	}

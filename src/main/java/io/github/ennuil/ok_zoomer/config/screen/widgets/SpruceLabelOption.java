@@ -17,11 +17,6 @@ public class SpruceLabelOption extends SpruceOption {
 		this(key, Text.translatable(key), centered);
 	}
 
-	public SpruceLabelOption(String key, Text text, boolean centered, @Nullable Text tooltip) {
-		this(key, text, centered);
-		this.setTooltip(tooltip);
-	}
-
 	public SpruceLabelOption(String key, Text text, boolean centered) {
 		super(key);
 		this.text = text;
