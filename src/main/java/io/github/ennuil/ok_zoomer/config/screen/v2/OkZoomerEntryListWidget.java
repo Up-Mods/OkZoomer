@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	private final int contentWidth = 220;
 	private int contentHeight;
 	private int scrollAmount;
+	private boolean scrolling;
 
 	public OkZoomerEntryListWidget(MinecraftClient client, int width, int height, int x, int y) {
 		this.client = client;
@@ -41,6 +43,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		this.contentHeight = this.height;
 
 		this.scrollAmount = 0;
+
+		this.scrolling = false;
 
 		for (int i = 0; i < 25; i++) {
 			this.children.add(new ButtonEntry());
@@ -133,6 +137,14 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (!this.scrolling) {
+			int pos = (this.width - x) / 2 + 156;
+			if (mouseX > pos) {
+				this.scrolling = true;
+				return true;
+			}
+		}
+
 		if (!this.isMouseOver(mouseX, mouseY)) {
 			return false;
 		}
@@ -144,6 +156,39 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
 		this.setScrollAmount((int) (this.scrollAmount - amount * 10));
 		return true;
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
+			return true;
+		} else if (button == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
+			if (mouseY < this.y) {
+				this.setScrollAmount(0);
+			} else if (mouseY > this.y + this.height) {
+				this.setScrollAmount(this.contentHeight);
+			} else {
+				// TODO - Complete this
+				int size = MathHelper.clamp((this.height * this.height) / this.contentHeight, 0, this.height - 6);
+
+				double a = Math.max(1.0, ((double) this.contentHeight / (this.height - size)));
+				this.setScrollAmount(this.getScrollAmount() + (int) (deltaY * a));
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (this.scrolling) {
+			this.scrolling = false;
+			return true;
+		} else {
+			return super.mouseReleased(mouseX, mouseY, button);
+		}
 	}
 
 	@Override
