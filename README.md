@@ -14,7 +14,7 @@ This mod is available for download on the following services:
 
 - [Modrinth (recommended)](https://modrinth.com/mod/ok-zoomer)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
-- [GitHub Releases (alternative)](https://github.com/EnnuiL/OkZoomer/releases)
+- [GitHub Releases](https://github.com/EnnuiL/OkZoomer/releases)
 
 ## License
 

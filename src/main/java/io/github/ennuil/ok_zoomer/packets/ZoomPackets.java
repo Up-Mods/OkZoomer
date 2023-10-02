@@ -1,7 +1,5 @@
 package io.github.ennuil.ok_zoomer.packets;
 
-import org.quiltmc.qsl.networking.api.PacketByteBufs;
-import org.quiltmc.qsl.networking.api.ServerPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.client.ClientPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
@@ -12,7 +10,6 @@ import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -47,11 +44,11 @@ public class ZoomPackets {
 	private static boolean spyglassDependency = false;
 	private static boolean spyglassOverlay = false;
 
-	private static Text toastTitle = Text.translatable("toast.ok_zoomer.title");
+	private static final Text TOAST_TITLE = Text.translatable("toast.ok_zoomer.title");
 
 	private static void sendToast(MinecraftClient client, Text description) {
 		if (OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts.value()) {
-			client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, toastTitle, description));
+			client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, TOAST_TITLE, description));
 		}
 	}
 
