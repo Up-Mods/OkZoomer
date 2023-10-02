@@ -11,8 +11,8 @@ import net.minecraft.client.gui.hud.InGameHud;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
 	@ModifyExpressionValue(
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"),
-		method = "render"
+		method = "render",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z")
 	)
 	private boolean activateSpyglassOverlay(boolean isUsingSpyglass) {
 		if (switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {

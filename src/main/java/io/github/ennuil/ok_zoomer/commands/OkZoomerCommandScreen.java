@@ -17,8 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.text.Text;
 
 public class OkZoomerCommandScreen extends SpruceScreen {
-	private SpruceOptionListWidget list;
-	private final SimpleColorBackground darkenedBackground = new SimpleColorBackground(0, 0, 0, 128);
+	private static final SimpleColorBackground DARKENED_BACKGROUND = new SimpleColorBackground(0, 0, 0, 128);
 
 	public OkZoomerCommandScreen() {
 		super(Text.translatable("command.ok_zoomer.title"));
@@ -27,7 +26,8 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 	@Override
 	protected void init() {
 		super.init();
-		this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
+		var list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
+		list.setBackground(DARKENED_BACKGROUND);
 
 		var configButton = SpruceSimpleActionOption.of(
 			"command.ok_zoomer.config",
@@ -39,72 +39,62 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			true,
 			Text.translatable("command.ok_zoomer.restrictions.tooltip"));
 
-		this.list.addSingleOptionEntry(configButton);
-		this.list.addSingleOptionEntry(restrictionsSeparator);
+		list.addSingleOptionEntry(configButton);
+		list.addSingleOptionEntry(restrictionsSeparator);
 
 
 		if (ZoomPackets.getHasRestrictions()) {
-			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.acknowledgement", true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.acknowledgement", true));
 		}
 
 		if (ZoomPackets.getDisableZoom()) {
-			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom", true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom", true));
 		}
 
 		if (ZoomPackets.getDisableZoomScrolling()) {
-			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom_scrolling", true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom_scrolling", true));
 		}
 
 		if (ZoomPackets.getForceClassicMode()) {
-			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.force_classic_mode", true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.force_classic_mode", true));
 		}
 
 		if (ZoomPackets.getForceZoomDivisors()) {
 			double minimumZoomDivisor = ZoomPackets.getMinimumZoomDivisor();
 			double maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
-			var textLabel = new SpruceLabelOption(
+			list.addSingleOptionEntry(new SpruceLabelOption(
 				"command.ok_zoomer.restrictions.force_zoom_divisors",
 				minimumZoomDivisor != maximumZoomDivisor
 					? Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
 					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
-				true);
-			this.list.addSingleOptionEntry(textLabel);
+				true)
+			);
 		}
 
 		if (ZoomPackets.getSpyglassDependency()) {
-			String key = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+			var key = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
 				case REQUIRE_ITEM -> "command.ok_zoomer.restrictions.force_spyglass.require_item";
 				case REPLACE_ZOOM -> "command.ok_zoomer.restrictions.force_spyglass.replace_zoom";
 				case BOTH -> "command.ok_zoomer.restrictions.force_spyglass.both";
 				default -> "";
 			};
-			var textLabel = new SpruceLabelOption(key, true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption(key, true));
 		}
 
 		if (ZoomPackets.getSpyglassOverlay()) {
-			var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.force_spyglass_overlay", true);
-			this.list.addSingleOptionEntry(textLabel);
+			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.force_spyglass_overlay", true));
 		}
 
 		if (!ZoomPackets.getHasRestrictions()) {
 			boolean acknowledged = ZoomPackets.getAcknowledgement().equals(ZoomPackets.Acknowledgement.HAS_NO_RESTRICTIONS);
-			if (acknowledged) {
-				var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.no_restrictions.acknowledged", true);
-				this.list.addSingleOptionEntry(textLabel);
-			} else {
-				var textLabel = new SpruceLabelOption("command.ok_zoomer.restrictions.no_restrictions", true);
-				this.list.addSingleOptionEntry(textLabel);
-			}
+			list.addSingleOptionEntry(new SpruceLabelOption(acknowledged
+				? "command.ok_zoomer.restrictions.no_restrictions.acknowledged"
+				: "command.ok_zoomer.restrictions.no_restrictions",
+				true)
+			);
 		}
 
-		this.list.setBackground(darkenedBackground);
-
-		this.addDrawableChild(this.list);
+		this.addDrawableChild(list);
 		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
 			btn -> this.client.setScreen(null)).asVanilla());
 	}

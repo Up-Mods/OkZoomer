@@ -46,7 +46,7 @@ public abstract class MouseMixin {
 	// Handles the zoom scrolling reset through the middle button
 	@Inject(
 		method = "onMouseButton",
-		at = @At(value = "INVOKE", target = "net/minecraft/client/option/KeyBind.setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V"),
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBind;setKeyPressed(Lcom/mojang/blaze3d/platform/InputUtil$Key;Z)V"),
 		cancellable = true,
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)

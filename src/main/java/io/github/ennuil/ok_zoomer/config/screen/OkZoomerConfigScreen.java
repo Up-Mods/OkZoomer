@@ -1,6 +1,5 @@
 package io.github.ennuil.ok_zoomer.config.screen;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import net.minecraft.util.CommonColors;
@@ -47,7 +46,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	private final Screen parent;
 	private ZoomPresets preset;
 
-	private Map<TrackedValue<Object>, Object> newValues;
+	private final Map<TrackedValue<Object>, Object> newValues;
 	private SpruceOption optionBuffer;
 
 	public OkZoomerConfigScreen(Screen parent) {
@@ -118,7 +117,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
 	@SuppressWarnings("unchecked")
 	private void resetNewValues() {
-		this.newValues = new Reference2ObjectArrayMap<>();
+		this.newValues.clear();
 
 		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
 			if (trackedValue.getRealValue() != null) {
@@ -166,8 +165,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 							for (Constraint<?> constraint : trackedValue.constraints()) {
 								if (constraint instanceof Constraint.Range<?>) {
 									try {
-										Field minField = Constraint.Range.class.getDeclaredField("min");
-										Field maxField = Constraint.Range.class.getDeclaredField("max");
+										var minField = Constraint.Range.class.getDeclaredField("min");
+										var maxField = Constraint.Range.class.getDeclaredField("max");
 
 										minField.setAccessible(true);
 										maxField.setAccessible(true);
@@ -193,8 +192,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 							for (Constraint<?> constraint : trackedValue.constraints()) {
 								if (constraint instanceof Constraint.Range<?>) {
 									try {
-										Field minField = Constraint.Range.class.getDeclaredField("min");
-										Field maxField = Constraint.Range.class.getDeclaredField("max");
+										var minField = Constraint.Range.class.getDeclaredField("min");
+										var maxField = Constraint.Range.class.getDeclaredField("max");
 
 										minField.setAccessible(true);
 										maxField.setAccessible(true);
@@ -317,7 +316,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, preset == ZoomPresets.CLASSIC ? false : true)
 		);
 
-		this.newValues = new Reference2ObjectArrayMap<>();
+		this.newValues.clear();
 
 		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
 			this.newValues.put((TrackedValue<Object>) trackedValue, presets.get(trackedValue));
