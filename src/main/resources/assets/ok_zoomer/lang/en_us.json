@@ -107,7 +107,7 @@
 	"command.ok_zoomer.restrictions.no_restrictions.acknowledge": "This server allows this mod, and therefore, hasn't imposed any restrictions",
 	"command.ok_zoomer.restrictions.no_restrictions": "This server didn't impose any restrictions",
 	"toast.ok_zoomer.title": "Ok Zoomer",
-	"toast.ok_zoomer.unbind_conflicting_key.success": "Unbounded conflicting key",
+	"toast.ok_zoomer.unbind_conflicting_key.success": "Unbound the conflicting key",
 	"toast.ok_zoomer.unbind_conflicting_key.no_conflict": "No conflicting keys found",
 	"toast.ok_zoomer.acknowledge_mod": "The mod is allowed by this server",
 	"toast.ok_zoomer.acknowledge_mod_restrictions": "This server restricts the mod\nSee /ok_zoomer for more",

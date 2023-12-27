@@ -11,7 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.sound.SoundEvents;
 
 // This event is responsible for managing the zoom signal.
-public class ManageZoomEvent implements ClientTickEvents.End {
+public class ManageZoomEvent implements ClientTickEvents.Start {
 	// Used internally in order to make zoom toggling possible
 	private static boolean lastZooming = false;
 
@@ -19,7 +19,7 @@ public class ManageZoomEvent implements ClientTickEvents.End {
 	private static boolean persistentZoom = false;
 
 	@Override
-	public void endClientTick(MinecraftClient client) {
+	public void startClientTick(MinecraftClient client) {
 		// We need the player for spyglass shenanigans
 		if (client.player == null) return;
 

@@ -22,15 +22,19 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.20.0-"
+				"versions": ">=0.22.0-"
 			},
 			{
 				"id": "libzoomer",
-				"versions": ">=0.7.0"
+				"versions": ">=0.8.0"
 			},
 			{
 				"id": "quilted_fabric_api",
 				"versions": ">=7.0.0"
+			},
+			{
+				"id": "mixinextras",
+				"versions": ">=0.3.0"
 			}
 		],
 		"entrypoints": {

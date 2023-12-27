@@ -8,16 +8,13 @@ base {
 	archivesName = project.archives_base_name
 }
 
-version = System.env.GITHUB_ACTIONS == 'true'
-	? "$project.version+${libs.versions.minecraft.get()}.github.$System.env.GITHUB_RUN_NUMBER"
-	: "$project.version+${libs.versions.minecraft.get()}"
+version = "$project.version+${libs.versions.minecraft.get()}"
 group = project.maven_group
 
 repositories {
 	mavenCentral()
 	maven { url 'https://maven.gegy.dev' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
-	maven { url 'https://jitpack.io' }
 }
 
 loom {
@@ -27,9 +24,6 @@ loom {
 		"ok_zoomer" {
 			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
 			sourceSet("main")
-			// If you shade (directly include classes, not JiJ) a dependency into your mod, include it here using one of these methods:
-			// dependency("com.example.shadowedmod:1.2.3")
-			// configuration("exampleShadedConfigurationName")
 		}
 	}
 }
@@ -50,12 +44,9 @@ dependencies {
 	modImplementation(libs.spruceui) {
 		transitive = false
 	}
-	implementation libs.mixin.extras
-	annotationProcessor libs.mixin.extras
 
 	include libs.libzoomer
 	include libs.spruceui
-	include libs.mixin.extras
 }
 
 processResources {

@@ -8,9 +8,9 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
 
 // This event manages the extra key binds' behavior
-public class ManageExtraKeysEvent implements ClientTickEvents.End {
+public class ManageExtraKeysEvent implements ClientTickEvents.Start {
 	@Override
-	public void endClientTick(MinecraftClient client) {
+	public void startClientTick(MinecraftClient client) {
 		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
 		if (!OkZoomerConfigManager.CONFIG.features.extra_key_binds.value()) return;
 		if (OkZoomerConfigManager.CONFIG.features.zoom_scrolling.isBeingOverridden()) return;
