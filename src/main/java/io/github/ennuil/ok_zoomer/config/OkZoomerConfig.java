@@ -162,10 +162,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("Shows toasts when the server imposes a restriction.")
 		public final TrackedValue<Boolean> show_restriction_toasts = this.value(true);
 
-		// TODO - Revert default value on 5.0.0
+		// TODO - Enable it again during eternal betas!
 		@WidgetSize(Size.HALF)
-		@Comment("Prints a random owo in the console when the game starts. Enabled by default until full release.")
-		public final TrackedValue<Boolean> print_owo_on_start = this.value(true);
+		@Comment("Prints a random owo in the console when the game starts.")
+		public final TrackedValue<Boolean> print_owo_on_start = this.value(false);
 	}
 
 	// TODO - What if we had a secret Debug section?

@@ -313,7 +313,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_texture, preset == ZoomPresets.SPYGLASS ? true : false),
 			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_sounds, preset == ZoomPresets.SPYGLASS ? true : false),
 			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts, true),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, preset == ZoomPresets.CLASSIC ? false : true)
+			//Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, preset == ZoomPresets.CLASSIC ? false : true)
+			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, false)
 		);
 
 		this.newValues.clear();
