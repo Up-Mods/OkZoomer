@@ -2,9 +2,9 @@
 # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 minecraft = "1.20.1"
 quilt_mappings = "1.20.1+build.23"
-quilt_loader = "0.22.1-beta.4"
+quilt_loader = "0.23.1"
 
-quilted_fabric_api = "7.4.0+0.90.0-1.20.1"
+quilted_fabric_api = "7.5.0+0.91.0-1.20.1"
 libzoomer = "0.8.0+1.20.1"
 mod_menu = "7.2.2"
 spruceui = "5.0.2+1.20"
@@ -21,4 +21,3 @@ spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.4.1" }
-machete = { id = "io.github.p03w.machete", version = "2.0.1" }
