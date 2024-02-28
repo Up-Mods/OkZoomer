@@ -1,7 +1,6 @@
 plugins {
 	id 'maven-publish'
 	alias libs.plugins.quilt.loom
-	alias libs.plugins.machete
 }
 
 base {
@@ -18,11 +17,8 @@ repositories {
 }
 
 loom {
-	// Loom and Loader both use this block in order to gather more information about your mod.
 	mods {
-		// This should match your mod id.
 		"ok_zoomer" {
-			// Tell Loom about each source set used by your mod here. This ensures that your mod's classes are properly transformed by Loader.
 			sourceSet("main")
 		}
 	}
@@ -81,12 +77,6 @@ jar {
 	from('LICENSE') {
 		rename { "${it}_${base.archivesName.get()}" }
 	}
-}
-
-
-machete {
-	// JSON minification isn't effective on this scale and sacrifices readability
-	json.enabled = false
 }
 
 // Configure the maven publication
