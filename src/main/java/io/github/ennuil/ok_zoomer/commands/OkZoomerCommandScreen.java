@@ -94,8 +94,8 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			);
 		}
 
-		this.addDrawableChild(list);
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
+		this.addDrawableSelectableElement(list);
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
 			btn -> this.client.setScreen(null)).asVanilla());
 	}
 

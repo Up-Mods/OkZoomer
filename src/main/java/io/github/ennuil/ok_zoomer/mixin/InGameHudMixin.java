@@ -2,11 +2,11 @@ package io.github.ennuil.ok_zoomer.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
+import net.minecraft.client.gui.hud.in_game.InGameHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
-import net.minecraft.client.gui.hud.InGameHud;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {

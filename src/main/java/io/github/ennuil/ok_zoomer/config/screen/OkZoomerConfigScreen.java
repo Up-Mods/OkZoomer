@@ -76,13 +76,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 		this.initializeOptionList();
 		this.appendPresetSection();
 
-		this.addDrawableChild(this.list);
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Text.translatable("config.ok_zoomer.discard_changes"),
+		this.addDrawableSelectableElement(this.list);
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Text.translatable("config.ok_zoomer.discard_changes"),
 			btn -> {
 				this.resetNewValues();
 				this.refresh();
 			}).asVanilla());
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
 			btn -> {
 				this.newValues.forEach((trackedValue, newValue) -> {
 					if (trackedValue.value() != null) {
@@ -301,8 +301,16 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 			}),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor, 1.0D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor, 50.0D),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.upper_scroll_steps, preset == ZoomPresets.SPYGLASS ? 16 : 20),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.lower_scroll_steps, preset == ZoomPresets.SPYGLASS ? 8 : 4),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.upper_scroll_steps, switch (preset) {
+				case PERSISTENT -> 38;
+				case SPYGLASS -> 16;
+				default -> 20;
+			}),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.lower_scroll_steps, switch (preset) {
+				case PERSISTENT -> 0;
+				case SPYGLASS -> 8;
+				default -> 4;
+			}),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.cinematic_multiplier, 4.0D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_linear_step, 0.125D),
