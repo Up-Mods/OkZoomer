@@ -1,8 +1,8 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "io.github.ennuil",
-		"id": "ok_zoomer",
+		"group": "${maven_group_id}",
+		"id": "${mod_id}",
 		"version": "${version}",
 		"metadata": {
 			"name": "Ok Zoomer",
@@ -11,9 +11,9 @@
 				"Ennui Langeweile": "Owner"
 			},
 			"contact": {
-				"homepage": "https://modrinth.com/mod/ok-zoomer",
-				"issues": "https://github.com/EnnuiL/OkZoomer/issues",
-				"sources": "https://github.com/EnnuiL/OkZoomer"
+				"homepage": "https://modrinth.com/mod/${modrinth_id}",
+				"issues": "https://github.com/Up-Mods/OkZoomer/issues",
+				"sources": "https://github.com/Up-Mods/OkZoomer"
 			},
 			"license": "MIT",
 			"icon": "assets/ok_zoomer/icon.png"
@@ -22,19 +22,30 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.23.0-"
-			},
-			{
-				"id": "libzoomer",
-				"versions": ">=0.8.0"
+				"versions": ">=${quilt_loader_version}"
 			},
 			{
 				"id": "quilted_fabric_api",
-				"versions": ">=7.0.0"
+				"mc-publish": {
+          "curseforge": "634179",
+          "modrinth": "qvIfYCYJ"
+        }
 			},
 			{
+        "id": "minecraft",
+        "versions": "=${minecraft_version}"
+      },
+			{
 				"id": "mixinextras",
-				"versions": ">=0.3.0"
+				"mc-publish": {
+					"ignore": true
+				}
+			},
+			{
+				"id": "libzoomer",
+				"mc-publish": {
+					"modrinth": "UuqHBjf9"
+				}
 			}
 		],
 		"entrypoints": {
@@ -53,5 +64,15 @@
 	"minecraft": {
 		"environment": "client"
 	},
-	"mixin": "ok_zoomer.mixins.json"
+	"mixin": "ok_zoomer.mixins.json",
+	"mc-publish": {
+		"curseforge": "${curseforge_id}",
+    "modrinth": "${modrinth_id}",
+    "loaders": [
+      "quilt"
+    ],
+		"dependencies": [
+			"libzoomer(required)#(ignore:curseforge)"
+		]
+	}
 }

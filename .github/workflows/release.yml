@@ -1,0 +1,69 @@
+name: Upload Release Artifacts
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'microsoft'
+          java-version: 17
+      - name: Get current time
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYYMMDDHHmmss
+      - name: Setup ENV
+        run: echo "TAG=${{ github.ref_name }}" >> $GITHUB_ENV
+      - name: Copy Maven Upload URL
+        id: extract_maven_upload_url
+        run: echo "maven_upload_url=${{secrets.MAVEN_UPLOAD_URL}}" >> $GITHUB_OUTPUT
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+      - name: Build with Gradle
+        env:
+          BUILD_TIME: ${{ steps.current-time.outputs.formattedTime }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: ./gradlew assemble
+      - name: Maven Release
+        if: steps.extract_maven_upload_url.outputs.maven_upload_url
+        continue-on-error: true
+        run: ./gradlew publish
+        env:
+          BUILD_TIME: ${{ steps.current-time.outputs.formattedTime }}
+          BUILD_NUMBER: ${{ github.run_number }}
+          MAVEN_UPLOAD_URL: ${{ secrets.MAVEN_UPLOAD_URL }}
+          MAVEN_UPLOAD_USERNAME: ${{ secrets.MAVEN_UPLOAD_USERNAME }}
+          MAVEN_UPLOAD_PASSWORD: ${{ secrets.MAVEN_UPLOAD_PASSWORD }}
+      - name: Upload build artifacts (Quilt)
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-Quilt-${{ github.sha }}
+          path: |
+            build/libs/!(*-@(dev|slim)).jar
+      - name: Publish (GitHub Releases)
+        continue-on-error: true
+        uses: Kir-Antipov/mc-publish@423b200ec84e6eefad726549c72513d7a9b4c2c0 # (new) v3.3
+        with:
+          github-token: ${{ github.token }}
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            build/libs/*-@(sources|javadoc).jar
+      - name: Publish (Quilt)
+        continue-on-error: true
+        uses: Kir-Antipov/mc-publish@423b200ec84e6eefad726549c72513d7a9b4c2c0 # (new) v3.3
+        with:
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          version: ${{ github.ref_name }}+Quilt
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            build/libs/*-@(sources|javadoc).jar
