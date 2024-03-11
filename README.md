@@ -16,6 +16,3 @@ This mod is available for download on the following services:
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
 - [GitHub Releases](https://github.com/EnnuiL/OkZoomer/releases)
 
-## License
-
-This mod is licensed under the MIT license. You can freely include the mod on any modpack with no permission. Usage of this mod's code on other projects is allowed as long as attribution is given.
