@@ -92,14 +92,14 @@ java {
     }
 
 jar {
-	from('LICENSE') {
-		rename { "LICENSE_${base.archivesName.get()}" }
+	from('LICENSE.md') {
+		rename { "LICENSE_${base.archivesName.get()}.md" }
 	}
 }
 
 sourcesJar {
-	from('LICENSE') {
-		rename { "LICENSE_${base.archivesName.get()}" }
+	from('LICENSE.md') {
+		rename { "LICENSE_${base.archivesName.get()}.md" }
 	}
 }
 
