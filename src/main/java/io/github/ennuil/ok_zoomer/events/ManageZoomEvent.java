@@ -1,14 +1,13 @@
 package io.github.ennuil.ok_zoomer.events;
 
-import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
-
-import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.client.Minecraft;
+import net.minecraft.sounds.SoundEvents;
+import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 
 // This event is responsible for managing the zoom signal.
 public class ManageZoomEvent implements ClientTickEvents.Start {
@@ -19,7 +18,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 	private static boolean persistentZoom = false;
 
 	@Override
-	public void startClientTick(MinecraftClient client) {
+	public void startClientTick(Minecraft client) {
 		// We need the player for spyglass shenanigans
 		if (client.player == null) return;
 
@@ -56,8 +55,8 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		};
-		boolean keyPress = ZoomKeyBinds.ZOOM_KEY.isPressed();
-		boolean spyglassUse = client.player.isUsingSpyglass();
+		boolean keyPress = ZoomKeyBinds.ZOOM_KEY.isDown();
+		boolean spyglassUse = client.player.isScoping();
 		boolean zooming = keyPress || (isUsingSpyglass && spyglassUse);
 
 		// If the press state is the same as the previous tick's, cancel the rest
@@ -93,7 +92,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 				? ZoomUtils.ZOOMER_ZOOM.getZoom()
 				: keyPress;
 
-			client.player.playSound(soundDirection ? SoundEvents.ITEM_SPYGLASS_USE : SoundEvents.ITEM_SPYGLASS_STOP_USING, 1.0F, 1.0F);
+			client.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);
 		}
 
 		// Set the previous zoom signal for the next tick

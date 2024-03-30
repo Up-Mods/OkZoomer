@@ -1,27 +1,27 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import io.github.ennuil.libzoomer.api.MouseModifier;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.SmoothUtil;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.SmoothDouble;
 
 // The implementation of the multiplied cinematic camera
 public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
-    private static final Identifier MODIFIER_ID = new Identifier("ok_zoomer:multiplied_cinematic_camera");
-    private final MinecraftClient client;
-    private final SmoothUtil cursorXZoomSmoother = new SmoothUtil();
-    private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
+    private static final ResourceLocation MODIFIER_ID = new ResourceLocation("ok_zoomer:multiplied_cinematic_camera");
+    private final Minecraft client;
+    private final SmoothDouble cursorXZoomSmoother = new SmoothDouble();
+    private final SmoothDouble cursorYZoomSmoother = new SmoothDouble();
     private boolean active;
     private boolean cinematicCameraEnabled;
     private final double cinematicCameraMultiplier;
 
     public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {
         this.cinematicCameraMultiplier = cinematicCameraMultiplier;
-        this.client = MinecraftClient.getInstance();
+        this.client = Minecraft.getInstance();
     }
 
     @Override
-    public Identifier getIdentifier() {
+    public ResourceLocation getIdentifier() {
         return MODIFIER_ID;
     }
 
@@ -33,29 +33,29 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     @Override
     public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
         if (this.cinematicCameraEnabled) {
-            this.cursorXZoomSmoother.clear();
+            this.cursorXZoomSmoother.reset();
             return cursorDeltaX;
         }
         double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorXZoomSmoother.smooth(cursorDeltaX, smoother);
+        return this.cursorXZoomSmoother.getNewDeltaValue(cursorDeltaX, smoother);
     }
 
     @Override
     public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
         if (this.cinematicCameraEnabled) {
-            this.cursorYZoomSmoother.clear();
+            this.cursorYZoomSmoother.reset();
             return cursorDeltaY;
         }
         double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorYZoomSmoother.smooth(cursorDeltaY, smoother);
+        return this.cursorYZoomSmoother.getNewDeltaValue(cursorDeltaY, smoother);
     }
 
     @Override
     public void tick(boolean active) {
-        this.cinematicCameraEnabled = this.client.options.cinematicCamera;
+        this.cinematicCameraEnabled = this.client.options.smoothCamera;
         if (!active && active != this.active) {
-            this.cursorXZoomSmoother.clear();
-            this.cursorYZoomSmoother.clear();
+            this.cursorXZoomSmoother.reset();
+            this.cursorYZoomSmoother.reset();
         }
         this.active = active;
     }

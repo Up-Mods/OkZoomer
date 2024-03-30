@@ -45,9 +45,11 @@ loom {
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
-	// To change the versions, see the gradle.properties file
 	minecraft libs.minecraft
-	mappings variantOf(libs.quilt.mappings) { classifier 'intermediary-v2' }
+	mappings(loom.layered {
+		it.parchment("${libs.parchment.mappings.get()}@zip")
+		it.officialMojangMappings()
+	})
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.quilted.fabric.api

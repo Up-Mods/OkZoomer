@@ -12,7 +12,7 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.ZoomerZoomOverlay;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public class OkZoomerConfigManager {
@@ -42,7 +42,7 @@ public class OkZoomerConfigManager {
 		configureZoomModifier();
 
 		// Sets zoom overlay
-		Identifier overlayTextureId = new Identifier(
+		ResourceLocation overlayTextureId = new ResourceLocation(
 			CONFIG.tweaks.use_spyglass_texture.value()
 			? "textures/misc/spyglass_scope.png"
 			: "ok_zoomer:textures/misc/zoom_overlay.png");

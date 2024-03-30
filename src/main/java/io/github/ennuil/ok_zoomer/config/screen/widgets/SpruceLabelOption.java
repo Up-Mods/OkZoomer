@@ -1,23 +1,21 @@
 package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
 
-import org.jetbrains.annotations.Nullable;
-
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public class SpruceLabelOption extends SpruceOption {
-	private final Text text;
+	private final Component text;
 	private final boolean centered;
 
 	public SpruceLabelOption(String key, boolean centered) {
-		this(key, Text.translatable(key), centered);
+		this(key, Component.translatable(key), centered);
 	}
 
-	public SpruceLabelOption(String key, Text text, boolean centered) {
+	public SpruceLabelOption(String key, Component text, boolean centered) {
 		super(key);
 		this.text = text;
 		this.centered = centered;

@@ -1,27 +1,25 @@
 package io.github.ennuil.ok_zoomer.utils;
 
-import com.mojang.blaze3d.platform.InputUtil;
-
-import org.quiltmc.qsl.tag.api.QuiltTagKey;
-import org.quiltmc.qsl.tag.api.TagType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBind;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import org.quiltmc.qsl.tag.api.QuiltTagKey;
+import org.quiltmc.qsl.tag.api.TagType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
@@ -29,14 +27,16 @@ public class ZoomUtils {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
 
 	public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
-		new Identifier("ok_zoomer:zoom"),
+		new ResourceLocation("ok_zoomer:zoom"),
 		4.0F,
 		new SmoothTransitionMode(0.75f),
 		new ZoomDivisorMouseModifier(),
 		null
 	);
 
-	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(RegistryKeys.ITEM, new Identifier("ok_zoomer", "zoom_dependencies"), TagType.CLIENT_FALLBACK);
+	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
+
+	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(Registries.ITEM, new ResourceLocation("ok_zoomer", "zoom_dependencies"), TagType.CLIENT_FALLBACK);
 
 	public static int zoomStep = 0;
 
@@ -82,30 +82,30 @@ public class ZoomUtils {
 		int upperScrollStep = OkZoomerConfigManager.CONFIG.values.upper_scroll_steps.value();
 		int lowerScrollStep = OkZoomerConfigManager.CONFIG.values.lower_scroll_steps.value();
 
-		zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
+		zoomStep = Mth.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
 	}
 
 	// The method used for unbinding the "Save Toolbar Activator"
-	public static void unbindConflictingKey(MinecraftClient client, boolean userPrompted) {
+	public static void unbindConflictingKey(Minecraft client, boolean userPrompted) {
 		if (ZoomKeyBinds.ZOOM_KEY.isDefault()) {
-			if (client.options.saveToolbarActivatorKey.isDefault()) {
+			if (client.options.keySaveHotbarActivator.isDefault()) {
 				if (userPrompted) {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
-					client.getToastManager().add(SystemToast.create(
-						client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"),
-						Text.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
+					client.getToasts().addToast(SystemToast.multiline(
+						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
+						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
 				} else {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
 				}
-				client.options.saveToolbarActivatorKey.setBoundKey(InputUtil.UNKNOWN_KEY);
-				client.options.write();
-				KeyBind.updateBoundKeys();
+				client.options.keySaveHotbarActivator.setKey(InputConstants.UNKNOWN);
+				client.options.save();
+				KeyMapping.resetMapping();
 			} else {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 				if (userPrompted) {
-					client.getToastManager().add(SystemToast.create(
-						client, SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.ok_zoomer.title"),
-						Text.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
+					client.getToasts().addToast(SystemToast.multiline(
+						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
+						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
 				}
 			}
 		}

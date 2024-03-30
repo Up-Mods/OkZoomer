@@ -1,14 +1,14 @@
 package io.github.ennuil.ok_zoomer.config.metadata;
 
+import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
+import org.quiltmc.config.api.metadata.MetadataContainerBuilder;
+import org.quiltmc.config.api.metadata.MetadataType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Optional;
-
-import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
-import org.quiltmc.config.api.metadata.MetadataContainerBuilder;
-import org.quiltmc.config.api.metadata.MetadataType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

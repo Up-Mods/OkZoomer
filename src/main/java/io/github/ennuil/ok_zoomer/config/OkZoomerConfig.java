@@ -1,18 +1,13 @@
 package io.github.ennuil.ok_zoomer.config;
 
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.*;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize.Size;
 import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.annotations.Comment;
 import org.quiltmc.config.api.annotations.FloatRange;
 import org.quiltmc.config.api.annotations.IntegerRange;
 import org.quiltmc.config.api.values.TrackedValue;
-
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
-import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
-import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize.Size;
 
 public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Contains the main zoom features.")
@@ -24,7 +19,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Contains options that are unlikely to be changed from the defaults.")
 	public final TweaksConfig tweaks = new TweaksConfig();
 
-	public static class FeaturesConfig extends Section {
+	public static class FeaturesConfig extends org.quiltmc.config.api.ReflectiveConfig.Section {
 		@WidgetSize(Size.HALF)
 		@Comment("""
 			Defines the cinematic camera while zooming.
@@ -84,7 +79,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<SpyglassDependency> spyglass_dependency = this.value(SpyglassDependency.OFF);
 	}
 
-	public static class ValuesConfig extends Section  {
+	public static class ValuesConfig extends org.quiltmc.config.api.ReflectiveConfig.Section  {
 		@WidgetSize(Size.FULL)
 		@Comment("The divisor applied to the FOV when zooming.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
@@ -137,7 +132,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Double> maximum_linear_step = this.value(0.25);
 	}
 
-	public static class TweaksConfig extends Section  {
+	public static class TweaksConfig extends org.quiltmc.config.api.ReflectiveConfig.Section  {
 		@WidgetSize(Size.HALF)
 		@Comment("Allows for resetting the zoom with the middle mouse button.")
 		public final TrackedValue<Boolean> reset_zoom_with_mouse = this.value(true);

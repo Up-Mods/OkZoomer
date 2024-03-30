@@ -1,12 +1,12 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import io.github.ennuil.libzoomer.api.TransitionMode;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 // The implementation of the linear transition
 public class LinearTransitionMode implements TransitionMode {
-    private static final Identifier TRANSITION_ID = new Identifier("ok_zoomer:linear_transition");
+    private static final ResourceLocation TRANSITION_ID = new ResourceLocation("ok_zoomer:linear_transition");
     private boolean active;
     private final double minimumLinearStep;
     private final double maximumLinearStep;
@@ -23,7 +23,7 @@ public class LinearTransitionMode implements TransitionMode {
     }
 
     @Override
-    public Identifier getIdentifier() {
+    public ResourceLocation getIdentifier() {
         return TRANSITION_ID;
     }
 
@@ -34,7 +34,7 @@ public class LinearTransitionMode implements TransitionMode {
 
     @Override
     public double applyZoom(double fov, float tickDelta) {
-        fovMultiplier = MathHelper.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
+        fovMultiplier = Mth.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
         return fov * fovMultiplier;
     }
 
@@ -44,8 +44,8 @@ public class LinearTransitionMode implements TransitionMode {
 
         this.lastInternalMultiplier = this.internalMultiplier;
 
-        double linearStep = MathHelper.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
-        this.internalMultiplier = MathHelper.stepTowards(this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
+        double linearStep = Mth.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
+        this.internalMultiplier = Mth.approach(this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
 
         if (active || fovMultiplier == this.internalMultiplier) {
             this.active = active;

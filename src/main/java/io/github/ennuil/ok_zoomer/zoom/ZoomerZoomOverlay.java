@@ -1,33 +1,32 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import io.github.ennuil.libzoomer.api.ZoomOverlay;
-import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
-import net.minecraft.client.MinecraftClient;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-    private static final Identifier OVERLAY_ID = new Identifier("ok_zoomer:zoom_overlay");
-    private final Identifier textureId;
+    private static final ResourceLocation OVERLAY_ID = new ResourceLocation("ok_zoomer:zoom_overlay");
+    private final ResourceLocation textureId;
     private boolean active;
-    private final MinecraftClient client;
+    private final Minecraft client;
 
     public float zoomOverlayAlpha = 0.0F;
     public float lastZoomOverlayAlpha = 0.0F;
 
-    public ZoomerZoomOverlay(Identifier textureId) {
+    public ZoomerZoomOverlay(ResourceLocation textureId) {
         this.textureId = textureId;
         this.active = false;
-        this.client = MinecraftClient.getInstance();
+        this.client = Minecraft.getInstance();
     }
 
     @Override
-    public Identifier getIdentifier() {
+    public ResourceLocation getIdentifier() {
         return OVERLAY_ID;
     }
 
@@ -38,14 +37,14 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public void renderOverlay(GuiGraphics graphics) {
-		int scaledWidth = this.client.getWindow().getScaledWidth();
-		int scaledHeight = this.client.getWindow().getScaledHeight();
+		int scaledWidth = this.client.getWindow().getGuiScaledWidth();
+		int scaledHeight = this.client.getWindow().getGuiScaledHeight();
 
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
-		float lerpedOverlayAlpha = MathHelper.lerp(this.client.getTickDelta(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
+		float lerpedOverlayAlpha = Mth.lerp(this.client.getFrameTime(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, lerpedOverlayAlpha);
-		graphics.drawTexture(this.textureId, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -75,13 +74,13 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.SMOOTH)) {
             zoomOverlayAlpha += (float) ((zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.CONFIG.values.smooth_multiplier.value());
         } else if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.LINEAR)) {
-            double linearStep = MathHelper.clamp(
+            double linearStep = Mth.clamp(
 				1.0F / divisor,
 				OkZoomerConfigManager.CONFIG.values.minimum_linear_step.value(),
 				OkZoomerConfigManager.CONFIG.values.maximum_linear_step.value()
 			);
 
-            zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
+            zoomOverlayAlpha = Mth.approach(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
         }
     }
 }

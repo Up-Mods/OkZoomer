@@ -3,12 +3,11 @@ package io.github.ennuil.ok_zoomer.config.screen.widgets;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
-
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.ResourceLocation;
 
-public record CustomTextureBackground(Identifier textureId, float red, float green, float blue, float alpha) implements Background {
+public record CustomTextureBackground(ResourceLocation textureId, float red, float green, float blue, float alpha) implements Background {
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 		int verticalOffset = vOffset;
@@ -24,8 +23,8 @@ public record CustomTextureBackground(Identifier textureId, float red, float gre
 	}
 
 	public void renderBackgroundTexture(GuiGraphics graphics, int x, int y, int width, int height, int vOffset) {
-		graphics.setShaderColor(red, green, blue, alpha);
-		graphics.drawTexture(this.textureId, x, y, 0, 0.0F, vOffset, width, height, 32, 32);
-		graphics.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		graphics.setColor(red, green, blue, alpha);
+		graphics.blit(this.textureId, x, y, 0, 0.0F, vOffset, width, height, 32, 32);
+		graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

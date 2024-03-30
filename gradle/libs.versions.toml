@@ -1,8 +1,9 @@
 [versions]
 # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 minecraft = "1.20.4"
-quilt_mappings = "1.20.4+build.3"
 quilt_loader = "0.24.0"
+
+parchment = "2024.02.25"
 
 quilted_fabric_api = "9.0.0-alpha.5+0.96.11-1.20.4"
 libzoomer = "0.8.0+1.20.1"
@@ -11,7 +12,7 @@ spruceui = "5.0.3+1.20.4"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
+parchment_mappings = { module = "org.parchmentmc.data:parchment-1.20.4", version.ref = "parchment" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }

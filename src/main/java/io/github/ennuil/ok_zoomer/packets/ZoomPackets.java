@@ -1,30 +1,29 @@
 package io.github.ennuil.ok_zoomer.packets;
 
-import org.quiltmc.qsl.networking.api.client.ClientPlayConnectionEvents;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
-
-import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import org.quiltmc.qsl.networking.api.client.ClientPlayConnectionEvents;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 /* 	Manages the zoom packets and their signals.
 	These packets are intended to be used by the future "Zoomer Boomer" server-side mod,
 	although developers are welcome to independently transmit them for other loaders */
 public class ZoomPackets {
 	// The IDs for packets that allows the server to have some control on the zoom.
-	public static final Identifier DISABLE_ZOOM_PACKET_ID = new Identifier("ok_zoomer", "disable_zoom");
-	public static final Identifier DISABLE_ZOOM_SCROLLING_PACKET_ID = new Identifier("ok_zoomer", "disable_zoom_scrolling");
-	public static final Identifier FORCE_CLASSIC_MODE_PACKET_ID = new Identifier("ok_zoomer", "force_classic_mode");
-	public static final Identifier FORCE_ZOOM_DIVISOR_PACKET_ID = new Identifier("ok_zoomer", "force_zoom_divisor");
-	public static final Identifier ACKNOWLEDGE_MOD_PACKET_ID = new Identifier("ok_zoomer", "acknowledge_mod");
-	public static final Identifier FORCE_SPYGLASS_PACKET_ID = new Identifier("ok_zoomer", "force_spyglass");
-	public static final Identifier FORCE_SPYGLASS_OVERLAY_PACKET_ID = new Identifier("ok_zoomer", "force_spyglass_overlay");
+	public static final ResourceLocation DISABLE_ZOOM_PACKET_ID = new ResourceLocation("ok_zoomer", "disable_zoom");
+	public static final ResourceLocation DISABLE_ZOOM_SCROLLING_PACKET_ID = new ResourceLocation("ok_zoomer", "disable_zoom_scrolling");
+	public static final ResourceLocation FORCE_CLASSIC_MODE_PACKET_ID = new ResourceLocation("ok_zoomer", "force_classic_mode");
+	public static final ResourceLocation FORCE_ZOOM_DIVISOR_PACKET_ID = new ResourceLocation("ok_zoomer", "force_zoom_divisor");
+	public static final ResourceLocation ACKNOWLEDGE_MOD_PACKET_ID = new ResourceLocation("ok_zoomer", "acknowledge_mod");
+	public static final ResourceLocation FORCE_SPYGLASS_PACKET_ID = new ResourceLocation("ok_zoomer", "force_spyglass");
+	public static final ResourceLocation FORCE_SPYGLASS_OVERLAY_PACKET_ID = new ResourceLocation("ok_zoomer", "force_spyglass_overlay");
 
 	public enum Acknowledgement {
 		NONE,
@@ -44,11 +43,11 @@ public class ZoomPackets {
 	private static boolean spyglassDependency = false;
 	private static boolean spyglassOverlay = false;
 
-	private static final Text TOAST_TITLE = Text.translatable("toast.ok_zoomer.title");
+	private static final Component TOAST_TITLE = Component.translatable("toast.ok_zoomer.title");
 
-	private static void sendToast(MinecraftClient client, Text description) {
+	private static void sendToast(Minecraft client, Component description) {
 		if (OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts.value()) {
-			client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, TOAST_TITLE, description));
+			client.getToasts().addToast(SystemToast.multiline(client, ZoomUtils.TOAST_ID, TOAST_TITLE, description));
 		}
 	}
 
@@ -133,12 +132,12 @@ public class ZoomPackets {
 				if (restricting) {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and has established some restrictions");
-						ZoomPackets.sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
+						ZoomPackets.sendToast(client, Component.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
 					}
 				} else {
 					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_NO_RESTRICTIONS)) {
 						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and establishes no restrictions");
-						ZoomPackets.sendToast(client, Text.translatable("toast.ok_zoomer.acknowledge_mod"));
+						ZoomPackets.sendToast(client, Component.translatable("toast.ok_zoomer.acknowledge_mod"));
 					}
 				}
 			});

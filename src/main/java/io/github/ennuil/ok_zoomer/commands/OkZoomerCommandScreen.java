@@ -12,15 +12,14 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceLabelOption;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
-
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 public class OkZoomerCommandScreen extends SpruceScreen {
 	private static final SimpleColorBackground DARKENED_BACKGROUND = new SimpleColorBackground(0, 0, 0, 128);
 
 	public OkZoomerCommandScreen() {
-		super(Text.translatable("command.ok_zoomer.title"));
+		super(Component.translatable("command.ok_zoomer.title"));
 	}
 
 	@Override
@@ -31,13 +30,13 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 
 		var configButton = SpruceSimpleActionOption.of(
 			"command.ok_zoomer.config",
-			button -> this.client.setScreen(new OkZoomerConfigScreen(this)),
+			button -> this.minecraft.setScreen(new OkZoomerConfigScreen(this)),
 			null);
 
 		var restrictionsSeparator = new SpruceSeparatorOption(
 			"command.ok_zoomer.restrictions",
 			true,
-			Text.translatable("command.ok_zoomer.restrictions.tooltip"));
+			Component.translatable("command.ok_zoomer.restrictions.tooltip"));
 
 		list.addSingleOptionEntry(configButton);
 		list.addSingleOptionEntry(restrictionsSeparator);
@@ -65,8 +64,8 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			list.addSingleOptionEntry(new SpruceLabelOption(
 				"command.ok_zoomer.restrictions.force_zoom_divisors",
 				minimumZoomDivisor != maximumZoomDivisor
-					? Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
-					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
+					? Component.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
+					: Component.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
 				true)
 			);
 		}
@@ -94,13 +93,13 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 			);
 		}
 
-		this.addDrawableSelectableElement(list);
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
-			btn -> this.client.setScreen(null)).asVanilla());
+		this.addRenderableWidget(list);
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
+			btn -> this.minecraft.setScreen(null)).asVanilla());
 	}
 
 	@Override
 	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+		graphics.drawCenteredString(this.font, this.title, this.width / 2, 8, 0xFFFFFF);
 	}
 }

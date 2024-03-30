@@ -1,12 +1,9 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.entrypoint.PreLaunchEntrypoint;
-
-import com.llamalad7.mixinextras.MixinExtrasBootstrap;
-
-import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 
 public class OkZoomerPreLaunchMod implements PreLaunchEntrypoint {
 	@Override

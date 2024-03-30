@@ -1,46 +1,34 @@
 package io.github.ennuil.ok_zoomer.config.screen;
 
-import java.util.Map;
-
-import net.minecraft.util.CommonColors;
-import org.quiltmc.config.api.Constraint;
-import org.quiltmc.config.api.values.TrackedValue;
-import org.quiltmc.config.api.values.ValueTreeNode;
-
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
-import dev.lambdaurora.spruceui.option.SpruceBooleanOption;
-import dev.lambdaurora.spruceui.option.SpruceCyclingOption;
-import dev.lambdaurora.spruceui.option.SpruceOption;
-import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
-import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
+import dev.lambdaurora.spruceui.option.*;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.*;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ConfigEnum;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomPresets;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.CustomTextureBackground;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedDoubleInputOption;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedIntegerInputOption;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
-
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
+import org.quiltmc.config.api.Constraint;
+import org.quiltmc.config.api.values.TrackedValue;
+import org.quiltmc.config.api.values.ValueTreeNode;
+
+import java.util.Map;
 
 // TODO - Use a completely different approach that allows for a more user-friendly config screen and that yet is easy to make/edit
 public class OkZoomerConfigScreen extends SpruceScreen {
-	private static final CustomTextureBackground NORMAL_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 0.25F, 0.25F, 0.25F, 1.0F);
-	private static final CustomTextureBackground DARKENED_BACKGROUND = new CustomTextureBackground(new Identifier("minecraft:textures/block/yellow_terracotta.png"), 0.125F, 0.125F, 0.125F, 1.0F);
+	private static final CustomTextureBackground NORMAL_BACKGROUND = new CustomTextureBackground(new ResourceLocation("minecraft:textures/block/yellow_terracotta.png"), 0.25F, 0.25F, 0.25F, 1.0F);
+	private static final CustomTextureBackground DARKENED_BACKGROUND = new CustomTextureBackground(new ResourceLocation("minecraft:textures/block/yellow_terracotta.png"), 0.125F, 0.125F, 0.125F, 1.0F);
 
 	private SpruceOptionListWidget list;
 	private final Screen parent;
@@ -50,7 +38,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	private SpruceOption optionBuffer;
 
 	public OkZoomerConfigScreen(Screen parent) {
-		super(Text.translatable("config.ok_zoomer.title"));
+		super(Component.translatable("config.ok_zoomer.title"));
 		this.parent = parent;
 		this.preset = ZoomPresets.DEFAULT;
 
@@ -60,11 +48,11 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
 	// Unlike other options, the cycling option doesn't attach the prefix on the text;
 	// So we do it ourselves automatically!
-	private static Text getCyclingOptionText(String text, Text prefix) {
-		return Text.translatable(
+	private static Component getCyclingOptionText(String text, Component prefix) {
+		return Component.translatable(
 			"spruceui.options.generic",
 			prefix,
-			text != null ? Text.translatable(text) : Text.literal("Error"));
+			text != null ? Component.translatable(text) : Component.literal("Error"));
 	}
 
 	@Override
@@ -76,13 +64,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 		this.initializeOptionList();
 		this.appendPresetSection();
 
-		this.addDrawableSelectableElement(this.list);
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Text.translatable("config.ok_zoomer.discard_changes"),
+		this.addRenderableWidget(this.list);
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Component.translatable("config.ok_zoomer.discard_changes"),
 			btn -> {
 				this.resetNewValues();
 				this.refresh();
 			}).asVanilla());
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
 			btn -> {
 				this.newValues.forEach((trackedValue, newValue) -> {
 					if (trackedValue.value() != null) {
@@ -90,17 +78,17 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 					}
 				});
 				OkZoomerConfigManager.CONFIG.save();
-				this.client.setScreen(this.parent);
+				this.minecraft.setScreen(this.parent);
 			}).asVanilla());
 	}
 
 	@Override
 	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, CommonColors.WHITE);
+		graphics.drawCenteredString(this.font, this.title, this.width / 2, 8, CommonColors.WHITE);
 	}
 
 	@Override
-	public void renderBackgroundTexture(GuiGraphics graphics) {
+	public void renderDirtBackground(GuiGraphics graphics) {
 		NORMAL_BACKGROUND.render(graphics, this);
 	}
 
@@ -111,8 +99,8 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 	}
 
 	@Override
-	public void closeScreen() {
-		this.client.setScreen(this.parent);
+	public void onClose() {
+		this.minecraft.setScreen(this.parent);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -133,7 +121,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 				var separator = new SpruceSeparatorOption(
 					String.format("config.ok_zoomer.%s", section.key()),
 					true,
-					Text.translatable(String.format("config.ok_zoomer.%s.tooltip", section.key())));
+					Component.translatable(String.format("config.ok_zoomer.%s.tooltip", section.key())));
 				this.addOptionToList(separator, WidgetSize.Size.FULL);
 
 				for (var subNode : section) {
@@ -150,13 +138,13 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 									String.format("config.ok_zoomer.%s", trackedValue.key()),
 									() -> (Boolean) this.newValues.get(trackie),
 									value -> this.newValues.replace(trackie, value),
-									Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
+									Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
 							} else {
 								// TODO - ew, hardcoding; we can do better than that
 								option = SpruceSimpleActionOption.of(
 									"config.ok_zoomer.tweaks.unbind_conflicting_key",
-									button -> ZoomUtils.unbindConflictingKey(this.client, true),
-									Text.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip"));
+									button -> ZoomUtils.unbindConflictingKey(this.minecraft, true),
+									Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip"));
 							}
 							this.addOptionToList(option, size);
 						} else if (trackedValue.value() instanceof Double) {
@@ -184,7 +172,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 								minimum, maximum,
 								() -> (Double) this.newValues.get(trackie),
 								value -> this.newValues.replace(trackie, value),
-								Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
+								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
 							this.addOptionToList(option, size);
 						} else if (trackedValue.value() instanceof Integer) {
 							int minimum = Integer.MIN_VALUE;
@@ -211,14 +199,14 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 								minimum, maximum,
 								() -> (Integer) this.newValues.get(trackie),
 								value -> this.newValues.replace(trackie, value),
-								Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
+								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
 							this.addOptionToList(option, size);
 						} else if (trackedValue.value() instanceof ConfigEnum) {
 							var option = new SpruceCyclingOption(
 								String.format("config.ok_zoomer.%s", trackedValue.key()),
 								amount -> this.newValues.replace(trackie, ((ConfigEnum) this.newValues.get(trackie)).next()),
 								option2 -> getCyclingOptionText(String.format("config.ok_zoomer.%s.%s", trackedValue.key(), this.newValues.get(trackie).toString().toLowerCase()), option2.getPrefix()),
-								Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
+								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
 							this.addOptionToList(option, size);
 						}
 					}
@@ -237,20 +225,20 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 		var resetSeparator = new SpruceSeparatorOption(
 			"config.ok_zoomer.reset",
 			true,
-			Text.translatable("config.ok_zoomer.reset.tooltip"));
+			Component.translatable("config.ok_zoomer.reset.tooltip"));
 
 		// Preset
 		var presetOption = new SpruceCyclingOption(
 			"config.ok_zoomer.reset.preset",
 			amount -> this.preset = (ZoomPresets) this.preset.next(),
 			option -> getCyclingOptionText(String.format("config.ok_zoomer.reset.preset.%s", this.preset.toString().toLowerCase()), option.getPrefix()),
-			Text.translatable("config.ok_zoomer.reset.preset.tooltip"));
+			Component.translatable("config.ok_zoomer.reset.preset.tooltip"));
 
 		// Reset Settings
 		var resetSettingsOption = SpruceSimpleActionOption.of(
 			"config.ok_zoomer.reset.reset_settings",
 			button -> this.resetToPreset(this.preset),
-			Text.translatable("config.ok_zoomer.reset.reset_settings.tooltip"));
+			Component.translatable("config.ok_zoomer.reset.reset_settings.tooltip"));
 
 		this.list.addSingleOptionEntry(resetSeparator);
 		this.list.addOptionEntry(presetOption, resetSettingsOption);
@@ -275,7 +263,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 
 	private void refresh() {
 		var scrollAmount = this.list.getScrollAmount();
-		this.init(this.client, this.width, this.height);
+		this.init(this.minecraft, this.width, this.height);
 		this.list.setScrollAmount(scrollAmount);
 	}
 
