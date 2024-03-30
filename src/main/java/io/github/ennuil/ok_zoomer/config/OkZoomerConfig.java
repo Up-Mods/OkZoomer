@@ -114,7 +114,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("The multiplier used for smooth transitions.")
 		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
-		public final TrackedValue<Double> smooth_multiplier = this.value(0.75);
+		public final TrackedValue<Double> smooth_multiplier = this.value(0.6);
 
 		@WidgetSize(Size.HALF)
 		@Comment("The multiplier used for the multiplied cinematic camera.")
