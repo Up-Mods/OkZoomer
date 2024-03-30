@@ -27,8 +27,21 @@ base {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://maven.gegy.dev' }
-	maven { url 'https://maven.terraformersmc.com/releases/' }
+	maven {
+		name = "Gegy"
+		url = "https://maven.gegy.dev"
+	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
+	}
+	maven {
+		name = "ParchmentMC"
+		url = "https://maven.parchmentmc.org"
+		content {
+			includeGroupByRegex "org\\.parchmentmc(\\..*)?"
+		}
+	}
 }
 
 loom {
