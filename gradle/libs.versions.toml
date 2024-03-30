@@ -1,13 +1,13 @@
 [versions]
 # Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.20.2"
-quilt_mappings = "1.20.2+build.3"
-quilt_loader = "0.23.1"
+minecraft = "1.20.4"
+quilt_mappings = "1.20.4+build.3"
+quilt_loader = "0.24.0"
 
-quilted_fabric_api = "8.0.0-alpha.4+0.91.6-1.20.2"
+quilted_fabric_api = "9.0.0-alpha.5+0.96.11-1.20.4"
 libzoomer = "0.8.0+1.20.1"
-modmenu = "8.0.1"
-spruceui = "5.0.3+1.20.2"
+modmenu = "9.0.0"
+spruceui = "5.0.3+1.20.4"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -20,4 +20,4 @@ modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "1.4.1" }
+quilt_loom = { id = "org.quiltmc.loom", version = "1.5.+" }
