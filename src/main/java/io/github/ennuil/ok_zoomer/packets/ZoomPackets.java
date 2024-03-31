@@ -111,29 +111,6 @@ public class ZoomPackets {
 			Arguments: None */
 		registerConfigurationPacket(FORCE_SPYGLASS_OVERLAY_PACKET_ID, ForceSpyglassOverlayPacket::fromPacket, ForceSpyglassOverlayPacket::handle);
 
-		// TODO add serverside code so people can just put this mod on their server.
-		// that will also allow easier testing of the packets.
-		/*
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			PacketByteBuf emptyBuf = PacketByteBufs.empty();
-			//sender.sendPacket(DISABLE_ZOOM_PACKET_ID, emptyBuf);
-			//sender.sendPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, emptyBuf);
-			//sender.sendPacket(FORCE_CLASSIC_MODE_PACKET_ID, emptyBuf);
-			PacketByteBuf buf = PacketByteBufs.create();
-			buf.writeDouble(25.0D);
-			buf.writeDouble(1.0D);
-			sender.sendPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, buf);
-			PacketByteBuf buffy = PacketByteBufs.create();
-			buffy.writeBoolean(true);
-			buffy.writeBoolean(true);
-			sender.sendPacket(FORCE_SPYGLASS_PACKET_ID, buffy);
-			sender.sendPacket(FORCE_SPYGLASS_OVERLAY_PACKET_ID, emptyBuf);
-			PacketByteBuf boolBuf = PacketByteBufs.create();
-			boolBuf.writeBoolean(false);
-			sender.sendPacket(ACKNOWLEDGE_MOD_PACKET_ID, boolBuf);
-		});
-		*/
-
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
 			if (ZoomPackets.hasRestrictions) {
 				ZoomPackets.resetPacketSignals();
