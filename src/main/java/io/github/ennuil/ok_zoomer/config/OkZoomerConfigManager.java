@@ -7,6 +7,7 @@ import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
@@ -16,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public class OkZoomerConfigManager {
-	public static final OkZoomerConfig CONFIG = QuiltConfig.create("ok_zoomer", "config", OkZoomerConfig.class);
+	public static final OkZoomerConfig CONFIG = QuiltConfig.create(OkZoomerClientMod.MODID, "config", OkZoomerConfig.class);
 
 	public OkZoomerConfigManager() {
 		// On initialization, configure our zoom instance

@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.events;
 
 import com.mojang.brigadier.CommandDispatcher;
+import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.Commands.CommandSelection;
@@ -12,7 +13,7 @@ public class RegisterCommands implements ClientCommandRegistrationCallback {
 	@Override
 	public void registerCommands(CommandDispatcher<QuiltClientCommandSource> dispatcher, CommandBuildContext buildContext, CommandSelection environment) {
 		dispatcher.register(
-			ClientCommandManager.literal("ok_zoomer").executes(ctx -> {
+			ClientCommandManager.literal(OkZoomerClientMod.MODID).executes(ctx -> {
 				ZoomUtils.setOpenCommandScreen(true);
 				return 0;
 			}

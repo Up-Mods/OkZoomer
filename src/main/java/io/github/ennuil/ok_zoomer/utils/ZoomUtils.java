@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ennuil.libzoomer.api.ZoomInstance;
 import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
@@ -27,7 +28,7 @@ public class ZoomUtils {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
 
 	public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
-		new ResourceLocation("ok_zoomer:zoom"),
+		ZoomUtils.id("zoom"),
 		4.0F,
 		new SmoothTransitionMode(0.75f),
 		new ZoomDivisorMouseModifier(),
@@ -36,7 +37,7 @@ public class ZoomUtils {
 
 	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
-	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(Registries.ITEM, new ResourceLocation("ok_zoomer", "zoom_dependencies"), TagType.CLIENT_FALLBACK);
+	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(Registries.ITEM, ZoomUtils.id("zoom_dependencies"), TagType.CLIENT_FALLBACK);
 
 	public static int zoomStep = 0;
 
@@ -117,5 +118,9 @@ public class ZoomUtils {
 
 	public static void setOpenCommandScreen(boolean openCommandScreen) {
 		ZoomUtils.openCommandScreen = openCommandScreen;
+	}
+
+	public static ResourceLocation id(String path) {
+		return new ResourceLocation(OkZoomerClientMod.MODID, path);
 	}
 }

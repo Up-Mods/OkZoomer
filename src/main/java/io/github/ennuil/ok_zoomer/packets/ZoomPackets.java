@@ -1,29 +1,37 @@
 package io.github.ennuil.ok_zoomer.packets;
 
+import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.packets.payloads.*;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import org.quiltmc.qsl.networking.api.CustomPayloads;
+import org.quiltmc.qsl.networking.api.client.ClientConfigurationNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayConnectionEvents;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 /* 	Manages the zoom packets and their signals.
 	These packets are intended to be used by the future "Zoomer Boomer" server-side mod,
 	although developers are welcome to independently transmit them for other loaders */
 public class ZoomPackets {
 	// The IDs for packets that allows the server to have some control on the zoom.
-	public static final ResourceLocation DISABLE_ZOOM_PACKET_ID = new ResourceLocation("ok_zoomer", "disable_zoom");
-	public static final ResourceLocation DISABLE_ZOOM_SCROLLING_PACKET_ID = new ResourceLocation("ok_zoomer", "disable_zoom_scrolling");
-	public static final ResourceLocation FORCE_CLASSIC_MODE_PACKET_ID = new ResourceLocation("ok_zoomer", "force_classic_mode");
-	public static final ResourceLocation FORCE_ZOOM_DIVISOR_PACKET_ID = new ResourceLocation("ok_zoomer", "force_zoom_divisor");
-	public static final ResourceLocation ACKNOWLEDGE_MOD_PACKET_ID = new ResourceLocation("ok_zoomer", "acknowledge_mod");
-	public static final ResourceLocation FORCE_SPYGLASS_PACKET_ID = new ResourceLocation("ok_zoomer", "force_spyglass");
-	public static final ResourceLocation FORCE_SPYGLASS_OVERLAY_PACKET_ID = new ResourceLocation("ok_zoomer", "force_spyglass_overlay");
+	public static final ResourceLocation DISABLE_ZOOM_PACKET_ID = ZoomUtils.id("disable_zoom");
+	public static final ResourceLocation DISABLE_ZOOM_SCROLLING_PACKET_ID = ZoomUtils.id("disable_zoom_scrolling");
+	public static final ResourceLocation FORCE_CLASSIC_MODE_PACKET_ID = ZoomUtils.id("force_classic_mode");
+	public static final ResourceLocation FORCE_ZOOM_DIVISOR_PACKET_ID = ZoomUtils.id("force_zoom_divisor");
+	public static final ResourceLocation ACKNOWLEDGE_MOD_PACKET_ID = ZoomUtils.id("acknowledge_mod");
+	public static final ResourceLocation FORCE_SPYGLASS_PACKET_ID = ZoomUtils.id("force_spyglass");
+	public static final ResourceLocation FORCE_SPYGLASS_OVERLAY_PACKET_ID = ZoomUtils.id("force_spyglass_overlay");
+
+	public static void applyDisableZooming() {
+		disableZoom = true;
+	}
 
 	public enum Acknowledgement {
 		NONE,
@@ -45,10 +53,15 @@ public class ZoomPackets {
 
 	private static final Component TOAST_TITLE = Component.translatable("toast.ok_zoomer.title");
 
-	private static void sendToast(Minecraft client, Component description) {
+	public static void sendToast(Minecraft client, Component description) {
 		if (OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts.value()) {
 			client.getToasts().addToast(SystemToast.multiline(client, ZoomUtils.TOAST_ID, TOAST_TITLE, description));
 		}
+	}
+
+	private static <T extends CustomPacketPayload> void registerConfigurationPacket(ResourceLocation id, FriendlyByteBuf.Reader<T> reader, ClientConfigurationNetworking.CustomChannelReceiver<T> handler) {
+		CustomPayloads.registerS2CPayload(id, reader);
+		ClientConfigurationNetworking.registerGlobalReceiver(id, handler);
 	}
 
 	//Registers all the packets
@@ -57,124 +70,49 @@ public class ZoomPackets {
 			If this packet is received, Ok Zoomer's zoom will be disabled completely while in the server
 			Supported since Ok Zoomer 4.0.0 (1.16)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zooming");
-				disableZoom = true;
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		registerConfigurationPacket(DISABLE_ZOOM_PACKET_ID, DisableZoomPacket::fromPacket, DisableZoomPacket::handle);
 
 		/*  The "Disable Zoom Scrolling" packet,
 			If this packet is received, zoom scrolling will be disabled while in the server
 			Supported since Ok Zoomer 4.0.0 (1.16)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zoom scrolling");
-				ZoomPackets.applyDisableZoomScrolling();
-				disableZoomScrolling = true;
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		registerConfigurationPacket(DISABLE_ZOOM_SCROLLING_PACKET_ID, DisableZoomScrollingPacket::fromPacket, DisableZoomScrollingPacket::handle);
 
 		/*  The "Force Classic Mode" packet,
 			If this packet is received, the Classic Mode will be activated while connected to the server,
 			under the Classic mode, the Classic preset will be forced on all non-cosmetic options
 			Supported since Ok Zoomer 5.0.0-beta.1 (1.17)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed classic mode");
-				disableZoomScrolling = true;
-				forceClassicMode = true;
-				ZoomPackets.applyDisableZoomScrolling();
-				ZoomPackets.applyClassicMode();
-				OkZoomerConfigManager.configureZoomInstance();
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		registerConfigurationPacket(FORCE_CLASSIC_MODE_PACKET_ID, ForceClassicModePacket::fromPacket, ForceClassicModePacket::handle);
 
 		/*  The "Force Zoom Divisor" packet,
 			If this packet is received, the minimum and maximum zoom divisor values will be overriden
 			with the provided arguments
 			Supported since Ok Zoomer 5.0.0-beta.2 (1.17)
 			Arguments: One double (max & min) or two doubles (first is max, second is min) */
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_ZOOM_DIVISOR_PACKET_ID, (client, handler, buf, sender) -> {
-			int readableBytes = buf.readableBytes();
-			if (readableBytes == 8 || readableBytes == 16) {
-				double maxDouble = buf.readDouble();
-				double minDouble = (readableBytes == 16) ? buf.readDouble() : maxDouble;
-				client.execute(() -> {
-					if ((minDouble <= 0.0 || maxDouble <= 0.0) || minDouble > maxDouble) {
-						ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has attempted to set invalid divisor values! (min %s, max %s)", minDouble, maxDouble));
-					} else {
-						ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has set the zoom divisors to minimum %s and maximum %s", minDouble, maxDouble));
-						maximumZoomDivisor = maxDouble;
-						minimumZoomDivisor = minDouble;
-						forceZoomDivisors = true;
-						OkZoomerConfigManager.configureZoomInstance();
-						ZoomPackets.checkRestrictions();
-					}
-				});
-			}
-		});
+		registerConfigurationPacket(FORCE_ZOOM_DIVISOR_PACKET_ID, ForceZoomDivisorPacket::fromPacket, ForceZoomDivisorPacket::handle);
 
 		/*  The "Acknowledge Mod" packet,
 			If received, a toast will appear, the toast will either state that
 			the server won't restrict the mod or say that the server controls will be activated
 			Supported since Ok Zoomer 5.0.0-beta.2 (1.17)
 			Arguments: one boolean, false for restricting, true for restrictionless */
-		ClientPlayNetworking.registerGlobalReceiver(ACKNOWLEDGE_MOD_PACKET_ID, (client, handler, buf, sender) -> {
-			boolean restricting = !buf.readBoolean();
-			client.execute(() -> {
-				checkRestrictions();
-				if (restricting) {
-					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_RESTRICTIONS)) {
-						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and has established some restrictions");
-						ZoomPackets.sendToast(client, Component.translatable("toast.ok_zoomer.acknowledge_mod_restrictions"));
-					}
-				} else {
-					if (ZoomPackets.getAcknowledgement().equals(Acknowledgement.HAS_NO_RESTRICTIONS)) {
-						ZoomUtils.LOGGER.info("[Ok Zoomer] This server acknowledges the mod and establishes no restrictions");
-						ZoomPackets.sendToast(client, Component.translatable("toast.ok_zoomer.acknowledge_mod"));
-					}
-				}
-			});
-		});
+		registerConfigurationPacket(ACKNOWLEDGE_MOD_PACKET_ID, AcknowledgeModPacket::fromPacket, AcknowledgeModPacket::handle);
 
 		/*  The "Force Spyglass" packet,
 			This packet lets the server to impose a spyglass restriction
 			Supported since Ok Zoomer 5.0.0-beta.4 (1.18.2)
-			Arguments: probably some, we'll see */
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_PACKET_ID, (client, handler, buf, sender) -> {
-			boolean requireItem = buf.readBoolean();
-			boolean replaceZoom = buf.readBoolean();
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has the following spyglass restrictions: Require Item: %s, Replace Zoom: %s", requireItem, replaceZoom));
-
-				OkZoomerConfigManager.CONFIG.features.spyglass_dependency.setOverride(requireItem
-					? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
-					: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null));
-				spyglassDependency = true;
-
-				ZoomPackets.checkRestrictions();
-			});
-		});
+			Arguments: 2 booleans: requireItem and replaceZoom */
+		registerConfigurationPacket(FORCE_SPYGLASS_PACKET_ID, ForceSpyglassPacket::fromPacket, ForceSpyglassPacket::handle);
 
 		/*  The "Force Spyglass Overlay" packet,
 			This packet will let the server restrict the mod to spyglass-only usage
 			Not supported yet!
-			Arguments: probably some, we'll see */
-			ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_OVERLAY_PACKET_ID, (client, handler, buf, sender) -> {
-				client.execute(() -> {
-					ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom"));
-					OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ZoomOverlays.SPYGLASS);
-					spyglassOverlay = true;
-					ZoomPackets.checkRestrictions();
-				});
-			});
+			Arguments: None */
+		registerConfigurationPacket(FORCE_SPYGLASS_OVERLAY_PACKET_ID, ForceSpyglassOverlayPacket::fromPacket, ForceSpyglassOverlayPacket::handle);
 
+		// TODO add serverside code so people can just put this mod on their server.
+		// that will also allow easier testing of the packets.
 		/*
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			PacketByteBuf emptyBuf = PacketByteBufs.empty();
@@ -207,7 +145,7 @@ public class ZoomPackets {
 		return hasRestrictions;
 	}
 
-	private static void checkRestrictions() {
+	public static void checkRestrictions() {
 		boolean hasRestrictions = disableZoom
 			|| disableZoomScrolling
 			|| forceClassicMode
@@ -259,15 +197,37 @@ public class ZoomPackets {
 		return spyglassOverlay;
 	}
 
-	private static void applyDisableZoomScrolling() {
+	public static void applyDisableZoomScrolling() {
+		disableZoomScrolling = true;
 		OkZoomerConfigManager.CONFIG.features.zoom_scrolling.setOverride(false);
 		OkZoomerConfigManager.CONFIG.features.extra_key_binds.setOverride(false);
 	}
 
-	private static void applyClassicMode() {
+	public static void applyClassicMode() {
+		forceClassicMode = true;
+		ZoomPackets.applyDisableZoomScrolling();
 		OkZoomerConfigManager.CONFIG.features.cinematic_camera.setOverride(CinematicCameraOptions.VANILLA);
 		OkZoomerConfigManager.CONFIG.features.reduce_sensitivity.setOverride(false);
 		OkZoomerConfigManager.CONFIG.values.zoom_divisor.setOverride(4.0D);
+		OkZoomerConfigManager.configureZoomInstance();
+	}
+
+	public static void applyForcedZoomDivisor(double max, double min) {
+		maximumZoomDivisor = max;
+		minimumZoomDivisor = min;
+		forceZoomDivisors = true;
+	}
+
+	public static void applySpyglassDependency(boolean requireItem, boolean replaceZoom) {
+		OkZoomerConfigManager.CONFIG.features.spyglass_dependency.setOverride(requireItem
+			? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
+			: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null));
+		spyglassDependency = true;
+	}
+
+	public static void applyForceSpyglassOverlay() {
+		OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ConfigEnums.ZoomOverlays.SPYGLASS);
+		spyglassOverlay = true;
 	}
 
 	//The method used to reset the signals once left the server.
