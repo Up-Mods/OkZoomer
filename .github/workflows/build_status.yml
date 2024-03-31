@@ -29,4 +29,6 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}-Quilt-${{ github.sha }}
           path: |
-            build/libs/!(*-@(dev|slim)).jar
+            build/libs/*.jar
+            !build/libs/*-dev.jar
+            !build/libs/*-slim.jar

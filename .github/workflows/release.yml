@@ -48,7 +48,9 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}-Quilt-${{ github.sha }}
           path: |
-            build/libs/!(*-@(dev|slim)).jar
+            build/libs/*.jar
+            !build/libs/*-dev.jar
+            !build/libs/*-slim.jar
       - name: Publish (GitHub Releases)
         continue-on-error: true
         uses: Kir-Antipov/mc-publish@423b200ec84e6eefad726549c72513d7a9b4c2c0 # (new) v3.3
