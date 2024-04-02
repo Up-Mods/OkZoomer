@@ -311,7 +311,7 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 				case SPYGLASS -> 8;
 				default -> 4;
 			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, preset == ZoomPresets.SPYGLASS ? 0.5D : 0.75D),
+			Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, preset == ZoomPresets.SPYGLASS ? 0.5D : 0.6D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.cinematic_multiplier, 4.0D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_linear_step, 0.125D),
 			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_linear_step, 0.25D),
