@@ -64,6 +64,7 @@ public class ConfigEnums {
 
 	public enum ZoomPresets implements ConfigEnum {
 		DEFAULT,
+		CLASSIC_ZOOMER,
 		CLASSIC,
 		PERSISTENT,
 		SPYGLASS;
