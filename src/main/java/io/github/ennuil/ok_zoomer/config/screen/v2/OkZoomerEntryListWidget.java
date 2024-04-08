@@ -1,9 +1,13 @@
 package io.github.ennuil.ok_zoomer.config.screen.v2;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ScreenArea;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
@@ -20,7 +24,7 @@ import java.util.List;
 public class OkZoomerEntryListWidget extends AbstractParentElement implements Drawable, Selectable {
 	private final MinecraftClient client;
 	private final List<Entry> children;
-	private List<Integer> entryHeights;
+	private IntList entryHeights;
 
 	protected int width;
 	protected int height;
@@ -34,7 +38,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	public OkZoomerEntryListWidget(MinecraftClient client, int width, int height, int x, int y) {
 		this.client = client;
 		this.children = new ArrayList<>();
-		this.entryHeights = new ArrayList<>();
+		this.entryHeights = new IntArrayList();
 		this.width = width;
 		this.height = height;
 		this.x = x;
@@ -111,7 +115,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	}
 
 	public void update() {
-		this.entryHeights = new ArrayList<>();
+		this.entryHeights = new IntArrayList();
 		int contentHeight = 0;
 
 		for (var child : this.children) {
@@ -138,8 +142,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (!this.scrolling) {
-			int pos = (this.width - x) / 2 + 156;
-			if (mouseX > pos) {
+			int pos = (this.width - this.x) / 2 + 156;
+			if (mouseX > pos && mouseX < pos + 6) {
 				this.scrolling = true;
 				return true;
 			}
@@ -147,9 +151,24 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		if (!this.isMouseOver(mouseX, mouseY)) {
 			return false;
+		} else {
+			var entry = this.getEntryAtPosition(mouseX, mouseY);
+			if (entry != null) {
+				if (entry.mouseClicked(mouseX, mouseY, button)) {
+					var subEntry = this.getFocused();
+					if (subEntry != entry && subEntry instanceof ParentElement parentElement) {
+						parentElement.setFocusedChild(null);
+					}
+
+					this.setFocusedChild(entry);
+					this.setDragging(true);
+					return true;
+				}
+			}
 		}
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return this.scrolling;
+		//return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
@@ -197,11 +216,61 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		int i = this.children.indexOf(child);
 		if (i >= 0) {
-			var entry = this.children.get(i);
 			if (this.client.getLastInputType().isKeyboard()) {
-				// TODO - autoscroll
+				this.ensureVisible(i);
 			}
 		}
+	}
+
+	@Override
+	public ScreenArea getArea() {
+		return new ScreenArea(this.x, this.y, this.width, this.height);
+	}
+
+	protected int getEntryHeightSum(int index) {
+		int sum = 0;
+		for (int i = 0; i < index; i++) {
+			sum += this.entryHeights.getInt(i);
+		}
+
+		return sum;
+	}
+
+	protected int getRowTop(int index) {
+		return this.y + 4 - this.getScrollAmount() + getEntryHeightSum(index);
+	}
+
+	protected void ensureVisible(int index) {
+		int rowTop = this.getRowTop(index);
+		int rowTop2 = rowTop - this.y - 4 - entryHeights.getInt(index);
+
+		if (rowTop2 < 0) {
+			this.setScrollAmount(this.getScrollAmount() + rowTop2);
+		}
+
+		int rowTop3 = (this.y + this.height) - rowTop - (entryHeights.getInt(index) * 2);
+
+		if (rowTop3 < 0) {
+			this.setScrollAmount(this.getScrollAmount() - rowTop3);
+		}
+	}
+
+	protected final Entry getEntryAtPosition(double x, double y) {
+		/*
+		int rowCenter = this.contentWidth / 2;
+		int absoluteCenter = this.x + this.width / 2;
+		*/
+		// TODO - Still faulty math
+		int sum = 0;
+		int i = 0;
+		while (sum <= (y - this.y) + this.scrollAmount) {
+			sum += this.entryHeights.getInt(i);
+			i++;
+		}
+		i--;
+
+		System.out.println(i + " - " + y);
+		return this.children.get(i);
 	}
 
 	@ClientOnly
@@ -276,6 +345,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		public ButtonEntry() {
 			this.testButton = ButtonWidget.builder(Text.literal("Can we?"), button -> {})
 				.positionAndSize(0, 0, 60, 20)
+				.tooltip(Tooltip.create(Text.literal("Yes yes yes")))
 				.build();
 			this.testButton2 = ButtonWidget.builder(Text.literal("Can we?"), button -> {})
 					.positionAndSize(0, 0, 60, 20)
@@ -284,15 +354,15 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		@Override
 		public void render(GuiGraphics graphics, int x, int y, int mouseX, int mouseY, float delta) {
-			this.testButton.setPosition(x, y);
+			this.testButton.setPosition(x, y + 2);
 			this.testButton.render(graphics, mouseX, mouseY, delta);
-			this.testButton2.setPosition(x, y + 20);
+			this.testButton2.setPosition(x, y + 24);
 			this.testButton2.render(graphics, mouseX, mouseY, delta);
 		}
 
 		@Override
 		public int getEntryHeight() {
-			return 40;
+			return 46;
 		}
 
 		@Override
