@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen.v2;
+package io.github.ennuil.ok_zoomer.config.screen;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -352,6 +352,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
+	// TODO - Use MultilineTextWidget
 	@ClientOnly
 	class CategoryEntry extends Entry {
 		private final Text title;

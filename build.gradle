@@ -27,7 +27,6 @@ base {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://maven.gegy.dev' }
 	maven { url 'https://maven.terraformersmc.com/releases/' }
 }
 
@@ -57,9 +56,6 @@ dependencies {
 
 	modImplementation libs.libzoomer
 	include libs.libzoomer
-
-	modImplementation libs.spruceui
-	include libs.spruceui
 }
 
 processResources {

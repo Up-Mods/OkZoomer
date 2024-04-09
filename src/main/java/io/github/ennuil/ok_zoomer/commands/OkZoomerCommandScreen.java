@@ -1,8 +1,8 @@
 package io.github.ennuil.ok_zoomer.commands;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.ok_zoomer.config.screen.v2.OkZoomerConfigScreen;
-import io.github.ennuil.ok_zoomer.config.screen.v2.OkZoomerEntryListWidget;
+import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
+import io.github.ennuil.ok_zoomer.config.screen.OkZoomerEntryListWidget;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;

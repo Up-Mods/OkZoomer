@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.config.screen.v2;
+package io.github.ennuil.ok_zoomer.config.screen;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;

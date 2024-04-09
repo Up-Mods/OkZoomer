@@ -7,7 +7,6 @@ quilt_loader = "0.24.0"
 quilted_fabric_api = "7.5.0+0.91.0-1.20.1"
 libzoomer = "0.8.0+1.20.1"
 modmenu = "7.2.2"
-spruceui = "5.0.2+1.20"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -17,7 +16,6 @@ quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loade
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
 libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version = "1.5.7" }
