@@ -8,8 +8,6 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenArea;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
@@ -50,13 +48,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		this.scrollAmount = 0;
 
 		this.scrolling = false;
-
-		/*
-		for (int i = 0; i < 25; i++) {
-			this.children.add(new ButtonEntry());
-			this.children.add(new TextEntry());
-		}
-		*/
 
 		this.update();
 	}
@@ -305,7 +296,11 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	}
 
 	public void addButton(ClickableWidget button) {
-		this.children.add(new ButtonEntry2(button));
+		this.children.add(new ButtonEntry(button));
+	}
+
+	public void addButton(ClickableWidget leftButton, ClickableWidget rightButton) {
+		this.children.add(new ButtonEntry(leftButton, rightButton));
 	}
 
 	public void addServerEffectEntry(Text text) {
@@ -358,59 +353,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	}
 
 	@ClientOnly
-	class TextEntry extends Entry {
-		@Override
-		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
-			graphics.drawText(OkZoomerEntryListWidget.this.client.textRenderer, "aeiou", x, y, CommonColors.WHITE, true);
-			graphics.drawText(OkZoomerEntryListWidget.this.client.textRenderer, "aaaaa", x, y + 10, CommonColors.WHITE, true);
-		}
-
-		@Override
-		public int getEntryHeight() {
-			return 25;
-		}
-
-		@Override
-		public List<? extends Element> children() {
-			return List.of();
-		}
-	}
-
-	@ClientOnly
-	class ButtonEntry extends Entry {
-		private final ButtonWidget testButton;
-		private final ButtonWidget testButton2;
-
-		public ButtonEntry() {
-			this.testButton = ButtonWidget.builder(Text.literal("Can we?"), button -> {})
-				.positionAndSize(0, 0, 60, 20)
-				.tooltip(Tooltip.create(Text.literal("Yes yes yes")))
-				.build();
-			this.testButton2 = ButtonWidget.builder(Text.literal("Yes Please!!!"), button -> {})
-					.positionAndSize(0, 0, 60, 20)
-					.build();
-		}
-
-		@Override
-		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
-			this.testButton.setPosition(x, y + 2);
-			this.testButton.render(graphics, mouseX, mouseY, delta);
-			this.testButton2.setPosition(x, y + 24);
-			this.testButton2.render(graphics, mouseX, mouseY, delta);
-		}
-
-		@Override
-		public int getEntryHeight() {
-			return 46;
-		}
-
-		@Override
-		public List<? extends Element> children() {
-			return List.of(testButton, testButton2);
-		}
-	}
-
-	@ClientOnly
 	class CategoryEntry extends Entry {
 		private final Text title;
 
@@ -437,40 +379,43 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	}
 
 	@ClientOnly
-	class ButtonEntry2 extends Entry {
+	class ButtonEntry extends Entry {
 		private final ClickableWidget leftButton;
 		private final ClickableWidget rightButton;
 
-		public ButtonEntry2(ClickableWidget button) {
+		public ButtonEntry(ClickableWidget button) {
 			button.setWidth(310);
 			this.leftButton = button;
 			this.rightButton = null;
 		}
 
-		public ButtonEntry2(ClickableWidget leftButton, ClickableWidget rightButton) {
+		public ButtonEntry(ClickableWidget leftButton, ClickableWidget rightButton) {
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
 		}
 
 		@Override
 		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
-			this.leftButton.setPosition(x, y + 3);
+			this.leftButton.setPosition(x, y + 2);
 			this.leftButton.render(graphics, mouseX, mouseY, delta);
 
 			if (this.rightButton != null) {
-				this.rightButton.setPosition(x + 155, y + 3);
+				this.rightButton.setPosition(x + 160, y + 2);
 				this.rightButton.render(graphics, mouseX, mouseY, delta);
 			}
 		}
 
+		// Yes, I don't exactly like this either, but this allows for gaps of 5 pixels as well as a nice bottom padding
+		// against the end of the page
 		@Override
 		public int getEntryHeight() {
-			return 26;
+			return 24;
 		}
 
+		// TODO - Create a list variable
 		@Override
 		public List<? extends Element> children() {
-			return List.of(leftButton);
+			return rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
 		}
 	}
 
