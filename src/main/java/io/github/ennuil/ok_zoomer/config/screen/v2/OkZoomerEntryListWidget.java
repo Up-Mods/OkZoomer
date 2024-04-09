@@ -3,12 +3,14 @@ package io.github.ennuil.ok_zoomer.config.screen.v2;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenArea;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.CommonColors;
@@ -30,7 +32,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	protected int height;
 	protected int x;
 	protected int y;
-	private final int contentWidth = 220;
 	private int contentHeight;
 	private int scrollAmount;
 	private boolean scrolling;
@@ -50,10 +51,12 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		this.scrolling = false;
 
+		/*
 		for (int i = 0; i < 25; i++) {
 			this.children.add(new ButtonEntry());
 			this.children.add(new TextEntry());
 		}
+		*/
 
 		this.update();
 	}
@@ -68,19 +71,23 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			int oldI = i;
 			i += child.getEntryHeight();
 			if (i >= this.y && oldI <= this.height + this.y) {
-				child.render(graphics, this.x, oldI, mouseX, mouseY, delta);
+				int xToRender = this.x + this.width / 2 - this.getRowWidth() / 2;
+				child.render(graphics, xToRender, oldI, this.getRowWidth(), mouseX, mouseY, delta);
 			}
 		}
 		graphics.disableScissor();
 
-		graphics.drawText(this.client.textRenderer, "scrolly:" + this.scrollAmount, (this.x + this.width) / 2, this.y, CommonColors.WHITE, true);
+		graphics.drawText(this.client.textRenderer, "scroll:" + this.scrollAmount, this.x + this.width / 2 + this.getRowWidth() / 2, this.y, CommonColors.WHITE, true);
 
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.y, this.width + this.x, this.y + 4, CommonColors.BLACK, 0x00000000, 0);
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.height + this.y - 4, this.width + this.x, this.height + this.y, 0x00000000, CommonColors.BLACK, 0);
 
-		this.renderScrollBar(graphics);
+		if (this.contentHeight - this.height > 0) {
+			this.renderScrollBar(graphics);
+		}
 	}
 
+	// TODO - SpruceUI sucks at narration too, but You Can Do Different
 	@Override
 	public void appendNarrations(NarrationMessageBuilder builder) {
 
@@ -97,16 +104,21 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	}
 
 	private void renderBackground(GuiGraphics graphics) {
-		graphics.setShaderColor(0.125F, 0.125F, 0.125F, 1.0F);
-		graphics.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, this.x, this.y, this.width - x, this.height - y + this.scrollAmount, this.width, this.height, 32, 32);
-		graphics.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		if (this.client.world == null) {
+			graphics.setShaderColor(0.125F, 0.125F, 0.125F, 1.0F);
+			graphics.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, this.x, this.y, this.width - x, this.height - y + this.scrollAmount, this.width, this.height, 32, 32);
+			graphics.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		} else {
+			//graphics.fill(this.x, this.y, this.x + this.width, this.y + this.height, 0x80000000);
+			graphics.fill(this.x, this.y, this.x + this.width, this.y + this.height, 0x60000000);
+		}
 	}
 
 	private void renderScrollBar(GuiGraphics graphics) {
 		int size = Math.min(this.height, (this.height * this.height) / this.contentHeight);
 		int pos = (this.width - x) / 2 + 156;
 
-		var aaa = (scrollAmount / (double) (this.contentHeight - this.height));
+		var aaa = (this.scrollAmount / (double) (this.contentHeight - this.height));
 		var z = this.y + (int) (aaa * (this.height - size));
 
 		graphics.fill(pos, this.y, pos + 6, this.y + this.height, CommonColors.BLACK);
@@ -124,6 +136,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 
 		this.contentHeight = Math.max(this.height, contentHeight);
+	}
+
+	public void finish() {
+		this.update();
 	}
 
 	public int getScrollAmount() {
@@ -240,6 +256,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		return this.y + 4 - this.getScrollAmount() + getEntryHeightSum(index);
 	}
 
+	public int getRowWidth() {
+		return 310;
+	}
+
 	protected void ensureVisible(int index) {
 		int rowTop = this.getRowTop(index);
 		int rowTop2 = rowTop - this.y - 4 - entryHeights.getInt(index);
@@ -255,22 +275,41 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
+	// TODO - This faulty math is the faultiest math of all faulty maths! Fix this, you can do better than a racist
 	protected final Entry getEntryAtPosition(double x, double y) {
-		/*
-		int rowCenter = this.contentWidth / 2;
-		int absoluteCenter = this.x + this.width / 2;
-		*/
-		// TODO - Still faulty math
-		int sum = 0;
-		int i = 0;
-		while (sum <= (y - this.y) + this.scrollAmount) {
-			sum += this.entryHeights.getInt(i);
-			i++;
-		}
-		i--;
+		if (y < this.entryHeights.intStream().sum() - scrollAmount) {
+			/*
+			int rowCenter = this.getRowWidth() / 2;
+			int absoluteCenter = this.x + this.width / 2;
+			*/
+			int sum = 0;
+			int i = 0;
+			while (sum <= (y - this.y) + this.scrollAmount) {
+				sum += this.entryHeights.getInt(i);
+				i++;
+			}
+			i--;
 
-		System.out.println(i + " - " + y);
-		return this.children.get(i);
+			System.out.println(i + " - " + y);
+
+			if (i < this.children.size()) {
+				return this.children.get(i);
+			}
+		}
+
+		return null;
+	}
+
+	public void addCategory(Text text) {
+		this.children.add(new CategoryEntry(text));
+	}
+
+	public void addButton(ClickableWidget button) {
+		this.children.add(new ButtonEntry2(button));
+	}
+
+	public void addServerEffectEntry(Text text) {
+		this.children.add(new ServerEffectEntry(text));
 	}
 
 	@ClientOnly
@@ -279,7 +318,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		private Element focused;
 		private boolean dragging;
 
-		public abstract void render(GuiGraphics graphics, int x, int y, int mouseX, int mouseY, float delta);
+		public abstract void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta);
 
 		public abstract int getEntryHeight();
 
@@ -321,7 +360,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	@ClientOnly
 	class TextEntry extends Entry {
 		@Override
-		public void render(GuiGraphics graphics, int x, int y, int mouseX, int mouseY, float delta) {
+		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
 			graphics.drawText(OkZoomerEntryListWidget.this.client.textRenderer, "aeiou", x, y, CommonColors.WHITE, true);
 			graphics.drawText(OkZoomerEntryListWidget.this.client.textRenderer, "aaaaa", x, y + 10, CommonColors.WHITE, true);
 		}
@@ -347,13 +386,13 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 				.positionAndSize(0, 0, 60, 20)
 				.tooltip(Tooltip.create(Text.literal("Yes yes yes")))
 				.build();
-			this.testButton2 = ButtonWidget.builder(Text.literal("Can we?"), button -> {})
+			this.testButton2 = ButtonWidget.builder(Text.literal("Yes Please!!!"), button -> {})
 					.positionAndSize(0, 0, 60, 20)
 					.build();
 		}
 
 		@Override
-		public void render(GuiGraphics graphics, int x, int y, int mouseX, int mouseY, float delta) {
+		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
 			this.testButton.setPosition(x, y + 2);
 			this.testButton.render(graphics, mouseX, mouseY, delta);
 			this.testButton2.setPosition(x, y + 24);
@@ -368,6 +407,96 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		@Override
 		public List<? extends Element> children() {
 			return List.of(testButton, testButton2);
+		}
+	}
+
+	@ClientOnly
+	class CategoryEntry extends Entry {
+		private final Text title;
+
+		private CategoryEntry(Text title) {
+			this.title = title;
+		}
+
+		@Override
+		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
+			graphics.fill(x, y + 1, x + rowWidth, y + 19, 0x80000000);
+			graphics.drawCenteredShadowedText(OkZoomerEntryListWidget.this.client.textRenderer, this.title, x + rowWidth / 2, y + 6, CommonColors.WHITE);
+		}
+
+		@Override
+		public int getEntryHeight() {
+			return 20;
+		}
+
+		// TODO - Use the KeyBindListWidget.CategoryEntry code for narrator-friendly categories
+		@Override
+		public List<? extends Element> children() {
+			return List.of();
+		}
+	}
+
+	@ClientOnly
+	class ButtonEntry2 extends Entry {
+		private final ClickableWidget leftButton;
+		private final ClickableWidget rightButton;
+
+		public ButtonEntry2(ClickableWidget button) {
+			button.setWidth(310);
+			this.leftButton = button;
+			this.rightButton = null;
+		}
+
+		public ButtonEntry2(ClickableWidget leftButton, ClickableWidget rightButton) {
+			this.leftButton = leftButton;
+			this.rightButton = rightButton;
+		}
+
+		@Override
+		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
+			this.leftButton.setPosition(x, y + 3);
+			this.leftButton.render(graphics, mouseX, mouseY, delta);
+
+			if (this.rightButton != null) {
+				this.rightButton.setPosition(x + 155, y + 3);
+				this.rightButton.render(graphics, mouseX, mouseY, delta);
+			}
+		}
+
+		@Override
+		public int getEntryHeight() {
+			return 26;
+		}
+
+		@Override
+		public List<? extends Element> children() {
+			return List.of(leftButton);
+		}
+	}
+
+	@ClientOnly
+	class ServerEffectEntry extends Entry {
+		private final MultilineText serverEffect;
+		private int lines = 16;
+
+		private ServerEffectEntry(Text serverEffect) {
+			this.serverEffect = MultilineText.create(OkZoomerEntryListWidget.this.client.textRenderer, serverEffect, 310);
+		}
+
+		@Override
+		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
+			this.lines = this.serverEffect.render(graphics, x + rowWidth / 2, y + 4, 9, CommonColors.GRAY) - y + 3;
+		}
+
+		@Override
+		public int getEntryHeight() {
+			return lines;
+		}
+
+		// TODO - Use the KeyBindListWidget.CategoryEntry code for narrator-friendly categories
+		@Override
+		public List<? extends Element> children() {
+			return List.of();
 		}
 	}
 }

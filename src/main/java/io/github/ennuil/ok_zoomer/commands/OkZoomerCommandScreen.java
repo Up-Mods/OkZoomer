@@ -1,23 +1,18 @@
 package io.github.ennuil.ok_zoomer.commands;
 
-import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.SpruceTexts;
-import dev.lambdaurora.spruceui.background.SimpleColorBackground;
-import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
-import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
-import dev.lambdaurora.spruceui.screen.SpruceScreen;
-import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
-import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
-import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceLabelOption;
+import io.github.ennuil.ok_zoomer.config.screen.v2.OkZoomerConfigScreen;
+import io.github.ennuil.ok_zoomer.config.screen.v2.OkZoomerEntryListWidget;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
-
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.CommonTexts;
 import net.minecraft.text.Text;
+import net.minecraft.util.CommonColors;
 
-public class OkZoomerCommandScreen extends SpruceScreen {
-	private static final SimpleColorBackground DARKENED_BACKGROUND = new SimpleColorBackground(0, 0, 0, 128);
+public class OkZoomerCommandScreen extends Screen {
+	private OkZoomerEntryListWidget entryListWidget;
 
 	public OkZoomerCommandScreen() {
 		super(Text.translatable("command.ok_zoomer.title"));
@@ -25,82 +20,75 @@ public class OkZoomerCommandScreen extends SpruceScreen {
 
 	@Override
 	protected void init() {
-		super.init();
-		var list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
-		list.setBackground(DARKENED_BACKGROUND);
-
-		var configButton = SpruceSimpleActionOption.of(
-			"command.ok_zoomer.config",
-			button -> this.client.setScreen(new OkZoomerConfigScreen(this)),
-			null);
-
-		var restrictionsSeparator = new SpruceSeparatorOption(
-			"command.ok_zoomer.restrictions",
-			true,
-			Text.translatable("command.ok_zoomer.restrictions.tooltip"));
-
-		list.addSingleOptionEntry(configButton);
-		list.addSingleOptionEntry(restrictionsSeparator);
-
+		this.entryListWidget = new OkZoomerEntryListWidget(this.client, this.width, this.height - 64, 0, 32);
+		this.entryListWidget.addButton(
+			ButtonWidget.builder(
+				Text.translatable("command.ok_zoomer.config"),
+				button -> this.client.setScreen(new OkZoomerConfigScreen(this))
+			)
+			.build()
+		);
+		this.entryListWidget.addCategory(Text.translatable("command.ok_zoomer.restrictions"));
 
 		if (ZoomPackets.getHasRestrictions()) {
-			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.acknowledgement", true));
+			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.acknowledgement"));
 		}
 
 		if (ZoomPackets.getDisableZoom()) {
-			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom", true));
+			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.disable_zoom"));
 		}
 
 		if (ZoomPackets.getDisableZoomScrolling()) {
-			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.disable_zoom_scrolling", true));
+			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.disable_zoom_scrolling"));
 		}
 
 		if (ZoomPackets.getForceClassicMode()) {
-			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.force_classic_mode", true));
+			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.force_classic_mode"));
 		}
 
 		if (ZoomPackets.getForceZoomDivisors()) {
 			double minimumZoomDivisor = ZoomPackets.getMinimumZoomDivisor();
 			double maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
-			list.addSingleOptionEntry(new SpruceLabelOption(
-				"command.ok_zoomer.restrictions.force_zoom_divisors",
-				minimumZoomDivisor != maximumZoomDivisor
+			this.entryListWidget.addServerEffectEntry(minimumZoomDivisor != maximumZoomDivisor
 					? Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisors", minimumZoomDivisor, maximumZoomDivisor)
-					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor),
-				true)
-			);
+					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor));
 		}
 
 		if (ZoomPackets.getSpyglassDependency()) {
-			var key = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
-				case REQUIRE_ITEM -> "command.ok_zoomer.restrictions.force_spyglass.require_item";
-				case REPLACE_ZOOM -> "command.ok_zoomer.restrictions.force_spyglass.replace_zoom";
-				case BOTH -> "command.ok_zoomer.restrictions.force_spyglass.both";
-				default -> "";
+			var text = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+				case REQUIRE_ITEM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.require_item");
+				case REPLACE_ZOOM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.replace_zoom");
+				case BOTH -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.both");
+				default -> CommonTexts.EMPTY;
 			};
-			list.addSingleOptionEntry(new SpruceLabelOption(key, true));
+			this.entryListWidget.addServerEffectEntry(text);
 		}
 
 		if (ZoomPackets.getSpyglassOverlay()) {
-			list.addSingleOptionEntry(new SpruceLabelOption("command.ok_zoomer.restrictions.force_spyglass_overlay", true));
+			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.force_spyglass_overlay"));
 		}
 
 		if (!ZoomPackets.getHasRestrictions()) {
 			boolean acknowledged = ZoomPackets.getAcknowledgement().equals(ZoomPackets.Acknowledgement.HAS_NO_RESTRICTIONS);
-			list.addSingleOptionEntry(new SpruceLabelOption(acknowledged
+			this.entryListWidget.addServerEffectEntry(Text.translatable(acknowledged
 				? "command.ok_zoomer.restrictions.no_restrictions.acknowledged"
-				: "command.ok_zoomer.restrictions.no_restrictions",
-				true)
-			);
+				: "command.ok_zoomer.restrictions.no_restrictions"));
 		}
 
-		this.addDrawableChild(list);
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 28), 200, 20, SpruceTexts.GUI_DONE,
-			btn -> this.client.setScreen(null)).asVanilla());
+		this.entryListWidget.finish();
+		this.addDrawableChild(this.entryListWidget);
+
+		this.addDrawableChild(
+			ButtonWidget.builder(CommonTexts.DONE, button -> this.closeScreen())
+				.positionAndSize(this.width / 2 - 100, this.height - 27, 200, 20)
+				.build());
 	}
 
 	@Override
-	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 0xFFFFFF);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.renderBackground(graphics);
+		graphics.drawCenteredShadowedText(this.textRenderer, this.getTitle(), this.width / 2, 15, CommonColors.WHITE);
+		this.entryListWidget.render(graphics, mouseX, mouseY, delta);
+		super.render(graphics, mouseX, mouseY, delta);
 	}
 }

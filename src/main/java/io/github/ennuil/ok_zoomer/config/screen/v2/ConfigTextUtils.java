@@ -7,4 +7,8 @@ public class ConfigTextUtils {
     public static Text getConfigTitle(Identifier configId) {
         return Text.translatable("config." + configId.getNamespace() + ".title");
     }
+
+	public static Text getCategoryText(Identifier configId, String category) {
+		return Text.translatable("config." + configId.getNamespace() + "." + category);
+	}
 }
