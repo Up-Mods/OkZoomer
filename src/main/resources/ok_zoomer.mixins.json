@@ -5,7 +5,8 @@
 	"client": [
 		"AbstractClientPlayerEntityMixin",
 		"InGameHudMixin",
-		"MouseMixin"
+		"MouseMixin",
+		"TextFieldWidgetMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

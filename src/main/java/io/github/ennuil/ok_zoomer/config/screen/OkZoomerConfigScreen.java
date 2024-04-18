@@ -3,6 +3,7 @@ package io.github.ennuil.ok_zoomer.config.screen;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
+import io.github.ennuil.ok_zoomer.config.screen.widgets.LabelledTextFieldWidget;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
@@ -12,13 +13,13 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.CommonTexts;
 import net.minecraft.text.Text;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Identifier;
 import org.quiltmc.config.api.Config;
 import org.quiltmc.config.api.Configs;
+import org.quiltmc.config.api.Constraint;
 import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.config.api.values.ValueTreeNode;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
@@ -85,40 +86,92 @@ public class OkZoomerConfigScreen extends Screen {
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Double) {
 							// TODO - This was just a prototype to get text fields working; Do Better!
-							var button = new TextFieldWidget(
-									this.textRenderer,
-									0, 0, 150, 20,
-									Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
+							var button = new LabelledTextFieldWidget(
+								this.textRenderer,
+								0, 0, 150, 32,
+								Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
 							);
 							button.setText(((Double) this.newValues.get(trackie)).toString());
 							button.setChangedListener(value -> {
 								try {
-									this.newValues.replace(trackie, Double.parseDouble(value));
+									double min = Double.MIN_VALUE;
+									double max = Double.MAX_VALUE;
+
+									for (var constraint : trackedValue.constraints()) {
+										if (constraint instanceof Constraint.Range<?>) {
+											// Booooooooooo
+											var minField = Constraint.Range.class.getDeclaredField("min");
+											var maxField = Constraint.Range.class.getDeclaredField("max");
+
+											minField.setAccessible(true);
+											maxField.setAccessible(true);
+
+											min = Math.max((Double) minField.get(constraint), min);
+											max = Math.min((Double) maxField.get(constraint), max);
+										}
+									}
+
+									double parsedValue = Double.parseDouble(value);
+									if (parsedValue < min || parsedValue > max) {
+										// Yes, this isn't exactly right but oh well
+										throw new IndexOutOfBoundsException();
+									}
+
+									this.newValues.replace(trackie, parsedValue);
 									this.invalidValues.remove(trackie);
 									button.setEditableColor(0xFFE0E0E0);
-								} catch (NumberFormatException e) {
+								} catch (NumberFormatException | IndexOutOfBoundsException e) {
 									this.invalidValues.add(trackie);
 									button.setEditableColor(CommonColors.RED);
+								} catch (NoSuchFieldException | IllegalAccessException e) {
+									throw new RuntimeException(e);
 								}
 							});
+							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Integer) {
-							var button = new TextFieldWidget(
-									this.textRenderer,
-									0, 0, 150, 20,
-									Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
+							var button = new LabelledTextFieldWidget(
+								this.textRenderer,
+								0, 0, 150, 32,
+								Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
 							);
 							button.setText(((Integer) this.newValues.get(trackie)).toString());
 							button.setChangedListener(value -> {
 								try {
-									this.newValues.replace(trackie, Integer.parseInt(value));
+									int min = Integer.MIN_VALUE;
+									int max = Integer.MAX_VALUE;
+
+									for (var constraint : trackedValue.constraints()) {
+										if (constraint instanceof Constraint.Range<?>) {
+											// Booooooooooo
+											var minField = Constraint.Range.class.getDeclaredField("min");
+											var maxField = Constraint.Range.class.getDeclaredField("max");
+
+											minField.setAccessible(true);
+											maxField.setAccessible(true);
+
+											min = Math.max((Integer) minField.get(constraint), min);
+											max = Math.min((Integer) maxField.get(constraint), max);
+										}
+									}
+
+									int parsedValue = Integer.parseInt(value);
+									if (parsedValue < min || parsedValue > max) {
+										// Yes, this isn't exactly right but oh well
+										throw new IndexOutOfBoundsException();
+									}
+
+									this.newValues.replace(trackie, parsedValue);
 									this.invalidValues.remove(trackie);
 									button.setEditableColor(0xFFE0E0E0);
-								} catch (NumberFormatException e) {
+								} catch (NumberFormatException | IndexOutOfBoundsException e) {
 									this.invalidValues.add(trackie);
 									button.setEditableColor(CommonColors.RED);
+								} catch (NoSuchFieldException | IllegalAccessException e) {
+									throw new RuntimeException(e);
 								}
 							});
+							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
 							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> Text.translatable(String.format("config.ok_zoomer.%s.%s", trackedValue.key(), value.toString().toLowerCase())))

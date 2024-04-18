@@ -8,6 +8,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenArea;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
@@ -78,20 +79,41 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
-	// TODO - SpruceUI sucks at narration too, but You Can Do Different
+	// FIXME - We do better than SpruceUI now, but at a cost! Clean this mess up!
 	@Override
 	public void appendNarrations(NarrationMessageBuilder builder) {
+		// TODO - Make this.getFocused() return Entry so we don't have to cast
+		var entry = this.getFocused();
+		if (entry != null) {
+			((Entry) entry).appendNarrations(builder.nextMessage());
+			this.appendNarrations(builder, (Entry) entry);
+		}
 
+		builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
+	}
+
+	protected void appendNarrations(NarrationMessageBuilder builder, Entry entry) {
+		List<Entry> list = this.children();
+		if (list.size() > 1) {
+			int i = list.indexOf(entry);
+			if (i != -1) {
+				builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
+			}
+		}
 	}
 
 	@Override
-	public List<? extends Element> children() {
+	public List<Entry> children() {
 		return this.children;
 	}
 
 	@Override
 	public SelectionType getType() {
-		return SelectionType.HOVERED;
+		if (this.isFocused()) {
+			return SelectionType.FOCUSED;
+		} else {
+			return this.getFocused() != null ? SelectionType.HOVERED : SelectionType.NONE;
+		}
 	}
 
 	private void renderBackground(GuiGraphics graphics) {
@@ -268,7 +290,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 	// TODO - This faulty math is the faultiest math of all faulty maths! Fix this, you can do better than a racist
 	protected final Entry getEntryAtPosition(double x, double y) {
-		if (y < this.entryHeights.intStream().sum() - scrollAmount) {
+		// First of all, you don't need a Y check
+		if (y < this.y + this.entryHeights.intStream().sum() - scrollAmount) {
 			/*
 			int rowCenter = this.getRowWidth() / 2;
 			int absoluteCenter = this.x + this.width / 2;
@@ -350,6 +373,26 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 			this.focused = child;
 		}
+
+		// TODO - Investigate and implement ElementListWidget's selectableChildren
+		void appendNarrations(NarrationMessageBuilder builder) {
+			var list = (List<? extends Selectable>) this.children();
+			var narrationData = Screen.findSelectedElementData(list, (Selectable) this.focused);
+			if (narrationData != null) {
+				if (narrationData.selectType.isFocused()) {
+					this.focused = (Element) narrationData.selectable;
+				}
+
+				if (list.size() > 1) {
+					builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.object_list", narrationData.index + 1, list.size()));
+					if (narrationData.selectType == Selectable.SelectionType.FOCUSED) {
+						builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
+					}
+				}
+
+				narrationData.selectable.appendNarrations(builder.nextMessage());
+			}
+		}
 	}
 
 	// TODO - Use MultilineTextWidget
@@ -383,16 +426,19 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	class ButtonEntry extends Entry {
 		private final ClickableWidget leftButton;
 		private final ClickableWidget rightButton;
+		private final int entryHeight;
 
 		public ButtonEntry(ClickableWidget button) {
 			button.setWidth(310);
 			this.leftButton = button;
 			this.rightButton = null;
+			this.entryHeight = button.getHeight() + 4;
 		}
 
 		public ButtonEntry(ClickableWidget leftButton, ClickableWidget rightButton) {
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
+			this.entryHeight = Math.max(leftButton.getHeight(), rightButton.getHeight()) + 4;
 		}
 
 		@Override
@@ -408,9 +454,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		// Yes, I don't exactly like this either, but this allows for gaps of 5 pixels as well as a nice bottom padding
 		// against the end of the page
+		// (This used to be a hardcoded reference to 24)
 		@Override
 		public int getEntryHeight() {
-			return 24;
+			return this.entryHeight;
 		}
 
 		// TODO - Create a list variable
