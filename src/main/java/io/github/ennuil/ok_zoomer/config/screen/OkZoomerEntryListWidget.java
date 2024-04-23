@@ -5,6 +5,9 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.MultilineText;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.navigation.GuiNavigationEvent;
+import net.minecraft.client.gui.screen.NavigationAxis;
+import net.minecraft.client.gui.screen.NavigationDirection;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenArea;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -20,6 +23,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 @ClientOnly
 public class OkZoomerEntryListWidget extends AbstractParentElement implements Drawable, Selectable {
@@ -69,7 +73,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 		graphics.disableScissor();
 
-		graphics.drawText(this.client.textRenderer, "scroll:" + this.scrollAmount, this.x + this.width / 2 + this.getRowWidth() / 2, this.y, CommonColors.WHITE, true);
+		// TODO - Remove this piece of debug code
+		//graphics.drawText(this.client.textRenderer, "scroll:" + this.scrollAmount, this.x + this.width / 2 + this.getRowWidth() / 2, this.y, CommonColors.WHITE, true);
 
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.y, this.width + this.x, this.y + 4, CommonColors.BLACK, 0x00000000, 0);
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.height + this.y - 4, this.width + this.x, this.height + this.y, 0x00000000, CommonColors.BLACK, 0);
@@ -314,6 +319,96 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		return null;
 	}
 
+	/*
+	@Nullable
+	protected Entry nextEntry(NavigationDirection direction) {
+		return this.nextEntry(direction, e -> true);
+	}
+
+	@Nullable
+	protected Entry nextEntry(NavigationDirection direction, Predicate<Entry> predicate) {
+		return this.nextEntry(direction, predicate, (Entry) this.getFocused());
+	}
+	*/
+
+	@Nullable
+	protected Entry nextEntry(NavigationDirection direction, Predicate<Entry> predicate, @Nullable Entry currentEntry) {
+		int i = switch (direction) {
+			case LEFT, RIGHT -> 0;
+			case UP -> -1;
+			case DOWN -> 1;
+		};
+
+		if (!this.children.isEmpty() && i != 0) {
+			int j;
+			if (currentEntry == null) {
+				j = i > 0 ? 0 : this.children.size() - 1;
+			} else {
+				j = this.children.indexOf(currentEntry) + i;
+			}
+
+			for (int k = j; k >= 0 && k < this.children.size(); k += i) {
+				var entry = this.children.get(k);
+				if (predicate.test(entry)) {
+					return entry;
+				}
+			}
+		}
+
+
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ElementPath nextFocusPath(GuiNavigationEvent event) {
+		if (this.children.isEmpty()) {
+			return null;
+		} else if (!(event instanceof GuiNavigationEvent.TabNavigation tabNav)) {
+			return super.nextFocusPath(event);
+		} else {
+			var entry = (Entry) this.getFocused();
+
+			if (tabNav.direction().getAxis() == NavigationAxis.HORIZONTAL && entry != null) {
+				return ElementPath.createPath(this, entry.nextFocusPath(event));
+			} else {
+				int i = -1;
+				var navDir = tabNav.direction();
+				if (entry != null) {
+					i = entry.children().indexOf(entry.getFocused());
+				}
+
+				if (i == -1) {
+					switch (navDir) {
+						case LEFT -> {
+							i = Integer.MAX_VALUE;
+							navDir = NavigationDirection.DOWN;
+						}
+						case RIGHT -> {
+							i = 0;
+							navDir = NavigationDirection.DOWN;
+						}
+						default -> i = 0;
+					}
+				}
+
+				var entry2 = entry;
+				ElementPath path = null;
+
+				while (path == null) {
+					entry2 = this.nextEntry(navDir, entryx -> !entryx.children().isEmpty(), entry2);
+					if (entry2 == null) {
+						return null;
+					}
+
+					path = entry2.getFocusPathAtIndex(tabNav, i);
+				}
+
+				return ElementPath.createPath(this, path);
+			}
+		}
+	}
+
 	public void addCategory(Text text) {
 		this.children.add(new CategoryEntry(text));
 	}
@@ -372,6 +467,42 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			}
 
 			this.focused = child;
+		}
+
+		@Nullable
+		public ElementPath getFocusPathAtIndex(GuiNavigationEvent event, int index) {
+			if (this.children().isEmpty()) {
+				return null;
+			} else {
+				var path = (this.children().get(Math.min(index, this.children().size() - 1))).nextFocusPath(event);
+				return ElementPath.createPath(this, path);
+			}
+		}
+
+		@Nullable
+		@Override
+		public ElementPath nextFocusPath(GuiNavigationEvent event) {
+			if (event instanceof GuiNavigationEvent.TabNavigation tabNavigation) {
+				int i = switch (tabNavigation.direction()) {
+					case LEFT -> -1;
+					case RIGHT -> 1;
+					case UP, DOWN -> 0;
+				};
+
+				if (i == 0) return null;
+
+				int j = MathHelper.clamp(i + this.children().indexOf(this.getFocused()), 0, this.children().size() - 1);
+
+				for (int k = j; k >= 0 && k < this.children().size(); k += i) {
+					var element = (Element) this.children().get(k);
+					var path = element.nextFocusPath(event);
+					if (path != null) {
+						return ElementPath.createPath(this, path);
+					}
+				}
+			}
+
+			return ParentElement.super.nextFocusPath(event);
 		}
 
 		// TODO - Investigate and implement ElementListWidget's selectableChildren

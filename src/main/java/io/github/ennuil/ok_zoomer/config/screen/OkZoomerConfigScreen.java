@@ -50,10 +50,6 @@ public class OkZoomerConfigScreen extends Screen {
 	@Override
 	protected void init() {
 		this.config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
-		this.addDrawableChild(
-			ButtonWidget.builder(CommonTexts.DONE, button -> this.client.setScreen(parent))
-				.positionAndSize(this.width / 2 - 100, this.height - 27, 200, 20)
-				.build());
 		this.entryListWidget = new OkZoomerEntryListWidget(this.client, this.width, this.height - 64, 0, 32);
 		for (var node : this.config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
@@ -85,7 +81,6 @@ public class OkZoomerConfigScreen extends Screen {
 							}
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Double) {
-							// TODO - This was just a prototype to get text fields working; Do Better!
 							var button = new LabelledTextFieldWidget(
 								this.textRenderer,
 								0, 0, 150, 32,
@@ -213,6 +208,12 @@ public class OkZoomerConfigScreen extends Screen {
 
 		this.entryListWidget.finish();
 		this.addSelectableChild(entryListWidget);
+
+		// TODO - Add "Discard Changes" option
+		this.addDrawableChild(
+			ButtonWidget.builder(CommonTexts.DONE, button -> this.client.setScreen(parent))
+				.positionAndSize(this.width / 2 - 100, this.height - 27, 200, 20)
+				.build());
 	}
 
 	private void addOptionToList(ClickableWidget button, WidgetSize.Size size) {
@@ -256,6 +257,7 @@ public class OkZoomerConfigScreen extends Screen {
 		OkZoomerConfigManager.CONFIG.save();
 	}
 
+	// TODO - This is a hacky way of doing it! Do it properly!
 	private void refresh() {
 		var scrollAmount = this.entryListWidget.getScrollAmount();
 		this.init(this.client, this.width, this.height);
