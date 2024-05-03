@@ -93,16 +93,9 @@ public class OkZoomerConfigScreen extends Screen {
 									double max = Double.MAX_VALUE;
 
 									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?>) {
-											// Booooooooooo
-											var minField = Constraint.Range.class.getDeclaredField("min");
-											var maxField = Constraint.Range.class.getDeclaredField("max");
-
-											minField.setAccessible(true);
-											maxField.setAccessible(true);
-
-											min = Math.max((Double) minField.get(constraint), min);
-											max = Math.min((Double) maxField.get(constraint), max);
+										if (constraint instanceof Constraint.Range<?> range) {
+											min = Math.max(((Constraint.Range<Double>) range).min(), min);
+											max = Math.min(((Constraint.Range<Double>) range).max(), max);
 										}
 									}
 
@@ -118,8 +111,6 @@ public class OkZoomerConfigScreen extends Screen {
 								} catch (NumberFormatException | IndexOutOfBoundsException e) {
 									this.invalidValues.add(trackie);
 									button.setEditableColor(CommonColors.RED);
-								} catch (NoSuchFieldException | IllegalAccessException e) {
-									throw new RuntimeException(e);
 								}
 							});
 							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
@@ -137,16 +128,9 @@ public class OkZoomerConfigScreen extends Screen {
 									int max = Integer.MAX_VALUE;
 
 									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?>) {
-											// Booooooooooo
-											var minField = Constraint.Range.class.getDeclaredField("min");
-											var maxField = Constraint.Range.class.getDeclaredField("max");
-
-											minField.setAccessible(true);
-											maxField.setAccessible(true);
-
-											min = Math.max((Integer) minField.get(constraint), min);
-											max = Math.min((Integer) maxField.get(constraint), max);
+										if (constraint instanceof Constraint.Range<?> range) {
+											min = Math.max(((Constraint.Range<Integer>) range).min(), min);
+											max = Math.min(((Constraint.Range<Integer>) range).max(), max);
 										}
 									}
 
@@ -162,8 +146,6 @@ public class OkZoomerConfigScreen extends Screen {
 								} catch (NumberFormatException | IndexOutOfBoundsException e) {
 									this.invalidValues.add(trackie);
 									button.setEditableColor(CommonColors.RED);
-								} catch (NoSuchFieldException | IllegalAccessException e) {
-									throw new RuntimeException(e);
 								}
 							});
 							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
