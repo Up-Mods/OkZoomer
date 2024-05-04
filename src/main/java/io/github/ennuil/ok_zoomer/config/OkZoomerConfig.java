@@ -1,13 +1,14 @@
 package io.github.ennuil.ok_zoomer.config;
 
 import org.quiltmc.config.api.ReflectiveConfig;
+import org.quiltmc.config.api.annotations.Alias;
 import org.quiltmc.config.api.annotations.Comment;
 import org.quiltmc.config.api.annotations.FloatRange;
 import org.quiltmc.config.api.annotations.IntegerRange;
 import org.quiltmc.config.api.values.TrackedValue;
 
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassMode;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
@@ -38,7 +39,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("Reduces the mouse sensitivity when zooming.")
 		public final TrackedValue<Boolean> reduce_sensitivity = this.value(true);
 
-		@WidgetSize(Size.FULL)
+		@WidgetSize(Size.HALF)
 		@Comment("""
 			Adds transitions between zooms.
 			"OFF" disables transitions.
@@ -73,7 +74,8 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			""")
 		public final TrackedValue<ZoomOverlays> zoom_overlay = this.value(ZoomOverlays.OFF);
 
-		@WidgetSize(Size.FULL)
+		@WidgetSize(Size.HALF)
+		@Alias("spyglass_dependency")
 		@Comment("""
 			Determines how the zoom will depend on the spyglass.
 			"REQUIRE_ITEM" will make zooming require a spyglass.
@@ -81,7 +83,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			"BOTH" will apply both options at the same time.
 			The "REQUIRE_ITEM" option is configurable through the ok_zoomer:zoom_dependencies item tag.
 			""")
-		public final TrackedValue<SpyglassDependency> spyglass_dependency = this.value(SpyglassDependency.OFF);
+		public final TrackedValue<SpyglassMode> spyglass_mode = this.value(SpyglassMode.OFF);
 	}
 
 	public static class ValuesConfig extends Section  {
@@ -116,15 +118,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		public final TrackedValue<Integer> lower_scroll_steps = this.value(5);
 
-		@WidgetSize(Size.HALF)
+		@WidgetSize(Size.FULL)
 		@Comment("The multiplier used for smooth transitions.")
 		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
 		public final TrackedValue<Double> smooth_multiplier = this.value(0.6);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The multiplier used for the multiplied cinematic camera.")
-		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
-		public final TrackedValue<Double> cinematic_multiplier = this.value(4.0);
 
 		@WidgetSize(Size.HALF)
 		@Comment("The minimum value which the linear transition step can reach.")
@@ -135,6 +132,11 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("The maximum value which the linear transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> maximum_linear_step = this.value(0.25);
+
+		@WidgetSize(Size.HALF)
+		@Comment("The multiplier used for the multiplied cinematic camera.")
+		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
+		public final TrackedValue<Double> cinematic_multiplier = this.value(4.0);
 	}
 
 	public static class TweaksConfig extends Section  {

@@ -49,7 +49,7 @@ public class ConfigEnums {
 		}
 	}
 
-	public enum SpyglassDependency implements ConfigEnum {
+	public enum SpyglassMode implements ConfigEnum {
 		OFF,
 		REQUIRE_ITEM,
 		REPLACE_ZOOM,

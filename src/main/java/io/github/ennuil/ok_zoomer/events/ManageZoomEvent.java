@@ -24,8 +24,8 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		if (client.player == null) return;
 
 		// If zoom is disabled, do not allow for zooming at all
-		boolean disableZoom = ZoomPackets.getDisableZoom() ||
-			(switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+		boolean disableZoom = ZoomPackets.shouldDisableZoom() ||
+			(switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
 			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
@@ -52,7 +52,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		}
 
 		// Gathers all variables about if the press was with zoom key or with the spyglass
-		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		};

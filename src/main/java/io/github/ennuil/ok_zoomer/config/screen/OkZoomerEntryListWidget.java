@@ -569,7 +569,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		public ButtonEntry(ClickableWidget leftButton, ClickableWidget rightButton) {
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
-			this.entryHeight = Math.max(leftButton.getHeight(), rightButton.getHeight()) + 4;
+			this.entryHeight = (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
 		}
 
 		@Override

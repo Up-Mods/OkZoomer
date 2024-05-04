@@ -5,7 +5,7 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.widgets.LabelledTextFieldWidget;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
@@ -24,8 +24,8 @@ import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.config.api.values.ValueTreeNode;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 // TODO - You may have dropped your silly data-driven config screen idea, but you still want to streamline the config screen. Do Config v2!
 @ClientOnly
@@ -36,7 +36,7 @@ public class OkZoomerConfigScreen extends Screen {
 	private OkZoomerEntryListWidget entryListWidget;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
-	private final List<TrackedValue<Object>> invalidValues;
+	private final Set<TrackedValue<Object>> invalidValues;
 	private ClickableWidget buttonBuffer = null;
 
 	public OkZoomerConfigScreen(Screen parent) {
@@ -44,7 +44,7 @@ public class OkZoomerConfigScreen extends Screen {
 		this.configId = new Identifier("ok_zoomer", "config");
 		this.parent = parent;
 		this.newValues = new Reference2ObjectArrayMap<>();
-		this.invalidValues = new ObjectArrayList<>();
+		this.invalidValues = new ObjectArraySet<>();
 	}
 
 	@Override
@@ -94,6 +94,8 @@ public class OkZoomerConfigScreen extends Screen {
 
 									for (var constraint : trackedValue.constraints()) {
 										if (constraint instanceof Constraint.Range<?> range) {
+											System.out.println(((Constraint.Range<Double>) range).min());
+											System.out.println(((Constraint.Range<Double>) range).max());
 											min = Math.max(((Constraint.Range<Double>) range).min(), min);
 											max = Math.min(((Constraint.Range<Double>) range).max(), max);
 										}
@@ -153,7 +155,7 @@ public class OkZoomerConfigScreen extends Screen {
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
 							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> Text.translatable(String.format("config.ok_zoomer.%s.%s", trackedValue.key(), value.toString().toLowerCase())))
 								.values((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
-								.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))))
+								.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.%s.tooltip", trackedValue.key(), value.toString().toLowerCase()))))
 								.initially((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
 								.build(
 									0, 0, 150, 20,
@@ -177,7 +179,7 @@ public class OkZoomerConfigScreen extends Screen {
 		this.entryListWidget.addCategory(Text.translatable("config.ok_zoomer.reset"));
 		var presetButton = CyclingButtonWidget.<ConfigEnums.ZoomPresets>builder(value -> Text.translatable(String.format("config.ok_zoomer.reset.preset.%s", value.toString().toLowerCase())))
 			.values(ConfigEnums.ZoomPresets.values())
-			.tooltip(value -> Tooltip.create(Text.translatable("config.ok_zoomer.reset.preset.tooltip")))
+			.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.reset.preset.%s.tooltip", value.toString().toLowerCase()))))
 			.initially(ConfigEnums.ZoomPresets.DEFAULT)
 			.build(0, 0, 150, 20,
 					Text.translatable("config.ok_zoomer.reset.preset"));
@@ -191,10 +193,14 @@ public class OkZoomerConfigScreen extends Screen {
 		this.entryListWidget.finish();
 		this.addSelectableChild(entryListWidget);
 
-		// TODO - Add "Discard Changes" option
+		this.addDrawableChild(
+			ButtonWidget.builder(Text.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
+				.positionAndSize(this.width / 2 - 155, this.height - 27, 150, 20)
+				.build());
+
 		this.addDrawableChild(
 			ButtonWidget.builder(CommonTexts.DONE, button -> this.client.setScreen(parent))
-				.positionAndSize(this.width / 2 - 100, this.height - 27, 200, 20)
+				.positionAndSize(this.width / 2 + 5, this.height - 27, 150, 20)
 				.build());
 	}
 
@@ -246,6 +252,18 @@ public class OkZoomerConfigScreen extends Screen {
 		this.entryListWidget.setScrollAmount(scrollAmount);
 	}
 
+	private void resetNewValues() {
+		this.newValues.clear();
+
+		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
+			if (trackedValue.getRealValue() != null) {
+				newValues.put((TrackedValue<Object>) trackedValue, trackedValue.getRealValue());
+			}
+		}
+
+		this.refresh();
+	}
+
 	@SuppressWarnings("unchecked")
 	public void resetToPreset(ConfigEnums.ZoomPresets preset) {
 		Map<TrackedValue<?>, Object> presets = Map.ofEntries(
@@ -254,13 +272,12 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_transition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_mode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_scrolling, switch (preset) {
-					case CLASSIC -> false;
-					case SPYGLASS -> false;
+					case CLASSIC, SPYGLASS -> false;
 					default -> true;
 				}),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.extra_key_binds, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_overlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglass_dependency, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassDependency.BOTH : ConfigEnums.SpyglassDependency.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglass_mode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.values.zoom_divisor, switch (preset) {
 					case PERSISTENT -> 1.0D;
 					case SPYGLASS -> 10.0D;

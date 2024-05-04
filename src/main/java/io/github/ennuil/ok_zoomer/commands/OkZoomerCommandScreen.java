@@ -34,19 +34,19 @@ public class OkZoomerCommandScreen extends Screen {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.acknowledgement"));
 		}
 
-		if (ZoomPackets.getDisableZoom()) {
+		if (ZoomPackets.shouldDisableZoom()) {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.disable_zoom"));
 		}
 
-		if (ZoomPackets.getDisableZoomScrolling()) {
+		if (ZoomPackets.shouldDisableZoomScrolling()) {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.disable_zoom_scrolling"));
 		}
 
-		if (ZoomPackets.getForceClassicMode()) {
+		if (ZoomPackets.shouldForceClassicMode()) {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.force_classic_mode"));
 		}
 
-		if (ZoomPackets.getForceZoomDivisors()) {
+		if (ZoomPackets.shouldForceZoomDivisors()) {
 			double minimumZoomDivisor = ZoomPackets.getMinimumZoomDivisor();
 			double maximumZoomDivisor = ZoomPackets.getMaximumZoomDivisor();
 			this.entryListWidget.addServerEffectEntry(minimumZoomDivisor != maximumZoomDivisor
@@ -54,8 +54,8 @@ public class OkZoomerCommandScreen extends Screen {
 					: Text.translatable("command.ok_zoomer.restrictions.force_zoom_divisor", minimumZoomDivisor));
 		}
 
-		if (ZoomPackets.getSpyglassDependency()) {
-			var text = switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+		if (ZoomPackets.shouldForceSpyglassMode()) {
+			var text = switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
 				case REQUIRE_ITEM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.require_item");
 				case REPLACE_ZOOM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.replace_zoom");
 				case BOTH -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.both");
@@ -64,7 +64,7 @@ public class OkZoomerCommandScreen extends Screen {
 			this.entryListWidget.addServerEffectEntry(text);
 		}
 
-		if (ZoomPackets.getSpyglassOverlay()) {
+		if (ZoomPackets.shouldForceSpyglassOverlay()) {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.force_spyglass_overlay"));
 		}
 

@@ -5,7 +5,7 @@ import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassMode;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.MinecraftClient;
@@ -41,8 +41,8 @@ public class ZoomPackets {
 	private static Acknowledgement acknowledgement = Acknowledgement.NONE;
 	private static double maximumZoomDivisor = 0.0D;
 	private static double minimumZoomDivisor = 0.0D;
-	private static boolean spyglassDependency = false;
-	private static boolean spyglassOverlay = false;
+	private static boolean forceSpyglassMode = false;
+	private static boolean forceSpyglassOverlay = false;
 
 	private static final Text TOAST_TITLE = Text.translatable("toast.ok_zoomer.title");
 
@@ -154,10 +154,10 @@ public class ZoomPackets {
 			client.execute(() -> {
 				ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has the following spyglass restrictions: Require Item: %s, Replace Zoom: %s", requireItem, replaceZoom));
 
-				OkZoomerConfigManager.CONFIG.features.spyglass_dependency.setOverride(requireItem
-					? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
-					: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null));
-				spyglassDependency = true;
+				OkZoomerConfigManager.CONFIG.features.spyglass_mode.setOverride(requireItem
+					? (replaceZoom ? SpyglassMode.BOTH : SpyglassMode.REQUIRE_ITEM)
+					: (replaceZoom ? SpyglassMode.REPLACE_ZOOM : null));
+				forceSpyglassMode = true;
 
 				ZoomPackets.checkRestrictions();
 			});
@@ -171,7 +171,7 @@ public class ZoomPackets {
 				client.execute(() -> {
 					ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom"));
 					OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ZoomOverlays.SPYGLASS);
-					spyglassOverlay = true;
+					forceSpyglassOverlay = true;
 					ZoomPackets.checkRestrictions();
 				});
 			});
@@ -213,8 +213,8 @@ public class ZoomPackets {
 			|| disableZoomScrolling
 			|| forceClassicMode
 			|| forceZoomDivisors
-			|| spyglassDependency
-			|| spyglassOverlay;
+			|| forceSpyglassMode
+			|| forceSpyglassOverlay;
 
 		ZoomPackets.hasRestrictions = hasRestrictions;
 		if (hasRestrictions) {
@@ -224,40 +224,40 @@ public class ZoomPackets {
 		}
 	}
 
-	public static boolean getDisableZoom() {
-		return disableZoom;
+	public static boolean shouldDisableZoom() {
+		return ZoomPackets.disableZoom;
 	}
 
-	public static boolean getDisableZoomScrolling() {
-		return disableZoomScrolling;
+	public static boolean shouldDisableZoomScrolling() {
+		return ZoomPackets.disableZoomScrolling;
 	}
 
-	public static boolean getForceClassicMode() {
-		return forceClassicMode;
+	public static boolean shouldForceClassicMode() {
+		return ZoomPackets.forceClassicMode;
 	}
 
-	public static boolean getForceZoomDivisors() {
-		return forceZoomDivisors;
+	public static boolean shouldForceZoomDivisors() {
+		return ZoomPackets.forceZoomDivisors;
 	}
 
 	public static Acknowledgement getAcknowledgement() {
-		return acknowledgement;
+		return ZoomPackets.acknowledgement;
 	}
 
 	public static double getMaximumZoomDivisor() {
-		return maximumZoomDivisor;
+		return ZoomPackets.maximumZoomDivisor;
 	}
 
 	public static double getMinimumZoomDivisor() {
-		return minimumZoomDivisor;
+		return ZoomPackets.minimumZoomDivisor;
 	}
 
-	public static boolean getSpyglassDependency() {
-		return spyglassDependency;
+	public static boolean shouldForceSpyglassMode() {
+		return ZoomPackets.forceSpyglassMode;
 	}
 
-	public static boolean getSpyglassOverlay() {
-		return spyglassOverlay;
+	public static boolean shouldForceSpyglassOverlay() {
+		return ZoomPackets.forceSpyglassOverlay;
 	}
 
 	private static void applyDisableZoomScrolling() {
@@ -286,9 +286,9 @@ public class ZoomPackets {
 		ZoomPackets.maximumZoomDivisor = 0.0D;
 		ZoomPackets.minimumZoomDivisor = 0.0D;
 		ZoomPackets.acknowledgement = Acknowledgement.NONE;
-		ZoomPackets.spyglassDependency = false;
-		OkZoomerConfigManager.CONFIG.features.spyglass_dependency.removeOverride();
-		ZoomPackets.spyglassOverlay = false;
+		ZoomPackets.forceSpyglassMode = false;
+		OkZoomerConfigManager.CONFIG.features.spyglass_mode.removeOverride();
+		ZoomPackets.forceSpyglassOverlay = false;
 		OkZoomerConfigManager.CONFIG.features.zoom_overlay.removeOverride();
 	}
 }

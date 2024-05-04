@@ -3,6 +3,7 @@ package io.github.ennuil.ok_zoomer.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
 import org.lwjgl.glfw.GLFW;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +18,7 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.Mouse;
 
 // This mixin is responsible for the mouse-behavior-changing part of the zoom
+@ClientOnly
 @Mixin(Mouse.class)
 public abstract class MouseMixin {
 	@Shadow
@@ -73,7 +75,7 @@ public abstract class MouseMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z")
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-		if (switch (OkZoomerConfigManager.CONFIG.features.spyglass_dependency.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {
