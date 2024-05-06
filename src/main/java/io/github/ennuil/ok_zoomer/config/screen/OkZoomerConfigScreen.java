@@ -89,13 +89,11 @@ public class OkZoomerConfigScreen extends Screen {
 							button.setText(((Double) this.newValues.get(trackie)).toString());
 							button.setChangedListener(value -> {
 								try {
-									double min = Double.MIN_VALUE;
-									double max = Double.MAX_VALUE;
+									double min = Double.NEGATIVE_INFINITY;
+									double max = Double.POSITIVE_INFINITY;
 
 									for (var constraint : trackedValue.constraints()) {
 										if (constraint instanceof Constraint.Range<?> range) {
-											System.out.println(((Constraint.Range<Double>) range).min());
-											System.out.println(((Constraint.Range<Double>) range).max());
 											min = Math.max(((Constraint.Range<Double>) range).min(), min);
 											max = Math.min(((Constraint.Range<Double>) range).max(), max);
 										}
@@ -103,6 +101,8 @@ public class OkZoomerConfigScreen extends Screen {
 
 									double parsedValue = Double.parseDouble(value);
 									if (parsedValue < min || parsedValue > max) {
+										System.out.println(parsedValue);
+										System.out.println(min);
 										// Yes, this isn't exactly right but oh well
 										throw new IndexOutOfBoundsException();
 									}
@@ -160,10 +160,7 @@ public class OkZoomerConfigScreen extends Screen {
 								.build(
 									0, 0, 150, 20,
 									Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key())),
-									(button_, value) -> {
-										System.out.println(value);
-										this.newValues.replace(trackie, value);
-									});
+									(button_, value) -> this.newValues.replace(trackie, value));
 							this.addOptionToList(button, size);
 						}
 					}
@@ -295,7 +292,7 @@ public class OkZoomerConfigScreen extends Screen {
 					case SPYGLASS -> 8;
 					default -> 4;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_transition_factor, switch (preset) {
 					case CLASSIC_ZOOMER -> 0.75;
 					case SPYGLASS -> 0.5;
 					default -> 0.6;

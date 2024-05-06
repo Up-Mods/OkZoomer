@@ -25,8 +25,6 @@
 	"config.ok_zoomer.values.minimum_zoom_divisor.tooltip":"Aşağı kaydırırken olabilecek en az değer.",
 	"config.ok_zoomer.values.maximum_zoom_divisor":"Maksimum Büyütme Böleni",
 	"config.ok_zoomer.values.maximum_zoom_divisor.tooltip":"Yukarı kaydırırken olabilecek en fazla değer",
-	"config.ok_zoomer.values.smooth_multiplier":"Yumuşak Çarpan",
-	"config.ok_zoomer.values.smooth_multiplier.tooltip":"Yumuşak geçişler için kullanılan çarpan değeri.",
 	"config.ok_zoomer.values.cinematic_multiplier":"Sinematik Çarpanı",
 	"config.ok_zoomer.values.cinematic_multiplier.tooltip":"Katlanmış sinematik kamera için kullanılan çarpan değeri.",
 	"config.ok_zoomer.values.minimum_linear_step":"Minimum Düz Adım",

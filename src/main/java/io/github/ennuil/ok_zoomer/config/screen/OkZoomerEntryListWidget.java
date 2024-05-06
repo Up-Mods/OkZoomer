@@ -57,6 +57,11 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		this.update();
 	}
 
+	@Nullable
+	public Entry getFocused() {
+		return (Entry) super.getFocused();
+	}
+
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderBackground(graphics);
@@ -87,11 +92,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	// FIXME - We do better than SpruceUI now, but at a cost! Clean this mess up!
 	@Override
 	public void appendNarrations(NarrationMessageBuilder builder) {
-		// TODO - Make this.getFocused() return Entry so we don't have to cast
 		var entry = this.getFocused();
 		if (entry != null) {
-			((Entry) entry).appendNarrations(builder.nextMessage());
-			this.appendNarrations(builder, (Entry) entry);
+			entry.appendNarrations(builder.nextMessage());
+			this.appendNarrations(builder, entry);
 		}
 
 		builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
@@ -99,7 +103,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 	protected void appendNarrations(NarrationMessageBuilder builder, Entry entry) {
 		List<Entry> list = this.children();
-		if (list.size() > 1) {
+		if (!list.isEmpty()) {
 			int i = list.indexOf(entry);
 			if (i != -1) {
 				builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
@@ -127,7 +131,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			graphics.drawTexture(Screen.OPTIONS_BACKGROUND_TEXTURE, this.x, this.y, this.width - x, this.height - y + this.scrollAmount, this.width, this.height, 32, 32);
 			graphics.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		} else {
-			//graphics.fill(this.x, this.y, this.x + this.width, this.y + this.height, 0x80000000);
 			graphics.fill(this.x, this.y, this.x + this.width, this.y + this.height, 0x60000000);
 		}
 	}
@@ -190,8 +193,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			if (entry != null) {
 				if (entry.mouseClicked(mouseX, mouseY, button)) {
 					var subEntry = this.getFocused();
-					if (subEntry != entry && subEntry instanceof ParentElement parentElement) {
-						parentElement.setFocusedChild(null);
+					if (subEntry != entry && subEntry != null) {
+						subEntry.setFocusedChild(null);
 					}
 
 					this.setFocusedChild(entry);
@@ -202,7 +205,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 
 		return this.scrolling;
-		//return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
@@ -558,18 +560,21 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		private final ClickableWidget leftButton;
 		private final ClickableWidget rightButton;
 		private final int entryHeight;
+		private final List<ClickableWidget> children;
 
 		public ButtonEntry(ClickableWidget button) {
 			button.setWidth(310);
 			this.leftButton = button;
 			this.rightButton = null;
 			this.entryHeight = button.getHeight() + 4;
+			this.children = List.of(button);
 		}
 
 		public ButtonEntry(ClickableWidget leftButton, ClickableWidget rightButton) {
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
 			this.entryHeight = (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
+			this.children = rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
 		}
 
 		@Override
@@ -591,10 +596,9 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			return this.entryHeight;
 		}
 
-		// TODO - Create a list variable
 		@Override
 		public List<? extends Element> children() {
-			return rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
+			return this.children;
 		}
 	}
 

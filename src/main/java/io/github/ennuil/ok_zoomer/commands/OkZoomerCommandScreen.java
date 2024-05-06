@@ -30,7 +30,7 @@ public class OkZoomerCommandScreen extends Screen {
 		);
 		this.entryListWidget.addCategory(Text.translatable("command.ok_zoomer.restrictions"));
 
-		if (ZoomPackets.getHasRestrictions()) {
+		if (ZoomPackets.hasRestrictions()) {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.acknowledgement"));
 		}
 
@@ -68,7 +68,7 @@ public class OkZoomerCommandScreen extends Screen {
 			this.entryListWidget.addServerEffectEntry(Text.translatable("command.ok_zoomer.restrictions.force_spyglass_overlay"));
 		}
 
-		if (!ZoomPackets.getHasRestrictions()) {
+		if (!ZoomPackets.hasRestrictions()) {
 			boolean acknowledged = ZoomPackets.getAcknowledgement().equals(ZoomPackets.Acknowledgement.HAS_NO_RESTRICTIONS);
 			this.entryListWidget.addServerEffectEntry(Text.translatable(acknowledged
 				? "command.ok_zoomer.restrictions.no_restrictions.acknowledged"

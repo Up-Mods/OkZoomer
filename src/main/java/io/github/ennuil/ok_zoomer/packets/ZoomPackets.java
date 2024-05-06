@@ -204,7 +204,7 @@ public class ZoomPackets {
 		});
 	}
 
-	public static boolean getHasRestrictions() {
+	public static boolean hasRestrictions() {
 		return hasRestrictions;
 	}
 

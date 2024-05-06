@@ -13,10 +13,10 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     private final SmoothUtil cursorYZoomSmoother = new SmoothUtil();
     private boolean active;
     private boolean cinematicCameraEnabled;
-    private final double cinematicCameraMultiplier;
+    private final double multiplier;
 
-    public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {
-        this.cinematicCameraMultiplier = cinematicCameraMultiplier;
+    public MultipliedCinematicCameraMouseModifier(double multiplier) {
+        this.multiplier = multiplier;
         this.client = MinecraftClient.getInstance();
     }
 
@@ -36,8 +36,8 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
             this.cursorXZoomSmoother.clear();
             return cursorDeltaX;
         }
-        double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorXZoomSmoother.smooth(cursorDeltaX, smoother);
+
+        return this.cursorXZoomSmoother.smooth(cursorDeltaX, mouseUpdateTimeDelta * this.multiplier * cursorSensitivity);
     }
 
     @Override
@@ -46,14 +46,14 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
             this.cursorYZoomSmoother.clear();
             return cursorDeltaY;
         }
-        double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorYZoomSmoother.smooth(cursorDeltaY, smoother);
+
+        return this.cursorYZoomSmoother.smooth(cursorDeltaY, mouseUpdateTimeDelta * this.multiplier * cursorSensitivity);
     }
 
     @Override
     public void tick(boolean active) {
         this.cinematicCameraEnabled = this.client.options.cinematicCamera;
-        if (!active && active != this.active) {
+        if (!active && this.active) {
             this.cursorXZoomSmoother.clear();
             this.cursorYZoomSmoother.clear();
         }

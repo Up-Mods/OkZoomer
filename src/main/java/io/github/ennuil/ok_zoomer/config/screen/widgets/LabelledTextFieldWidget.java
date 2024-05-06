@@ -1,6 +1,6 @@
 package io.github.ennuil.ok_zoomer.config.screen.widgets;
 
-import net.minecraft.client.MinecraftClient;
+import io.github.ennuil.ok_zoomer.mixin.TextFieldWidgetAccessor;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -16,8 +16,7 @@ public class LabelledTextFieldWidget extends TextFieldWidget {
 
 	@Override
 	public void drawWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		// TODO - Use the text field's textRenderer instance through an accessor
-		graphics.drawShadowedText(MinecraftClient.getInstance().textRenderer, this.getMessage(), this.getX(), this.getY() + 1, CommonColors.WHITE);
+		graphics.drawShadowedText(((TextFieldWidgetAccessor) this).getTextRenderer(), this.getMessage(), this.getX(), this.getY() + 1, CommonColors.WHITE);
 		super.drawWidget(graphics, mouseX, mouseY, delta);
 	}
 }

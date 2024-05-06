@@ -25,8 +25,6 @@
 	"config.ok_zoomer.values.minimum_zoom_divisor.tooltip": "Minimivärdet du kan skrolla ner till.",
 	"config.ok_zoomer.values.maximum_zoom_divisor": "Största zoomnämnare",
 	"config.ok_zoomer.values.maximum_zoom_divisor.tooltip": "Maximumvärdet du kan skrolla upp till.",
-	"config.ok_zoomer.values.smooth_multiplier": "Jämn multiplikatör",
-	"config.ok_zoomer.values.smooth_multiplier.tooltip": "Multiplikatören som används för jämna övergångar.",
 	"config.ok_zoomer.values.cinematic_multiplier": "Cinematisk multiplikatör",
 	"config.ok_zoomer.values.cinematic_multiplier.tooltip": "Multiplikatören som används vid den multiplicerade cinematiska kameran.",
 	"config.ok_zoomer.values.minimum_linear_step": "Minsta linjärt steg",

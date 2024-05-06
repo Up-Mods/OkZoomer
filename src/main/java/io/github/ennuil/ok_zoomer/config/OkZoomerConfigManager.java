@@ -29,7 +29,7 @@ public class OkZoomerConfigManager {
 		// Sets zoom transition
 		ZoomUtils.ZOOMER_ZOOM.setTransitionMode(
 			switch (CONFIG.features.zoom_transition.value()) {
-				case SMOOTH -> new SmoothTransitionMode(CONFIG.values.smooth_multiplier.value().floatValue());
+				case SMOOTH -> new SmoothTransitionMode(CONFIG.values.smooth_transition_factor.value().floatValue());
 				case LINEAR -> new LinearTransitionMode(CONFIG.values.minimum_linear_step.value(), CONFIG.values.maximum_linear_step.value());
 				default -> new InstantTransitionMode();
 			}

@@ -120,8 +120,9 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 		@WidgetSize(Size.FULL)
 		@Comment("The multiplier used for smooth transitions.")
+		@Alias("smooth_multiplier")
 		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
-		public final TrackedValue<Double> smooth_multiplier = this.value(0.6);
+		public final TrackedValue<Double> smooth_transition_factor = this.value(0.6);
 
 		@WidgetSize(Size.HALF)
 		@Comment("The minimum value which the linear transition step can reach.")
