@@ -32,8 +32,8 @@ public abstract class MouseMixin {
 	)
 	private void zoomerOnMouseScroll(CallbackInfo ci) {
 		if (this.scrollDelta != 0.0) {
-			if (OkZoomerConfigManager.CONFIG.features.zoom_scrolling.value()) {
-				if (OkZoomerConfigManager.CONFIG.features.zoom_mode.value().equals(ZoomModes.PERSISTENT)) {
+			if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
+				if (OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 				}
 
@@ -53,14 +53,14 @@ public abstract class MouseMixin {
 		locals = LocalCapture.CAPTURE_FAILHARD
 	)
 	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, boolean bl, int i) {
-		if (OkZoomerConfigManager.CONFIG.features.zoom_scrolling.value()) {
-			if (OkZoomerConfigManager.CONFIG.features.zoom_mode.value().equals(ZoomModes.PERSISTENT)) {
+		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
+			if (OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)) {
 				if (!ZoomKeyBinds.ZOOM_KEY.isPressed()) return;
 			}
 
 			if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl) {
 				if (ZoomKeyBinds.ZOOM_KEY.isPressed()) {
-					if (OkZoomerConfigManager.CONFIG.tweaks.reset_zoom_with_mouse.value()) {
+					if (OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse.value()) {
 						ZoomUtils.resetZoomDivisor(true);
 						ci.cancel();
 					}
@@ -75,7 +75,7 @@ public abstract class MouseMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z")
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isUsingSpyglass) {
-		if (switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {

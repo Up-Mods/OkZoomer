@@ -55,7 +55,7 @@ public class OkZoomerCommandScreen extends Screen {
 		}
 
 		if (ZoomPackets.shouldForceSpyglassMode()) {
-			var text = switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
+			var text = switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.require_item");
 				case REPLACE_ZOOM -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.replace_zoom");
 				case BOTH -> Text.translatable("command.ok_zoomer.restrictions.force_spyglass.both");

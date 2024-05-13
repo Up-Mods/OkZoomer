@@ -79,10 +79,6 @@ processResources {
 }
 
 java {
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(javaVersion)
-			vendor = JvmVendorSpec.MICROSOFT
-		}
 		withSourcesJar()
 		// withJavadocJar()
 }

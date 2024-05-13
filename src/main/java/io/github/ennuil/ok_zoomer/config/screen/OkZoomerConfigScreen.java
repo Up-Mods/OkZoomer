@@ -32,7 +32,7 @@ import java.util.Set;
 public class OkZoomerConfigScreen extends Screen {
 	private final Identifier configId;
 	private final Screen parent;
-	private Config config;
+	private ConfigTextUtils configTextUtils;
 	private OkZoomerEntryListWidget entryListWidget;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
@@ -49,11 +49,12 @@ public class OkZoomerConfigScreen extends Screen {
 
 	@Override
 	protected void init() {
-		this.config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
+		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
+		this.configTextUtils = new ConfigTextUtils(config);
 		this.entryListWidget = new OkZoomerEntryListWidget(this.client, this.width, this.height - 64, 0, 32);
-		for (var node : this.config.nodes()) {
+		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
-				this.entryListWidget.addCategory(ConfigTextUtils.getCategoryText(this.configId, section.key().toString()));
+				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
 
 				for (var subNode : section) {
 					var size = subNode.metadata(WidgetSize.TYPE);
@@ -64,12 +65,12 @@ public class OkZoomerConfigScreen extends Screen {
 
 						if (trackedValue.value() instanceof Boolean) {
 							ClickableWidget button;
-							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key)) {
+							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
 								button = CyclingButtonWidget.onOffBuilder((Boolean) this.newValues.get(trackie))
-									.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))))
+									.tooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
 									.build(
 										0, 0, 150, 20,
-										Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key())),
+										this.configTextUtils.getOptionText(trackedValue),
 										(button_, value) -> this.newValues.replace(trackie, value));
 							} else {
 								// TODO - ew, hardcoding; we can do better than that
@@ -84,7 +85,7 @@ public class OkZoomerConfigScreen extends Screen {
 							var button = new LabelledTextFieldWidget(
 								this.textRenderer,
 								0, 0, 150, 32,
-								Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
+								this.configTextUtils.getOptionText(trackedValue)
 							);
 							button.setText(((Double) this.newValues.get(trackie)).toString());
 							button.setChangedListener(value -> {
@@ -101,8 +102,6 @@ public class OkZoomerConfigScreen extends Screen {
 
 									double parsedValue = Double.parseDouble(value);
 									if (parsedValue < min || parsedValue > max) {
-										System.out.println(parsedValue);
-										System.out.println(min);
 										// Yes, this isn't exactly right but oh well
 										throw new IndexOutOfBoundsException();
 									}
@@ -115,13 +114,13 @@ public class OkZoomerConfigScreen extends Screen {
 									button.setEditableColor(CommonColors.RED);
 								}
 							});
-							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
+							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Integer) {
 							var button = new LabelledTextFieldWidget(
 								this.textRenderer,
 								0, 0, 150, 32,
-								Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key()))
+								this.configTextUtils.getOptionText(trackedValue)
 							);
 							button.setText(((Integer) this.newValues.get(trackie)).toString());
 							button.setChangedListener(value -> {
@@ -150,16 +149,16 @@ public class OkZoomerConfigScreen extends Screen {
 									button.setEditableColor(CommonColors.RED);
 								}
 							});
-							button.setTooltip(Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key()))));
+							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
-							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> Text.translatable(String.format("config.ok_zoomer.%s.%s", trackedValue.key(), value.toString().toLowerCase())))
+							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, configEnum))
 								.values((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
-								.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.%s.%s.tooltip", trackedValue.key(), value.toString().toLowerCase()))))
+								.tooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, configEnum)))
 								.initially((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
 								.build(
 									0, 0, 150, 20,
-									Text.translatable(String.format("config.ok_zoomer.%s", trackedValue.key())),
+									this.configTextUtils.getOptionText(trackedValue),
 									(button_, value) -> this.newValues.replace(trackie, value));
 							this.addOptionToList(button, size);
 						}
@@ -263,49 +262,49 @@ public class OkZoomerConfigScreen extends Screen {
 	@SuppressWarnings("unchecked")
 	public void resetToPreset(ConfigEnums.ZoomPresets preset) {
 		Map<TrackedValue<?>, Object> presets = Map.ofEntries(
-				Map.entry(OkZoomerConfigManager.CONFIG.features.cinematic_camera, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.CinematicCameraOptions.VANILLA : ConfigEnums.CinematicCameraOptions.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.reduce_sensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_transition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_mode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_scrolling, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.features.cinematicCamera, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.CinematicCameraOptions.VANILLA : ConfigEnums.CinematicCameraOptions.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, switch (preset) {
 					case CLASSIC, SPYGLASS -> false;
 					default -> true;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.extra_key_binds, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_overlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglass_mode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.zoom_divisor, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.features.extraKeyBinds, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, switch (preset) {
 					case PERSISTENT -> 1.0D;
 					case SPYGLASS -> 10.0D;
 					default -> 4.0D;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor, 1.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor, 50.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.upper_scroll_steps, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor, 1.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor, 50.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, switch (preset) {
 					case PERSISTENT -> 38;
 					case SPYGLASS -> 16;
 					default -> 20;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.lower_scroll_steps, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps, switch (preset) {
 					case PERSISTENT -> 0;
 					case SPYGLASS -> 8;
 					default -> 4;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_transition_factor, switch (preset) {
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, switch (preset) {
 					case CLASSIC_ZOOMER -> 0.75;
 					case SPYGLASS -> 0.5;
 					default -> 0.6;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.cinematic_multiplier, 4.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_linear_step, 0.125D),
-				Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_linear_step, 0.25D),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.reset_zoom_with_mouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forget_zoom_divisor, true),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key, false),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_texture, preset == ConfigEnums.ZoomPresets.SPYGLASS),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_sounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts, true),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, false)
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.125D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.25D),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassTexture, preset == ConfigEnums.ZoomPresets.SPYGLASS),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts, true),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, false)
 		);
 
 		this.newValues.clear();

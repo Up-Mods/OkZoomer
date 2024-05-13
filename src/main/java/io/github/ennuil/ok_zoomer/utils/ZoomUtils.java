@@ -47,11 +47,11 @@ public class ZoomUtils {
 		//If the zoom is disabled, don't allow for zoom scrolling
 		if (ZoomPackets.shouldDisableZoom()) return;
 
-		double zoomDivisor = OkZoomerConfigManager.CONFIG.values.zoom_divisor.value();
-		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor.value();
-		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor.value();
-		int upperScrollStep = OkZoomerConfigManager.CONFIG.values.upper_scroll_steps.value();
-		int lowerScrollStep = OkZoomerConfigManager.CONFIG.values.lower_scroll_steps.value();
+		double zoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.value();
+		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor.value();
+		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps.value();
+		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
 
 		if (ZoomPackets.shouldForceZoomDivisors()) {
 			minimumZoomDivisor = Math.max(minimumZoomDivisor, ZoomPackets.getMinimumZoomDivisor());
@@ -72,15 +72,15 @@ public class ZoomUtils {
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
 	public static void resetZoomDivisor(boolean userPrompted) {
 		if (userPrompted && ZoomPackets.shouldDisableZoom()) return;
-		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forget_zoom_divisor.value()) return;
+		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
 
 		ZOOMER_ZOOM.resetZoomDivisor();
 		zoomStep = 0;
 	}
 
 	public static void keepZoomStepsWithinBounds() {
-		int upperScrollStep = OkZoomerConfigManager.CONFIG.values.upper_scroll_steps.value();
-		int lowerScrollStep = OkZoomerConfigManager.CONFIG.values.lower_scroll_steps.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps.value();
+		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
 
 		zoomStep = MathHelper.clamp(zoomStep, -lowerScrollStep, upperScrollStep);
 	}

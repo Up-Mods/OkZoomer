@@ -47,7 +47,7 @@ public class ZoomPackets {
 	private static final Text TOAST_TITLE = Text.translatable("toast.ok_zoomer.title");
 
 	private static void sendToast(MinecraftClient client, Text description) {
-		if (OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts.value()) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts.value()) {
 			client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, TOAST_TITLE, description));
 		}
 	}
@@ -148,7 +148,7 @@ public class ZoomPackets {
 			client.execute(() -> {
 				ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has the following spyglass restrictions: Require Item: %s, Replace Zoom: %s", requireItem, replaceZoom));
 
-				OkZoomerConfigManager.CONFIG.features.spyglass_mode.setOverride(requireItem
+				OkZoomerConfigManager.CONFIG.features.spyglassMode.setOverride(requireItem
 					? (replaceZoom ? SpyglassMode.BOTH : SpyglassMode.REQUIRE_ITEM)
 					: (replaceZoom ? SpyglassMode.REPLACE_ZOOM : null));
 				forceSpyglassMode = true;
@@ -163,7 +163,7 @@ public class ZoomPackets {
 			Arguments: probably some, we'll see */
 			ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_OVERLAY_PACKET_ID, (client, handler, buf, sender) -> client.execute(() -> {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom");
-				OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ZoomOverlays.SPYGLASS);
+				OkZoomerConfigManager.CONFIG.features.zoomOverlay.setOverride(ZoomOverlays.SPYGLASS);
 				forceSpyglassOverlay = true;
 				ZoomPackets.checkRestrictions();
 			}));
@@ -253,14 +253,14 @@ public class ZoomPackets {
 	}
 
 	private static void applyDisableZoomScrolling() {
-		OkZoomerConfigManager.CONFIG.features.zoom_scrolling.setOverride(false);
-		OkZoomerConfigManager.CONFIG.features.extra_key_binds.setOverride(false);
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling.setOverride(false);
+		OkZoomerConfigManager.CONFIG.features.extraKeyBinds.setOverride(false);
 	}
 
 	private static void applyClassicMode() {
-		OkZoomerConfigManager.CONFIG.features.cinematic_camera.setOverride(CinematicCameraOptions.VANILLA);
-		OkZoomerConfigManager.CONFIG.features.reduce_sensitivity.setOverride(false);
-		OkZoomerConfigManager.CONFIG.values.zoom_divisor.setOverride(4.0D);
+		OkZoomerConfigManager.CONFIG.features.cinematicCamera.setOverride(CinematicCameraOptions.VANILLA);
+		OkZoomerConfigManager.CONFIG.features.reduceSensitivity.setOverride(false);
+		OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.setOverride(4.0D);
 	}
 
 	//The method used to reset the signals once left the server.
@@ -268,19 +268,19 @@ public class ZoomPackets {
 		ZoomPackets.hasRestrictions = false;
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
-		OkZoomerConfigManager.CONFIG.features.zoom_scrolling.removeOverride();
-		OkZoomerConfigManager.CONFIG.features.extra_key_binds.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.extraKeyBinds.removeOverride();
 		ZoomPackets.forceClassicMode = false;
-		OkZoomerConfigManager.CONFIG.features.cinematic_camera.removeOverride();
-		OkZoomerConfigManager.CONFIG.features.reduce_sensitivity.removeOverride();
-		OkZoomerConfigManager.CONFIG.values.zoom_divisor.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.cinematicCamera.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.reduceSensitivity.removeOverride();
+		OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.removeOverride();
 		ZoomPackets.forceZoomDivisors = false;
 		ZoomPackets.maximumZoomDivisor = 0.0D;
 		ZoomPackets.minimumZoomDivisor = 0.0D;
 		ZoomPackets.acknowledgement = Acknowledgement.NONE;
 		ZoomPackets.forceSpyglassMode = false;
-		OkZoomerConfigManager.CONFIG.features.spyglass_mode.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.spyglassMode.removeOverride();
 		ZoomPackets.forceSpyglassOverlay = false;
-		OkZoomerConfigManager.CONFIG.features.zoom_overlay.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.zoomOverlay.removeOverride();
 	}
 }

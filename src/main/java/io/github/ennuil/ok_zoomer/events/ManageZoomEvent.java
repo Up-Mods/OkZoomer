@@ -25,7 +25,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 
 		// If zoom is disabled, do not allow for zooming at all
 		boolean disableZoom = ZoomPackets.shouldDisableZoom() ||
-			(switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
+			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
 			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
@@ -38,7 +38,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		}
 
 		// Handle zoom mode changes.
-		if (!OkZoomerConfigManager.CONFIG.features.zoom_mode.value().equals(ZoomModes.HOLD)) {
+		if (!OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.HOLD)) {
 			if (!persistentZoom) {
 				persistentZoom = true;
 				lastZooming = true;
@@ -52,7 +52,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		}
 
 		// Gathers all variables about if the press was with zoom key or with the spyglass
-		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.features.spyglass_mode.value()) {
+		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		};
@@ -64,9 +64,9 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_sounds.value();
+		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds.value();
 
-		switch (OkZoomerConfigManager.CONFIG.features.zoom_mode.value()) {
+		switch (OkZoomerConfigManager.CONFIG.features.zoomMode.value()) {
 			case HOLD -> {
 				// If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
 				ZoomUtils.ZOOMER_ZOOM.setZoom(zooming);
@@ -89,7 +89,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 		}
 
 		if (doSpyglassSound && !spyglassUse) {
-			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoom_mode.value().equals(ZoomModes.PERSISTENT)
+			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)
 				? ZoomUtils.ZOOMER_ZOOM.getZoom()
 				: keyPress;
 

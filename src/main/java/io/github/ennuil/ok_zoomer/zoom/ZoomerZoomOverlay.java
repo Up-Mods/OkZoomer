@@ -72,13 +72,13 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
         lastZoomOverlayAlpha = zoomOverlayAlpha;
 
-        if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.SMOOTH)) {
-            zoomOverlayAlpha += (float) ((zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.CONFIG.values.smooth_transition_factor.value());
-        } else if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.LINEAR)) {
+        if (OkZoomerConfigManager.CONFIG.features.zoomTransition.value().equals(ZoomTransitionOptions.SMOOTH)) {
+            zoomOverlayAlpha += (float) ((zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor.value());
+        } else if (OkZoomerConfigManager.CONFIG.features.zoomTransition.value().equals(ZoomTransitionOptions.LINEAR)) {
             double linearStep = MathHelper.clamp(
 				1.0F / divisor,
-				OkZoomerConfigManager.CONFIG.values.minimum_linear_step.value(),
-				OkZoomerConfigManager.CONFIG.values.maximum_linear_step.value()
+				OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep.value(),
+				OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep.value()
 			);
 
             zoomOverlayAlpha = MathHelper.stepTowards(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
