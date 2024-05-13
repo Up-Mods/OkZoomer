@@ -74,8 +74,8 @@ public class OkZoomerConfigScreen extends Screen {
 							} else {
 								// TODO - ew, hardcoding; we can do better than that
 								button = ButtonWidget.builder(
-									Text.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key"),
-									button_ -> ZoomUtils.unbindConflictingKey(this.client, true))
+										Text.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key"),
+										button_ -> ZoomUtils.unbindConflictingKey(this.client, true))
 									.tooltip(Tooltip.create(Text.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip")))
 									.build();
 							}
@@ -179,16 +179,16 @@ public class OkZoomerConfigScreen extends Screen {
 			.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.reset.preset.%s.tooltip", value.toString().toLowerCase()))))
 			.initially(ConfigEnums.ZoomPresets.DEFAULT)
 			.build(0, 0, 150, 20,
-					Text.translatable("config.ok_zoomer.reset.preset"));
+				Text.translatable("config.ok_zoomer.reset.preset"));
 		var resetButton = ButtonWidget.builder(
 				Text.translatable("config.ok_zoomer.reset.reset_settings"),
 				button -> this.resetToPreset(presetButton.getValue()))
-				.tooltip(Tooltip.create(Text.translatable("config.ok_zoomer.reset.reset_settings.tooltip")))
-				.build();
+			.tooltip(Tooltip.create(Text.translatable("config.ok_zoomer.reset.reset_settings.tooltip")))
+			.build();
 		this.entryListWidget.addButton(presetButton, resetButton);
 
 		this.entryListWidget.finish();
-		this.addSelectableChild(entryListWidget);
+		this.addSelectableChild(this.entryListWidget);
 
 		this.addDrawableChild(
 			ButtonWidget.builder(Text.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
@@ -196,7 +196,7 @@ public class OkZoomerConfigScreen extends Screen {
 				.build());
 
 		this.addDrawableChild(
-			ButtonWidget.builder(CommonTexts.DONE, button -> this.client.setScreen(parent))
+			ButtonWidget.builder(CommonTexts.DONE, button -> this.client.setScreen(this.parent))
 				.positionAndSize(this.width / 2 + 5, this.height - 27, 150, 20)
 				.build());
 	}
@@ -242,10 +242,9 @@ public class OkZoomerConfigScreen extends Screen {
 		OkZoomerConfigManager.CONFIG.save();
 	}
 
-	// TODO - This is a hacky way of doing it! Do it properly!
 	private void refresh() {
 		var scrollAmount = this.entryListWidget.getScrollAmount();
-		this.init(this.client, this.width, this.height);
+		this.repositionElements();
 		this.entryListWidget.setScrollAmount(scrollAmount);
 	}
 

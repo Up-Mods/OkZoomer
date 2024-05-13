@@ -58,43 +58,37 @@ public class ZoomPackets {
 			If this packet is received, Ok Zoomer's zoom will be disabled completely while in the server
 			Supported since Ok Zoomer 4.0.0 (1.16)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zooming");
-				disableZoom = true;
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_PACKET_ID, (client, handler, buf, sender) -> client.execute(() -> {
+			ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zooming");
+			disableZoom = true;
+			ZoomPackets.checkRestrictions();
+		}));
 
 		/*  The "Disable Zoom Scrolling" packet,
 			If this packet is received, zoom scrolling will be disabled while in the server
 			Supported since Ok Zoomer 4.0.0 (1.16)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zoom scrolling");
-				ZoomPackets.applyDisableZoomScrolling();
-				disableZoomScrolling = true;
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		ClientPlayNetworking.registerGlobalReceiver(DISABLE_ZOOM_SCROLLING_PACKET_ID, (client, handler, buf, sender) -> client.execute(() -> {
+			ZoomUtils.LOGGER.info("[Ok Zoomer] This server has disabled zoom scrolling");
+			ZoomPackets.applyDisableZoomScrolling();
+			disableZoomScrolling = true;
+			ZoomPackets.checkRestrictions();
+		}));
 
 		/*  The "Force Classic Mode" packet,
 			If this packet is received, the Classic Mode will be activated while connected to the server,
 			under the Classic mode, the Classic preset will be forced on all non-cosmetic options
 			Supported since Ok Zoomer 5.0.0-beta.1 (1.17)
 			Arguments: None */
-		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> {
-			client.execute(() -> {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed classic mode");
-				disableZoomScrolling = true;
-				forceClassicMode = true;
-				ZoomPackets.applyDisableZoomScrolling();
-				ZoomPackets.applyClassicMode();
-				OkZoomerConfigManager.configureZoomInstance();
-				ZoomPackets.checkRestrictions();
-			});
-		});
+		ClientPlayNetworking.registerGlobalReceiver(FORCE_CLASSIC_MODE_PACKET_ID, (client, handler, buf, sender) -> client.execute(() -> {
+			ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed classic mode");
+			disableZoomScrolling = true;
+			forceClassicMode = true;
+			ZoomPackets.applyDisableZoomScrolling();
+			ZoomPackets.applyClassicMode();
+			OkZoomerConfigManager.configureZoomInstance();
+			ZoomPackets.checkRestrictions();
+		}));
 
 		/*  The "Force Zoom Divisor" packet,
 			If this packet is received, the minimum and maximum zoom divisor values will be overriden
@@ -167,14 +161,12 @@ public class ZoomPackets {
 			This packet will let the server restrict the mod to spyglass-only usage
 			Not supported yet!
 			Arguments: probably some, we'll see */
-			ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_OVERLAY_PACKET_ID, (client, handler, buf, sender) -> {
-				client.execute(() -> {
-					ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom"));
-					OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ZoomOverlays.SPYGLASS);
-					forceSpyglassOverlay = true;
-					ZoomPackets.checkRestrictions();
-				});
-			});
+			ClientPlayNetworking.registerGlobalReceiver(FORCE_SPYGLASS_OVERLAY_PACKET_ID, (client, handler, buf, sender) -> client.execute(() -> {
+				ZoomUtils.LOGGER.info("[Ok Zoomer] This server has imposed a spyglass overlay on the zoom");
+				OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ZoomOverlays.SPYGLASS);
+				forceSpyglassOverlay = true;
+				ZoomPackets.checkRestrictions();
+			}));
 
 		/*
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

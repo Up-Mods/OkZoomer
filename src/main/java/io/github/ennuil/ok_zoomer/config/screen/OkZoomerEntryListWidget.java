@@ -38,6 +38,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	private int contentHeight;
 	private int scrollAmount;
 	private boolean scrolling;
+	@Nullable
+	private Entry hoveredEntry;
 
 	public OkZoomerEntryListWidget(MinecraftClient client, int width, int height, int x, int y) {
 		this.client = client;
@@ -51,8 +53,9 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		this.contentHeight = this.height;
 
 		this.scrollAmount = 0;
-
 		this.scrolling = false;
+
+		this.hoveredEntry = null;
 
 		this.update();
 	}
@@ -65,6 +68,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderBackground(graphics);
+		this.hoveredEntry = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
 
 		graphics.enableScissor(this.x, this.y, this.width + this.x, this.height + this.y);
 		int i = this.y - this.scrollAmount;
@@ -78,9 +82,6 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 		graphics.disableScissor();
 
-		// TODO - Remove this piece of debug code
-		//graphics.drawText(this.client.textRenderer, "scroll:" + this.scrollAmount, this.x + this.width / 2 + this.getRowWidth() / 2, this.y, CommonColors.WHITE, true);
-
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.y, this.width + this.x, this.y + 4, CommonColors.BLACK, 0x00000000, 0);
 		graphics.fillGradient(RenderLayer.getGuiOverlay(), this.x, this.height + this.y - 4, this.width + this.x, this.height + this.y, 0x00000000, CommonColors.BLACK, 0);
 
@@ -89,13 +90,18 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
-	// FIXME - We do better than SpruceUI now, but at a cost! Clean this mess up!
 	@Override
 	public void appendNarrations(NarrationMessageBuilder builder) {
-		var entry = this.getFocused();
-		if (entry != null) {
-			entry.appendNarrations(builder.nextMessage());
-			this.appendNarrations(builder, entry);
+		var hoveredEntry = this.getHoveredEntry();
+		if (hoveredEntry != null) {
+			hoveredEntry.appendNarrations(builder.nextMessage());
+			this.appendNarrations(builder, hoveredEntry);
+		} else {
+			var entry = this.getFocused();
+			if (entry != null) {
+				entry.appendNarrations(builder.nextMessage());
+				this.appendNarrations(builder, entry);
+			}
 		}
 
 		builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
@@ -121,7 +127,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		if (this.isFocused()) {
 			return SelectionType.FOCUSED;
 		} else {
-			return this.getFocused() != null ? SelectionType.HOVERED : SelectionType.NONE;
+			return this.hoveredEntry != null ? SelectionType.HOVERED : SelectionType.NONE;
 		}
 	}
 
@@ -137,7 +143,7 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 	private void renderScrollBar(GuiGraphics graphics) {
 		int size = Math.min(this.height, (this.height * this.height) / this.contentHeight);
-		int pos = (this.width - x) / 2 + 156;
+		int pos = this.getScrollBarPosX();
 
 		var aaa = (this.scrollAmount / (double) (this.contentHeight - this.height));
 		var z = this.y + (int) (aaa * (this.height - size));
@@ -145,6 +151,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		graphics.fill(pos, this.y, pos + 6, this.y + this.height, CommonColors.BLACK);
 		graphics.fill(pos, z, pos + 6, size + z, 0xFF808080);
 		graphics.fill(pos, z, pos + 6 - 1, size + z - 1, 0xFFC0C0C0);
+	}
+
+	protected int getScrollBarPosX() {
+		return this.width / 2 + 156;
 	}
 
 	public void update() {
@@ -295,27 +305,29 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
-	// TODO - This faulty math is the faultiest math of all faulty maths! Fix this, you can do better than a racist
+	// This is so faithful to Vanilla's algo that it also inherits the Bottom Void Pixel of Doom! Oh no!
 	protected final Entry getEntryAtPosition(double x, double y) {
-		// First of all, you don't need a Y check
-		if (y < this.y + this.entryHeights.intStream().sum() - scrollAmount) {
-			/*
-			int rowCenter = this.getRowWidth() / 2;
-			int absoluteCenter = this.x + this.width / 2;
-			*/
-			int sum = 0;
-			int i = 0;
-			while (sum <= (y - this.y) + this.scrollAmount) {
+		int center = this.x + this.width / 2;
+		int halfRowWidth = this.getRowWidth() / 2;
+		int rowMinX = center - halfRowWidth;
+		int rowMaxX = center + halfRowWidth;
+
+		int sum = 0;
+		int i = 0;
+
+		while (sum <= MathHelper.floor(y - this.y) + this.scrollAmount) {
+			if (i < this.entryHeights.size()) {
 				sum += this.entryHeights.getInt(i);
 				i++;
+			} else {
+				i++;
+				break;
 			}
-			i--;
+		}
+		i--;
 
-			System.out.println(i + " - " + y);
-
-			if (i < this.children.size()) {
-				return this.children.get(i);
-			}
+		if (x < this.getScrollBarPosX() && x >= rowMinX && x <= rowMaxX && i < this.children.size()) {
+			return this.children.get(i);
 		}
 
 		return null;
@@ -411,6 +423,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 	}
 
+	public @Nullable Entry getHoveredEntry() {
+		return this.hoveredEntry;
+	}
+
 	public void addCategory(Text text) {
 		this.children.add(new CategoryEntry(text));
 	}
@@ -431,6 +447,8 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 	public abstract class Entry implements ParentElement {
 		@Nullable
 		private Element focused;
+		@Nullable
+		private Selectable focusedSelectable;
 		private boolean dragging;
 
 		public abstract void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta);
@@ -507,16 +525,15 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			return ParentElement.super.nextFocusPath(event);
 		}
 
-		// TODO - Investigate and implement ElementListWidget's selectableChildren
 		void appendNarrations(NarrationMessageBuilder builder) {
-			var list = (List<? extends Selectable>) this.children();
-			var narrationData = Screen.findSelectedElementData(list, (Selectable) this.focused);
+			var list = this.selectableChildren();
+			var narrationData = Screen.findSelectedElementData(list, this.focusedSelectable);
 			if (narrationData != null) {
 				if (narrationData.selectType.isFocused()) {
-					this.focused = (Element) narrationData.selectable;
+					this.focusedSelectable = narrationData.selectable;
 				}
 
-				if (list.size() > 1) {
+				if (!list.isEmpty()) {
 					builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.object_list", narrationData.index + 1, list.size()));
 					if (narrationData.selectType == Selectable.SelectionType.FOCUSED) {
 						builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
@@ -526,9 +543,10 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 				narrationData.selectable.appendNarrations(builder.nextMessage());
 			}
 		}
+
+		public abstract List<? extends Selectable> selectableChildren();
 	}
 
-	// TODO - Use MultilineTextWidget
 	@ClientOnly
 	class CategoryEntry extends Entry {
 		private final Text title;
@@ -544,14 +562,33 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 
 		@Override
+		public @Nullable ElementPath nextFocusPath(GuiNavigationEvent event) {
+			return null;
+		}
+
+		@Override
 		public int getEntryHeight() {
 			return 20;
 		}
 
-		// TODO - Use the KeyBindListWidget.CategoryEntry code for narrator-friendly categories
 		@Override
 		public List<? extends Element> children() {
 			return List.of();
+		}
+
+		@Override
+		public List<? extends Selectable> selectableChildren() {
+			return List.of(new Selectable() {
+				@Override
+				public SelectionType getType() {
+					return SelectionType.HOVERED;
+				}
+
+				@Override
+				public void appendNarrations(NarrationMessageBuilder builder) {
+					builder.put(NarrationPart.TITLE, CategoryEntry.this.title);
+				}
+			});
 		}
 	}
 
@@ -560,21 +597,21 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		private final ClickableWidget leftButton;
 		private final ClickableWidget rightButton;
 		private final int entryHeight;
-		private final List<ClickableWidget> children;
+		private final List<ClickableWidget> buttons;
 
 		public ButtonEntry(ClickableWidget button) {
 			button.setWidth(310);
 			this.leftButton = button;
 			this.rightButton = null;
 			this.entryHeight = button.getHeight() + 4;
-			this.children = List.of(button);
+			this.buttons = List.of(button);
 		}
 
 		public ButtonEntry(ClickableWidget leftButton, ClickableWidget rightButton) {
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
 			this.entryHeight = (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
-			this.children = rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
+			this.buttons = rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
 		}
 
 		@Override
@@ -598,17 +635,24 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 		@Override
 		public List<? extends Element> children() {
-			return this.children;
+			return this.buttons;
+		}
+
+		@Override
+		public List<? extends Selectable> selectableChildren() {
+			return this.buttons;
 		}
 	}
 
 	@ClientOnly
 	class ServerEffectEntry extends Entry {
 		private final MultilineText serverEffect;
+		private final Text serverEffectText;
 		private int lines = 16;
 
 		private ServerEffectEntry(Text serverEffect) {
 			this.serverEffect = MultilineText.create(OkZoomerEntryListWidget.this.client.textRenderer, serverEffect, 310);
+			this.serverEffectText = serverEffect;
 		}
 
 		@Override
@@ -617,14 +661,33 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 		}
 
 		@Override
+		public @Nullable ElementPath nextFocusPath(GuiNavigationEvent event) {
+			return null;
+		}
+
+		@Override
 		public int getEntryHeight() {
 			return lines;
 		}
 
-		// TODO - Use the KeyBindListWidget.CategoryEntry code for narrator-friendly categories
 		@Override
 		public List<? extends Element> children() {
 			return List.of();
+		}
+
+		@Override
+		public List<? extends Selectable> selectableChildren() {
+			return List.of(new Selectable() {
+				@Override
+				public SelectionType getType() {
+					return SelectionType.HOVERED;
+				}
+
+				@Override
+				public void appendNarrations(NarrationMessageBuilder builder) {
+					builder.put(NarrationPart.TITLE, ServerEffectEntry.this.serverEffectText);
+				}
+			});
 		}
 	}
 }
