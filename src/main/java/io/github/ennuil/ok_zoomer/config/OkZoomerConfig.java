@@ -32,93 +32,82 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	public static class FeaturesConfig extends Section {
 		@WidgetSize(Size.HALF)
 		@Comment("""
-			Defines the cinematic camera while zooming.
-			"OFF" disables the cinematic camera.
-			"VANILLA" uses Vanilla's cinematic camera.
-			"MULTIPLIED" is a multiplied variant of "VANILLA".
+			"OFF": Disables the zoom's cinematic camera.
+			"VANILLA": Uses the game's cinematic camera while zooming.
+			"MULTIPLIED": Uses the cinematic camera with a configurable multiplier while zooming.
 			""")
 		public final TrackedValue<CinematicCameraOptions> cinematicCamera = this.value(CinematicCameraOptions.OFF);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Reduces the mouse sensitivity when zooming.")
+		@Comment("Divides the mouse sensitivity with the zoom divisor while zooming.")
 		public final TrackedValue<Boolean> reduceSensitivity = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("""
-			Adds transitions between zooms.
-			"OFF" disables transitions.
-			"SMOOTH" replicates Vanilla's dynamic FOV.
-			"LINEAR" removes the smoothiness.
+			"OFF": The zoom will abruptly transition between its on and off states.
+			"SMOOTH": The zoom will smoothly transition between its on and off states in a manner resembling the game's FOV transitions.
+			"LINEAR": The zoom will linearly transition between its on and off states.
 			""")
 		public final TrackedValue<ZoomTransitionOptions> zoomTransition = this.value(ZoomTransitionOptions.SMOOTH);
 
 		@WidgetSize(Size.HALF)
 		@Comment("""
-			The behavior of the zoom key.
-			"HOLD" needs the zoom key to be hold.
-			"TOGGLE" has the zoom key toggle the zoom.
-			"PERSISTENT" makes the zoom permanent.
+			"HOLD": The zoom will require the zoom key to be held.
+			"TOGGLE": The zoom will be toggled by the zoom key.
+			"PERSISTENT": The zoom will always be enabled, with the zoom key being used for zoom scrolling.
 			""")
 		public final TrackedValue<ZoomModes> zoomMode = this.value(ZoomModes.HOLD);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Allows to increase or decrease zoom by scrolling.")
+		@Comment("Allows to increase or decrease the zoom by scrolling with the mouse wheel.")
 		public final TrackedValue<Boolean> zoomScrolling = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Adds zoom manipulation keys along with the zoom key.")
+		@Comment("Adds zoom manipulation keys along with the zoom key. A game reboot will be required in order to apply the changes.")
 		public final TrackedValue<Boolean> extraKeyBinds = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("""
-			Adds an overlay in the screen during zoom.
-			"VIGNETTE" uses a vignette as the overlay.
-			"SPYGLASS" uses the spyglass overlay with the vignette texture.
-			The vignette texture can be found at: assets/ok_zoomer/textures/misc/zoom_overlay.png
+			"OFF": Disables the zoom overlay.
+			"VIGNETTE": Uses a vignette as the zoom overlay. The vignette texture can be found at assets/ok_zoomer/textures/misc/zoom_overlay.png
+			"SPYGLASS": Uses the spyglass overlay with the vignette texture. The spyglass texture can be used with the "Use Spyglass Texture" option.
 			""")
 		public final TrackedValue<ZoomOverlays> zoomOverlay = this.value(ZoomOverlays.OFF);
 
 		@WidgetSize(Size.HALF)
 		@Alias("spyglass_dependency")
 		@Comment("""
-			Determines how the zoom will depend on the spyglass.
-			"REQUIRE_ITEM" will make zooming require a spyglass.
-			"REPLACE_ZOOM" will replace spyglass's zoom with Ok Zoomer's zoom.
-			"BOTH" will apply both options at the same time.
-			The "REQUIRE_ITEM" option is configurable through the ok_zoomer:zoom_dependencies item tag.
+			"OFF": Zooming won't require a spyglass and won't replace its zoom.
+			"REQUIRE_ITEM": Zooming will require a spyglass in order to work. This option is configurable through the ok_zoomer:zoom_dependencies item tag.
+			"REPLACE_ZOOM": Zooming will replace the spyglass zoom but it won't require one in order to work.
+			"BOTH": Zooming will act as a complete replacement of the spyglass zoom, requiring one to work and replacing its zoom as well.
 			""")
 		public final TrackedValue<SpyglassMode> spyglassMode = this.value(SpyglassMode.OFF);
 	}
 
 	public static class ZoomValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
-		@Comment("The divisor applied to the FOV when zooming.")
+		@Comment("The divisor applied to the FOV's zoom multiplier. A higher value means more zoom.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> zoomDivisor = this.value(4.0);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The minimum value that you can scroll down.")
+		@Comment("The minimum zoom divisor that you can scroll down.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> minimumZoomDivisor = this.value(1.0);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The maximum value that you can scroll down.")
+		@Comment("The maximum zoom divisor that you can scroll up.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> maximumZoomDivisor = this.value(50.0);
 
 		@WidgetSize(Size.HALF)
-		@Comment("""
-			The number of steps between the zoom divisor and the minimum zoom divisor.
-			Used by zoom scrolling.
-			""")
+		@Comment("The number of steps between the zoom divisor and the minimum zoom divisor. Used by zoom scrolling.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		public final TrackedValue<Integer> lowerScrollSteps = this.value(5);
 
 		@WidgetSize(Size.HALF)
-		@Comment("""
-			The number of steps between the zoom divisor and the maximum zoom divisor.
-			Used by zoom scrolling.
-			""")
+		@Comment("The number of steps between the zoom divisor and the maximum zoom divisor. Used by zoom scrolling.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		public final TrackedValue<Integer> upperScrollSteps = this.value(10);
 
@@ -130,18 +119,18 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 	public static class TransitionValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
-		@Comment("The multiplier used for smooth transitions.")
-		@Alias({"values", "smooth_multiplier"})
+		@Comment("The factor used for smooth zoom transitions. A lower value means a smoother transition, a higher value means a faster one.")
+		@Alias("smooth_multiplier")
 		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
 		public final TrackedValue<Double> smoothTransitionFactor = this.value(0.6);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The minimum value which the linear transition step can reach.")
+		@Comment("The minimum value which the linear zoom transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> minimumLinearStep = this.value(0.125);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The maximum value which the linear transition step can reach.")
+		@Comment("The maximum value which the linear zoom transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> maximumLinearStep = this.value(0.25);
 	}
@@ -156,11 +145,11 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("If enabled, the current zoom divisor is forgotten once zooming is done.")
+		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
 		public final TrackedValue<Boolean> forgetZoomDivisor = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("If enabled, the spyglass overlay texture is used instead of Ok Zoomer's overlay texture.")
+		@Comment("If enabled, the spyglass overlay texture will be used instead of the mod's vignette texture.")
 		public final TrackedValue<Boolean> useSpyglassTexture = this.value(false);
 
 		@WidgetSize(Size.HALF)

@@ -172,17 +172,17 @@ public class OkZoomerConfigScreen extends Screen {
 			}
 		}
 
-		this.entryListWidget.addCategory(Text.translatable("config.ok_zoomer.reset"));
-		var presetButton = CyclingButtonWidget.<ConfigEnums.ZoomPresets>builder(value -> Text.translatable(String.format("config.ok_zoomer.reset.preset.%s", value.toString().toLowerCase())))
+		this.entryListWidget.addCategory(Text.translatable("config.ok_zoomer.presets"));
+		var presetButton = CyclingButtonWidget.<ConfigEnums.ZoomPresets>builder(value -> Text.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase())))
 			.values(ConfigEnums.ZoomPresets.values())
-			.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.reset.preset.%s.tooltip", value.toString().toLowerCase()))))
+			.tooltip(value -> Tooltip.create(Text.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase()))))
 			.initially(ConfigEnums.ZoomPresets.DEFAULT)
 			.build(0, 0, 150, 20,
-				Text.translatable("config.ok_zoomer.reset.preset"));
+				Text.translatable("config.ok_zoomer.presets.preset"));
 		var resetButton = ButtonWidget.builder(
-				Text.translatable("config.ok_zoomer.reset.reset_settings"),
+				Text.translatable("config.ok_zoomer.presets.reset_settings"),
 				button -> this.resetToPreset(presetButton.getValue()))
-			.tooltip(Tooltip.create(Text.translatable("config.ok_zoomer.reset.reset_settings.tooltip")))
+			.tooltip(Tooltip.create(Text.translatable("config.ok_zoomer.presets.reset_settings.tooltip")))
 			.build();
 		this.entryListWidget.addButton(presetButton, resetButton);
 

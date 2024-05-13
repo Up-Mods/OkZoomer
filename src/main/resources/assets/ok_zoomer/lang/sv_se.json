@@ -1,12 +1,10 @@
 {
-	"config.ok_zoomer.title": "Ok Zoomer-konfiguration",
 	"config.ok_zoomer.features": "Funktioner",
 	"config.ok_zoomer.features.cinematic_camera": "Cinematisk kamera",
 	"config.ok_zoomer.features.cinematic_camera.off": "Av",
 	"config.ok_zoomer.features.cinematic_camera.vanilla": "Vanilla",
 	"config.ok_zoomer.features.cinematic_camera.multiplied": "Multiplicerad",
 	"config.ok_zoomer.features.reduce_sensitivity": "Minska Sensitivitet",
-	"config.ok_zoomer.features.reduce_sensitivity.tooltip": "Minskar mussensitiviteten vid zoomning.",
 	"config.ok_zoomer.features.zoom_transition": "Zoomövergång",
 	"config.ok_zoomer.features.zoom_transition.off": "Av",
 	"config.ok_zoomer.features.zoom_transition.smooth": "Jämn",

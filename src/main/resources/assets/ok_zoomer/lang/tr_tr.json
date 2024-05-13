@@ -1,12 +1,10 @@
 {
-	"config.ok_zoomer.title": "Ok Zoomer (Peki, Zoomer) Ayarları",
 	"config.ok_zoomer.features": "Özellikler",
 	"config.ok_zoomer.features.cinematic_camera": "Sinematik Kamera",
 	"config.ok_zoomer.features.cinematic_camera.off": "Kapa",
 	"config.ok_zoomer.features.cinematic_camera.vanilla": "Vanilla",
 	"config.ok_zoomer.features.cinematic_camera.multiplied": "Katlanmış",
 	"config.ok_zoomer.features.reduce_sensitivity": "Hassasiyeti Azalt",
-	"config.ok_zoomer.features.reduce_sensitivity.tooltip": "Büyütülürken fare hassasiyetini düşürür.",
 	"config.ok_zoomer.features.zoom_transition": "Büyutme Geçişi",
 	"config.ok_zoomer.features.zoom_transition.off": "Kapa",
 	"config.ok_zoomer.features.zoom_transition.smooth": "Yumuşak",
