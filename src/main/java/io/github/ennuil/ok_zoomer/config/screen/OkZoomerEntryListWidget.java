@@ -143,14 +143,14 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 
 	private void renderScrollBar(GuiGraphics graphics) {
 		int size = Math.min(this.height, (this.height * this.height) / this.contentHeight);
-		int pos = this.getScrollBarPosX();
+		int x = this.getScrollBarPosX();
 
-		var aaa = (this.scrollAmount / (double) (this.contentHeight - this.height));
-		var z = this.y + (int) (aaa * (this.height - size));
+		var scale = (this.scrollAmount / (double) (this.contentHeight - this.height));
+		var y = this.y + (int) (scale * (this.height - size));
 
-		graphics.fill(pos, this.y, pos + 6, this.y + this.height, CommonColors.BLACK);
-		graphics.fill(pos, z, pos + 6, size + z, 0xFF808080);
-		graphics.fill(pos, z, pos + 6 - 1, size + z - 1, 0xFFC0C0C0);
+		graphics.fill(x, this.y, x + 6, this.y + this.height, CommonColors.BLACK);
+		graphics.fill(x, y, x + 6, size + y, 0xFF808080);
+		graphics.fill(x, y, x + 6 - 1, size + y - 1, 0xFFC0C0C0);
 	}
 
 	protected int getScrollBarPosX() {
@@ -233,11 +233,9 @@ public class OkZoomerEntryListWidget extends AbstractParentElement implements Dr
 			} else if (mouseY > this.y + this.height) {
 				this.setScrollAmount(this.contentHeight);
 			} else {
-				// TODO - Complete this
 				int size = MathHelper.clamp((this.height * this.height) / this.contentHeight, 0, this.height - 6);
-
-				double a = Math.max(1.0, ((double) this.contentHeight / (this.height - size)));
-				this.setScrollAmount(this.getScrollAmount() + (int) (deltaY * a));
+				double scale = Math.max(1.0, ((double) this.contentHeight / (this.height - size)));
+				this.setScrollAmount(this.getScrollAmount() + (int) (deltaY * scale));
 			}
 
 			return true;
