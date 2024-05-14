@@ -38,6 +38,6 @@ public class ConfigTextUtils {
 	}
 
 	public Text getEnumOptionTextTooltip(TrackedValue<?> trackedValue, ConfigEnums.ConfigEnum configEnum) {
-		return Text.translatable(String.format("config.%s.%s.%s", this.config.family(), this.scheme.coerce(trackedValue.key().toString()), configEnum.toString().toLowerCase()));
+		return Text.translatable(String.format("config.%s.%s.%s.tooltip", this.config.family(), this.scheme.coerce(trackedValue.key().toString()), configEnum.toString().toLowerCase()));
 	}
 }

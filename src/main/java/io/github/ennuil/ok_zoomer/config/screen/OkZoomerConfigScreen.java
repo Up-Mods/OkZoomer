@@ -152,9 +152,9 @@ public class OkZoomerConfigScreen extends Screen {
 							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
-							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, configEnum))
+							var button = CyclingButtonWidget.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, value))
 								.values((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
-								.tooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, configEnum)))
+								.tooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, value)))
 								.initially((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
 								.build(
 									0, 0, 150, 20,
