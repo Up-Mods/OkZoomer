@@ -1,128 +1,60 @@
 package io.github.ennuil.ok_zoomer.config.screen;
 
-import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.SpruceTexts;
-import dev.lambdaurora.spruceui.option.*;
-import dev.lambdaurora.spruceui.screen.SpruceScreen;
-import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
-import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.*;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
-import io.github.ennuil.ok_zoomer.config.screen.widgets.CustomTextureBackground;
-import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedDoubleInputOption;
-import io.github.ennuil.ok_zoomer.config.screen.widgets.SpruceBoundedIntegerInputOption;
+import io.github.ennuil.ok_zoomer.config.screen.components.LabelledEditBox;
+import io.github.ennuil.ok_zoomer.config.screen.components.OkZoomerAbstractSelectionList;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
+import org.quiltmc.config.api.Configs;
 import org.quiltmc.config.api.Constraint;
 import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.config.api.values.ValueTreeNode;
+import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.Map;
+import java.util.Set;
 
-// TODO - Use a completely different approach that allows for a more user-friendly config screen and that yet is easy to make/edit
-public class OkZoomerConfigScreen extends SpruceScreen {
-	private static final CustomTextureBackground NORMAL_BACKGROUND = new CustomTextureBackground(new ResourceLocation("minecraft:textures/block/yellow_terracotta.png"), 0.25F, 0.25F, 0.25F, 1.0F);
-	private static final CustomTextureBackground DARKENED_BACKGROUND = new CustomTextureBackground(new ResourceLocation("minecraft:textures/block/yellow_terracotta.png"), 0.125F, 0.125F, 0.125F, 1.0F);
-
-	private SpruceOptionListWidget list;
+// TODO - You may have dropped your silly data-driven config screen idea, but you still want to streamline the config screen. Do Config v2!
+@ClientOnly
+public class OkZoomerConfigScreen extends Screen {
+	private final ResourceLocation configId;
 	private final Screen parent;
-	private ZoomPresets preset;
+	private ConfigTextUtils configTextUtils;
+	private OkZoomerAbstractSelectionList entryListWidget;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
-	private SpruceOption optionBuffer;
+	private final Set<TrackedValue<Object>> invalidValues;
+	private AbstractWidget buttonBuffer = null;
 
 	public OkZoomerConfigScreen(Screen parent) {
-		super(Component.translatable("config.ok_zoomer.title"));
+		super(ConfigTextUtils.getConfigTitle(new ResourceLocation("ok_zoomer", "config")));
+		this.configId = new ResourceLocation("ok_zoomer", "config");
 		this.parent = parent;
-		this.preset = ZoomPresets.DEFAULT;
-
 		this.newValues = new Reference2ObjectArrayMap<>();
-		this.optionBuffer = null;
-	}
-
-	// Unlike other options, the cycling option doesn't attach the prefix on the text;
-	// So we do it ourselves automatically!
-	private static Component getCyclingOptionText(String text, Component prefix) {
-		return Component.translatable(
-			"spruceui.options.generic",
-			prefix,
-			text != null ? Component.translatable(text) : Component.literal("Error"));
+		this.invalidValues = new ObjectArraySet<>();
 	}
 
 	@Override
 	protected void init() {
-		super.init();
-		this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 36 - 22);
-		this.list.setBackground(DARKENED_BACKGROUND);
-
-		this.initializeOptionList();
-		this.appendPresetSection();
-
-		this.addRenderableWidget(this.list);
-		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 154, this.height - 28), 150, 20, Component.translatable("config.ok_zoomer.discard_changes"),
-			btn -> {
-				this.resetNewValues();
-				this.refresh();
-			}).asVanilla());
-		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 + 4, this.height - 28), 150, 20, SpruceTexts.GUI_DONE,
-			btn -> {
-				this.newValues.forEach((trackedValue, newValue) -> {
-					if (trackedValue.value() != null) {
-						trackedValue.setValue(newValue, false);
-					}
-				});
-				OkZoomerConfigManager.CONFIG.save();
-				this.minecraft.setScreen(this.parent);
-			}).asVanilla());
-	}
-
-	@Override
-	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawCenteredString(this.font, this.title, this.width / 2, 8, CommonColors.WHITE);
-	}
-
-	@Override
-	public void renderDirtBackground(GuiGraphics graphics) {
-		NORMAL_BACKGROUND.render(graphics, this);
-	}
-
-	@Override
-	public void removed() {
-		this.newValues.forEach((trackedValue, newValue) -> trackedValue.setValue(newValue, false));
-		OkZoomerConfigManager.CONFIG.save();
-	}
-
-	@Override
-	public void onClose() {
-		this.minecraft.setScreen(this.parent);
-	}
-
-	@SuppressWarnings("unchecked")
-	private void resetNewValues() {
-		this.newValues.clear();
-
-		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
-			if (trackedValue.getRealValue() != null) {
-				newValues.put((TrackedValue<Object>) trackedValue, trackedValue.getRealValue());
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private void initializeOptionList() {
-		for (var node : OkZoomerConfigManager.CONFIG.nodes()) {
+		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
+		this.configTextUtils = new ConfigTextUtils(config);
+		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 0, 32);
+		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
-				var separator = new SpruceSeparatorOption(
-					String.format("config.ok_zoomer.%s", section.key()),
-					true,
-					Component.translatable(String.format("config.ok_zoomer.%s.tooltip", section.key())));
-				this.addOptionToList(separator, WidgetSize.Size.FULL);
+				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
 
 				for (var subNode : section) {
 					var size = subNode.metadata(WidgetSize.TYPE);
@@ -132,192 +64,251 @@ public class OkZoomerConfigScreen extends SpruceScreen {
 						this.newValues.putIfAbsent(trackie, trackedValue.getRealValue());
 
 						if (trackedValue.value() instanceof Boolean) {
-							SpruceOption option;
-							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key)) {
-								option = new SpruceBooleanOption(
-									String.format("config.ok_zoomer.%s", trackedValue.key()),
-									() -> (Boolean) this.newValues.get(trackie),
-									value -> this.newValues.replace(trackie, value),
-									Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
+							AbstractWidget button;
+							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
+								button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
+									.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
+									.create(
+										0, 0, 150, 20,
+										this.configTextUtils.getOptionText(trackedValue),
+										(button_, value) -> this.newValues.replace(trackie, value));
 							} else {
 								// TODO - ew, hardcoding; we can do better than that
-								option = SpruceSimpleActionOption.of(
-									"config.ok_zoomer.tweaks.unbind_conflicting_key",
-									button -> ZoomUtils.unbindConflictingKey(this.minecraft, true),
-									Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip"));
+								button = Button.builder(
+										Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key"),
+										button_ -> ZoomUtils.unbindConflictingKey(this.minecraft, true))
+									.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip")))
+									.build();
 							}
-							this.addOptionToList(option, size);
+							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Double) {
-							double minimum = Double.MIN_VALUE;
-							double maximum = Double.MAX_VALUE;
-							for (Constraint<?> constraint : trackedValue.constraints()) {
-								if (constraint instanceof Constraint.Range<?>) {
-									try {
-										var minField = Constraint.Range.class.getDeclaredField("min");
-										var maxField = Constraint.Range.class.getDeclaredField("max");
+							var button = new LabelledEditBox(
+								this.font,
+								0, 0, 150, 32,
+								this.configTextUtils.getOptionText(trackedValue)
+							);
+							button.setValue(((Double) this.newValues.get(trackie)).toString());
+							button.setResponder(value -> {
+								try {
+									double min = Double.NEGATIVE_INFINITY;
+									double max = Double.POSITIVE_INFINITY;
 
-										minField.setAccessible(true);
-										maxField.setAccessible(true);
-
-										minimum = Math.max((Double) minField.get(constraint), minimum);
-										maximum = Math.min((Double) maxField.get(constraint), maximum);
-									} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-										e.printStackTrace();
+									for (var constraint : trackedValue.constraints()) {
+										if (constraint instanceof Constraint.Range<?> range) {
+											min = Math.max(((Constraint.Range<Double>) range).min(), min);
+											max = Math.min(((Constraint.Range<Double>) range).max(), max);
+										}
 									}
-								}
-							}
 
-							var option = new SpruceBoundedDoubleInputOption(
-								String.format("config.ok_zoomer.%s", trackedValue.key()),
-								minimum, maximum,
-								() -> (Double) this.newValues.get(trackie),
-								value -> this.newValues.replace(trackie, value),
-								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
-							this.addOptionToList(option, size);
+									double parsedValue = Double.parseDouble(value);
+									if (parsedValue < min || parsedValue > max) {
+										// Yes, this isn't exactly right but oh well
+										throw new IndexOutOfBoundsException();
+									}
+
+									this.newValues.replace(trackie, parsedValue);
+									this.invalidValues.remove(trackie);
+									button.setTextColor(0xFFE0E0E0);
+								} catch (NumberFormatException | IndexOutOfBoundsException e) {
+									this.invalidValues.add(trackie);
+									button.setTextColor(CommonColors.RED);
+								}
+							});
+							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Integer) {
-							int minimum = Integer.MIN_VALUE;
-							int maximum = Integer.MAX_VALUE;
-							for (Constraint<?> constraint : trackedValue.constraints()) {
-								if (constraint instanceof Constraint.Range<?>) {
-									try {
-										var minField = Constraint.Range.class.getDeclaredField("min");
-										var maxField = Constraint.Range.class.getDeclaredField("max");
+							var button = new LabelledEditBox(
+								this.font,
+								0, 0, 150, 32,
+								this.configTextUtils.getOptionText(trackedValue)
+							);
+							button.setValue(((Integer) this.newValues.get(trackie)).toString());
+							button.setResponder(value -> {
+								try {
+									int min = Integer.MIN_VALUE;
+									int max = Integer.MAX_VALUE;
 
-										minField.setAccessible(true);
-										maxField.setAccessible(true);
-
-										minimum = Math.max((Integer) minField.get(constraint), minimum);
-										maximum = Math.min((Integer) maxField.get(constraint), maximum);
-									} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-										e.printStackTrace();
+									for (var constraint : trackedValue.constraints()) {
+										if (constraint instanceof Constraint.Range<?> range) {
+											min = Math.max(((Constraint.Range<Integer>) range).min(), min);
+											max = Math.min(((Constraint.Range<Integer>) range).max(), max);
+										}
 									}
-								}
-							}
 
-							var option = new SpruceBoundedIntegerInputOption(
-								String.format("config.ok_zoomer.%s", trackedValue.key()),
-								minimum, maximum,
-								() -> (Integer) this.newValues.get(trackie),
-								value -> this.newValues.replace(trackie, value),
-								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
-							this.addOptionToList(option, size);
-						} else if (trackedValue.value() instanceof ConfigEnum) {
-							var option = new SpruceCyclingOption(
-								String.format("config.ok_zoomer.%s", trackedValue.key()),
-								amount -> this.newValues.replace(trackie, ((ConfigEnum) this.newValues.get(trackie)).next()),
-								option2 -> getCyclingOptionText(String.format("config.ok_zoomer.%s.%s", trackedValue.key(), this.newValues.get(trackie).toString().toLowerCase()), option2.getPrefix()),
-								Component.translatable(String.format("config.ok_zoomer.%s.tooltip", trackedValue.key())));
-							this.addOptionToList(option, size);
+									int parsedValue = Integer.parseInt(value);
+									if (parsedValue < min || parsedValue > max) {
+										// Yes, this isn't exactly right but oh well
+										throw new IndexOutOfBoundsException();
+									}
+
+									this.newValues.replace(trackie, parsedValue);
+									this.invalidValues.remove(trackie);
+									button.setTextColor(0xFFE0E0E0);
+								} catch (NumberFormatException | IndexOutOfBoundsException e) {
+									this.invalidValues.add(trackie);
+									button.setTextColor(CommonColors.RED);
+								}
+							});
+							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+							this.addOptionToList(button, size);
+						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
+							var button = CycleButton.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, value))
+								.withValues((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
+								.withTooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, value)))
+								.withInitialValue((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
+								.create(
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue),
+									(button_, value) -> this.newValues.replace(trackie, value));
+							this.addOptionToList(button, size);
 						}
 					}
+				}
+
+				if (this.buttonBuffer != null) {
+					this.entryListWidget.addButton(buttonBuffer, null);
+					this.buttonBuffer = null;
 				}
 			}
 		}
 
-		if (this.optionBuffer != null) {
-			this.list.addOptionEntry(optionBuffer, null);
-			this.optionBuffer = null;
-		}
+		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
+		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase())))
+			.withValues(ConfigEnums.ZoomPresets.values())
+			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase()))))
+			.withInitialValue(ConfigEnums.ZoomPresets.DEFAULT)
+			.create(0, 0, 150, 20,
+				Component.translatable("config.ok_zoomer.presets.preset"));
+		var resetButton = Button.builder(
+				Component.translatable("config.ok_zoomer.presets.reset_settings"),
+				button -> this.resetToPreset(presetButton.getValue()))
+			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.reset_settings.tooltip")))
+			.build();
+		this.entryListWidget.addButton(presetButton, resetButton);
+
+		this.entryListWidget.finish();
+		this.addRenderableWidget(this.entryListWidget);
+
+		this.addRenderableWidget(
+			Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
+				.bounds(this.width / 2 - 155, this.height - 27, 150, 20)
+				.build());
+
+		this.addRenderableWidget(
+			Button.builder(CommonComponents.GUI_DONE, button -> this.minecraft.setScreen(this.parent))
+				.bounds(this.width / 2 + 5, this.height - 27, 150, 20)
+				.build());
 	}
 
-	private void appendPresetSection() {
-		// "Reset" category separator
-		var resetSeparator = new SpruceSeparatorOption(
-			"config.ok_zoomer.reset",
-			true,
-			Component.translatable("config.ok_zoomer.reset.tooltip"));
-
-		// Preset
-		var presetOption = new SpruceCyclingOption(
-			"config.ok_zoomer.reset.preset",
-			amount -> this.preset = (ZoomPresets) this.preset.next(),
-			option -> getCyclingOptionText(String.format("config.ok_zoomer.reset.preset.%s", this.preset.toString().toLowerCase()), option.getPrefix()),
-			Component.translatable("config.ok_zoomer.reset.preset.tooltip"));
-
-		// Reset Settings
-		var resetSettingsOption = SpruceSimpleActionOption.of(
-			"config.ok_zoomer.reset.reset_settings",
-			button -> this.resetToPreset(this.preset),
-			Component.translatable("config.ok_zoomer.reset.reset_settings.tooltip"));
-
-		this.list.addSingleOptionEntry(resetSeparator);
-		this.list.addOptionEntry(presetOption, resetSettingsOption);
-	}
-
-	private void addOptionToList(SpruceOption option, WidgetSize.Size size) {
+	private void addOptionToList(AbstractWidget button, WidgetSize.Size size) {
 		if (size == WidgetSize.Size.HALF) {
-			if (this.optionBuffer == null) {
-				this.optionBuffer = option;
+			if (this.buttonBuffer == null) {
+				this.buttonBuffer = button;
 			} else {
-				this.list.addOptionEntry(this.optionBuffer, option);
-				this.optionBuffer = null;
+				this.entryListWidget.addButton(this.buttonBuffer, button);
+				this.buttonBuffer = null;
 			}
 		} else {
-			if (this.optionBuffer != null) {
-				this.list.addOptionEntry(this.optionBuffer, null);
-				this.optionBuffer = null;
+			if (this.buttonBuffer != null) {
+				this.entryListWidget.addButton(this.buttonBuffer, null);
+				this.buttonBuffer = null;
 			}
-			this.list.addSingleOptionEntry(option);
+			this.entryListWidget.addButton(button);
 		}
+	}
+
+	@Override
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.renderBackground(graphics, mouseX, mouseY, delta);
+		// Y: 20 is technically the vanilla Y, but I'd rather go for as close to 1.20.5 vanilla Y as possible
+		graphics.drawCenteredString(this.font, ConfigTextUtils.getConfigTitle(configId), this.width / 2, 15, CommonColors.WHITE);
+		this.entryListWidget.render(graphics, mouseX, mouseY, delta);
+		super.render(graphics, mouseX, mouseY, delta);
+	}
+
+	@Override
+	public void onClose() {
+		this.minecraft.setScreen(this.parent);
+	}
+
+	@Override
+	public void removed() {
+		this.newValues.forEach((trackedValue, newValue) -> {
+			if (!invalidValues.contains(trackedValue)) {
+				trackedValue.setValue(newValue, false);
+			}
+		});
+		OkZoomerConfigManager.CONFIG.save();
 	}
 
 	private void refresh() {
-		var scrollAmount = this.list.getScrollAmount();
-		this.init(this.minecraft, this.width, this.height);
-		this.list.setScrollAmount(scrollAmount);
+		var scrollAmount = this.entryListWidget.getScrollAmount();
+		this.repositionElements();
+		this.entryListWidget.setScrollAmount(scrollAmount);
+	}
+
+	private void resetNewValues() {
+		this.newValues.clear();
+
+		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
+			if (trackedValue.getRealValue() != null) {
+				newValues.put((TrackedValue<Object>) trackedValue, trackedValue.getRealValue());
+			}
+		}
+
+		this.refresh();
 	}
 
 	@SuppressWarnings("unchecked")
-	public void resetToPreset(ZoomPresets preset) {
+	public void resetToPreset(ConfigEnums.ZoomPresets preset) {
 		Map<TrackedValue<?>, Object> presets = Map.ofEntries(
-			Map.entry(OkZoomerConfigManager.CONFIG.features.cinematic_camera, preset == ZoomPresets.CLASSIC ? CinematicCameraOptions.VANILLA : CinematicCameraOptions.OFF),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.reduce_sensitivity, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_transition, preset == ZoomPresets.CLASSIC ? ZoomTransitionOptions.OFF : ZoomTransitionOptions.SMOOTH),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_mode, preset == ZoomPresets.PERSISTENT ? ZoomModes.PERSISTENT : ZoomModes.HOLD),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_scrolling, switch (preset) {
-				case CLASSIC -> false;
-				case SPYGLASS -> false;
-				default -> true;
-			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.extra_key_binds, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.zoom_overlay, preset == ZoomPresets.SPYGLASS ? ZoomOverlays.SPYGLASS : ZoomOverlays.OFF),
-			Map.entry(OkZoomerConfigManager.CONFIG.features.spyglass_dependency, preset == ZoomPresets.SPYGLASS ? SpyglassDependency.BOTH : SpyglassDependency.OFF),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.zoom_divisor, switch (preset) {
-				case PERSISTENT -> 1.0D;
-				case SPYGLASS -> 10.0D;
-				default -> 4.0D;
-			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_zoom_divisor, 1.0D),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_zoom_divisor, 50.0D),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.upper_scroll_steps, switch (preset) {
-				case PERSISTENT -> 38;
-				case SPYGLASS -> 16;
-				default -> 20;
-			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.lower_scroll_steps, switch (preset) {
-				case PERSISTENT -> 0;
-				case SPYGLASS -> 8;
-				default -> 4;
-			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.smooth_multiplier, switch (preset) {
-				case CLASSIC_ZOOMER -> 0.75;
-				case SPYGLASS -> 0.5;
-				default -> 0.6;
-			}),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.cinematic_multiplier, 4.0D),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.minimum_linear_step, 0.125D),
-			Map.entry(OkZoomerConfigManager.CONFIG.values.maximum_linear_step, 0.25D),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.reset_zoom_with_mouse, preset == ZoomPresets.CLASSIC ? false : true),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forget_zoom_divisor, true),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbind_conflicting_key, false),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_texture, preset == ZoomPresets.SPYGLASS ? true : false),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.use_spyglass_sounds, preset == ZoomPresets.SPYGLASS ? true : false),
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts, true),
-			//Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, preset == ZoomPresets.CLASSIC ? false : true)
-			Map.entry(OkZoomerConfigManager.CONFIG.tweaks.print_owo_on_start, false)
+				Map.entry(OkZoomerConfigManager.CONFIG.features.cinematicCamera, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.CinematicCameraOptions.VANILLA : ConfigEnums.CinematicCameraOptions.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, switch (preset) {
+					case CLASSIC, SPYGLASS -> false;
+					default -> true;
+				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.extraKeyBinds, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, switch (preset) {
+					case PERSISTENT -> 1.0D;
+					case SPYGLASS -> 10.0D;
+					default -> 4.0D;
+				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor, 1.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor, 50.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, switch (preset) {
+					case PERSISTENT -> 38;
+					case SPYGLASS -> 16;
+					default -> 20;
+				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps, switch (preset) {
+					case PERSISTENT -> 0;
+					case SPYGLASS -> 8;
+					default -> 4;
+				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, switch (preset) {
+					case CLASSIC_ZOOMER -> 0.75;
+					case SPYGLASS -> 0.5;
+					default -> 0.6;
+				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.125D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.25D),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassTexture, preset == ConfigEnums.ZoomPresets.SPYGLASS),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts, true),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, false)
 		);
 
 		this.newValues.clear();
+		this.invalidValues.clear();
 
 		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
 			this.newValues.put((TrackedValue<Object>) trackedValue, presets.get(trackedValue));

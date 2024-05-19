@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 // Manages the zoom key binds themselves
 public class ZoomKeyBinds {
 	// TODO - Bleh, immutability; I have a plan
-	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.features.extra_key_binds.getRealValue();
+	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.features.extraKeyBinds.getRealValue();
 
 	// The "Zoom" category
 	public static final String ZOOM_CATEGORY = "key.ok_zoomer.category";

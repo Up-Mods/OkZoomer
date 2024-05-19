@@ -14,7 +14,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     private static final ResourceLocation OVERLAY_ID = new ResourceLocation("ok_zoomer:zoom_overlay");
     private final ResourceLocation textureId;
     private boolean active;
-    private final Minecraft client;
+    private final Minecraft minecraft;
 
     public float zoomOverlayAlpha = 0.0F;
     public float lastZoomOverlayAlpha = 0.0F;
@@ -22,7 +22,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     public ZoomerZoomOverlay(ResourceLocation textureId) {
         this.textureId = textureId;
         this.active = false;
-        this.client = Minecraft.getInstance();
+        this.minecraft = Minecraft.getInstance();
     }
 
     @Override
@@ -37,12 +37,12 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public void renderOverlay(GuiGraphics graphics) {
-		int scaledWidth = this.client.getWindow().getGuiScaledWidth();
-		int scaledHeight = this.client.getWindow().getGuiScaledHeight();
+		int scaledWidth = this.minecraft.getWindow().getGuiScaledWidth();
+		int scaledHeight = this.minecraft.getWindow().getGuiScaledHeight();
 
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
-		float lerpedOverlayAlpha = Mth.lerp(this.client.getFrameTime(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
+		float lerpedOverlayAlpha = Mth.lerp(this.minecraft.getFrameTime(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, lerpedOverlayAlpha);
 		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
 		RenderSystem.depthMask(true);
@@ -71,13 +71,13 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
         lastZoomOverlayAlpha = zoomOverlayAlpha;
 
-        if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.SMOOTH)) {
-            zoomOverlayAlpha += (float) ((zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.CONFIG.values.smooth_multiplier.value());
-        } else if (OkZoomerConfigManager.CONFIG.features.zoom_transition.value().equals(ZoomTransitionOptions.LINEAR)) {
+        if (OkZoomerConfigManager.CONFIG.features.zoomTransition.value().equals(ZoomTransitionOptions.SMOOTH)) {
+            zoomOverlayAlpha += (float) ((zoomMultiplier - zoomOverlayAlpha) * OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor.value());
+        } else if (OkZoomerConfigManager.CONFIG.features.zoomTransition.value().equals(ZoomTransitionOptions.LINEAR)) {
             double linearStep = Mth.clamp(
 				1.0F / divisor,
-				OkZoomerConfigManager.CONFIG.values.minimum_linear_step.value(),
-				OkZoomerConfigManager.CONFIG.values.maximum_linear_step.value()
+				OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep.value(),
+				OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep.value()
 			);
 
             zoomOverlayAlpha = Mth.approach(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);

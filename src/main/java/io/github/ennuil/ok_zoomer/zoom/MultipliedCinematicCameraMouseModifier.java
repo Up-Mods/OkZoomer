@@ -8,16 +8,16 @@ import net.minecraft.util.SmoothDouble;
 // The implementation of the multiplied cinematic camera
 public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     private static final ResourceLocation MODIFIER_ID = new ResourceLocation("ok_zoomer:multiplied_cinematic_camera");
-    private final Minecraft client;
+    private final Minecraft minecraft;
     private final SmoothDouble cursorXZoomSmoother = new SmoothDouble();
     private final SmoothDouble cursorYZoomSmoother = new SmoothDouble();
     private boolean active;
     private boolean cinematicCameraEnabled;
-    private final double cinematicCameraMultiplier;
+    private final double multiplier;
 
-    public MultipliedCinematicCameraMouseModifier(double cinematicCameraMultiplier) {
-        this.cinematicCameraMultiplier = cinematicCameraMultiplier;
-        this.client = Minecraft.getInstance();
+    public MultipliedCinematicCameraMouseModifier(double multiplier) {
+        this.multiplier = multiplier;
+        this.minecraft = Minecraft.getInstance();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
             this.cursorXZoomSmoother.reset();
             return cursorDeltaX;
         }
-        double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorXZoomSmoother.getNewDeltaValue(cursorDeltaX, smoother);
+
+        return this.cursorXZoomSmoother.getNewDeltaValue(cursorDeltaX, mouseUpdateTimeDelta * this.multiplier * cursorSensitivity);
     }
 
     @Override
@@ -46,14 +46,14 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
             this.cursorYZoomSmoother.reset();
             return cursorDeltaY;
         }
-        double smoother = mouseUpdateTimeDelta * cinematicCameraMultiplier * cursorSensitivity;
-        return this.cursorYZoomSmoother.getNewDeltaValue(cursorDeltaY, smoother);
+
+        return this.cursorYZoomSmoother.getNewDeltaValue(cursorDeltaY, mouseUpdateTimeDelta * this.multiplier * cursorSensitivity);
     }
 
     @Override
     public void tick(boolean active) {
-        this.cinematicCameraEnabled = this.client.options.smoothCamera;
-        if (!active && active != this.active) {
+        this.cinematicCameraEnabled = this.minecraft.options.smoothCamera;
+        if (!active && this.active) {
             this.cursorXZoomSmoother.reset();
             this.cursorYZoomSmoother.reset();
         }

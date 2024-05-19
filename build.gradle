@@ -14,12 +14,12 @@ def javaVersion = 17
 group = project.maven_group_id
 
 def ENV = System.getenv()
-def NOW = new Date();
+def NOW = new Date()
 def buildTime = ENV.BUILD_TIME ?: NOW.format('yyyyMMddHHmmss')
 
-boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
-def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}") : ""
-version = (ENV.TAG ?: "${libs.versions.minecraft.get()}-development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : "")
+boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches('.+-.+')
+def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}") : ''
+version = (ENV.TAG ?: "${libs.versions.minecraft.get()}-development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : '')
 
 base {
 	archivesName = "${rootProject.name}-Quilt"
@@ -28,18 +28,21 @@ base {
 repositories {
 	mavenCentral()
 	maven {
-		name = "Gegy"
-		url = "https://maven.gegy.dev"
+		name = 'TerraformersMC'
+		url = 'https://maven.terraformersmc.com/releases'
 	}
 	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/releases"
-	}
-	maven {
-		name = "ParchmentMC"
-		url = "https://maven.parchmentmc.org"
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
 		content {
-			includeGroupByRegex "org\\.parchmentmc(\\..*)?"
+			includeGroupByRegex 'org\\.parchmentmc(\\..*)?'
+		}
+	}
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+		content {
+			includeGroupByRegex "maven.modrinth"
 		}
 	}
 }
@@ -47,11 +50,11 @@ repositories {
 loom {
 	mods {
 		"${project.mod_id}" {
-			sourceSet("main")
+			sourceSet('main')
 		}
 	}
 	mixin {
-        defaultRefmapName.set("${project.mod_id}.refmap.json")
+		useLegacyMixinAp = false
     }
 }
 
@@ -60,7 +63,7 @@ loom {
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
-		it.parchment("${libs.parchment.mappings.get()}@zip")
+		it.parchment("${libs.parchment.get()}@zip")
 		it.officialMojangMappings()
 	})
 	modImplementation libs.quilt.loader
@@ -72,23 +75,20 @@ dependencies {
 
 	modImplementation libs.libzoomer
 	include libs.libzoomer
-
-	modImplementation libs.spruceui
-	include libs.spruceui
 }
 
 processResources {
-	filteringCharset "UTF-8"
+	filteringCharset 'UTF-8'
 
 	def expandProps = [
-		"version"                       : version,
-		"maven_group_id"                : maven_group_id,
-		"mod_id"                        : mod_id,
-		"minecraft_version"             : libs.versions.minecraft.get(),
-		"curseforge_id"					: curseforge_id,
-		"modrinth_id"					: modrinth_id,
+		'version'                       : version,
+		'maven_group_id'                : maven_group_id,
+		'mod_id'                        : mod_id,
+		'minecraft_version'             : libs.versions.minecraft.get(),
+		'curseforge_id'					: curseforge_id,
+		'modrinth_id'					: modrinth_id,
 
-		"quilt_loader_version"          : libs.versions.quilt.loader.get(),
+		'quilt_loader_version'          : libs.versions.quilt.loader.get(),
 	]
 
 	filesMatching(['*.mod.json', '*.mixins.json']) {
@@ -98,13 +98,15 @@ processResources {
 }
 
 java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(javaVersion)
-            vendor = JvmVendorSpec.MICROSOFT
-        }
-        withSourcesJar()
-//        withJavadocJar()
-    }
+	/*
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(javaVersion)
+		vendor = JvmVendorSpec.MICROSOFT
+	}
+	*/
+	withSourcesJar()
+	// withJavadocJar()
+}
 
 jar {
 	from('LICENSE.md') {

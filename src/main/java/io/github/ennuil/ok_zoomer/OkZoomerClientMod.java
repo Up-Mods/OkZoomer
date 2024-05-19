@@ -9,7 +9,6 @@ import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 // This class is responsible for registering the commands and packets
 public class OkZoomerClientMod implements ClientModInitializer {
-
 	public static final String MODID = "ok_zoomer";
 
 	@Override

@@ -1,24 +1,23 @@
+# The latest versions are available at https://quiltmc.org/en/usage/latest-versions/
 [versions]
-# Latest version is available at https://lambdaurora.dev/tools/import_quilt.html
 minecraft = "1.20.4"
-quilt_loader = "0.24.0"
+parchment = "2024.04.14"
 
-parchment = "2024.02.25"
+quilt_loom = "1.6.7"
+quilt_loader = "0.26.0-beta.1"
 
-quilted_fabric_api = "9.0.0-alpha.5+0.96.11-1.20.4"
-libzoomer = "0.8.0+1.20.1"
-modmenu = "9.0.0"
-spruceui = "5.0.3+1.20.4"
+quilted_fabric_api = "9.0.0-alpha.8+0.97.0-1.20.4"
+libzoomer = "0.8.1+1.20.1"
+modmenu = "9.2.0-beta.2"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-parchment_mappings = { module = "org.parchmentmc.data:parchment-1.20.4", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.20.4", version.ref = "parchment" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
-libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
+libzoomer = { module = "maven.modrinth:libzoomer", version.ref = "libzoomer" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-spruceui = { module = "dev.lambdaurora:spruceui", version.ref = "spruceui" }
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "1.5.+" }
+quilt_loom = { id = "org.quiltmc.loom", version.ref = "quilt_loom" }

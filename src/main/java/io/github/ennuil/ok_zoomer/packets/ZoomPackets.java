@@ -2,7 +2,7 @@ package io.github.ennuil.ok_zoomer.packets;
 
 import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassDependency;
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassMode;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.packets.payloads.*;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
@@ -48,13 +48,13 @@ public class ZoomPackets {
 	private static Acknowledgement acknowledgement = Acknowledgement.NONE;
 	private static double maximumZoomDivisor = 0.0D;
 	private static double minimumZoomDivisor = 0.0D;
-	private static boolean spyglassDependency = false;
-	private static boolean spyglassOverlay = false;
+	private static boolean forceSpyglassMode = false;
+	private static boolean forceSpyglassOverlay = false;
 
 	private static final Component TOAST_TITLE = Component.translatable("toast.ok_zoomer.title");
 
 	public static void sendToast(Minecraft client, Component description) {
-		if (OkZoomerConfigManager.CONFIG.tweaks.show_restriction_toasts.value()) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts.value()) {
 			client.getToasts().addToast(SystemToast.multiline(client, ZoomUtils.TOAST_ID, TOAST_TITLE, description));
 		}
 	}
@@ -118,7 +118,7 @@ public class ZoomPackets {
 		});
 	}
 
-	public static boolean getHasRestrictions() {
+	public static boolean hasRestrictions() {
 		return hasRestrictions;
 	}
 
@@ -127,8 +127,8 @@ public class ZoomPackets {
 			|| disableZoomScrolling
 			|| forceClassicMode
 			|| forceZoomDivisors
-			|| spyglassDependency
-			|| spyglassOverlay;
+			|| forceSpyglassMode
+			|| forceSpyglassOverlay;
 
 		ZoomPackets.hasRestrictions = hasRestrictions;
 		if (hasRestrictions) {
@@ -138,19 +138,19 @@ public class ZoomPackets {
 		}
 	}
 
-	public static boolean getDisableZoom() {
+	public static boolean shouldDisableZoom() {
 		return disableZoom;
 	}
 
-	public static boolean getDisableZoomScrolling() {
+	public static boolean shouldDisableZoomScrolling() {
 		return disableZoomScrolling;
 	}
 
-	public static boolean getForceClassicMode() {
+	public static boolean shouldForceClassicMode() {
 		return forceClassicMode;
 	}
 
-	public static boolean getForceZoomDivisors() {
+	public static boolean shouldForceZoomDivisors() {
 		return forceZoomDivisors;
 	}
 
@@ -166,26 +166,26 @@ public class ZoomPackets {
 		return minimumZoomDivisor;
 	}
 
-	public static boolean getSpyglassDependency() {
-		return spyglassDependency;
+	public static boolean shouldForceSpyglassMode() {
+		return forceSpyglassMode;
 	}
 
-	public static boolean getSpyglassOverlay() {
-		return spyglassOverlay;
+	public static boolean shouldForceSpyglassOverlay() {
+		return forceSpyglassOverlay;
 	}
 
 	public static void applyDisableZoomScrolling() {
 		disableZoomScrolling = true;
-		OkZoomerConfigManager.CONFIG.features.zoom_scrolling.setOverride(false);
-		OkZoomerConfigManager.CONFIG.features.extra_key_binds.setOverride(false);
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling.setOverride(false);
+		OkZoomerConfigManager.CONFIG.features.extraKeyBinds.setOverride(false);
 	}
 
 	public static void applyClassicMode() {
 		forceClassicMode = true;
 		ZoomPackets.applyDisableZoomScrolling();
-		OkZoomerConfigManager.CONFIG.features.cinematic_camera.setOverride(CinematicCameraOptions.VANILLA);
-		OkZoomerConfigManager.CONFIG.features.reduce_sensitivity.setOverride(false);
-		OkZoomerConfigManager.CONFIG.values.zoom_divisor.setOverride(4.0D);
+		OkZoomerConfigManager.CONFIG.features.cinematicCamera.setOverride(CinematicCameraOptions.VANILLA);
+		OkZoomerConfigManager.CONFIG.features.reduceSensitivity.setOverride(false);
+		OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.setOverride(4.0D);
 		OkZoomerConfigManager.configureZoomInstance();
 	}
 
@@ -196,15 +196,15 @@ public class ZoomPackets {
 	}
 
 	public static void applySpyglassDependency(boolean requireItem, boolean replaceZoom) {
-		OkZoomerConfigManager.CONFIG.features.spyglass_dependency.setOverride(requireItem
-			? (replaceZoom ? SpyglassDependency.BOTH : SpyglassDependency.REQUIRE_ITEM)
-			: (replaceZoom ? SpyglassDependency.REPLACE_ZOOM : null));
-		spyglassDependency = true;
+		OkZoomerConfigManager.CONFIG.features.spyglassMode.setOverride(requireItem
+			? (replaceZoom ? SpyglassMode.BOTH : SpyglassMode.REQUIRE_ITEM)
+			: (replaceZoom ? SpyglassMode.REPLACE_ZOOM : null));
+		forceSpyglassMode = true;
 	}
 
 	public static void applyForceSpyglassOverlay() {
-		OkZoomerConfigManager.CONFIG.features.zoom_overlay.setOverride(ConfigEnums.ZoomOverlays.SPYGLASS);
-		spyglassOverlay = true;
+		OkZoomerConfigManager.CONFIG.features.zoomOverlay.setOverride(ConfigEnums.ZoomOverlays.SPYGLASS);
+		forceSpyglassOverlay = true;
 	}
 
 	//The method used to reset the signals once left the server.
@@ -212,19 +212,19 @@ public class ZoomPackets {
 		ZoomPackets.hasRestrictions = false;
 		ZoomPackets.disableZoom = false;
 		ZoomPackets.disableZoomScrolling = false;
-		OkZoomerConfigManager.CONFIG.features.zoom_scrolling.removeOverride();
-		OkZoomerConfigManager.CONFIG.features.extra_key_binds.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.extraKeyBinds.removeOverride();
 		ZoomPackets.forceClassicMode = false;
-		OkZoomerConfigManager.CONFIG.features.cinematic_camera.removeOverride();
-		OkZoomerConfigManager.CONFIG.features.reduce_sensitivity.removeOverride();
-		OkZoomerConfigManager.CONFIG.values.zoom_divisor.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.cinematicCamera.removeOverride();
+		OkZoomerConfigManager.CONFIG.features.reduceSensitivity.removeOverride();
+		OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.removeOverride();
 		ZoomPackets.forceZoomDivisors = false;
 		ZoomPackets.maximumZoomDivisor = 0.0D;
 		ZoomPackets.minimumZoomDivisor = 0.0D;
 		ZoomPackets.acknowledgement = Acknowledgement.NONE;
-		ZoomPackets.spyglassDependency = false;
-		OkZoomerConfigManager.CONFIG.features.spyglass_dependency.removeOverride();
-		ZoomPackets.spyglassOverlay = false;
-		OkZoomerConfigManager.CONFIG.features.zoom_overlay.removeOverride();
+		ZoomPackets.forceSpyglassMode = false;
+		OkZoomerConfigManager.CONFIG.features.spyglassMode.removeOverride();
+		ZoomPackets.forceSpyglassOverlay = false;
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling.removeOverride();
 	}
 }
