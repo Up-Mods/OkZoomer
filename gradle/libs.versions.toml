@@ -7,7 +7,7 @@ quilt_loom = "1.6.7"
 quilt_loader = "0.26.0-beta.1"
 
 quilted_fabric_api = "7.5.0+0.91.0-1.20.1"
-libzoomer = "0.8.0+1.20.1"
+libzoomer = "0.8.1+1.20.1"
 modmenu = "7.2.2"
 
 [libraries]
@@ -16,7 +16,7 @@ quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_m
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
-libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
+libzoomer = { module = "maven.modrinth:libzoomer", version.ref = "libzoomer" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 [plugins]

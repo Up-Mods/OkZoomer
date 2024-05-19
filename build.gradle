@@ -28,6 +28,7 @@ base {
 repositories {
 	mavenCentral()
 	maven { url 'https://maven.terraformersmc.com/releases/' }
+	maven { url 'https://api.modrinth.com/maven' }
 }
 
 loom {
@@ -79,10 +80,6 @@ processResources {
 }
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(javaVersion)
-		vendor = JvmVendorSpec.MICROSOFT
-	}
 	withSourcesJar()
 	// withJavadocJar()
 }
