@@ -7,9 +7,9 @@ import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 
 public class OpenScreenEvent implements ClientTickEvents.End {
 	@Override
-	public void endClientTick(Minecraft client) {
+	public void endClientTick(Minecraft minecraft) {
 		if (ZoomUtils.shouldOpenCommandScreen()) {
-			client.setScreen(new OkZoomerCommandScreen());
+			minecraft.setScreen(new OkZoomerCommandScreen());
 			ZoomUtils.setOpenCommandScreen(false);
 		}
 	}

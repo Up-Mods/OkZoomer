@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public class OkZoomerConfigManager {
-	public static final OkZoomerConfig CONFIG = QuiltConfig.create(OkZoomerClientMod.MODID, "config", OkZoomerConfig.class);
+	public static final OkZoomerConfig CONFIG = QuiltConfig.create(OkZoomerClientMod.MOD_ID, "config", OkZoomerConfig.class);
 
 	public OkZoomerConfigManager() {
 		// On initialization, configure our zoom instance

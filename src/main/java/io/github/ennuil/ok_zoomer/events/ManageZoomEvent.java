@@ -18,16 +18,16 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 	private static boolean persistentZoom = false;
 
 	@Override
-	public void startClientTick(Minecraft client) {
+	public void startClientTick(Minecraft minecraft) {
 		// We need the player for spyglass shenanigans
-		if (client.player == null) return;
+		if (minecraft.player == null) return;
 
 		// If zoom is disabled, do not allow for zooming at all
 		boolean disableZoom = ZoomPackets.shouldDisableZoom() ||
 			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
-			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
+			} && !minecraft.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
 
 		if (disableZoom) {
 			ZoomUtils.ZOOMER_ZOOM.setZoom(false);
@@ -56,7 +56,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 			default -> false;
 		};
 		boolean keyPress = ZoomKeyBinds.ZOOM_KEY.isDown();
-		boolean spyglassUse = client.player.isScoping();
+		boolean spyglassUse = minecraft.player.isScoping();
 		boolean zooming = keyPress || (isUsingSpyglass && spyglassUse);
 
 		// If the press state is the same as the previous tick's, cancel the rest
@@ -92,7 +92,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 				? ZoomUtils.ZOOMER_ZOOM.getZoom()
 				: keyPress;
 
-			client.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);
+			minecraft.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);
 		}
 
 		// Set the previous zoom signal for the next tick

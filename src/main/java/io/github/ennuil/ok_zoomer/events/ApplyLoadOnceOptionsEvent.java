@@ -9,7 +9,7 @@ import org.quiltmc.qsl.lifecycle.api.client.event.ClientLifecycleEvents;
 // The event that makes sure to load the config and puts any load-once options in effect if enabled through the config file
 public class ApplyLoadOnceOptionsEvent implements ClientLifecycleEvents.Ready {
 	@Override
-	public void readyClient(Minecraft client) {
+	public void readyClient(Minecraft minecraft) {
 		// uwu
 		if (OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart.value()) {
 			OwoUtils.printOwo();
@@ -17,7 +17,7 @@ public class ApplyLoadOnceOptionsEvent implements ClientLifecycleEvents.Ready {
 
 		// This handles the unbinding of the "Save Toolbar Activator" key
 		if (OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey.value()) {
-			ZoomUtils.unbindConflictingKey(client, false);
+			ZoomUtils.unbindConflictingKey(minecraft, false);
 			OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey.setValue(false, true);
 		}
 	}

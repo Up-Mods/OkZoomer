@@ -9,7 +9,7 @@ import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 // This event manages the extra key binds' behavior
 public class ManageExtraKeysEvent implements ClientTickEvents.Start {
 	@Override
-	public void startClientTick(Minecraft client) {
+	public void startClientTick(Minecraft minecraft) {
 		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
 		if (!OkZoomerConfigManager.CONFIG.features.extraKeyBinds.value()) return;
 		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.isBeingOverridden()) return;
