@@ -23,11 +23,11 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Upload build artifacts (Quilt)
+      - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.repository.name }}-Quilt-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
           path: |
             build/libs/*.jar
             !build/libs/*-dev.jar

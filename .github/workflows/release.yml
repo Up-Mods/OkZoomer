@@ -42,11 +42,11 @@ jobs:
           MAVEN_UPLOAD_URL: ${{ secrets.MAVEN_UPLOAD_URL }}
           MAVEN_UPLOAD_USERNAME: ${{ secrets.MAVEN_UPLOAD_USERNAME }}
           MAVEN_UPLOAD_PASSWORD: ${{ secrets.MAVEN_UPLOAD_PASSWORD }}
-      - name: Upload build artifacts (Quilt)
+      - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.repository.name }}-Quilt-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
           path: |
             build/libs/*.jar
             !build/libs/*-dev.jar
@@ -65,7 +65,7 @@ jobs:
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          version: ${{ github.ref_name }}+Quilt
+          version: ${{ github.ref_name }}+Fabric
           files: |
             build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             build/libs/*-@(sources|javadoc).jar
