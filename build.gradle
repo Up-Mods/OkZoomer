@@ -6,10 +6,9 @@ plugins {
 // messy workaround for bug in quilt loom 1.3.3+
 project.configurations.configureEach {
     exclude(group: "net.fabricmc", module: "fabric-loader")
-    exclude(group: "net.fabricmc.fabric-api")
 }
 
-def javaVersion = 17
+def javaVersion = 21
 
 group = project.maven_group_id
 
@@ -42,7 +41,14 @@ repositories {
 		name = 'Modrinth'
 		url = 'https://api.modrinth.com/maven'
 		content {
-			includeGroupByRegex "maven.modrinth"
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		name = 'JitPack'
+		url = 'https://www.jitpack.io'
+		content {
+			includeGroupByRegex 'com\\.github(\\..*)?'
 		}
 	}
 }
@@ -63,18 +69,21 @@ loom {
 dependencies {
 	minecraft libs.minecraft
 	mappings(loom.layered {
-		it.parchment("${libs.parchment.get()}@zip")
+		it.parchment libs.parchment
 		it.officialMojangMappings()
 	})
 	modImplementation libs.quilt.loader
 
-	modImplementation libs.quilted.fabric.api
+	modImplementation libs.fabric.api
 
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
 
 	modImplementation libs.libzoomer
+	modImplementation libs.wrench.wrapper
+
 	include libs.libzoomer
+	include libs.wrench.wrapper
 }
 
 processResources {
@@ -121,8 +130,7 @@ sourcesJar {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = 'UTF-8'
-	it.options.release = 17
+	it.options.release = 21
 }
 
 // Disables Gradle's custom module metadata from being published to maven. The

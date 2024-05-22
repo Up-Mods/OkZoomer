@@ -13,11 +13,11 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.ZoomerZoomOverlay;
+import io.github.ennuil.wrench_wrapper.WrenchWrapper;
 import net.minecraft.resources.ResourceLocation;
-import org.quiltmc.loader.api.config.v2.QuiltConfig;
 
 public class OkZoomerConfigManager {
-	public static final OkZoomerConfig CONFIG = QuiltConfig.create(OkZoomerClientMod.MOD_ID, "config", OkZoomerConfig.class);
+	public static final OkZoomerConfig CONFIG = WrenchWrapper.create(OkZoomerClientMod.MOD_ID, "config", OkZoomerConfig.class);
 
 	public OkZoomerConfigManager() {
 		// On initialization, configure our zoom instance
@@ -43,8 +43,10 @@ public class OkZoomerConfigManager {
 		configureZoomModifier();
 
 		// Sets zoom overlay
-		ResourceLocation overlayTextureId = new ResourceLocation(
-			CONFIG.tweaks.useSpyglassTexture.value()
+		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
+		// You won't do it without a nice placeholder texture though (that isn't Michael lmfao)
+		var overlayTextureId = new ResourceLocation(
+			CONFIG.features.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
 			? "textures/misc/spyglass_scope.png"
 			: "ok_zoomer:textures/misc/zoom_overlay.png");
 

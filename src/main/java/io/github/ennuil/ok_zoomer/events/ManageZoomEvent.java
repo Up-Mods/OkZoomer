@@ -5,20 +5,19 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
+import net.fabricmc.fabric.api.tag.client.v1.ClientTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
-import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 
 // This event is responsible for managing the zoom signal.
-public class ManageZoomEvent implements ClientTickEvents.Start {
+public class ManageZoomEvent {
 	// Used internally in order to make zoom toggling possible
 	private static boolean lastZooming = false;
 
 	// Used internally in order to make persistent zoom less buggy
 	private static boolean persistentZoom = false;
 
-	@Override
-	public void startClientTick(Minecraft minecraft) {
+	public static void startClientTick(Minecraft minecraft) {
 		// We need the player for spyglass shenanigans
 		if (minecraft.player == null) return;
 
@@ -27,7 +26,9 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
-			} && !minecraft.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
+			} && !minecraft.player.getInventory().contains(
+				stack -> ClientTags.isInWithLocalFallback(ZoomUtils.ZOOM_DEPENDENCIES_TAG, stack.getItem())
+			));
 
 		if (disableZoom) {
 			ZoomUtils.ZOOMER_ZOOM.setZoom(false);

@@ -70,7 +70,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("""
 			"OFF": Disables the zoom overlay.
 			"VIGNETTE": Uses a vignette as the zoom overlay. The vignette texture can be found at assets/ok_zoomer/textures/misc/zoom_overlay.png
-			"SPYGLASS": Uses the spyglass overlay with the vignette texture. The spyglass texture can be used with the "Use Spyglass Texture" option.
+			"SPYGLASS": Uses the spyglass overlay with the vignette texture.
 			""")
 		public final TrackedValue<ZoomOverlays> zoomOverlay = this.value(ZoomOverlays.OFF);
 
@@ -127,12 +127,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("The minimum value which the linear zoom transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> minimumLinearStep = this.value(0.125);
+		public final TrackedValue<Double> minimumLinearStep = this.value(0.16);
 
 		@WidgetSize(Size.HALF)
 		@Comment("The maximum value which the linear zoom transition step can reach.")
 		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> maximumLinearStep = this.value(0.25);
+		public final TrackedValue<Double> maximumLinearStep = this.value(0.22);
 	}
 
 	public static class TweaksConfig extends Section  {
@@ -147,10 +147,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
 		public final TrackedValue<Boolean> forgetZoomDivisor = this.value(true);
-
-		@WidgetSize(Size.HALF)
-		@Comment("If enabled, the spyglass overlay texture will be used instead of the mod's vignette texture.")
-		public final TrackedValue<Boolean> useSpyglassTexture = this.value(false);
 
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")

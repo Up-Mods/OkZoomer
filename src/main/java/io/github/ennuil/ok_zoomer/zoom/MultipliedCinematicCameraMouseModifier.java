@@ -21,7 +21,7 @@ public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
     }
 
     @Override
-    public ResourceLocation getIdentifier() {
+    public ResourceLocation getId() {
         return MODIFIER_ID;
     }
 

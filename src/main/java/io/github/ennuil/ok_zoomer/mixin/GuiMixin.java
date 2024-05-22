@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Gui.class)
 public abstract class GuiMixin {
 	@ModifyExpressionValue(
-		method = "render",
+		method = "renderCameraOverlays",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z")
 	)
 	private boolean activateSpyglassOverlay(boolean isScoping) {

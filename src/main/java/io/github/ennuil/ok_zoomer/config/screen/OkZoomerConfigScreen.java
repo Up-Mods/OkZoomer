@@ -13,6 +13,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -33,6 +35,7 @@ public class OkZoomerConfigScreen extends Screen {
 	private final ResourceLocation configId;
 	private final Screen parent;
 	private ConfigTextUtils configTextUtils;
+	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 	private OkZoomerAbstractSelectionList entryListWidget;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
@@ -51,7 +54,7 @@ public class OkZoomerConfigScreen extends Screen {
 	protected void init() {
 		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
 		this.configTextUtils = new ConfigTextUtils(config);
-		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 0, 32);
+		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 32);
 		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
 				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
@@ -189,15 +192,19 @@ public class OkZoomerConfigScreen extends Screen {
 		this.entryListWidget.finish();
 		this.addRenderableWidget(this.entryListWidget);
 
-		this.addRenderableWidget(
-			Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
-				.bounds(this.width / 2 - 155, this.height - 27, 150, 20)
-				.build());
+		this.layout.addTitleHeader(this.title, this.font);
+		var footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(8));
+		footerLayout.addChild(Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues()).width(150).build());
+		footerLayout.addChild(Button.builder(CommonComponents.GUI_DONE, button -> this.onClose()).width(150).build());
 
-		this.addRenderableWidget(
-			Button.builder(CommonComponents.GUI_DONE, button -> this.minecraft.setScreen(this.parent))
-				.bounds(this.width / 2 + 5, this.height - 27, 150, 20)
-				.build());
+		this.layout.visitWidgets(this::addRenderableWidget);
+		this.repositionElements();
+	}
+
+	@Override
+	protected void repositionElements() {
+		this.layout.arrangeElements();
+		this.entryListWidget.updateSize(this.width, this.layout);
 	}
 
 	private void addOptionToList(AbstractWidget button, WidgetSize.Size size) {
@@ -218,15 +225,6 @@ public class OkZoomerConfigScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderBackground(graphics, mouseX, mouseY, delta);
-		// Y: 20 is technically the vanilla Y, but I'd rather go for as close to 1.20.5 vanilla Y as possible
-		graphics.drawCenteredString(this.font, ConfigTextUtils.getConfigTitle(configId), this.width / 2, 15, CommonColors.WHITE);
-		this.entryListWidget.render(graphics, mouseX, mouseY, delta);
-		super.render(graphics, mouseX, mouseY, delta);
-	}
-
-	@Override
 	public void onClose() {
 		this.minecraft.setScreen(this.parent);
 	}
@@ -243,7 +241,7 @@ public class OkZoomerConfigScreen extends Screen {
 
 	private void refresh() {
 		var scrollAmount = this.entryListWidget.getScrollAmount();
-		this.repositionElements();
+		this.rebuildWidgets();
 		this.entryListWidget.setScrollAmount(scrollAmount);
 	}
 
@@ -296,12 +294,11 @@ public class OkZoomerConfigScreen extends Screen {
 					default -> 0.6;
 				}),
 				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.125D),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.25D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22D),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassTexture, preset == ConfigEnums.ZoomPresets.SPYGLASS),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts, true),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, false)

@@ -17,8 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
-import org.quiltmc.qsl.tag.api.QuiltTagKey;
-import org.quiltmc.qsl.tag.api.TagType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,7 @@ public class ZoomUtils {
 
 	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
-	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = QuiltTagKey.of(Registries.ITEM, ZoomUtils.id("zoom_dependencies"), TagType.CLIENT_FALLBACK);
+	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ZoomUtils.id("zoom_dependencies"));
 
 	public static int zoomStep = 0;
 

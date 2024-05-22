@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
@@ -26,7 +27,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
     }
 
     @Override
-    public ResourceLocation getIdentifier() {
+    public ResourceLocation getId() {
         return OVERLAY_ID;
     }
 
@@ -37,22 +38,23 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public void renderOverlay(GuiGraphics graphics) {
-		int scaledWidth = this.minecraft.getWindow().getGuiScaledWidth();
-		int scaledHeight = this.minecraft.getWindow().getGuiScaledHeight();
-
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		float lerpedOverlayAlpha = Mth.lerp(this.minecraft.getFrameTime(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, lerpedOverlayAlpha);
-		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, scaledWidth, scaledHeight, scaledWidth, scaledHeight);
+		RenderSystem.setShaderColor(lerpedOverlayAlpha, lerpedOverlayAlpha, lerpedOverlayAlpha, 1.0F);
+		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight());
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableBlend();
     }
 
     @Override
     public void tick(boolean active, double divisor, double transitionMultiplier) {
-        if (active || zoomOverlayAlpha == 0.0f) {
+        if (active || zoomOverlayAlpha == 0.0F) {
             this.active = active;
         }
 
@@ -80,7 +82,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 				OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep.value()
 			);
 
-            zoomOverlayAlpha = Mth.approach(zoomOverlayAlpha, zoomMultiplier, (float)linearStep);
+            zoomOverlayAlpha = Mth.approach(zoomOverlayAlpha, zoomMultiplier, (float) linearStep);
         }
     }
 }

@@ -23,7 +23,7 @@ public class LinearTransitionMode implements TransitionMode {
     }
 
     @Override
-    public ResourceLocation getIdentifier() {
+    public ResourceLocation getId() {
         return TRANSITION_ID;
     }
 

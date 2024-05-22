@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "ok_zoomer",
+	"version": "${version}",
+	"name": "Ok Zoomer",
+	"description": "Adds a highly configurable zoom key. By default, this mod provides its own take on zooming, however, through the config screen and its presets, you can drastically change the zoom with something more familiar or useful. The zoom is yours!",
+	"authors": [
+		"Ennui Langeweile",
+		"Up"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/libzoomer",
+		"issues": "https://github.com/EnnuiL/LibZoomer/issues",
+		"sources": "https://github.com/EnnuiL/LibZoomer"
+	},
+	"icon": "assets/ok_zoomer/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["io.github.ennuil.ok_zoomer.OkZoomerClientMod"],
+		"modmenu": ["io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"],
+		"preLaunch": ["io.github.ennuil.ok_zoomer.OkZoomerPreLaunchMod"]
+	},
+	"mixins": ["ok_zoomer.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.15.10",
+		"minecraft": "=${minecraft_version}",
+		"fabric-api": ">=0.99.0",
+		"libzoomer": ">=0.9.0"
+	},
+	"custom": {
+		"mc-publish": {
+			"curseforge": "${curseforge_id}",
+			"modrinth": "${modrinth_id}",
+			"loaders": [
+				"fabric",
+				"quilt"
+			],
+			"dependencies": [
+				"libzoomer(embedded)#(ignore:curseforge)",
+				"modmenu(optional)"
+			]
+		}
+	}
+}

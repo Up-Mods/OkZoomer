@@ -4,12 +4,10 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.minecraft.client.Minecraft;
-import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 
 // This event manages the extra key binds' behavior
-public class ManageExtraKeysEvent implements ClientTickEvents.Start {
-	@Override
-	public void startClientTick(Minecraft minecraft) {
+public class ManageExtraKeysEvent {
+	public static void startClientTick(Minecraft minecraft) {
 		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
 		if (!OkZoomerConfigManager.CONFIG.features.extraKeyBinds.value()) return;
 		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.isBeingOverridden()) return;

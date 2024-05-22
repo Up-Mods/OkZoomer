@@ -6,12 +6,14 @@ import io.github.ennuil.ok_zoomer.config.screen.components.OkZoomerAbstractSelec
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.CommonColors;
 
 public class OkZoomerCommandScreen extends Screen {
+	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 	private OkZoomerAbstractSelectionList entryListWidget;
 
 	public OkZoomerCommandScreen() {
@@ -20,7 +22,7 @@ public class OkZoomerCommandScreen extends Screen {
 
 	@Override
 	protected void init() {
-		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 0, 32);
+		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 32);
 		this.entryListWidget.addButton(
 			Button.builder(
 				Component.translatable("command.ok_zoomer.config"),
@@ -78,17 +80,18 @@ public class OkZoomerCommandScreen extends Screen {
 		this.entryListWidget.finish();
 		this.addRenderableWidget(this.entryListWidget);
 
-		this.addRenderableWidget(
+		this.layout.addTitleHeader(this.title, this.font);
+		this.layout.addToFooter(
 			Button.builder(CommonComponents.GUI_DONE, button -> this.onClose())
 				.bounds(this.width / 2 - 100, this.height - 27, 200, 20)
 				.build());
+		this.layout.visitWidgets(this::addRenderableWidget);
+		this.layout.arrangeElements();
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderBackground(graphics, mouseX, mouseY, delta);
-		graphics.drawCenteredString(this.font, this.getTitle(), this.width / 2, 15, CommonColors.WHITE);
-		this.entryListWidget.render(graphics, mouseX, mouseY, delta);
-		super.render(graphics, mouseX, mouseY, delta);
+	protected void repositionElements() {
+		this.layout.arrangeElements();
+		this.entryListWidget.updateSize(this.width, this.layout);
 	}
 }
