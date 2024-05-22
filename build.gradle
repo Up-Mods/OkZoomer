@@ -21,7 +21,7 @@ def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" 
 version = (ENV.TAG ?: "${libs.versions.minecraft.get()}-development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : '')
 
 base {
-	archivesName = "${rootProject.name}-Quilt"
+	archivesName = "${rootProject.name}-Fabric"
 }
 
 repositories {
@@ -144,7 +144,7 @@ tasks.withType(GenerateModuleMetadata).configureEach {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifactId "${rootProject.name}-Quilt"
+			artifactId "${rootProject.name}-Fabric"
 			from components.java
 		}
 	}
