@@ -8,7 +8,7 @@ quilt_loader = "0.26.0"
 
 fabric_api = "0.100.1+1.21"
 libzoomer = "0.9.1+1.21"
-wrench_wrapper = "a29721e25d" # 0.1.0+1.20.4
+wrench_wrapper = "0.2.0"
 modmenu = "11.0.0-beta.1"
 
 [libraries]
@@ -18,7 +18,7 @@ quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loade
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 libzoomer = { module = "io.github.ennuil.libzoomer:libzoomer-fabric", version.ref = "libzoomer" }
-wrench_wrapper = { module = "com.github.Up-Mods:wrench_wrapper", version.ref = "wrench_wrapper" }
+wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".

@@ -1,4 +1,4 @@
-package io.github.ennuil.wrench_wrapper.fabric;
+package io.github.ennuil.ok_zoomer.wrench_wrapper.fabric;
 
 import net.fabricmc.loader.api.FabricLoader;
 import org.quiltmc.config.api.ReflectiveConfig;

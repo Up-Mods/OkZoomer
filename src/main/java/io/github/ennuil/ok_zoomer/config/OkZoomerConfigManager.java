@@ -7,14 +7,13 @@ import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
 import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
 import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
-import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
+import io.github.ennuil.ok_zoomer.wrench_wrapper.WrenchWrapper;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.ZoomerZoomOverlay;
-import io.github.ennuil.wrench_wrapper.WrenchWrapper;
 import net.minecraft.resources.ResourceLocation;
 
 public class OkZoomerConfigManager {
