@@ -12,8 +12,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 
 // This class is responsible for registering the commands and packets
 public class OkZoomerClientMod implements ClientModInitializer {
-	public static final String MOD_ID = "ok_zoomer";
-
 	@Override
 	public void onInitializeClient() {
 		// Initialize the config

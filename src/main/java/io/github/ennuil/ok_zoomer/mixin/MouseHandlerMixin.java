@@ -44,16 +44,15 @@ public abstract class MouseHandlerMixin {
 	@Inject(
 		method = "onPress",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;set(Lcom/mojang/blaze3d/platform/InputConstants$Key;Z)V"),
-		cancellable = true,
-		locals = LocalCapture.CAPTURE_FAILHARD
+		cancellable = true
 	)
-	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, boolean bl, int i) {
+	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, @Local boolean bl, @Local(ordinal = 3) int i) {
 		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
 			if (OkZoomerConfigManager.CONFIG.features.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
-			if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl && ZoomKeyBinds.ZOOM_KEY.isDown()) {
+			if (i == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl && ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				if (OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();

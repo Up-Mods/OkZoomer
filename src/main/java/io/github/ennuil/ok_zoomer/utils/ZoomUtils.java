@@ -119,6 +119,6 @@ public class ZoomUtils {
 	}
 
 	public static ResourceLocation id(String path) {
-		return new ResourceLocation(OkZoomerClientMod.MOD_ID, path);
+		return ModUtils.id(path);
 	}
 }

@@ -35,10 +35,10 @@ import java.util.function.Predicate;
 
 @ClientOnly
 public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
-	private static final ResourceLocation SCROLLER_SPRITE = new ResourceLocation("minecraft", "widget/scroller");
-	private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = new ResourceLocation("minecraft", "widget/scroller_background");
-	private static final ResourceLocation MENU_LIST_BACKGROUND = new ResourceLocation("minecraft", "textures/gui/menu_list_background.png");
-	private static final ResourceLocation INWORLD_MENU_LIST_BACKGROUND = new ResourceLocation("minecraft", "textures/gui/inworld_menu_list_background.png");
+	private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
+	private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
+	private static final ResourceLocation MENU_LIST_BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png");
+	private static final ResourceLocation INWORLD_MENU_LIST_BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/inworld_menu_list_background.png");
 
 	private final Minecraft minecraft;
 	private final List<Entry> children;
@@ -671,7 +671,9 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 
 		@Override
 		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
-			this.lines = this.serverEffect.renderCentered(graphics, x + rowWidth / 2, y + 4, 9, CommonColors.WHITE) - y + 3;
+			this.serverEffect.renderCentered(graphics, x + rowWidth / 2, y + 4, 9, CommonColors.WHITE);
+			// TODO - With a more rational mind, discover if this math is correct; if not, fix it
+			this.lines = (this.serverEffect.getLineCount() * 9) + 7;
 		}
 
 		@Override

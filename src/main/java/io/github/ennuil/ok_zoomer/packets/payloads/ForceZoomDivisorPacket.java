@@ -2,6 +2,7 @@ package io.github.ennuil.ok_zoomer.packets.payloads;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,7 +13,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record ForceZoomDivisorPacket(double max, double min) implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, ForceZoomDivisorPacket> STREAM_CODEC = CustomPacketPayload.codec(ForceZoomDivisorPacket::write, ForceZoomDivisorPacket::new);
-	public static final CustomPacketPayload.Type<ForceZoomDivisorPacket> TYPE = CustomPacketPayload.createType("ok_zoomer:force_zoom_divisor");
+	public static final CustomPacketPayload.Type<ForceZoomDivisorPacket> TYPE = new Type<>(ModUtils.id("force_zoom_divisor"));
 
 	public ForceZoomDivisorPacket(FriendlyByteBuf buf) {
 		this(buf.readDouble(), buf.readableBytes() >= 8 ? buf.readDouble() : buf.getDouble(0));

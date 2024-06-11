@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.packets.payloads;
 
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +12,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record DisableZoomScrollingPacket() implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, DisableZoomScrollingPacket> STREAM_CODEC = CustomPacketPayload.codec(DisableZoomScrollingPacket::write, DisableZoomScrollingPacket::new);
-	public static final CustomPacketPayload.Type<DisableZoomScrollingPacket> TYPE = CustomPacketPayload.createType("ok_zoomer:disable_zoom_scrolling");
+	public static final CustomPacketPayload.Type<DisableZoomScrollingPacket> TYPE = new Type<>(ModUtils.id("disable_zoom_scrolling"));
 
 	public DisableZoomScrollingPacket(FriendlyByteBuf buf) {
 		this();

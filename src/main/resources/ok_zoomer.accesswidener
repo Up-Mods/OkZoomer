@@ -1,0 +1,4 @@
+accessWidener v2 named
+
+accessible method net/minecraft/resources/ResourceLocation <init> (Ljava/lang/String;Ljava/lang/String;)V
+accessible method net/minecraft/resources/ResourceLocation assertValidPath (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;

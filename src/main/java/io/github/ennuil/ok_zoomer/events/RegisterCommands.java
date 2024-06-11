@@ -10,7 +10,7 @@ import net.minecraft.commands.CommandBuildContext;
 public class RegisterCommands {
 	public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext registryAccess) {
 		dispatcher.register(
-			ClientCommandManager.literal(OkZoomerClientMod.MOD_ID).executes(ctx -> {
+			ClientCommandManager.literal("ok_zoomer").executes(ctx -> {
 				ZoomUtils.setOpenCommandScreen(true);
 				return 0;
 			}

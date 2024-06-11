@@ -21,9 +21,10 @@
 		"preLaunch": ["io.github.ennuil.ok_zoomer.OkZoomerPreLaunchMod"]
 	},
 	"mixins": ["ok_zoomer.mixins.json"],
+	"accessWidener": "ok_zoomer.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.15.10",
-		"minecraft": "=${minecraft_version}",
+		"minecraft": "~1.21-",
 		"fabric-api": ">=0.99.0",
 		"libzoomer": ">=0.9.0"
 	},

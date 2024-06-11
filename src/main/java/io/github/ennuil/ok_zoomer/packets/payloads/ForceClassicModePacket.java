@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.packets.payloads;
 
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +12,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record ForceClassicModePacket() implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, ForceClassicModePacket> STREAM_CODEC = CustomPacketPayload.codec(ForceClassicModePacket::write, ForceClassicModePacket::new);
-	public static final CustomPacketPayload.Type<ForceClassicModePacket> TYPE = CustomPacketPayload.createType("ok_zoomer:force_classic_mode");
+	public static final CustomPacketPayload.Type<ForceClassicModePacket> TYPE = new Type<>(ModUtils.id("force_classic_mode"));
 
 	public ForceClassicModePacket(FriendlyByteBuf buf) {
 		this();

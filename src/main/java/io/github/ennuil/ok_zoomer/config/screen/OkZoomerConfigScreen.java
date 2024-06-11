@@ -5,10 +5,10 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.components.LabelledEditBox;
 import io.github.ennuil.ok_zoomer.config.screen.components.OkZoomerAbstractSelectionList;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -43,8 +43,8 @@ public class OkZoomerConfigScreen extends Screen {
 	private AbstractWidget buttonBuffer = null;
 
 	public OkZoomerConfigScreen(Screen parent) {
-		super(ConfigTextUtils.getConfigTitle(new ResourceLocation("ok_zoomer", "config")));
-		this.configId = new ResourceLocation("ok_zoomer", "config");
+		super(ConfigTextUtils.getConfigTitle(ModUtils.id("config")));
+		this.configId = ModUtils.id("config");
 		this.parent = parent;
 		this.newValues = new Reference2ObjectArrayMap<>();
 		this.invalidValues = new ObjectArraySet<>();

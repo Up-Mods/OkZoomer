@@ -1,13 +1,14 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import io.github.ennuil.libzoomer.api.MouseModifier;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.SmoothDouble;
 
 // The implementation of the multiplied cinematic camera
 public class MultipliedCinematicCameraMouseModifier implements MouseModifier {
-    private static final ResourceLocation MODIFIER_ID = new ResourceLocation("ok_zoomer:multiplied_cinematic_camera");
+    private static final ResourceLocation MODIFIER_ID = ModUtils.id("multiplied_cinematic_camera");
     private final Minecraft minecraft;
     private final SmoothDouble cursorXZoomSmoother = new SmoothDouble();
     private final SmoothDouble cursorYZoomSmoother = new SmoothDouble();

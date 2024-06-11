@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ import net.minecraft.util.Mth;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-    private static final ResourceLocation OVERLAY_ID = new ResourceLocation("ok_zoomer:zoom_overlay");
+    private static final ResourceLocation OVERLAY_ID = ModUtils.id("zoom_overlay");
     private final ResourceLocation textureId;
     private boolean active;
     private final Minecraft minecraft;
@@ -42,7 +43,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		float lerpedOverlayAlpha = Mth.lerp(this.minecraft.getFrameTime(), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
+		float lerpedOverlayAlpha = Mth.lerp(this.minecraft.getTimer().getGameTimeDeltaPartialTick(true), this.lastZoomOverlayAlpha, this.zoomOverlayAlpha);
 		RenderSystem.setShaderColor(lerpedOverlayAlpha, lerpedOverlayAlpha, lerpedOverlayAlpha, 1.0F);
 		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight());
 		RenderSystem.depthMask(true);

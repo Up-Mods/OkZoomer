@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.packets.payloads;
 
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,7 +13,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record AcknowledgeModPacket(boolean unrestricted) implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, AcknowledgeModPacket> STREAM_CODEC = CustomPacketPayload.codec(AcknowledgeModPacket::write, AcknowledgeModPacket::new);
-	public static final CustomPacketPayload.Type<AcknowledgeModPacket> TYPE = CustomPacketPayload.createType("ok_zoomer:acknowledge_mod");
+	public static final CustomPacketPayload.Type<AcknowledgeModPacket> TYPE = new Type<>(ModUtils.id("acknowledge_mod"));
 
 	public AcknowledgeModPacket(FriendlyByteBuf buffer) {
 		this(buffer.readBoolean());

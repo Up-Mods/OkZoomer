@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.packets.payloads;
 
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,7 +11,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record ForceSpyglassOverlayPacket() implements CustomPacketPayload {
 	public static final StreamCodec<FriendlyByteBuf, ForceSpyglassOverlayPacket> STREAM_CODEC = CustomPacketPayload.codec(ForceSpyglassOverlayPacket::write, ForceSpyglassOverlayPacket::new);
-	public static final CustomPacketPayload.Type<ForceSpyglassOverlayPacket> TYPE = CustomPacketPayload.createType("ok_zoomer:force_spyglass_overlay");
+	public static final CustomPacketPayload.Type<ForceSpyglassOverlayPacket> TYPE = new Type<>(ModUtils.id("force_spyglass_overlay"));
 
 	public ForceSpyglassOverlayPacket(FriendlyByteBuf buf) {
 		this();

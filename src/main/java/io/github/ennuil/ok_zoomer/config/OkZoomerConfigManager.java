@@ -9,6 +9,7 @@ import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
 import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
 import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
@@ -17,7 +18,7 @@ import io.github.ennuil.wrench_wrapper.WrenchWrapper;
 import net.minecraft.resources.ResourceLocation;
 
 public class OkZoomerConfigManager {
-	public static final OkZoomerConfig CONFIG = WrenchWrapper.create(OkZoomerClientMod.MOD_ID, "config", OkZoomerConfig.class);
+	public static final OkZoomerConfig CONFIG = WrenchWrapper.create(ModUtils.MOD_NAMESPACE, "config", OkZoomerConfig.class);
 
 	public OkZoomerConfigManager() {
 		// On initialization, configure our zoom instance
@@ -45,9 +46,9 @@ public class OkZoomerConfigManager {
 		// Sets zoom overlay
 		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
 		// You won't do it without a nice placeholder texture though (that isn't Michael lmfao)
-		var overlayTextureId = new ResourceLocation(
+		var overlayTextureId = ResourceLocation.parse(
 			CONFIG.features.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
-			? "textures/misc/spyglass_scope.png"
+			? "minecraft:textures/misc/spyglass_scope.png"
 			: "ok_zoomer:textures/misc/zoom_overlay.png");
 
 		ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(

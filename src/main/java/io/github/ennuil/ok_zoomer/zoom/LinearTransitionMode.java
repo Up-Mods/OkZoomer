@@ -1,12 +1,13 @@
 package io.github.ennuil.ok_zoomer.zoom;
 
 import io.github.ennuil.libzoomer.api.TransitionMode;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 // The implementation of the linear transition
 public class LinearTransitionMode implements TransitionMode {
-    private static final ResourceLocation TRANSITION_ID = new ResourceLocation("ok_zoomer:linear_transition");
+    private static final ResourceLocation TRANSITION_ID = ModUtils.id("linear_transition");
     private boolean active;
     private final double minimumLinearStep;
     private final double maximumLinearStep;
