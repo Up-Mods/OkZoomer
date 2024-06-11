@@ -47,9 +47,17 @@ jobs:
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ env.TAG }}-fabric
           files: |
             build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             build/libs/*-@(sources|javadoc).jar
           game-versions: ">1.20.x" #TODO remove once 1.21 releases
           game-version-filter: any
+      - name: Notify Discord
+        uses: Up-Mods/action-discord-release@main
+        with:
+          version: ${{ github.ref_name }}
+          webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
+          curseforge-project-id: ${{ steps.publish_fabric.outputs.curseforge-id }}
+          modrinth-project-id: ${{ steps.publish_fabric.outputs.modrinth-id }}
