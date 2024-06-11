@@ -13,12 +13,9 @@ def javaVersion = 21
 group = project.maven_group_id
 
 def ENV = System.getenv()
-def NOW = new Date()
-def buildTime = ENV.BUILD_TIME ?: NOW.format('yyyyMMddHHmmss')
+def now = new Date()
 
-boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches('.+-.+')
-def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}") : ''
-version = (ENV.TAG ?: "${libs.versions.minecraft.get()}-development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : '')
+version = ENV.TAG ?: "development-${now.format('YY.MMdd.HHmm', TimeZone.getTimeZone('UTC'))}+${libs.versions.minecraft.get()}${(!ENV.TAG && ENV.BUILD_NUMBER) ? "-build.${ENV.BUILD_NUMBER}" : ''}"
 
 base {
 	archivesName = "${rootProject.name}-Fabric"
