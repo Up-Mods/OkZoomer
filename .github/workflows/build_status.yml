@@ -1,9 +1,6 @@
 name: Build Status
-
 on:
   push:
-    paths-ignore:
-      - '.github/**'
     branches:
       - '*'
   pull_request:
@@ -11,8 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -22,7 +21,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --rerun-tasks
       - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
@@ -31,4 +30,3 @@ jobs:
           path: |
             build/libs/*.jar
             !build/libs/*-dev.jar
-            !build/libs/*-slim.jar
