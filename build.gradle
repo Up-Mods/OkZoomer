@@ -81,7 +81,7 @@ dependencies {
 	modLocalRuntime libs.modmenu
 
 	modImplementation libs.libzoomer
-	modImplementation libs.wrench.wrapper
+	modCompileOnly libs.wrench.wrapper
 
 	include libs.libzoomer
 	include libs.wrench.wrapper
