@@ -6,8 +6,8 @@ parchment = "2024.06.02"
 quilt_loom = "1.6.8"
 quilt_loader = "0.26.0"
 
-fabric_api = "0.100.0+1.21"
-libzoomer = "0.9.1+1.21-rc1"
+fabric_api = "0.100.1+1.21"
+libzoomer = "0.9.1+1.21"
 wrench_wrapper = "a29721e25d" # 0.1.0+1.20.4
 modmenu = "11.0.0-beta.1"
 
@@ -17,8 +17,7 @@ parchment = { module = "org.parchmentmc.data:parchment-1.20.4", version.ref = "p
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
-#libzoomer = { module = "maven.modrinth:libzoomer", version.ref = "libzoomer" }
-libzoomer = { module = "io.github.ennuil:LibZoomer", version.ref = "libzoomer" }
+libzoomer = { module = "io.github.ennuil.libzoomer:libzoomer-fabric", version.ref = "libzoomer" }
 wrench_wrapper = { module = "com.github.Up-Mods:wrench_wrapper", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 

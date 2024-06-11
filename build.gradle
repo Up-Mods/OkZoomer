@@ -46,11 +46,8 @@ repositories {
 		}
 	}
 	maven {
-		name = 'JitPack'
-		url = 'https://www.jitpack.io'
-		content {
-			includeGroupByRegex 'com\\.github(\\..*)?'
-		}
+		name = 'Up-Mods'
+		url = 'https://maven.uuid.gg/releases'
 	}
 }
 
