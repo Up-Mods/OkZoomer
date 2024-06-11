@@ -61,3 +61,4 @@ jobs:
           webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
           curseforge-project-id: ${{ steps.publish_fabric.outputs.curseforge-id }}
           modrinth-project-id: ${{ steps.publish_fabric.outputs.modrinth-id }}
+          thumbnail-url: https://mod-assets.upcraft.dev/promo/ok-zoomer/icon_128x.png
