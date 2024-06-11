@@ -9,9 +9,9 @@
 		"Up"
 	],
 	"contact": {
-		"homepage": "https://modrinth.com/mod/libzoomer",
-		"issues": "https://github.com/EnnuiL/LibZoomer/issues",
-		"sources": "https://github.com/EnnuiL/LibZoomer"
+		"homepage": "https://modrinth.com/mod/aXf2OSFU",
+		"issues": "https://github.com/Up-Mods/OkZoomer/issues",
+		"sources": "https://github.com/Up-Mods/OkZoomer"
 	},
 	"icon": "assets/ok_zoomer/icon.png",
 	"environment": "client",
@@ -26,7 +26,7 @@
 		"fabricloader": ">=0.15.10",
 		"minecraft": "~1.21-",
 		"fabric-api": ">=0.99.0",
-		"libzoomer": ">=0.9.0"
+		"libzoomer": ">=0.9.1"
 	},
 	"custom": {
 		"mc-publish": {
@@ -37,8 +37,8 @@
 				"quilt"
 			],
 			"dependencies": [
-				"libzoomer(embedded)#(ignore:curseforge)",
-				"modmenu(optional)"
+				"fabric-api(required)#{curseforge:306612}{modrinth:P7dR8mSH}",
+				"libzoomer(embedded)#(ignore:curseforge){modrinth:UuqHBjf9}"
 			]
 		}
 	}
