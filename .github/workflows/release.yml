@@ -24,8 +24,6 @@ jobs:
         run: echo "maven_upload_url=${{ secrets.MAVEN_UPLOAD_URL }}" >> $GITHUB_OUTPUT
       - name: Build with Gradle
         run: ./gradlew assemble --rerun-tasks
-      - name: Detonate JARs
-        run: python ./ci/hissboom.py "./build/libs/*.jar"
       - name: Maven Release
         if: steps.extract_maven_upload_url.outputs.maven_upload_url
         env:
@@ -33,6 +31,8 @@ jobs:
           MAVEN_UPLOAD_USERNAME: ${{ secrets.MAVEN_UPLOAD_USERNAME }}
           MAVEN_UPLOAD_PASSWORD: ${{ secrets.MAVEN_UPLOAD_PASSWORD }}
         run: ./gradlew publish
+      - name: Detonate JARs
+        run: python ./ci/hissboom.py "./build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
