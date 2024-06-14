@@ -1,4 +1,5 @@
 {
+	"modmenu.descriptionTranslation.ok_zoomer": "Adiciona uma tecla de zoom bastante configurável. Por padrão, o mod fornece sua própria versão de um zoom, porém, através do menu de configurações e de suas predefinições, você pode drasticamente alterar o zoom para que seja mais familiar, confortável ou útil. O zoom é seu!",
 	"config.ok_zoomer.title": "Definições do Ok Zoomer",
 	"config.ok_zoomer.features": "Funções",
 	"config.ok_zoomer.features.cinematic_camera": "Câmera cinemática",
