@@ -22,10 +22,10 @@ jobs:
       - name: Copy Maven Upload URL
         id: extract_maven_upload_url
         run: echo "maven_upload_url=${{ secrets.MAVEN_UPLOAD_URL }}" >> $GITHUB_OUTPUT
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew assemble --rerun-tasks
+      - name: Detonate JARs
+        run: python ./ci/hissboom.py "./build/libs/*.jar"
       - name: Maven Release
         if: steps.extract_maven_upload_url.outputs.maven_upload_url
         env:
