@@ -24,7 +24,7 @@
 	"accessWidener": "ok_zoomer.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.15.10",
-		"minecraft": "~1.21-",
+		"minecraft": "~1.21",
 		"fabric-api": ">=0.99.0",
 		"libzoomer": ">=0.9.1"
 	},

@@ -52,8 +52,6 @@ jobs:
           files: |
             build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             build/libs/*-@(sources|javadoc).jar
-          game-versions: ">1.20.x" #TODO remove once 1.21 releases
-          game-version-filter: any
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:
