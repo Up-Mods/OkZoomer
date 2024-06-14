@@ -10,7 +10,7 @@ import zipfile
 
 def hissboomify_zip(origin: IO[bytes], target: IO[bytes], is_jij: bool):
     zip = zipfile.ZipFile(file=origin, mode="r")
-    new_zip = zipfile.ZipFile(file=target, mode="w", compression=zipfile.ZIP_STORED if is_jij else zipfile.ZIP_DEFLATED)
+    new_zip = zipfile.ZipFile(file=target, mode="w", compression=zipfile.ZIP_DEFLATED, compresslevel=0 if is_jij else 9, allowZip64=False)
     for file in zip.filelist:
         if file.is_dir():
             new_zip.mkdir(file.filename)
