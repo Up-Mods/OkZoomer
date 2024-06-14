@@ -32,7 +32,7 @@ public abstract class MouseHandlerMixin {
 					if (!ZoomKeyBinds.ZOOM_KEY.isDown()) return;
 				}
 
-				if (ZoomUtils.ZOOMER_ZOOM.getZoom()) {
+				if (ZoomUtils.ZOOMER_ZOOM.isZooming()) {
 					ZoomUtils.changeZoomDivisor(k > 0);
 					ci.cancel();
 				}

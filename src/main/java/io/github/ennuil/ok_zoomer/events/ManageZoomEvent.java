@@ -31,7 +31,7 @@ public class ManageZoomEvent {
 			));
 
 		if (disableZoom) {
-			ZoomUtils.ZOOMER_ZOOM.setZoom(false);
+			ZoomUtils.ZOOMER_ZOOM.setZooming(false);
 			ZoomUtils.resetZoomDivisor(false);
 			lastZooming = false;
 			return;
@@ -69,13 +69,13 @@ public class ManageZoomEvent {
 		switch (OkZoomerConfigManager.CONFIG.features.zoomMode.value()) {
 			case HOLD -> {
 				// If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
-				ZoomUtils.ZOOMER_ZOOM.setZoom(zooming);
+				ZoomUtils.ZOOMER_ZOOM.setZooming(zooming);
 				ZoomUtils.resetZoomDivisor(false);
 			}
 			case TOGGLE -> {
 				// If the zoom needs to be toggled, toggle the zoom signal instead
 				if (zooming) {
-					ZoomUtils.ZOOMER_ZOOM.setZoom(!ZoomUtils.ZOOMER_ZOOM.getZoom());
+					ZoomUtils.ZOOMER_ZOOM.setZooming(!ZoomUtils.ZOOMER_ZOOM.isZooming());
 					ZoomUtils.resetZoomDivisor(false);
 				} else {
 					doSpyglassSound = false;
@@ -83,14 +83,14 @@ public class ManageZoomEvent {
 			}
 			case PERSISTENT -> {
 				// If persistent zoom is enabled, just keep the zoom on
-				ZoomUtils.ZOOMER_ZOOM.setZoom(true);
+				ZoomUtils.ZOOMER_ZOOM.setZooming(true);
 				ZoomUtils.keepZoomStepsWithinBounds();
 			}
 		}
 
 		if (doSpyglassSound && !spyglassUse) {
 			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)
-				? ZoomUtils.ZOOMER_ZOOM.getZoom()
+				? ZoomUtils.ZOOMER_ZOOM.isZooming()
 				: keyPress;
 
 			minecraft.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);

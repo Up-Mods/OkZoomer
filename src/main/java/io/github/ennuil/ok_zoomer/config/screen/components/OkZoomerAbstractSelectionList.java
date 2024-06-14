@@ -672,7 +672,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		@Override
 		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
 			this.serverEffect.renderCentered(graphics, x + rowWidth / 2, y + 4, 9, CommonColors.WHITE);
-			// TODO - With a more rational mind, discover if this math is correct; if not, fix it
 			this.lines = (this.serverEffect.getLineCount() * 9) + 7;
 		}
 

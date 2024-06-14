@@ -58,8 +58,6 @@ loom {
 	mixin {
 		useLegacyMixinAp = false
     }
-
-	accessWidenerPath = file('src/main/resources/ok_zoomer.accesswidener')
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
