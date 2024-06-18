@@ -1,7 +1,6 @@
 package io.github.ennuil.ok_zoomer.events;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.ennuil.ok_zoomer.OkZoomerClientMod;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;

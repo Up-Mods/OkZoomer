@@ -1,17 +1,12 @@
 package io.github.ennuil.ok_zoomer.config;
 
+import io.github.ennuil.ok_zoomer.config.ConfigEnums.*;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
+import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize.Size;
 import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.annotations.*;
 import org.quiltmc.config.api.metadata.NamingSchemes;
 import org.quiltmc.config.api.values.TrackedValue;
-
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.SpyglassMode;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomOverlays;
-import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
-import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
-import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize.Size;
 
 @SerializedNameConvention(NamingSchemes.SNAKE_CASE)
 public class OkZoomerConfig extends ReflectiveConfig {

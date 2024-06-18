@@ -183,9 +183,9 @@ public class OkZoomerConfigScreen extends Screen {
 			.create(0, 0, 150, 20,
 				Component.translatable("config.ok_zoomer.presets.preset"));
 		var resetButton = Button.builder(
-				Component.translatable("config.ok_zoomer.presets.reset_settings"),
+				Component.translatable("config.ok_zoomer.presets.apply_preset"),
 				button -> this.resetToPreset(presetButton.getValue()))
-			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.reset_settings.tooltip")))
+			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.apply_preset.tooltip")))
 			.build();
 		this.entryListWidget.addButton(presetButton, resetButton);
 

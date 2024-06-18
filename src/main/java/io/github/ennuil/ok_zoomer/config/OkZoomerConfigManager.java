@@ -45,10 +45,9 @@ public class OkZoomerConfigManager {
 		// Sets zoom overlay
 		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
 		// You won't do it without a nice placeholder texture though (that isn't Michael lmfao)
-		var overlayTextureId = ResourceLocation.parse(
-			CONFIG.features.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
-			? "minecraft:textures/misc/spyglass_scope.png"
-			: "ok_zoomer:textures/misc/zoom_overlay.png");
+		var overlayTextureId = CONFIG.features.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
+			? ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png")
+			: ModUtils.id("textures/misc/zoom_overlay.png");
 
 		ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
 			switch (CONFIG.features.zoomOverlay.value()) {

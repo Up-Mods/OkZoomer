@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientConfigurationNetworkin
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 public record ForceZoomDivisorPacket(double max, double min) implements CustomPacketPayload {
