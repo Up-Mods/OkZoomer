@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 public class OkZoomerConfigManager {
 	public static final OkZoomerConfig CONFIG = WrenchWrapper.create(ModUtils.MOD_NAMESPACE, "config", OkZoomerConfig.class);
 
-	public OkZoomerConfigManager() {
+	public static void init() {
 		// On initialization, configure our zoom instance
 		OkZoomerConfigManager.configureZoomInstance();
 

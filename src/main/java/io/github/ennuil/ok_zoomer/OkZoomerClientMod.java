@@ -15,7 +15,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		// Initialize the config
-		new OkZoomerConfigManager();
+		OkZoomerConfigManager.init();
 
 		// Register all the key binds
 		KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.ZOOM_KEY);
