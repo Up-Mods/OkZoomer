@@ -19,6 +19,6 @@ public class OwoUtils {
 
 	public static void printOwo() {
 		Random random = new Random();
-		ZoomUtils.LOGGER.info(String.format("[Ok Zoomer] %s what's this", OWO_ARRAY[random.nextInt(OWO_ARRAY.length)]));
+		ZoomUtils.LOGGER.info("[Ok Zoomer] {} what's this", OWO_ARRAY[random.nextInt(OWO_ARRAY.length)]);
 	}
 }

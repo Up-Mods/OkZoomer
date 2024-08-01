@@ -26,6 +26,7 @@ import org.quiltmc.config.api.values.TrackedValue;
 import org.quiltmc.config.api.values.ValueTreeNode;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -176,9 +177,9 @@ public class OkZoomerConfigScreen extends Screen {
 		}
 
 		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
-		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase())))
+		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
 			.withValues(ConfigEnums.ZoomPresets.values())
-			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase()))))
+			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
 			.withInitialValue(ConfigEnums.ZoomPresets.DEFAULT)
 			.create(0, 0, 150, 20,
 				Component.translatable("config.ok_zoomer.presets.preset"));
