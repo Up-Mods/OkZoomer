@@ -46,6 +46,10 @@ repositories {
 		name = 'Up-Mods'
 		url = 'https://maven.uuid.gg/releases'
 	}
+	maven {
+		name = "Ladysnake"
+		url = 'https://maven.ladysnake.org/releases'
+	}
 }
 
 loom {
@@ -78,6 +82,9 @@ dependencies {
 
 	modImplementation libs.libzoomer
 	modCompileOnly libs.wrench.wrapper
+
+	modCompileOnly libs.bundles.trinkets
+	modLocalRuntime libs.bundles.trinkets
 
 	include libs.libzoomer
 	include libs.wrench.wrapper

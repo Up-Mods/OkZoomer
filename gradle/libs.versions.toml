@@ -11,6 +11,9 @@ libzoomer = "0.10.0+1.21"
 wrench_wrapper = "0.4.0"
 modmenu = "11.0.1"
 
+trinkets = "3.10.0"
+cca = "6.1.1"
+
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 parchment = { module = "org.parchmentmc.data:parchment-1.21", version.ref = "parchment" }
@@ -21,8 +24,13 @@ libzoomer = { module = "io.github.ennuil.libzoomer:libzoomer-fabric", version.re
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
+trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
+cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
+cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
+
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
+trinkets = ["trinkets", "cca_base", "cca_entity"]
 
 [plugins]
 quilt_loom = { id = "org.quiltmc.loom", version.ref = "quilt_loom" }

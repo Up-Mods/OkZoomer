@@ -36,8 +36,9 @@
 				"quilt"
 			],
 			"dependencies": [
-				"fabric-api(required)#{curseforge:306612}{modrinth:P7dR8mSH}",
-				"libzoomer(embedded)#(ignore:curseforge){modrinth:UuqHBjf9}"
+				"fabric-api(required){curseforge:306612}{modrinth:P7dR8mSH}",
+				"libzoomer(embedded){modrinth:UuqHBjf9}#(ignore:curseforge)",
+				"trinkets(optional){curseforge:341284}{modrinth:5aaWibi9}"
 			]
 		}
 	}

@@ -5,7 +5,6 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
-import net.fabricmc.fabric.api.tag.client.v1.ClientTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
 
@@ -26,9 +25,7 @@ public class ManageZoomEvent {
 			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
-			} && !minecraft.player.getInventory().contains(
-				stack -> ClientTags.isInWithLocalFallback(ZoomUtils.ZOOM_DEPENDENCIES_TAG, stack.getItem())
-			));
+			} && !ZoomUtils.hasSpyglass(minecraft.player));
 
 		if (disableZoom) {
 			ZoomUtils.ZOOMER_ZOOM.setZooming(false);
