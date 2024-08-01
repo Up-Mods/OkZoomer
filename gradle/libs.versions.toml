@@ -3,13 +3,13 @@
 minecraft = "1.21"
 parchment = "2024.07.28"
 
-quilt_loom = "1.6.8"
-quilt_loader = "0.26.0"
+quilt_loom = "1.7.4"
+quilt_loader = "0.26.4-beta.1"
 
-fabric_api = "0.100.1+1.21"
+fabric_api = "0.100.8+1.21"
 libzoomer = "0.10.0+1.21"
 wrench_wrapper = "0.4.0"
-modmenu = "11.0.0-beta.1"
+modmenu = "11.0.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
