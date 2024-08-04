@@ -71,7 +71,8 @@
       "quilt"
     ],
 		"dependencies": [
-			"libzoomer(required)#(ignore:curseforge)"
+			"libzoomer(required)#(ignore:curseforge)",
+			"trinkets(optional){curseforge:341284}{modrinth:5aaWibi9}"
 		]
 	}
 }

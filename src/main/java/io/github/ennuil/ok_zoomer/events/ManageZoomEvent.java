@@ -28,7 +28,7 @@ public class ManageZoomEvent implements ClientTickEvents.Start {
 			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
-			} && !client.player.getInventory().contains(ZoomUtils.ZOOM_DEPENDENCIES_TAG));
+			} && !ZoomUtils.hasSpyglass(client.player));
 
 		if (disableZoom) {
 			ZoomUtils.ZOOMER_ZOOM.setZoom(false);

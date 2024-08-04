@@ -1,6 +1,8 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.compat.TrinketsCompat;
 import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
@@ -25,5 +27,10 @@ public class OkZoomerClientMod implements ClientModInitializer {
 
 		// Register the zoom-controlling packets
 		ZoomPackets.registerPackets();
+
+		// mod compat
+		if (QuiltLoader.isModLoaded("trinkets")) {
+			TrinketsCompat.init();
+		}
 	}
 }

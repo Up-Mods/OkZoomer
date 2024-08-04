@@ -2,6 +2,7 @@ package io.github.ennuil.ok_zoomer.utils;
 
 import com.mojang.blaze3d.platform.InputUtil;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import org.quiltmc.qsl.tag.api.QuiltTagKey;
 import org.quiltmc.qsl.tag.api.TagType;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.function.Predicate;
+
 // The class that contains most of the logic behind the zoom itself
 public class ZoomUtils {
 	// The logger, used everywhere to print messages to the console
@@ -41,6 +44,8 @@ public class ZoomUtils {
 	public static int zoomStep = 0;
 
 	private static boolean openCommandScreen = false;
+
+	private static Predicate<ClientPlayerEntity> hasSpyglass = player -> player.getInventory().contains(ZOOM_DEPENDENCIES_TAG);
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {
@@ -117,5 +122,13 @@ public class ZoomUtils {
 
 	public static void setOpenCommandScreen(boolean openCommandScreen) {
 		ZoomUtils.openCommandScreen = openCommandScreen;
+	}
+
+	public static boolean hasSpyglass(ClientPlayerEntity player) {
+		return hasSpyglass.test(player);
+	}
+
+	public static void addSpyglassProvider(Predicate<ClientPlayerEntity> provider) {
+		hasSpyglass = hasSpyglass.or(provider);
 	}
 }

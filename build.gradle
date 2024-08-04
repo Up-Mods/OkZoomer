@@ -29,6 +29,7 @@ repositories {
 	mavenCentral()
 	maven { url 'https://maven.terraformersmc.com/releases/' }
 	maven { url 'https://api.modrinth.com/maven' }
+	maven { url 'https://maven.ladysnake.org/releases' }
 }
 
 loom {
@@ -54,6 +55,9 @@ dependencies {
 
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
+
+	modCompileOnly libs.bundles.trinkets
+	modLocalRuntime libs.bundles.trinkets
 
 	modImplementation libs.libzoomer
 	include libs.libzoomer
