@@ -67,3 +67,12 @@ jobs:
           files: |
             build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             build/libs/*-@(sources|javadoc).jar
+      - name: Notify Discord
+        uses: Up-Mods/action-discord-release@main
+        with:
+          version: ${{ github.ref_name }}
+          webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
+          curseforge-project-id: ${{ steps.publish_fabric.outputs.curseforge-id }}
+          modrinth-project-id: ${{ steps.publish_fabric.outputs.modrinth-id }}
+          thumbnail-url: https://mod-assets.upcraft.dev/promo/ok-zoomer/icon_128x.png
+          ping-notification-role: false
