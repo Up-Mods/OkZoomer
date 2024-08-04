@@ -55,9 +55,10 @@ jobs:
         with:
           github-token: ${{ github.token }}
           files: |
-            build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            build/libs/*-@(sources|javadoc).jar
+            build/libs/*.jar
+            !build/libs/*-dev.jar
       - name: Publish (Quilt)
+        id: publish_quilt
         continue-on-error: true
         uses: Kir-Antipov/mc-publish@423b200ec84e6eefad726549c72513d7a9b4c2c0 # (new) v3.3
         with:
@@ -72,7 +73,7 @@ jobs:
         with:
           version: ${{ github.ref_name }}
           webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
-          curseforge-project-id: ${{ steps.publish_fabric.outputs.curseforge-id }}
-          modrinth-project-id: ${{ steps.publish_fabric.outputs.modrinth-id }}
+          curseforge-project-id: ${{ steps.publish_quilt.outputs.curseforge-id }}
+          modrinth-project-id: ${{ steps.publish_quilt.outputs.modrinth-id }}
           thumbnail-url: https://mod-assets.upcraft.dev/promo/ok-zoomer/icon_128x.png
           ping-notification-role: false
