@@ -1,11 +1,9 @@
-package io.github.ennuil.ok_zoomer.zoom;
+package io.github.ennuil.ok_zoomer.zoom.overlays;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import io.github.ennuil.libzoomer.api.ZoomOverlay;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomTransitionOptions;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
-import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +11,6 @@ import net.minecraft.util.Mth;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-    private static final ResourceLocation OVERLAY_ID = ModUtils.id("zoom_overlay");
     private final ResourceLocation textureId;
     private boolean active;
     private final Minecraft minecraft;
@@ -25,11 +22,6 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
         this.textureId = textureId;
         this.active = false;
         this.minecraft = Minecraft.getInstance();
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return OVERLAY_ID;
     }
 
     @Override

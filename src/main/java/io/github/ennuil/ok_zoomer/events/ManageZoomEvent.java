@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer.events;
 
+import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
@@ -28,7 +29,7 @@ public class ManageZoomEvent {
 			} && !ZoomUtils.hasSpyglass(minecraft.player));
 
 		if (disableZoom) {
-			ZoomUtils.ZOOMER_ZOOM.setZooming(false);
+			Zoom.setZooming(false);
 			ZoomUtils.resetZoomDivisor(false);
 			lastZooming = false;
 			return;
@@ -66,13 +67,13 @@ public class ManageZoomEvent {
 		switch (OkZoomerConfigManager.CONFIG.features.zoomMode.value()) {
 			case HOLD -> {
 				// If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
-				ZoomUtils.ZOOMER_ZOOM.setZooming(zooming);
+				Zoom.setZooming(zooming);
 				ZoomUtils.resetZoomDivisor(false);
 			}
 			case TOGGLE -> {
 				// If the zoom needs to be toggled, toggle the zoom signal instead
 				if (zooming) {
-					ZoomUtils.ZOOMER_ZOOM.setZooming(!ZoomUtils.ZOOMER_ZOOM.isZooming());
+					Zoom.setZooming(!Zoom.isZooming());
 					ZoomUtils.resetZoomDivisor(false);
 				} else {
 					doSpyglassSound = false;
@@ -80,14 +81,14 @@ public class ManageZoomEvent {
 			}
 			case PERSISTENT -> {
 				// If persistent zoom is enabled, just keep the zoom on
-				ZoomUtils.ZOOMER_ZOOM.setZooming(true);
+				Zoom.setZooming(true);
 				ZoomUtils.keepZoomStepsWithinBounds();
 			}
 		}
 
 		if (doSpyglassSound && !spyglassUse) {
 			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)
-				? ZoomUtils.ZOOMER_ZOOM.isZooming()
+				? Zoom.isZooming()
 				: keyPress;
 
 			minecraft.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);

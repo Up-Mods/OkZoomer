@@ -1,19 +1,18 @@
 package io.github.ennuil.ok_zoomer.config;
 
-import io.github.ennuil.libzoomer.api.MouseModifier;
-import io.github.ennuil.libzoomer.api.modifiers.CinematicCameraMouseModifier;
-import io.github.ennuil.libzoomer.api.modifiers.ContainingMouseModifier;
-import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.ennuil.libzoomer.api.overlays.SpyglassZoomOverlay;
-import io.github.ennuil.libzoomer.api.transitions.InstantTransitionMode;
-import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.Zoom;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
+import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.utils.ModUtils;
-import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.wrench_wrapper.WrenchWrapper;
-import io.github.ennuil.ok_zoomer.zoom.LinearTransitionMode;
-import io.github.ennuil.ok_zoomer.zoom.MultipliedCinematicCameraMouseModifier;
-import io.github.ennuil.ok_zoomer.zoom.ZoomerZoomOverlay;
+import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.modifiers.MultipliedCinematicCameraMouseModifier;
+import io.github.ennuil.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
 import net.minecraft.resources.ResourceLocation;
 
 public class OkZoomerConfigManager {
@@ -28,7 +27,7 @@ public class OkZoomerConfigManager {
 
 	public static void configureZoomInstance() {
 		// Sets zoom transition
-		ZoomUtils.ZOOMER_ZOOM.setTransitionMode(
+		Zoom.setTransitionMode(
 			switch (CONFIG.features.zoomTransition.value()) {
 				case SMOOTH -> new SmoothTransitionMode(CONFIG.transitionValues.smoothTransitionFactor.value().floatValue());
 				case LINEAR -> new LinearTransitionMode(CONFIG.transitionValues.minimumLinearStep.value(), CONFIG.transitionValues.maximumLinearStep.value());
@@ -37,7 +36,7 @@ public class OkZoomerConfigManager {
 		);
 
 		// Sets zoom divisor
-		ZoomUtils.ZOOMER_ZOOM.setDefaultZoomDivisor(CONFIG.zoomValues.zoomDivisor.value());
+		Zoom.setDefaultZoomDivisor(CONFIG.zoomValues.zoomDivisor.value());
 
 		// Sets mouse modifier
 		configureZoomModifier();
@@ -49,7 +48,7 @@ public class OkZoomerConfigManager {
 			? ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png")
 			: ModUtils.id("textures/misc/zoom_overlay.png");
 
-		ZoomUtils.ZOOMER_ZOOM.setZoomOverlay(
+		Zoom.setZoomOverlay(
 			switch (CONFIG.features.zoomOverlay.value()) {
 				case VIGNETTE -> new ZoomerZoomOverlay(overlayTextureId);
 				case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
@@ -59,20 +58,20 @@ public class OkZoomerConfigManager {
 	}
 
 	public static void configureZoomModifier() {
-		CinematicCameraOptions cinematicCamera = CONFIG.features.cinematicCamera.value();
+		var cinematicCamera = CONFIG.features.cinematicCamera.value();
 		boolean reduceSensitivity = CONFIG.features.reduceSensitivity.value();
 		if (cinematicCamera != CinematicCameraOptions.OFF) {
-			MouseModifier cinematicModifier = switch (cinematicCamera) {
+			var cinematicModifier = switch (cinematicCamera) {
 				case VANILLA -> new CinematicCameraMouseModifier();
 				case MULTIPLIED -> new MultipliedCinematicCameraMouseModifier(CONFIG.zoomValues.cinematicMultiplier.value());
 				default -> null;
 			};
-			ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity
+			Zoom.setMouseModifier(reduceSensitivity
 				? new ContainingMouseModifier(cinematicModifier, new ZoomDivisorMouseModifier())
 				: cinematicModifier
 			);
 		} else {
-			ZoomUtils.ZOOMER_ZOOM.setMouseModifier(reduceSensitivity ? new ZoomDivisorMouseModifier() : null);
+			Zoom.setMouseModifier(reduceSensitivity ? new ZoomDivisorMouseModifier() : null);
 		}
 	}
 }

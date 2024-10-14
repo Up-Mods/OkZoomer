@@ -68,11 +68,13 @@ loom {
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
 	minecraft libs.minecraft
-//	mappings loom.officialMojangMappings()
+	mappings loom.officialMojangMappings()
+	/*
 	mappings(loom.layered {
 		it.officialMojangMappings()
 		it.parchment libs.parchment
 	})
+	 */
 	modImplementation libs.quilt.loader
 
 	modImplementation libs.fabric.api
@@ -80,13 +82,11 @@ dependencies {
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
 
-	modImplementation libs.libzoomer
 	modCompileOnly libs.wrench.wrapper
 
 	modCompileOnly libs.bundles.trinkets
 	modLocalRuntime libs.bundles.trinkets
 
-	include libs.libzoomer
 	include libs.wrench.wrapper
 }
 

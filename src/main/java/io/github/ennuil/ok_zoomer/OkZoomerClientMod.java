@@ -38,7 +38,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		ClientCommandRegistrationCallback.EVENT.register(RegisterCommands::registerCommands);
 
 		// mod compat
-		if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			TrinketsCompat.init();
 		}
 	}

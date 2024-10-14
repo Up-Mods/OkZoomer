@@ -1,9 +1,7 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import io.github.ennuil.libzoomer.api.ZoomInstance;
-import io.github.ennuil.libzoomer.api.modifiers.ZoomDivisorMouseModifier;
-import io.github.ennuil.libzoomer.api.transitions.SmoothTransitionMode;
+import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
 import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
@@ -28,14 +26,6 @@ import java.util.function.Predicate;
 public class ZoomUtils {
 	// The logger, used everywhere to print messages to the console
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
-
-	public static final ZoomInstance ZOOMER_ZOOM = new ZoomInstance(
-		ZoomUtils.id("zoom"),
-		4.0F,
-		new SmoothTransitionMode(0.75f),
-		new ZoomDivisorMouseModifier(),
-		null
-	);
 
 	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
@@ -68,11 +58,11 @@ public class ZoomUtils {
 		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
 		if (zoomStep > 0) {
-			ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
+			Zoom.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
 		} else if (zoomStep == 0) {
-			ZOOMER_ZOOM.setZoomDivisor(zoomDivisor);
+			Zoom.setZoomDivisor(zoomDivisor);
 		} else {
-			ZOOMER_ZOOM.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
+			Zoom.setZoomDivisor(zoomDivisor + ((minimumZoomDivisor - zoomDivisor) / lowerScrollStep * -zoomStep));
 		}
 	}
 
@@ -81,7 +71,7 @@ public class ZoomUtils {
 		if (userPrompted && ZoomPackets.shouldDisableZoom()) return;
 		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
 
-		ZOOMER_ZOOM.resetZoomDivisor();
+		Zoom.resetZoomDivisor();
 		zoomStep = 0;
 	}
 

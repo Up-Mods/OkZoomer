@@ -1,15 +1,16 @@
 {
-  "required": true,
-  "package": "io.github.ennuil.ok_zoomer.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "AbstractClientPlayerMixin",
+	"required": true,
+	"package": "io.github.ennuil.ok_zoomer.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"AbstractClientPlayerMixin",
 		"EditBoxAccessor",
-    "EditBoxMixin",
-    "GuiMixin",
-    "MouseHandlerMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+		"EditBoxMixin",
+		"GameRendererMixin",
+		"GuiMixin",
+		"MouseHandlerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
 	}
 }
