@@ -12,7 +12,7 @@
 		"common.GuiMixin",
 		"common.MouseHandlerMixin",
 		"fabric.MouseHandlerMixin",
-		"sintyra.MouseHandlerMixin"
+		"sinytra.MouseHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

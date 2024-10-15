@@ -32,8 +32,8 @@ public class OkZoomerMixinPlugin implements IMixinConfigPlugin {
 			id = id.substring(1, id.indexOf('.', 1));
 
 			boolean connectorLoaded = FabricLoader.getInstance().isModLoaded("connector");
-			if (id.equals("sintyra") && connectorLoaded) {
-				LOGGER.warn("Loaded Sintyra-specific mixins!");
+			if (id.equals("sinytra") && connectorLoaded) {
+				LOGGER.warn("Loaded Sinytra-specific mixins!");
 				return true;
 			} else if (id.equals("fabric")) {
 				return !connectorLoaded;
