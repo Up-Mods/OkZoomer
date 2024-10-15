@@ -266,7 +266,7 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, switch (preset) {
-					case CLASSIC, CLASSIC_ZOOMER -> false;
+					case CLASSIC, CLASSIC_ZOOMER, SPYGLASS -> false;
 					default -> true;
 				}),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
