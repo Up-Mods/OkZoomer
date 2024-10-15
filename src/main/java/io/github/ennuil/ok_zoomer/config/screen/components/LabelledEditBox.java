@@ -1,6 +1,6 @@
 package io.github.ennuil.ok_zoomer.config.screen.components;
 
-import io.github.ennuil.ok_zoomer.mixin.EditBoxAccessor;
+import io.github.ennuil.ok_zoomer.mixin.common.EditBoxAccessor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;

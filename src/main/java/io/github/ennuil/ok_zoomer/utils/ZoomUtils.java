@@ -37,7 +37,7 @@ public class ZoomUtils {
 
 	private static boolean openCommandScreen = false;
 
-	private static Predicate<LocalPlayer> hasSpyglass = player -> player.getInventory().contains(IS_VALID_SPYGLASS);
+	private static Predicate<LocalPlayer> hasSpyglass = player -> player.getInventory().contains(IS_VALID_SPYGLASS) || player.isCreative();
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {

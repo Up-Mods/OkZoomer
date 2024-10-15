@@ -1,6 +1,8 @@
 package io.github.ennuil.ok_zoomer.zoom.overlays;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
@@ -8,25 +10,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 
-/**
- * An implementation of the spyglass overlay as a zoom overlay
- */
+// An implementation of the spyglass overlay as a zoom overlay
 public class SpyglassZoomOverlay implements ZoomOverlay {
     private final ResourceLocation textureId;
-    private Minecraft minecraft;
+    //private Minecraft minecraft;
     private float scale;
     private boolean active;
 
-    /**
-     * Initializes an instance of the spyglass mouse modifier with the specified texture identifier
-     *
-	 * @param textureId the texture identifier for the spyglass overlay
-    */
     public SpyglassZoomOverlay(ResourceLocation textureId) {
         this.textureId = textureId;
         this.scale = 0.5F;
         this.active = false;
-		this.ensureClient();
+		//this.minecraft = Minecraft.getInstance();
     }
 
     @Override
@@ -39,8 +34,9 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
         return true;
     }
 
+	// TODO - Consider whenever a third-person view block tweak option is desirable
     @Override
-    public void renderOverlay(GuiGraphics graphics) {
+    public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode) {
         int guiWidth = graphics.guiWidth();
         int guiHeight = graphics.guiHeight();
 		float smallerLength = (float) Math.min(guiWidth, guiHeight);
@@ -61,26 +57,16 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
     }
 
     @Override
-    public void tick(boolean active, double divisor, double transitionMultiplier) {
+    public void tick(boolean active, double divisor, TransitionMode transitionMode) {
         this.active = active;
     }
 
     @Override
-    public void tickBeforeRender() {
-		this.ensureClient();
-        if (this.minecraft.options.getCameraType().isFirstPerson()) {
-            if (!this.active) {
-                this.scale = 0.5F;
-            } else {
-                float lastFrameDuration = this.minecraft.getTimer().getGameTimeDeltaTicks();
-                this.scale = Mth.lerp(0.5F * lastFrameDuration, this.scale, 1.125F);
-            }
-        }
-    }
-
-	private void ensureClient() {
-		if (this.minecraft == null) {
-			this.minecraft = Minecraft.getInstance();
+    public void tickBeforeRender(DeltaTracker deltaTracker) {
+		if (!this.active) {
+			this.scale = 0.5F;
+		} else {
+			this.scale = Mth.lerp(0.5F * deltaTracker.getGameTimeDeltaTicks(), this.scale, 1.125F);
 		}
-	}
+    }
 }

@@ -2,31 +2,24 @@ package io.github.ennuil.ok_zoomer.zoom.transitions;
 
 import net.minecraft.util.Mth;
 
-/**
- * An implementation of Ok Zoomer's smooth transitions (and Vanilla's spyglass zoom) as a transition mode
- */
 public class SmoothTransitionMode implements TransitionMode {
 	private boolean active;
 	private final float smoothMultiplier;
 	private double fovMultiplier;
 	private float internalMultiplier;
 	private float lastInternalMultiplier;
+	private float internalFade;
+	private float lastInternalFade;
 
-	/**
-	 * Initializes an instance of the smooth transition mode with the specified smooth multiplier
-	 *
-	 * @param smoothMultiplier the smooth multiplier, used internally by the smooth transition
-	*/
 	public SmoothTransitionMode(float smoothMultiplier) {
 		this.active = false;
 		this.smoothMultiplier = smoothMultiplier;
 		this.internalMultiplier = 1.0F;
 		this.lastInternalMultiplier = 1.0F;
+		this.internalFade = 0.0F;
+		this.lastInternalFade = 0.0F;
 	}
 
-	/**
-	 * Initializes an instance of the smooth transition mode with the smooth multiplier being {@code 0.5F}
-	*/
 	public SmoothTransitionMode() {
 		this(0.5F);
 	}
@@ -43,12 +36,20 @@ public class SmoothTransitionMode implements TransitionMode {
 	}
 
 	@Override
+	public double getFade(float tickDelta) {
+		return Mth.lerp(tickDelta, this.lastInternalFade, this.internalFade);
+	}
+
+	@Override
 	public void tick(boolean active, double divisor) {
-		double zoomMultiplier = 1.0F / divisor;
+		double zoomMultiplier = 1.0 / divisor;
+		double fadeMultiplier = active ? 1.0 : 0.0;
 
 		this.lastInternalMultiplier = this.internalMultiplier;
+		this.lastInternalFade = this.internalFade;
 
-		this.internalMultiplier += (float) ((zoomMultiplier - internalMultiplier) * smoothMultiplier);
+		this.internalMultiplier += (float) ((zoomMultiplier - this.internalMultiplier) * this.smoothMultiplier);
+		this.internalFade += (float) ((fadeMultiplier - this.internalFade) * this.smoothMultiplier);
 
 		if (active || fovMultiplier == this.internalMultiplier) {
 			this.active = active;

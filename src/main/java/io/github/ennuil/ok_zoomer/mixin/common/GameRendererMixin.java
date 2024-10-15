@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.mixin;
+package io.github.ennuil.ok_zoomer.mixin.common;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
@@ -25,7 +25,7 @@ public abstract class GameRendererMixin {
 				Zoom.getMouseModifier().tick(zooming);
 			}
 			if (Zoom.getZoomOverlay() != null) {
-				Zoom.getZoomOverlay().tick(zooming, divisor, Zoom.getTransitionMode().getInternalMultiplier());
+				Zoom.getZoomOverlay().tick(zooming, divisor, Zoom.getTransitionMode());
 			}
 		}
 	}

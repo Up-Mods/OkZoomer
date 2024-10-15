@@ -1,14 +1,18 @@
 {
 	"required": true,
+	"minVersion": "0.8",
 	"package": "io.github.ennuil.ok_zoomer.mixin",
+	"plugin": "io.github.ennuil.ok_zoomer.OkZoomerMixinPlugin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"AbstractClientPlayerMixin",
-		"EditBoxAccessor",
-		"EditBoxMixin",
-		"GameRendererMixin",
-		"GuiMixin",
-		"MouseHandlerMixin"
+		"common.AbstractClientPlayerMixin",
+		"common.EditBoxAccessor",
+		"common.EditBoxMixin",
+		"common.GameRendererMixin",
+		"common.GuiMixin",
+		"common.MouseHandlerMixin",
+		"fabric.MouseHandlerMixin",
+		"sintyra.MouseHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,15 +1,9 @@
 package io.github.ennuil.ok_zoomer.zoom.transitions;
 
-/**
- * An implementation of a simple zoom as a transition mode.
- */
 public class InstantTransitionMode implements TransitionMode {
 	private boolean active;
 	private double divisor;
 
-	/**
-	 * Initializes an instance of the instant transition mode.
-	*/
 	public InstantTransitionMode() {
 		this.active = false;
 		this.divisor = 1.0;
@@ -23,6 +17,11 @@ public class InstantTransitionMode implements TransitionMode {
 	@Override
 	public double applyZoom(double fov, float tickDelta) {
 		return fov / this.divisor;
+	}
+
+	@Override
+	public double getFade(float tickDelta) {
+		return this.active ? 1.0 : 0.0;
 	}
 
 	@Override

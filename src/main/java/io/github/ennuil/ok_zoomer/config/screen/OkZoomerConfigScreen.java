@@ -269,6 +269,7 @@ public class OkZoomerConfigScreen extends Screen {
 					case CLASSIC, SPYGLASS -> false;
 					default -> true;
 				}),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, preset != ConfigEnums.ZoomPresets.DEFAULT),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.extraKeyBinds, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
@@ -298,11 +299,12 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16D),
 				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22D),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, preset == ConfigEnums.ZoomPresets.DEFAULT),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts, true),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, false)
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, true)
 		);
 
 		this.newValues.clear();

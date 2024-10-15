@@ -58,6 +58,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> zoomScrolling = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Retains the interface when zooming.")
+		public final TrackedValue<Boolean> persistentInterface = this.value(false);
+
+		@WidgetSize(Size.HALF)
 		@Comment("Adds zoom manipulation keys along with the zoom key. A game reboot will be required in order to apply the changes.")
 		public final TrackedValue<Boolean> extraKeyBinds = this.value(true);
 
@@ -136,6 +140,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> unbindConflictingKey = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Hides the crosshair while zooming.")
+		public final TrackedValue<Boolean> hideCrosshair = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("Allows for resetting the zoom with the middle mouse button.")
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
@@ -151,10 +159,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("Shows toasts when the server imposes a restriction.")
 		public final TrackedValue<Boolean> showRestrictionToasts = this.value(true);
 
-		// TODO - Enable it again during eternal betas!
+		// TODO - Disable it upon stable release!
 		@WidgetSize(Size.HALF)
 		@Comment("Prints a random owo in the console when the game starts.")
-		public final TrackedValue<Boolean> printOwoOnStart = this.value(false);
+		public final TrackedValue<Boolean> printOwoOnStart = this.value(true);
 	}
 
 	// TODO - What if we had a secret Debug section?

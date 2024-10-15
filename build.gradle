@@ -59,8 +59,9 @@ loom {
 		}
 	}
 
+	// Mixin plugin needs this
 	mixin {
-		useLegacyMixinAp = false
+		useLegacyMixinAp = true
     }
 }
 

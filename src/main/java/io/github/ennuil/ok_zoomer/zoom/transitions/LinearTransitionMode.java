@@ -10,6 +10,8 @@ public class LinearTransitionMode implements TransitionMode {
     private double fovMultiplier;
     private float internalMultiplier;
     private float lastInternalMultiplier;
+	private float internalFade;
+	private float lastInternalFade;
 
     public LinearTransitionMode(double minimumLinearStep, double maximumLinearStep) {
         this.active = false;
@@ -17,6 +19,8 @@ public class LinearTransitionMode implements TransitionMode {
         this.maximumLinearStep = maximumLinearStep;
         this.internalMultiplier = 1.0F;
         this.lastInternalMultiplier = 1.0F;
+		this.internalFade = 0.0F;
+		this.lastInternalFade = 0.0F;
     }
 
     @Override
@@ -30,14 +34,22 @@ public class LinearTransitionMode implements TransitionMode {
         return fov * fovMultiplier;
     }
 
-    @Override
-    public void tick(boolean active, double divisor) {
-        double zoomMultiplier = 1.0D / divisor;
+	@Override
+	public double getFade(float tickDelta) {
+		return Mth.lerp(tickDelta, this.lastInternalFade, this.internalFade);
+	}
 
-        this.lastInternalMultiplier = this.internalMultiplier;
+	@Override
+    public void tick(boolean active, double divisor) {
+        double zoomMultiplier = 1.0 / divisor;
+		double fadeMultiplier = active ? 1.0D : 0.0D;
+
+		this.lastInternalMultiplier = this.internalMultiplier;
+		this.lastInternalFade = this.internalFade;
 
         double linearStep = Mth.clamp(zoomMultiplier, this.minimumLinearStep, this.maximumLinearStep);
-        this.internalMultiplier = Mth.approach(this.internalMultiplier, (float)zoomMultiplier, (float)linearStep);
+        this.internalMultiplier = Mth.approach(this.internalMultiplier, (float) zoomMultiplier, (float) linearStep);
+        this.internalFade = Mth.approach(this.internalFade, (float) fadeMultiplier, (float) linearStep);
 
         if (active || fovMultiplier == this.internalMultiplier) {
             this.active = active;
