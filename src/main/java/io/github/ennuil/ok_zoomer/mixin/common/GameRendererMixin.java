@@ -1,7 +1,9 @@
 package io.github.ennuil.ok_zoomer.mixin.common;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
@@ -46,5 +48,14 @@ public abstract class GameRendererMixin {
 		}
 
 		internalFov.set(zoomedFov);
+	}
+
+	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
+	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
+		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.features.reduceViewBobbing.value()) {
+			return bob;
+		} else {
+			return (float) Zoom.getTransitionMode().applyZoom(bob, delta);
+		}
 	}
 }

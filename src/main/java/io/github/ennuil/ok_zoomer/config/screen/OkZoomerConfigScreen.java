@@ -56,6 +56,21 @@ public class OkZoomerConfigScreen extends Screen {
 		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
 		this.configTextUtils = new ConfigTextUtils(config);
 		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 32);
+
+		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
+		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
+			.withValues(ConfigEnums.ZoomPresets.values())
+			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
+			.withInitialValue(ConfigEnums.ZoomPresets.DEFAULT)
+			.create(0, 0, 150, 20,
+				Component.translatable("config.ok_zoomer.presets.preset"));
+		var resetButton = Button.builder(
+				Component.translatable("config.ok_zoomer.presets.apply_preset"),
+				button -> this.resetToPreset(presetButton.getValue()))
+			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.apply_preset.tooltip")))
+			.build();
+		this.entryListWidget.addButton(presetButton, resetButton);
+
 		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
 				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
@@ -176,20 +191,6 @@ public class OkZoomerConfigScreen extends Screen {
 			}
 		}
 
-		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
-		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
-			.withValues(ConfigEnums.ZoomPresets.values())
-			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
-			.withInitialValue(ConfigEnums.ZoomPresets.DEFAULT)
-			.create(0, 0, 150, 20,
-				Component.translatable("config.ok_zoomer.presets.preset"));
-		var resetButton = Button.builder(
-				Component.translatable("config.ok_zoomer.presets.apply_preset"),
-				button -> this.resetToPreset(presetButton.getValue()))
-			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.apply_preset.tooltip")))
-			.build();
-		this.entryListWidget.addButton(presetButton, resetButton);
-
 		this.entryListWidget.finish();
 		this.addRenderableWidget(this.entryListWidget);
 
@@ -264,6 +265,10 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.features.cinematicCamera, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.CinematicCameraOptions.VANILLA : ConfigEnums.CinematicCameraOptions.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, switch (preset) {
+					case CLASSIC, CLASSIC_ZOOMER -> false;
+					default -> true;
+				}),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, switch (preset) {
 					case CLASSIC, SPYGLASS -> false;
@@ -274,12 +279,12 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, switch (preset) {
-					case PERSISTENT -> 1.0D;
-					case SPYGLASS -> 10.0D;
-					default -> 4.0D;
+					case PERSISTENT -> 1.0;
+					case SPYGLASS -> 10.0;
+					default -> 4.0;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor, 1.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor, 50.0D),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor, 1.0),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor, 50.0),
 				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, switch (preset) {
 					case PERSISTENT -> 38;
 					case SPYGLASS -> 16;
@@ -290,14 +295,10 @@ public class OkZoomerConfigScreen extends Screen {
 					case SPYGLASS -> 8;
 					default -> 4;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, switch (preset) {
-					case CLASSIC_ZOOMER -> 0.75;
-					case SPYGLASS -> 0.5;
-					default -> 0.6;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0D),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16D),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22D),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, preset == ConfigEnums.ZoomPresets.SPYGLASS ? 0.5 : 0.6),
+				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16),
+				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, preset == ConfigEnums.ZoomPresets.DEFAULT),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),

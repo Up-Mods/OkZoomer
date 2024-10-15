@@ -46,6 +46,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<ZoomTransitionOptions> zoomTransition = this.value(ZoomTransitionOptions.SMOOTH);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Divides the amount of view bobbing with the zoom divisor while zooming.")
+		public final TrackedValue<Boolean> reduceViewBobbing = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("""
 			"HOLD": The zoom will require the zoom key to be held.
 			"TOGGLE": The zoom will be toggled by the zoom key.

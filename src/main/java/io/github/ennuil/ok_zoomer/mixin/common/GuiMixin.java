@@ -99,7 +99,7 @@ public abstract class GuiMixin {
 				original.call(graphics, deltaTracker);
 			} else {
 				float fade = 1.0F - (float) Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
-				RenderSystem.setShaderColor(fade, fade, fade, 1.0F);
+				RenderSystem.setShaderColor(fade, fade, fade, fade);
 				original.call(graphics, deltaTracker);
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			}
