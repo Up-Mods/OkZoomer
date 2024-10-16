@@ -4,79 +4,41 @@ public class ConfigEnums {
 	public enum CinematicCameraOptions implements ConfigEnum {
 		OFF,
 		VANILLA,
-		MULTIPLIED;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		MULTIPLIED
 	}
 
 	public enum ZoomTransitionOptions implements ConfigEnum {
 		OFF,
 		SMOOTH,
-		LINEAR;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		LINEAR
 	}
 
 	public enum ZoomModes implements ConfigEnum {
 		HOLD,
 		TOGGLE,
-		PERSISTENT;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		PERSISTENT
 	}
 
 	public enum ZoomOverlays implements ConfigEnum {
 		OFF,
 		VIGNETTE,
-		SPYGLASS;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		SPYGLASS
 	}
 
 	public enum SpyglassMode implements ConfigEnum {
 		OFF,
 		REQUIRE_ITEM,
 		REPLACE_ZOOM,
-		BOTH;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		BOTH
 	}
 
 	public enum ZoomPresets implements ConfigEnum {
-		DEFAULT,
-		CLASSIC_ZOOMER,
+		CAMERA,
+		COMPETITIVE,
 		CLASSIC,
 		PERSISTENT,
-		SPYGLASS;
-
-		@Override
-		public Enum<?> next() {
-			var enumValues = this.getDeclaringClass().getEnumConstants();
-			return enumValues[this.ordinal() + 1 < enumValues.length ? this.ordinal() + 1 : 0];
-		}
+		SPYGLASS
 	}
 
-	public interface ConfigEnum {
-		Enum<?> next();
-	}
+	public interface ConfigEnum {}
 }

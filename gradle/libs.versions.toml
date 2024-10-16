@@ -6,7 +6,7 @@ parchment = "2024.07.28"
 quilt_loom = "1.7.4"
 quilt_loader = "0.26.4"
 
-fabric_api = "0.105.0+1.21.1"
+fabric_api = "0.106.0+1.21.1"
 wrench_wrapper = "0.5.0"
 modmenu = "11.0.3"
 

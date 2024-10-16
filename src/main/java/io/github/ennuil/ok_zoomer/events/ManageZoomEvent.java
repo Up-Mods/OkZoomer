@@ -1,11 +1,10 @@
 package io.github.ennuil.ok_zoomer.events;
 
-import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
+import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvents;
 
@@ -22,11 +21,13 @@ public class ManageZoomEvent {
 		if (minecraft.player == null) return;
 
 		// If zoom is disabled, do not allow for zooming at all
-		boolean disableZoom = ZoomPackets.shouldDisableZoom() ||
-			(switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		/* If you want to reimplement mandatory spyglass control? It's easy:
+		 * Quilt Config has value overrides, use them. This mod is ARR but it's anti-vulture;
+		 * You can make a third-party addon mod, I won't bite. */
+		boolean disableZoom = switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
-			} && !ZoomUtils.hasSpyglass(minecraft.player));
+			} && !ZoomUtils.hasSpyglass(minecraft.player);
 
 		if (disableZoom) {
 			Zoom.setZooming(false);

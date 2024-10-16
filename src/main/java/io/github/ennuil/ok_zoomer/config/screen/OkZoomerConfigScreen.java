@@ -61,7 +61,7 @@ public class OkZoomerConfigScreen extends Screen {
 		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
 			.withValues(ConfigEnums.ZoomPresets.values())
 			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
-			.withInitialValue(ConfigEnums.ZoomPresets.DEFAULT)
+			.withInitialValue(ConfigEnums.ZoomPresets.CAMERA)
 			.create(0, 0, 150, 20,
 				Component.translatable("config.ok_zoomer.presets.preset"));
 		var resetButton = Button.builder(
@@ -266,7 +266,7 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, switch (preset) {
-					case CLASSIC, CLASSIC_ZOOMER, SPYGLASS -> false;
+					case CLASSIC, COMPETITIVE, SPYGLASS -> false;
 					default -> true;
 				}),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
@@ -274,7 +274,7 @@ public class OkZoomerConfigScreen extends Screen {
 					case CLASSIC, SPYGLASS -> false;
 					default -> true;
 				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, preset != ConfigEnums.ZoomPresets.DEFAULT),
+				Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, preset != ConfigEnums.ZoomPresets.CAMERA),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.extraKeyBinds, preset != ConfigEnums.ZoomPresets.CLASSIC),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
 				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
@@ -300,7 +300,7 @@ public class OkZoomerConfigScreen extends Screen {
 				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16),
 				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, preset == ConfigEnums.ZoomPresets.DEFAULT),
+				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, preset == ConfigEnums.ZoomPresets.CAMERA),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
 				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),

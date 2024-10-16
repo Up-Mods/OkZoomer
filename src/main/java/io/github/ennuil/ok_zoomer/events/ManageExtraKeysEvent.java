@@ -10,7 +10,6 @@ public class ManageExtraKeysEvent {
 	public static void startClientTick(Minecraft minecraft) {
 		if (!ZoomKeyBinds.areExtraKeyBindsEnabled()) return;
 		if (!OkZoomerConfigManager.CONFIG.features.extraKeyBinds.value()) return;
-		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.isBeingOverridden()) return;
 
 		if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isDown() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isDown()) {
 			ZoomUtils.changeZoomDivisor(false);

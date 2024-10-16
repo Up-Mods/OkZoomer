@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.fabricmc.fabric.api.tag.client.v1.ClientTags;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -41,19 +40,11 @@ public class ZoomUtils {
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {
-		//If the zoom is disabled, don't allow for zoom scrolling
-		if (ZoomPackets.shouldDisableZoom()) return;
-
 		double zoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.value();
 		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor.value();
 		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor.value();
 		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps.value();
 		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
-
-		if (ZoomPackets.shouldForceZoomDivisors()) {
-			minimumZoomDivisor = Math.max(minimumZoomDivisor, ZoomPackets.getMinimumZoomDivisor());
-			maximumZoomDivisor = Math.min(maximumZoomDivisor, ZoomPackets.getMaximumZoomDivisor());
-		}
 
 		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
@@ -68,7 +59,6 @@ public class ZoomUtils {
 
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
 	public static void resetZoomDivisor(boolean userPrompted) {
-		if (userPrompted && ZoomPackets.shouldDisableZoom()) return;
 		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
 
 		Zoom.resetZoomDivisor();

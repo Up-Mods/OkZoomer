@@ -4,7 +4,6 @@ import io.github.ennuil.ok_zoomer.compat.TrinketsCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.events.*;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
-import io.github.ennuil.ok_zoomer.packets.ZoomPackets;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -26,9 +25,6 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.INCREASE_ZOOM_KEY);
 			KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.RESET_ZOOM_KEY);
 		}
-
-		// Register the zoom-controlling packets
-		ZoomPackets.registerPackets();
 
 		// Register events without entrypoints aughhhhhhhh
 		ClientTickEvents.START_CLIENT_TICK.register(ManageZoomEvent::startClientTick);

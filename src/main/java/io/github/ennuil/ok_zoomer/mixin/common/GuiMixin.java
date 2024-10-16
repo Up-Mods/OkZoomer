@@ -3,6 +3,8 @@ package io.github.ennuil.ok_zoomer.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,7 +13,10 @@ import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
+import org.joml.Vector3f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,6 +29,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class GuiMixin {
 	@Unique
 	private boolean hideCrossbar = false;
+
+	@Unique
+	private double translation = 0.0;
+
+	@Unique
+	private float scale = 0.0F;
 
 	@Shadow
 	protected abstract void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
@@ -82,11 +93,11 @@ public abstract class GuiMixin {
 				hideCrossbar = true;
 			}
 			double fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
-			float divisor = (float) (1.0D / fov);
-			double translation = 2.0D / ((1.0D / fov) - 1);
+			translation = 2.0D / ((1.0D / fov) - 1);
+			scale = (float) (1.0D / fov);
 			graphics.pose().pushPose();
-			graphics.pose().translate(-(graphics.guiWidth() / (translation)), -(graphics.guiHeight() / (translation)), 0.0F);
-			graphics.pose().scale(divisor, divisor, divisor);
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+			graphics.pose().scale(scale, scale, 1.0F);
 			original.call(graphics, deltaTracker);
 			graphics.pose().popPose();
 		}
@@ -105,6 +116,35 @@ public abstract class GuiMixin {
 			}
 		} else {
 			hideCrossbar = false;
+		}
+	}
+
+	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
+	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
+	@WrapOperation(
+		method = {
+			"method_55807",
+			"lambda$new$6" // Heck yeah! It's Neo-specific hack time!
+		},
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
+		),
+		allow = 1
+	)
+	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original, @Local(argsOnly = true) DeltaTracker deltaTracker) {
+		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+			original.call(instance, graphics);
+		} else {
+			var lastPose = graphics.pose().last().pose();
+			graphics.pose().popPose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose();
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
+			original.call(instance, graphics);
+			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+			graphics.pose().scale(scale, scale, 1.0F);
 		}
 	}
 }
