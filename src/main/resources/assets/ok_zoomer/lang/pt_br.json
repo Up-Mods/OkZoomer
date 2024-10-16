@@ -100,7 +100,7 @@
 	"config.ok_zoomer.presets.apply_preset.tooltip": "Redefine as definições com a predefinição selecionada.",
 	"config.ok_zoomer.discard_changes": "Descartar Mudanças",
 	"toast.ok_zoomer.title": "Ok Zoomer",
-	"toast.ok_zoomer.unbind_conflicting_key.success": "Atalho conflitante corrigida",
+	"toast.ok_zoomer.unbind_conflicting_key.success": "Atalho conflitante corrigido",
 	"toast.ok_zoomer.unbind_conflicting_key.no_conflict": "Atalho conflitante não foi encontrado",
 	"tag.item.ok_zoomer.zoom_dependencies": "Dependências do zoom",
 	"key.ok_zoomer.category": "Zoom",
