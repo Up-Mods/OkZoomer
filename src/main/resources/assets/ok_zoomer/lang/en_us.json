@@ -79,8 +79,6 @@
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "If enabled, the current zoom divisor is forgotten once zooming is finished.",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "Use Spyglass Sounds",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds.tooltip": "If enabled, the zoom will use spyglass sounds on zooming in and out.",
-	"config.ok_zoomer.tweaks.show_restriction_toasts": "Show Restriction Toasts",
-	"config.ok_zoomer.tweaks.show_restriction_toasts.tooltip": "Shows toasts when the server imposes a restriction.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Print owo on Start",
 	"config.ok_zoomer.tweaks.print_owo_on_start.tooltip": "Prints a random owo in the console when the game starts.",
 	"config.ok_zoomer.presets": "Presets",

@@ -73,8 +73,6 @@
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "如果启用，缩放完成后将遗忘当前缩放倍数。",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "使用望远镜音效",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds.tooltip": "如果启用，缩放时将使用望远镜的音效。",
-	"config.ok_zoomer.tweaks.show_restriction_toasts": "显示限制提示",
-	"config.ok_zoomer.tweaks.show_restriction_toasts.tooltip": "当服务器施加限制时显示提示。",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "启动时打印owo",
 	"config.ok_zoomer.tweaks.print_owo_on_start.tooltip": "游戏启动时在控制台中随机打印一个owo。",
 	"config.ok_zoomer.presets": "预设",

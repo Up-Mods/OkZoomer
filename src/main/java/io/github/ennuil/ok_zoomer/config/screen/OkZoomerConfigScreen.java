@@ -261,58 +261,14 @@ public class OkZoomerConfigScreen extends Screen {
 
 	@SuppressWarnings("unchecked")
 	public void resetToPreset(ConfigEnums.ZoomPresets preset) {
-		Map<TrackedValue<?>, Object> presets = Map.ofEntries(
-				Map.entry(OkZoomerConfigManager.CONFIG.features.cinematicCamera, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.CinematicCameraOptions.VANILLA : ConfigEnums.CinematicCameraOptions.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceSensitivity, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomTransition, preset == ConfigEnums.ZoomPresets.CLASSIC ? ConfigEnums.ZoomTransitionOptions.OFF : ConfigEnums.ZoomTransitionOptions.SMOOTH),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, switch (preset) {
-					case CLASSIC, COMPETITIVE, SPYGLASS -> false;
-					default -> true;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomMode, preset == ConfigEnums.ZoomPresets.PERSISTENT ? ConfigEnums.ZoomModes.PERSISTENT : ConfigEnums.ZoomModes.HOLD),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, switch (preset) {
-					case CLASSIC, SPYGLASS -> false;
-					default -> true;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, preset != ConfigEnums.ZoomPresets.CAMERA),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.extraKeyBinds, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.ZoomOverlays.SPYGLASS : ConfigEnums.ZoomOverlays.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, preset == ConfigEnums.ZoomPresets.SPYGLASS ? ConfigEnums.SpyglassMode.BOTH : ConfigEnums.SpyglassMode.OFF),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor, switch (preset) {
-					case PERSISTENT -> 1.0;
-					case SPYGLASS -> 10.0;
-					default -> 4.0;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor, 1.0),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor, 50.0),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.upperScrollSteps, switch (preset) {
-					case PERSISTENT -> 38;
-					case SPYGLASS -> 16;
-					default -> 20;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps, switch (preset) {
-					case PERSISTENT -> 0;
-					case SPYGLASS -> 8;
-					default -> 4;
-				}),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, preset == ConfigEnums.ZoomPresets.SPYGLASS ? 0.5 : 0.6),
-				Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.cinematicMultiplier, 4.0),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.minimumLinearStep, 0.16),
-				Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.maximumLinearStep, 0.22),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse, preset != ConfigEnums.ZoomPresets.CLASSIC),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, preset == ConfigEnums.ZoomPresets.CAMERA),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor, true),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey, false),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, preset == ConfigEnums.ZoomPresets.SPYGLASS),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.showRestrictionToasts, true),
-				Map.entry(OkZoomerConfigManager.CONFIG.tweaks.printOwoOnStart, true)
-		);
-
 		this.newValues.clear();
 		this.invalidValues.clear();
 
 		for (TrackedValue<?> trackedValue : OkZoomerConfigManager.CONFIG.values()) {
-			this.newValues.put((TrackedValue<Object>) trackedValue, presets.get(trackedValue));
+			this.newValues.put(
+				(TrackedValue<Object>) trackedValue,
+				ZoomPresets.PRESET_ENUM_TO_PRESET.get(preset).getOrDefault(trackedValue, trackedValue.getDefaultValue())
+			);
 		}
 
 		this.refresh();

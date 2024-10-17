@@ -73,8 +73,6 @@
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "如果啟用，則在縮放完成後忘記當前的縮放除數。",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "使用望遠鏡音效",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds.tooltip": "如果啟用，縮放將在放大和縮小時使用望遠鏡音效。",
-	"config.ok_zoomer.tweaks.show_restriction_toasts": "顯示限制快顯",
-	"config.ok_zoomer.tweaks.show_restriction_toasts.tooltip": "當伺服器強制執行限制時顯示快顯。",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "啟動時列印 owo",
 	"config.ok_zoomer.tweaks.print_owo_on_start.tooltip": "遊戲啟動時在主控台中列印一個隨機的 owo。",
 	"config.ok_zoomer.presets": "預設",

@@ -159,10 +159,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
 		public final TrackedValue<Boolean> useSpyglassSounds = this.value(false);
 
-		@WidgetSize(Size.HALF)
-		@Comment("Shows toasts when the server imposes a restriction.")
-		public final TrackedValue<Boolean> showRestrictionToasts = this.value(true);
-
 		// TODO - Disable it upon stable release!
 		@WidgetSize(Size.HALF)
 		@Comment("Prints a random owo in the console when the game starts.")
