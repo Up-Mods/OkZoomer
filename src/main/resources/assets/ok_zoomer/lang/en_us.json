@@ -50,7 +50,7 @@
 	"config.ok_zoomer.features.spyglass_mode.both.tooltip": "Zooming will act as a complete replacement of the spyglass zoom, requiring one to work and replacing its zoom as well.",
 	"config.ok_zoomer.zoom_values": "Zoom Values",
 	"config.ok_zoomer.zoom_values.zoom_divisor": "Zoom Divisor",
-	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "The divisor applied to the FOV's zoom multiplier. A higher value means more zoom.",
+	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "The divisor used to apply zoom to the FOV. A higher value means more zoom.",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor": "Minimum Zoom Divisor",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor.tooltip": "The minimum zoom divisor that you can scroll down.",
 	"config.ok_zoomer.zoom_values.maximum_zoom_divisor": "Maximum Zoom Divisor",

@@ -15,13 +15,13 @@ public class InstantTransitionMode implements TransitionMode {
 	}
 
 	@Override
-	public double applyZoom(double fov, float tickDelta) {
-		return fov / this.divisor;
+	public float applyZoom(float fov, float tickDelta) {
+		return fov / (float) this.divisor;
 	}
 
 	@Override
-	public double getFade(float tickDelta) {
-		return this.active ? 1.0 : 0.0;
+	public float getFade(float tickDelta) {
+		return this.active ? 1.0F : 0.0F;
 	}
 
 	@Override

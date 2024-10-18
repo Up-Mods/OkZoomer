@@ -51,7 +51,7 @@
 	"config.ok_zoomer.features.spyglass_mode.both.tooltip": "O zoom irá atuar como um substituto completo do zoom da luneta, dependendo de uma pra funcionar assim como substituindo o seu zoom.",
 	"config.ok_zoomer.zoom_values": "Valores do zoom",
 	"config.ok_zoomer.zoom_values.zoom_divisor": "Divisor de zoom",
-	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "O divisor aplicado no multiplicador de zoom do campo de visão.",
+	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "O divisor usado para aplicar zoom no campo de visão. Um valor maior significa mais zoom.",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor": "Divisor de zoom mínimo",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor.tooltip": "O valor mínimo que o divisor pode ser rolado.",
 	"config.ok_zoomer.zoom_values.maximum_zoom_divisor": "Divisor de zoom máximo",

@@ -46,7 +46,6 @@
 	"config.ok_zoomer.features.spyglass_mode.both.tooltip": "縮放將作為望遠鏡縮放的完全替代品，需要一個才能工作，並且也取代其縮放。",
 	"config.ok_zoomer.zoom_values": "縮放值",
 	"config.ok_zoomer.zoom_values.zoom_divisor": "縮放除數",
-	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "套用於 FOV 縮放倍率的除數。值越高意味著縮放越多。",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor": "最小縮放除數",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor.tooltip": "您可以向下捲動的最小縮放除數。",
 	"config.ok_zoomer.zoom_values.maximum_zoom_divisor": "最大縮放除數",

@@ -7,7 +7,7 @@ public class LinearTransitionMode implements TransitionMode {
     private boolean active;
     private final double minimumLinearStep;
     private final double maximumLinearStep;
-    private double fovMultiplier;
+    private float fovMultiplier;
     private float internalMultiplier;
     private float lastInternalMultiplier;
 	private float internalFade;
@@ -29,13 +29,13 @@ public class LinearTransitionMode implements TransitionMode {
     }
 
     @Override
-    public double applyZoom(double fov, float tickDelta) {
+    public float applyZoom(float fov, float tickDelta) {
         fovMultiplier = Mth.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
         return fov * fovMultiplier;
     }
 
 	@Override
-	public double getFade(float tickDelta) {
+	public float getFade(float tickDelta) {
 		return Mth.lerp(tickDelta, this.lastInternalFade, this.internalFade);
 	}
 

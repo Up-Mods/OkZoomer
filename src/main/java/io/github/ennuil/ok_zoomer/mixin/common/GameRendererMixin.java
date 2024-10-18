@@ -7,6 +7,7 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.util.Mth;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,6 +33,22 @@ public abstract class GameRendererMixin {
 		}
 	}
 
+	@ModifyExpressionValue(
+		method = "renderLevel",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/lang/Integer;intValue()I",
+			remap = false
+		)
+	)
+	private int modifyCulling(int original) {
+		if (!Zoom.isZooming()) {
+			return original;
+		} else {
+			return Mth.positiveCeilDiv(original, Mth.floor(Zoom.getZoomDivisor()));
+		}
+	}
+
 	@Inject(
 		method = "getFov",
 		at = @At(
@@ -44,7 +61,8 @@ public abstract class GameRendererMixin {
 		double zoomedFov = internalFov.get();
 
 		if (Zoom.isTransitionActive()) {
-			zoomedFov = Zoom.getTransitionMode().applyZoom(zoomedFov, partialTicks);
+			// This looks bad now, but don't worry, it *will* make sense on Minecraft 1.21.2
+			zoomedFov = Zoom.getTransitionMode().applyZoom((float) zoomedFov, partialTicks);
 		}
 
 		internalFov.set(zoomedFov);
@@ -55,7 +73,7 @@ public abstract class GameRendererMixin {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.features.reduceViewBobbing.value()) {
 			return bob;
 		} else {
-			return (float) Zoom.getTransitionMode().applyZoom(bob, delta);
+			return Zoom.getTransitionMode().applyZoom(bob, delta);
 		}
 	}
 }

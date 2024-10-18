@@ -31,7 +31,7 @@ public abstract class GuiMixin {
 	private boolean hideCrossbar = false;
 
 	@Unique
-	private double translation = 0.0;
+	private float translation = 0.0F;
 
 	@Unique
 	private float scale = 0.0F;
@@ -84,17 +84,9 @@ public abstract class GuiMixin {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
-			hideCrossbar = false;
-			if (!OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value()) {
-				graphics.pose().pushPose();
-				graphics.pose().translate(0.0F, 0.0F, 200.0F);
-				this.renderCrosshair(graphics, deltaTracker);
-				graphics.pose().popPose();
-				hideCrossbar = true;
-			}
-			double fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
-			translation = 2.0D / ((1.0D / fov) - 1);
-			scale = (float) (1.0D / fov);
+			float fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
+			translation = 2.0F / ((1.0F / fov) - 1.0F);
+			scale = 1.0F / fov;
 			graphics.pose().pushPose();
 			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
 			graphics.pose().scale(scale, scale, 1.0F);
@@ -105,22 +97,38 @@ public abstract class GuiMixin {
 
 	@WrapMethod(method = "renderCrosshair")
 	private void hideCrosshair(GuiGraphics graphics, DeltaTracker deltaTracker, Operation<Void> original) {
-		if (!hideCrossbar) {
-			if (!OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value() || !Zoom.getTransitionMode().getActive()) {
-				original.call(graphics, deltaTracker);
-			} else {
-				float fade = 1.0F - (float) Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
+		boolean persistentInterface = OkZoomerConfigManager.CONFIG.features.persistentInterface.value();
+		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
+		if ((persistentInterface && !hideCrosshair) || !Zoom.isTransitionActive()) {
+			original.call(graphics, deltaTracker);
+		} else {
+			if (hideCrosshair) {
+				float fade = 1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
 				RenderSystem.setShaderColor(fade, fade, fade, fade);
+			}
+			if (!persistentInterface && !hideCrosshair) {
+				// TODO - This has been recycled once, this should become a method
+				var lastPose = graphics.pose().last().pose();
+				graphics.pose().popPose();
+				graphics.pose().popPose();
+				graphics.pose().pushPose();
+				graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 				original.call(graphics, deltaTracker);
+				graphics.pose().pushPose();
+				graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+				graphics.pose().scale(scale, scale, 1.0F);
+			} else {
+				original.call(graphics, deltaTracker);
+			}
+			if (hideCrosshair) {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			}
-		} else {
-			hideCrossbar = false;
 		}
 	}
 
 	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
 	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
+	@Dynamic
 	@WrapOperation(
 		method = {
 			"method_55807",

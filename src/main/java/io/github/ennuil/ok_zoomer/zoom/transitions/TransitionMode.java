@@ -7,9 +7,9 @@ package io.github.ennuil.ok_zoomer.zoom.transitions;
 public interface TransitionMode {
 	boolean getActive();
 
-	double applyZoom(double fov, float tickDelta);
+	float applyZoom(float fov, float tickDelta);
 
-	double getFade(float tickDelta);
+	float getFade(float tickDelta);
 
 	void tick(boolean active, double divisor);
 

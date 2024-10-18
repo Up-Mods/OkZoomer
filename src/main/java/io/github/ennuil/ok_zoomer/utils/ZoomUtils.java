@@ -32,14 +32,33 @@ public class ZoomUtils {
 
 	public static final Predicate<ItemStack> IS_VALID_SPYGLASS = stack -> ClientTags.isInWithLocalFallback(ZoomUtils.ZOOM_DEPENDENCIES_TAG, stack.getItem());
 
+	public static int lastZoomCullingFov = 70;
+
 	public static int zoomStep = 0;
 
 	private static boolean openCommandScreen = false;
 
 	private static Predicate<LocalPlayer> hasSpyglass = player -> player.getInventory().contains(IS_VALID_SPYGLASS) || player.isCreative();
 
+	public static void validateZoomCulling() {
+		var minecraft = Minecraft.getInstance();
+		validateZoomCulling(minecraft);
+	}
+
+	public static void validateZoomCulling(Minecraft minecraft) {
+		int fov = minecraft.options.fov().get();
+		int divisor = Zoom.isZooming() ? Mth.floor(Zoom.getZoomDivisor()) : 1;
+		int zoomCullingFov = Math.ceilDiv(fov, divisor);
+
+		if (zoomCullingFov != lastZoomCullingFov) {
+			minecraft.levelRenderer.needsUpdate();
+		}
+
+		lastZoomCullingFov = zoomCullingFov;
+	}
+
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
-	public static void changeZoomDivisor(boolean increase) {
+	public static void changeZoomDivisor(Minecraft minecraft, boolean increase) {
 		double zoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.zoomDivisor.value();
 		double minimumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.minimumZoomDivisor.value();
 		double maximumZoomDivisor = OkZoomerConfigManager.CONFIG.zoomValues.maximumZoomDivisor.value();
@@ -47,6 +66,8 @@ public class ZoomUtils {
 		int lowerScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.lowerScrollSteps.value();
 
 		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
+
+		validateZoomCulling(minecraft);
 
 		if (zoomStep > 0) {
 			Zoom.setZoomDivisor(zoomDivisor + ((maximumZoomDivisor - zoomDivisor) / upperScrollStep * zoomStep));
@@ -63,6 +84,9 @@ public class ZoomUtils {
 
 		Zoom.resetZoomDivisor();
 		zoomStep = 0;
+		if (userPrompted) {
+			validateZoomCulling();
+		}
 	}
 
 	public static void keepZoomStepsWithinBounds() {

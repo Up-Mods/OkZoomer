@@ -12,11 +12,11 @@ public class ManageExtraKeysEvent {
 		if (!OkZoomerConfigManager.CONFIG.features.extraKeyBinds.value()) return;
 
 		if (ZoomKeyBinds.DECREASE_ZOOM_KEY.isDown() && !ZoomKeyBinds.INCREASE_ZOOM_KEY.isDown()) {
-			ZoomUtils.changeZoomDivisor(false);
+			ZoomUtils.changeZoomDivisor(minecraft, false);
 		}
 
 		if (ZoomKeyBinds.INCREASE_ZOOM_KEY.isDown() && !ZoomKeyBinds.DECREASE_ZOOM_KEY.isDown()) {
-			ZoomUtils.changeZoomDivisor(true);
+			ZoomUtils.changeZoomDivisor(minecraft, true);
 		}
 
 		if (ZoomKeyBinds.RESET_ZOOM_KEY.isDown()) {

@@ -73,7 +73,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("""
 			"OFF": Disables the zoom overlay.
 			"VIGNETTE": Uses a vignette as the zoom overlay. The vignette texture can be found at assets/ok_zoomer/textures/misc/zoom_overlay.png
-			"SPYGLASS": Uses the spyglass overlay with the vignette texture.
+			"SPYGLASS": Uses the spyglass overlay as the zoom overlay.
 			""")
 		public final TrackedValue<ZoomOverlays> zoomOverlay = this.value(ZoomOverlays.OFF);
 
@@ -90,7 +90,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 	public static class ZoomValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
-		@Comment("The divisor applied to the FOV's zoom multiplier. A higher value means more zoom.")
+		@Comment("The divisor used to apply zoom to the FOV. A higher value means more zoom.")
 		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
 		public final TrackedValue<Double> zoomDivisor = this.value(4.0);
 

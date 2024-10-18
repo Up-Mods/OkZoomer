@@ -46,7 +46,6 @@
 	"config.ok_zoomer.features.spyglass_mode.both.tooltip": "缩放将完全替换望远镜缩放，需要望远镜才能工作并替换其缩放。",
 	"config.ok_zoomer.zoom_values": "缩放值",
 	"config.ok_zoomer.zoom_values.zoom_divisor": "缩放倍数",
-	"config.ok_zoomer.zoom_values.zoom_divisor.tooltip": "应用于视野缩放倍数的倍数。数值越高意味着缩放越多。",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor": "最小缩放倍数",
 	"config.ok_zoomer.zoom_values.minimum_zoom_divisor.tooltip": "你可以向下滚动的最小缩放倍数。",
 	"config.ok_zoomer.zoom_values.maximum_zoom_divisor": "最大缩放倍数",

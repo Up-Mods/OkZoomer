@@ -95,6 +95,8 @@ public class ManageZoomEvent {
 			minecraft.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);
 		}
 
+		ZoomUtils.validateZoomCulling(minecraft);
+
 		// Set the previous zoom signal for the next tick
 		lastZooming = zooming;
 	}
