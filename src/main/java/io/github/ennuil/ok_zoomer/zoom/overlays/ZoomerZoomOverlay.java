@@ -44,7 +44,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
     @Override
     public void tick(boolean active, double divisor, TransitionMode transitionMode) {
-        if (active) {
+        if (active || !transitionMode.getActive()) {
             this.active = active;
         }
     }

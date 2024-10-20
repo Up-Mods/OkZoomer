@@ -18,7 +18,6 @@ import org.joml.Vector3f;
 import org.quiltmc.loader.api.minecraft.ClientOnly;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,16 +27,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public abstract class GuiMixin {
 	@Unique
-	private boolean hideCrossbar = false;
-
-	@Unique
 	private float translation = 0.0F;
 
 	@Unique
 	private float scale = 0.0F;
-
-	@Shadow
-	protected abstract void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
 
 	@Inject(
 		method = "renderCameraOverlays",

@@ -8,7 +8,6 @@ import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractContainerWidget;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
@@ -453,10 +452,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		this.children.add(new ButtonEntry(leftButton, rightButton));
 	}
 
-	public void addServerEffectEntry(Component component) {
-		this.children.add(new ServerEffectEntry(component));
-	}
-
 	@ClientOnly
 	public abstract class Entry implements ContainerEventHandler {
 		@Nullable
@@ -655,54 +650,6 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		@Override
 		public List<? extends NarratableEntry> narratables() {
 			return this.buttons;
-		}
-	}
-
-	@ClientOnly
-	class ServerEffectEntry extends Entry {
-		private final MultiLineLabel serverEffect;
-		private final Component serverEffectText;
-		private int lines = 16;
-
-		private ServerEffectEntry(Component serverEffect) {
-			this.serverEffect = MultiLineLabel.create(OkZoomerAbstractSelectionList.this.minecraft.font, serverEffect, 310);
-			this.serverEffectText = serverEffect;
-		}
-
-		@Override
-		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
-			this.serverEffect.renderCentered(graphics, x + rowWidth / 2, y + 4, 9, CommonColors.WHITE);
-			this.lines = (this.serverEffect.getLineCount() * 9) + 7;
-		}
-
-		@Override
-		public @Nullable ComponentPath nextFocusPath(FocusNavigationEvent event) {
-			return null;
-		}
-
-		@Override
-		public int getEntryHeight() {
-			return lines;
-		}
-
-		@Override
-		public @NotNull List<? extends GuiEventListener> children() {
-			return List.of();
-		}
-
-		@Override
-		public List<? extends NarratableEntry> narratables() {
-			return List.of(new NarratableEntry() {
-				@Override
-				public @NotNull NarrationPriority narrationPriority() {
-					return NarrationPriority.HOVERED;
-				}
-
-				@Override
-				public void updateNarration(NarrationElementOutput narrationElementOutput) {
-					narrationElementOutput.add(NarratedElementType.TITLE, ServerEffectEntry.this.serverEffectText);
-				}
-			});
 		}
 	}
 }
