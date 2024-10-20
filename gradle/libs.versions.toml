@@ -1,14 +1,14 @@
 # The latest versions are available at https://quiltmc.org/en/usage/latest-versions/
 [versions]
-minecraft = "1.21.1"
+minecraft = "1.21.2-rc1"
 parchment = "2024.07.28"
 
 quilt_loom = "1.8.3"
 quilt_loader = "0.27.0-beta.1"
 
-fabric_api = "0.106.0+1.21.1"
+fabric_api = "0.106.0+1.21.2"
 wrench_wrapper = "0.5.0"
-modmenu = "11.0.3"
+modmenu = "12.0.0-beta.1"
 
 trinkets = "3.10.0"
 cca = "6.1.1"
