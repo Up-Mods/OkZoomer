@@ -23,7 +23,6 @@ base {
 
 repositories {
 	mavenCentral()
-	mavenLocal()
 	maven {
 		name = 'TerraformersMC'
 		url = 'https://maven.terraformersmc.com/releases'
