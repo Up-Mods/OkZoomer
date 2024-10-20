@@ -51,7 +51,7 @@ public class ZoomUtils {
 		int zoomCullingFov = Math.ceilDiv(fov, divisor);
 
 		if (zoomCullingFov != lastZoomCullingFov) {
-			minecraft.levelRenderer.needsUpdate();
+			minecraft.levelRenderer.getSectionOcclusionGraph().invalidate();
 		}
 
 		lastZoomCullingFov = zoomCullingFov;
@@ -102,7 +102,7 @@ public class ZoomUtils {
 			if (client.options.keySaveHotbarActivator.isDefault()) {
 				if (userPrompted) {
 					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
-					client.getToasts().addToast(SystemToast.multiline(
+					client.getToastManager().addToast(SystemToast.multiline(
 						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
 						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
 				} else {
@@ -114,7 +114,7 @@ public class ZoomUtils {
 			} else {
 				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
 				if (userPrompted) {
-					client.getToasts().addToast(SystemToast.multiline(
+					client.getToastManager().addToast(SystemToast.multiline(
 						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
 						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
 				}

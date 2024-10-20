@@ -1,6 +1,5 @@
 package io.github.ennuil.ok_zoomer.zoom.overlays;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
@@ -46,9 +45,7 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		int y = (guiHeight - height) / 2;
 		int borderX = x + width;
 		int borderY = y + height;
-		RenderSystem.enableBlend();
-		graphics.blit(textureId, x, y, -90, 0.0F, 0.0F, width, height, width, height);
-		RenderSystem.disableBlend();
+		graphics.blit(RenderType::guiTextured, textureId, x, y, 0.0F, 0.0F, width, height, width, height);
 		graphics.fill(RenderType.guiOverlay(), 0, borderY, guiWidth, guiHeight, -90, CommonColors.BLACK);
 		graphics.fill(RenderType.guiOverlay(), 0, 0, guiWidth, y, -90, CommonColors.BLACK);
 		graphics.fill(RenderType.guiOverlay(), 0, y, x, borderY, -90, CommonColors.BLACK);

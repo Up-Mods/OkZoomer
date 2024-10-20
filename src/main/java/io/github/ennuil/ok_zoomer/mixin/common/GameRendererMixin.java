@@ -2,7 +2,7 @@ package io.github.ennuil.ok_zoomer.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
+import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Camera;
@@ -57,12 +57,11 @@ public abstract class GameRendererMixin {
 			ordinal = 0
 		)
 	)
-	private void getZoomedFov(Camera activeRenderInfo, float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Double> cir, @Local LocalDoubleRef internalFov) {
-		double zoomedFov = internalFov.get();
+	private void getZoomedFov(Camera activeRenderInfo, float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir, @Local(ordinal = 1) LocalFloatRef internalFov) {
+		float zoomedFov = internalFov.get();
 
 		if (Zoom.isTransitionActive()) {
-			// This looks bad now, but don't worry, it *will* make sense on Minecraft 1.21.2
-			zoomedFov = Zoom.getTransitionMode().applyZoom((float) zoomedFov, partialTicks);
+			zoomedFov = Zoom.getTransitionMode().applyZoom(zoomedFov, partialTicks);
 		}
 
 		internalFov.set(zoomedFov);

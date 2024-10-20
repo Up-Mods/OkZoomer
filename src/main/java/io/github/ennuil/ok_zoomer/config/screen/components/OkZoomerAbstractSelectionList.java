@@ -1,6 +1,5 @@
 package io.github.ennuil.ok_zoomer.config.screen.components;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.Minecraft;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -135,19 +135,15 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	}
 
 	private void renderListBackground(GuiGraphics graphics) {
-		RenderSystem.enableBlend();
 		var backgroundLocation = this.minecraft.level == null ? MENU_LIST_BACKGROUND : INWORLD_MENU_LIST_BACKGROUND;
-		graphics.blit(backgroundLocation, this.getX(), this.getY(), this.getRight(), this.getBottom() + this.getScrollAmount(), this.width, this.height, 32,32);
-		RenderSystem.disableBlend();
+		graphics.blit(RenderType::guiTextured, backgroundLocation, this.getX(), this.getY(), this.getRight(), this.getBottom() + this.getScrollAmount(), this.width, this.height, 32,32);
 	}
 
 	private void renderListSeparators(GuiGraphics graphics) {
-		RenderSystem.enableBlend();
 		var headerSeparatorLocation = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
 		var footerSeparatorLocation = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-		graphics.blit(headerSeparatorLocation, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
-		graphics.blit(footerSeparatorLocation, this.getX(), this.getBottom(), 0.0F, 0.0F, this.width, 2, 32, 2);
-		RenderSystem.disableBlend();
+		graphics.blit(RenderType::guiTextured, headerSeparatorLocation, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.width, 2, 32, 2);
+		graphics.blit(RenderType::guiTextured, footerSeparatorLocation, this.getX(), this.getBottom(), 0.0F, 0.0F, this.width, 2, 32, 2);
 	}
 
 	private void renderScrollBar(GuiGraphics graphics) {
@@ -157,10 +153,8 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		var scale = (this.scrollAmount / (double) (this.contentHeight - this.height));
 		var y = this.getY() + (int) (scale * (this.height - size));
 
-		RenderSystem.enableBlend();
-		graphics.blitSprite(SCROLLER_BACKGROUND_SPRITE, x, this.getY(), 6, this.height);
-		graphics.blitSprite(SCROLLER_SPRITE, x, y, 6, size);
-		RenderSystem.disableBlend();
+		graphics.blitSprite(RenderType::guiTextured, SCROLLER_BACKGROUND_SPRITE, x, this.getY(), 6, this.height);
+		graphics.blitSprite(RenderType::guiTextured, SCROLLER_SPRITE, x, y, 6, size);
 	}
 
 	protected int getScrollBarPosX() {

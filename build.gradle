@@ -79,8 +79,8 @@ dependencies {
 
 	modCompileOnly libs.wrench.wrapper
 
-	modCompileOnly libs.bundles.trinkets
-	modLocalRuntime libs.bundles.trinkets
+	//modCompileOnly libs.bundles.trinkets
+	//modLocalRuntime libs.bundles.trinkets
 
 	include libs.wrench.wrapper
 }
