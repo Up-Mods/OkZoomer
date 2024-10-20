@@ -13,21 +13,21 @@ import net.minecraft.util.Mth;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-    private final ResourceLocation textureId;
-    private boolean active;
+	private final ResourceLocation textureId;
+	private boolean active;
 
-    public ZoomerZoomOverlay(ResourceLocation textureId) {
-        this.textureId = textureId;
-        this.active = false;
-    }
+	public ZoomerZoomOverlay(ResourceLocation textureId) {
+		this.textureId = textureId;
+		this.active = false;
+	}
 
-    @Override
-    public boolean getActive() {
-        return this.active;
-    }
+	@Override
+	public boolean getActive() {
+		return this.active;
+	}
 
-    @Override
-    public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode) {
+	@Override
+	public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode) {
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
@@ -40,12 +40,12 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.disableBlend();
-    }
+	}
 
-    @Override
-    public void tick(boolean active, double divisor, TransitionMode transitionMode) {
-        if (active || !transitionMode.getActive()) {
-            this.active = active;
-        }
-    }
+	@Override
+	public void tick(boolean active, double divisor, TransitionMode transitionMode) {
+		if (active || !transitionMode.getActive()) {
+			this.active = active;
+		}
+	}
 }

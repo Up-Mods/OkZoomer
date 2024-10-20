@@ -19,9 +19,9 @@ public class ConfigTextUtils {
 		this.scheme = this.config.metadata(SerializedNameConvention.TYPE);
 	}
 
-    public static Component getConfigTitle(ResourceLocation configId) {
-        return Component.translatable("config." + configId.getNamespace() + ".title");
-    }
+	public static Component getConfigTitle(ResourceLocation configId) {
+		return Component.translatable("config." + configId.getNamespace() + ".title");
+	}
 
 	public Component getCategoryText(String category) {
 		return Component.translatable("config." + this.config.family() + "." + this.scheme.coerce(category));

@@ -11,33 +11,33 @@ import net.minecraft.util.Mth;
 
 // An implementation of the spyglass overlay as a zoom overlay
 public class SpyglassZoomOverlay implements ZoomOverlay {
-    private final ResourceLocation textureId;
-    //private Minecraft minecraft;
-    private float scale;
-    private boolean active;
+	private final ResourceLocation textureId;
+	//private Minecraft minecraft;
+	private float scale;
+	private boolean active;
 
-    public SpyglassZoomOverlay(ResourceLocation textureId) {
-        this.textureId = textureId;
-        this.scale = 0.5F;
-        this.active = false;
+	public SpyglassZoomOverlay(ResourceLocation textureId) {
+		this.textureId = textureId;
+		this.scale = 0.5F;
+		this.active = false;
 		//this.minecraft = Minecraft.getInstance();
-    }
+	}
 
-    @Override
-    public boolean getActive() {
-        return this.active;
-    }
+	@Override
+	public boolean getActive() {
+		return this.active;
+	}
 
-    @Override
-    public boolean cancelOverlayRendering() {
-        return true;
-    }
+	@Override
+	public boolean cancelOverlayRendering() {
+		return true;
+	}
 
 	// TODO - Consider whenever a third-person view block tweak option is desirable
-    @Override
-    public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode) {
-        int guiWidth = graphics.guiWidth();
-        int guiHeight = graphics.guiHeight();
+	@Override
+	public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode) {
+		int guiWidth = graphics.guiWidth();
+		int guiHeight = graphics.guiHeight();
 		float smallerLength = (float) Math.min(guiWidth, guiHeight);
 		float scaledSmallerLength = Math.min((float) guiWidth / smallerLength, (float) guiHeight / smallerLength) * scale;
 		int width = Mth.floor(smallerLength * scaledSmallerLength);
@@ -53,19 +53,19 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		graphics.fill(RenderType.guiOverlay(), 0, 0, guiWidth, y, -90, CommonColors.BLACK);
 		graphics.fill(RenderType.guiOverlay(), 0, y, x, borderY, -90, CommonColors.BLACK);
 		graphics.fill(RenderType.guiOverlay(), borderX, y, guiWidth, borderY, -90, CommonColors.BLACK);
-    }
+	}
 
-    @Override
-    public void tick(boolean active, double divisor, TransitionMode transitionMode) {
-        this.active = active;
-    }
+	@Override
+	public void tick(boolean active, double divisor, TransitionMode transitionMode) {
+		this.active = active;
+	}
 
-    @Override
-    public void tickBeforeRender(DeltaTracker deltaTracker) {
+	@Override
+	public void tickBeforeRender(DeltaTracker deltaTracker) {
 		if (!this.active) {
 			this.scale = 0.5F;
 		} else {
 			this.scale = Mth.lerp(0.5F * deltaTracker.getGameTimeDeltaTicks(), this.scale, 1.125F);
 		}
-    }
+	}
 }
