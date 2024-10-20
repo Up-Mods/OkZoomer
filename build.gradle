@@ -100,8 +100,6 @@ processResources {
 		'minecraft_version'             : libs.versions.minecraft.get(),
 		'curseforge_id'					: curseforge_id,
 		'modrinth_id'					: modrinth_id,
-
-		'quilt_loader_version'          : libs.versions.quilt.loader.get(),
 	]
 
 	filesMatching(['*.mod.json', '*.mixins.json']) {
