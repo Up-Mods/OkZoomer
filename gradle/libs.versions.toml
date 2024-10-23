@@ -3,7 +3,7 @@
 minecraft = "1.21.1"
 parchment = "2024.07.28"
 
-quilt_loom = "1.8.3"
+quilt_loom = "1.8.4"
 quilt_loader = "0.27.0-beta.1"
 
 fabric_api = "0.106.0+1.21.1"

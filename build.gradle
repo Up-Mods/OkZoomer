@@ -3,11 +3,6 @@ plugins {
 	alias libs.plugins.quilt.loom
 }
 
-// messy workaround for bug in quilt loom 1.3.3+
-project.configurations.configureEach {
-    exclude(group: "net.fabricmc", module: "fabric-loader")
-}
-
 def javaVersion = 21
 
 group = project.maven_group_id
