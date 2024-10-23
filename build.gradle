@@ -40,10 +40,12 @@ repositories {
 		name = 'Up-Mods'
 		url = 'https://maven.uuid.gg/releases'
 	}
+	/*
 	maven {
 		name = "Ladysnake"
 		url = 'https://maven.ladysnake.org/releases'
 	}
+	 */
 }
 
 loom {
