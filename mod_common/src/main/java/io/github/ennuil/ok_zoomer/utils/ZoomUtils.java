@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
+import io.github.ennuil.ok_zoomer.sound.ZoomSoundEvents;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,7 @@ public class ZoomUtils {
 			int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
 			int lowerScrollStep = 0;
 
+			int lastZoomStep = zoomStep;
 			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
 			double divisor = 1.0;
@@ -47,6 +49,10 @@ public class ZoomUtils {
 				Zoom.setZoomDivisor(divisor);
 			} else {
 				Zoom.setZoomDivisor(1);
+			}
+
+			if (lastZoomStep != zoomStep) {
+				Minecraft.getInstance().player.playSound(ZoomSoundEvents.SCROLL, 1.0F, 1.0F);
 			}
 
 			if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {

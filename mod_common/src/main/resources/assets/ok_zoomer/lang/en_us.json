@@ -128,5 +128,8 @@
 	"key.ok_zoomer.decrease_zoom": "Decrease Zoom",
 	"key.ok_zoomer.increase_zoom": "Increase Zoom",
 	"key.ok_zoomer.reset_zoom": "Reset Zoom",
-	"key.ok_zoomer.zoom": "Zoom"
+	"key.ok_zoomer.zoom": "Zoom",
+	"sound.ok_zoomer.zoom.zoom_in": "Zoom begins",
+	"sound.ok_zoomer.zoom.zoom_out": "Zoom ends",
+	"sound.ok_zoomer.zoom.scroll": "Zoom scrolls"
 }

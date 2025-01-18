@@ -1,0 +1,57 @@
+{
+	"zoom.zoom_in": {
+		"subtitle": "sound.ok_zoomer.zoom.zoom_in",
+		"sounds": [
+			{
+				"name": "minecraft:item/spyglass/use",
+				"pitch": 1.15,
+				"volume": 0.5
+			},
+			{
+				"name": "minecraft:item/spyglass/use",
+				"pitch": 1.33,
+				"volume": 0.5
+			},
+			{
+				"name": "minecraft:item/spyglass/use",
+				"pitch": 1.4,
+				"volume": 0.5
+			},
+			{
+				"name": "minecraft:item/spyglass/use",
+				"pitch": 1.55,
+				"volume": 0.5
+			}
+		]
+	},
+	"zoom.zoom_out": {
+		"subtitle": "sound.ok_zoomer.zoom.zoom_out",
+		"sounds": [
+			{
+				"name": "minecraft:item/spyglass/stop",
+				"pitch": 0.5,
+				"volume": 0.5
+			},
+			{
+				"name": "minecraft:item/spyglass/stop",
+				"pitch": 0.8,
+				"volume": 0.5
+			},
+			{
+				"name": "minecraft:item/spyglass/stop",
+				"pitch": 0.9,
+				"volume": 0.5
+			}
+		]
+	},
+	"zoom.scroll": {
+		"subtitle": "sound.ok_zoomer.zoom.scroll",
+		"sounds": [
+			{
+				"name": "ok_zoomer:zoom/scroll",
+				"pitch": 1.0,
+				"volume": 0.5
+			}
+		]
+	}
+}

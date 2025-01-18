@@ -3,6 +3,7 @@ package io.github.ennuil.ok_zoomer.events;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
+import io.github.ennuil.ok_zoomer.sound.ZoomSoundEvents;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,8 @@ public class ManageZoomEvent {
 
 	// Used internally in order to make persistent zoom less buggy
 	private static boolean persistentZoom = false;
+
+	private static boolean lastZoomWasSpyglass = false;
 
 	public static void startClientTick(Minecraft minecraft) {
 		// We need the player for spyglass shenanigans
@@ -87,15 +90,17 @@ public class ManageZoomEvent {
 			}
 		}
 
-		if (doSpyglassSound && !spyglassUse) {
+		if (doSpyglassSound && (!spyglassUse && !lastZoomWasSpyglass)) {
 			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)
 				? Zoom.isZooming()
 				: keyPress;
 
-			minecraft.player.playSound(soundDirection ? SoundEvents.SPYGLASS_USE : SoundEvents.SPYGLASS_STOP_USING, 1.0F, 1.0F);
+			minecraft.player.playSound(soundDirection ? ZoomSoundEvents.ZOOM_IN : ZoomSoundEvents.ZOOM_OUT, 1.0F, 1.0F);
 		}
 
 		// Set the previous zoom signal for the next tick
 		lastZooming = zooming;
+
+		lastZoomWasSpyglass = spyglassUse && !keyPress;
 	}
 }
