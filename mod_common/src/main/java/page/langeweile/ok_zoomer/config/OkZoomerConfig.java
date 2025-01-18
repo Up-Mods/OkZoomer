@@ -39,7 +39,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("""
 			"OFF": The zoom will abruptly transition between its on and off states.
 			"SMOOTH": The zoom will smoothly transition between its on and off states in a manner resembling the game's FOV transitions.
-			"LINEAR": The zoom will linearly transition between its on and off states.
 			""")
 		public final TrackedValue<ZoomTransitionOptions> zoomTransition = this.value(ZoomTransitionOptions.SMOOTH);
 
@@ -122,16 +121,21 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	}
 
 	public static final class TransitionValuesConfig extends Section  {
-		@WidgetSize(Size.HALF)
+		@WidgetSize(Size.FULL)
 		@Comment("The factor used for smooth zoom transitions. A lower value means a smoother transition, a higher value means a faster one.")
 		@Alias("smooth_multiplier")
 		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
 		public final TrackedValue<Double> smoothTransitionFactor = this.value(0.6);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The value which the linear zoom transition step can reach.")
-		@FloatRange(min = 0.0, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> linearStep = this.value(0.2);
+		@Comment("test")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> easeInTicks = this.value(5);
+
+		@WidgetSize(Size.HALF)
+		@Comment("test")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> easeOutTicks = this.value(5);
 	}
 
 	public static final class TweaksConfig extends Section  {

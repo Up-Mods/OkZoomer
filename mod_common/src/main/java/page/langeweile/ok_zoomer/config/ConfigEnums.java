@@ -10,7 +10,7 @@ public class ConfigEnums {
 	public enum ZoomTransitionOptions implements ConfigEnum {
 		OFF,
 		SMOOTH,
-		LINEAR
+		EXPERIMENTAL
 	}
 
 	public enum ZoomModes implements ConfigEnum {

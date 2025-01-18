@@ -10,8 +10,8 @@ import page.langeweile.ok_zoomer.zoom.modifiers.MultipliedCinematicCameraMouseMo
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
+import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 import page.langeweile.ok_zoomer.zoom.transitions.InstantTransitionMode;
-import page.langeweile.ok_zoomer.zoom.transitions.LinearTransitionMode;
 import page.langeweile.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import page.langeweile.wrench_wrapper.api.WrenchWrapper;
 
@@ -30,7 +30,7 @@ public class OkZoomerConfigManager {
 		Zoom.setTransitionMode(
 			switch (CONFIG.features.zoomTransition.value()) {
 				case SMOOTH -> new SmoothTransitionMode(CONFIG.transitionValues.smoothTransitionFactor.value().floatValue());
-				case LINEAR -> new LinearTransitionMode(CONFIG.transitionValues.linearStep.value());
+				case EXPERIMENTAL -> new EasedTransitionMode();
 				default -> new InstantTransitionMode();
 			}
 		);
