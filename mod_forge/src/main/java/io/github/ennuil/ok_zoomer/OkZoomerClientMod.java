@@ -4,11 +4,13 @@ import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import io.github.ennuil.ok_zoomer.events.ApplyLoadOnceOptionsEvent;
+import io.github.ennuil.ok_zoomer.sound.ForgeSoundEvents;
 import io.github.ennuil.ok_zoomer.utils.ForgeZoomUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;
 
 @Mod(value = "ok_zoomer")
@@ -16,6 +18,7 @@ public class OkZoomerClientMod {
 	public OkZoomerClientMod() {
 		ConfigFieldAnnotationProcessor.register(WidgetSize.class, new WidgetSize.Processor());
 		OkZoomerConfigManager.init();
+		ForgeSoundEvents.SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
 		ApplyLoadOnceOptionsEvent.readyClient(Minecraft.getInstance());
 

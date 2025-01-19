@@ -3,11 +3,10 @@ package io.github.ennuil.ok_zoomer.events;
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.ZoomModes;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
-import io.github.ennuil.ok_zoomer.sound.ZoomSoundEvents;
+import io.github.ennuil.ok_zoomer.utils.Portals;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Minecraft;
-import net.minecraft.sounds.SoundEvents;
 
 // This event is responsible for managing the zoom signal.
 public class ManageZoomEvent {
@@ -95,7 +94,7 @@ public class ManageZoomEvent {
 				? Zoom.isZooming()
 				: keyPress;
 
-			minecraft.player.playSound(soundDirection ? ZoomSoundEvents.ZOOM_IN : ZoomSoundEvents.ZOOM_OUT, 1.0F, 1.0F);
+			minecraft.player.playSound(soundDirection ? Portals.getZoomInSound() : Portals.getZoomOutSound(), 1.0F, 1.0F);
 		}
 
 		// Set the previous zoom signal for the next tick

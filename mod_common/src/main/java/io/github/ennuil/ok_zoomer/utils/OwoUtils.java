@@ -14,7 +14,7 @@ public class OwoUtils {
 		".w.", "+w+", ")w(", "]w[", "}w{", "_w_", "=w=", "!w!",
 		"YwY", "vwv", "VwV", "<w>", "çwç", "ÇwÇ", ">w>", "<w<",
 		"—w—", "→w→", "→w←", "←w←", "KwK", "GwG", "gwg", "qwq",
-		"AwA", "awa", "\\w/"
+		"AwA", "awa", "\\w/", "…w…", "ªwª", "—w—", "¯w¯"
 	};
 
 	public static void printOwo() {
