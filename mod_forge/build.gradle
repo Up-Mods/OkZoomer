@@ -7,6 +7,7 @@ base.archivesName = 'ok_zoomer-forge'
 
 repositories {
 	maven { url = 'https://maven.neoforged.net/releases' }
+	maven { url = 'https://maven.su5ed.dev/releases' }
 }
 
 processResources {
@@ -55,6 +56,9 @@ dependencies {
 	compileOnly libs.mixinextras.common
 	implementation libs.mixinextras.forge
 	jarJar libs.mixinextras.forge
+
+	modCompileOnly libs.accessories.norge
+	//modRuntimeOnly libs.accessories.norge
 }
 
 mixin {

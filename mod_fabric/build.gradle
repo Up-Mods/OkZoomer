@@ -30,6 +30,9 @@ dependencies {
 	modCompileOnly libs.bundles.trinkets
 	//modLocalRuntime libs.bundles.trinkets
 
+	modCompileOnly libs.accessories.fabric
+	modLocalRuntime libs.accessories.fabric
+
 	include libs.wrench.wrapper
 }
 

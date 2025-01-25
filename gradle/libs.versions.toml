@@ -13,6 +13,7 @@ wrench_wrapper = "0.6.2"
 modmenu = "7.2.2"
 trinkets = "3.7.2"
 cca = "6.1.2"
+accessories = "1.0.0-beta.47+1.20.1"
 
 sponge = "0.8.5"
 mixinextras = "0.4.1"
@@ -29,6 +30,9 @@ modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
 cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
+
+accessories_fabric = { module = "io.wispforest:accessories-fabric", version.ref = "accessories" }
+accessories_norge = { module = "io.wispforest:accessories-neoforge", version.ref = "accessories" }
 
 sponge = { module = "org.spongepowered:mixin", version.ref = "sponge" }
 mixinextras_common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }

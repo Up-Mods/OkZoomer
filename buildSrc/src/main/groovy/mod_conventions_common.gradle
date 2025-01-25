@@ -52,7 +52,8 @@ repositories {
 		}
 	}
 	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
-	// maven { url = 'https://maven.ladysnake.org/releases' }
+	maven { url = 'https://maven.wispforest.io/releases' }
+	maven { url = 'https://maven.shedaniel.me/' }
 }
 
 jar {

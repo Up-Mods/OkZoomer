@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.compat.AccessoriesCompat;
 import io.github.ennuil.ok_zoomer.compat.TrinketsCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.events.*;
@@ -42,7 +43,9 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		FabricZoomUtils.addInitialPredicates();
 
 		// Mod compat
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+		if (FabricLoader.getInstance().isModLoaded("accessories")) {
+			AccessoriesCompat.init();
+		} else if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			TrinketsCompat.init();
 		}
 	}

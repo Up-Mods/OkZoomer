@@ -1,5 +1,6 @@
 package io.github.ennuil.ok_zoomer;
 
+import io.github.ennuil.ok_zoomer.compat.AccessoriesCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.OkZoomerConfigScreen;
@@ -8,6 +9,7 @@ import io.github.ennuil.ok_zoomer.sound.ForgeSoundEvents;
 import io.github.ennuil.ok_zoomer.utils.ForgeZoomUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -28,5 +30,10 @@ public class OkZoomerClientMod {
 
 		ForgeZoomUtils.defineSafeSmartOcclusion();
 		ForgeZoomUtils.addInitialPredicates();
+
+		// Mod Compat
+		if (ModList.get().isLoaded("accessories")) {
+			AccessoriesCompat.init();
+		}
 	}
 }
