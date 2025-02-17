@@ -1,17 +1,17 @@
 [versions]
 minecraft = "1.21.4"
-parchment = "2024.12.29"
+parchment = "2025.02.16"
 
-fabric_loom = "1.9.2"
-fabric_loader = "0.16.9"
-moddevgradle = "2.0.72"
-neoforge = "21.4.48-beta"
+fabric_loom = "1.10.1"
+fabric_loader = "0.16.10"
+moddevgradle = "2.0.78"
+neoforge = "21.4.91-beta"
 
-fabric_api = "0.114.0+1.21.4"
-wrench_wrapper = "0.6.1"
+fabric_api = "0.117.0+1.21.4"
+wrench_wrapper = "0.6.2"
 
-modmenu = "13.0.0-beta.1"
-accessories = "1.2.15-beta+1.21.4"
+modmenu = "13.0.1"
+accessories = "1.2.16-beta+1.21.4"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
