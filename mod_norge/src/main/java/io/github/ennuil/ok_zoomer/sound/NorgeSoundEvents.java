@@ -12,6 +12,7 @@ public class NorgeSoundEvents {
 
 	public static final Holder<SoundEvent> ZOOM_IN = SOUND_EVENTS.register("zoom.zoom_in", SoundEvent::createVariableRangeEvent);
 	public static final Holder<SoundEvent> ZOOM_OUT = SOUND_EVENTS.register("zoom.zoom_out", SoundEvent::createVariableRangeEvent);
+	public static final Holder<SoundEvent> SCROLL = SOUND_EVENTS.register("zoom.scroll", SoundEvent::createVariableRangeEvent);
 
 	public static void init() {}
 }

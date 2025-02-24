@@ -11,4 +11,8 @@ public class NorgePortals {
 	public static SoundEvent getZoomOutSound() {
 		return NorgeSoundEvents.ZOOM_OUT.value();
 	}
+
+	public static SoundEvent getScrollSound() {
+		return NorgeSoundEvents.SCROLL.value();
+	}
 }

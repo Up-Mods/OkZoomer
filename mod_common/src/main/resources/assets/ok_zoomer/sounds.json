@@ -43,5 +43,15 @@
 				"volume": 0.5
 			}
 		]
+	},
+	"zoom.scroll": {
+		"subtitle": "sound.ok_zoomer.zoom.scroll",
+		"sounds": [
+			{
+				"name": "ok_zoomer:zoom/scroll",
+				"pitch": 1.0,
+				"volume": 0.5
+			}
+		]
 	}
 }

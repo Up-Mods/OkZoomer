@@ -11,4 +11,8 @@ public class FabricPortals {
 	public static SoundEvent getZoomOutSound() {
 		return FabricSoundEvents.ZOOM_OUT;
 	}
+
+	public static SoundEvent getScrollSound() {
+		return FabricSoundEvents.SCROLL;
+	}
 }
