@@ -103,6 +103,8 @@
 	"config.ok_zoomer.tweaks.use_spyglass_sounds.tooltip": "Se ativado, o zoom irá usar os sons da luneta ao alternar o zoom.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Depurar rolagem",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Mostra informações de depuração da rolagem de zoom exponencial. Atualmente elas poderão ajudar com a configuração da rolagem de zoom.",
+	"config.ok_zoomer.tweaks.show_settings_on_key": "Mostrar definições no atalho",
+	"config.ok_zoomer.tweaks.show_settings_on_key.tooltip": "Adiciona um botão para abrir as definições do Ok Zoomer próximo ao atalho de zoom.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Imprimir owo ao iniciar",
 	"config.ok_zoomer.tweaks.print_owo_on_start.tooltip": "Imprime um owo aleatório no console quando o jogo inicia.",
 	"config.ok_zoomer.presets": "Predefinições",
@@ -129,6 +131,7 @@
 	"key.ok_zoomer.increase_zoom": "Aumentar zoom",
 	"key.ok_zoomer.reset_zoom": "Reiniciar zoom",
 	"key.ok_zoomer.zoom": "Zoom",
+	"key.ok_zoomer.settings": "Definições de %s",
 	"sound.ok_zoomer.zoom.zoom_in": "Zoom começa",
 	"sound.ok_zoomer.zoom.zoom_out": "Zoom termina",
 	"sound.ok_zoomer.zoom.scroll": "Zoom rola"

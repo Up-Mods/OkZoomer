@@ -193,6 +193,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> useSpyglassSounds = this.value(false);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Adds a button to open Ok Zoomer settings next to the zoom key bind.")
+		public final TrackedValue<Boolean> showSettingsOnKey = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("Displays debug information for exponential zoom scrolling. Currently it may help with configuring the zoom scrolling.")
 		public final TrackedValue<Boolean> debugScrolling = this.value(false);
 

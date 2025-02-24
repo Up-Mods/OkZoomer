@@ -4,6 +4,9 @@
 	"package": "io.github.ennuil.ok_zoomer.mixin.common",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"key_binds.AbstractSelectionListAccessor",
+		"key_binds.KeyBindsListAccessor",
+		"key_binds.KeyEntryMixin",
 		"AbstractClientPlayerMixin",
 		"BlockEntityRendererMixin",
 		"EditBoxAccessor",
