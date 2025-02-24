@@ -13,6 +13,10 @@ public class Portals {
 		return getFromPortal("getZoomOutSound");
 	}
 
+	public static SoundEvent getScrollSound() {
+		return getFromPortal("getScrollSound");
+	}
+
 	public static <T> T getFromPortal(String method) {
 		try {
 			var fabricClass = getClass("io.github.ennuil.ok_zoomer.utils.FabricPortals");

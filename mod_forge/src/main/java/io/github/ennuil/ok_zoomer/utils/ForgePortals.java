@@ -11,4 +11,8 @@ public class ForgePortals {
 	public static SoundEvent getZoomOutSound() {
 		return ForgeSoundEvents.ZOOM_OUT.get();
 	}
+
+	public static SoundEvent getScrollSound() {
+		return ForgeSoundEvents.SCROLL.get();
+	}
 }

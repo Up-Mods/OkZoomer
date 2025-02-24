@@ -101,6 +101,8 @@
 	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "Se ativado, o divisor de zoom atual será esquecido quando o zoom terminar.",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds": "Usar sons da luneta",
 	"config.ok_zoomer.tweaks.use_spyglass_sounds.tooltip": "Se ativado, o zoom irá usar os sons da luneta ao alternar o zoom.",
+	"config.ok_zoomer.tweaks.scroll_sounds": "Sons de rolagem",
+	"config.ok_zoomer.tweaks.scroll_sounds.tooltip": "Adiciona efeitos sonoros na rolagem de zoom.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Depurar rolagem",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Mostra informações de depuração da rolagem de zoom exponencial. Atualmente elas poderão ajudar com a configuração da rolagem de zoom.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Imprimir owo ao iniciar",

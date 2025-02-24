@@ -12,6 +12,7 @@ public class ForgeSoundEvents {
 
 	public static final RegistryObject<SoundEvent> ZOOM_IN = SOUND_EVENTS.register("zoom.zoom_in", () -> SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.zoom_in")));
 	public static final RegistryObject<SoundEvent> ZOOM_OUT = SOUND_EVENTS.register("zoom.zoom_out", () -> SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.zoom_out")));
+	public static final RegistryObject<SoundEvent> SCROLL = SOUND_EVENTS.register("zoom.scroll", () -> SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.scroll")));
 
 	public static void init() {}
 }

@@ -185,12 +185,16 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
 
 		@WidgetSize(Size.HALF)
-		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
-		public final TrackedValue<Boolean> forgetZoomDivisor = this.value(true);
-
-		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
 		public final TrackedValue<Boolean> useSpyglassSounds = this.value(false);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Adds sound effects on zoom scrolling.")
+		public final TrackedValue<Boolean> scrollSounds = this.value(false);
+
+		@WidgetSize(Size.HALF)
+		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
+		public final TrackedValue<Boolean> forgetZoomDivisor = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Displays debug information for exponential zoom scrolling. Currently it may help with configuring the zoom scrolling.")

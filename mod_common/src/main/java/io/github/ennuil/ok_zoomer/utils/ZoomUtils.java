@@ -34,11 +34,14 @@ public class ZoomUtils {
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {
 		if (OkZoomerConfigManager.CONFIG.features.scrollingMode.value() == ConfigEnums.ScrollingModes.EXPONENTIAL) {
+			// TODO - Replace client references with an argument
+			var minecraft = Minecraft.getInstance();
 			int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
 			int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
 			int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
 			int lowerScrollStep = 0;
 
+			int lastZoomStep = zoomStep;
 			zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
 			double divisor = 1.0;
@@ -49,8 +52,12 @@ public class ZoomUtils {
 				Zoom.setZoomDivisor(1);
 			}
 
+			if (lastZoomStep != zoomStep && OkZoomerConfigManager.CONFIG.tweaks.scrollSounds.value()) {
+				minecraft.player.playSound(Portals.getScrollSound(), 1.0F, 1.0F);
+			}
+
 			if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {
-				Minecraft.getInstance().player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
+				minecraft.player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
 			}
 		} else {
 			double zoomDivisor = OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor.value();
