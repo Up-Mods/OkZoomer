@@ -62,8 +62,7 @@ public abstract class KeyEntryMixin {
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I"))
 	private void renderSettingsButton(GuiGraphics graphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick, CallbackInfo ci, @Local(ordinal = 9) int k) {
 		if (this.settingsButton != null) {
-			int textWidth = Math.min(this.changeButton.getX() - 20 - left, Minecraft.getInstance().font.width(this.name));
-			this.settingsButton.setPosition(left + textWidth + 2, top - 2);
+			this.settingsButton.setPosition(this.changeButton.getX() - 25, top - 2);
 			this.settingsButton.render(graphics, mouseX, mouseY, partialTick);
 		}
 	}
