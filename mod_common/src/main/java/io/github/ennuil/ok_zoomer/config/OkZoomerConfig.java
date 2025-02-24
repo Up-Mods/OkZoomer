@@ -184,9 +184,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar. This may have a performance impact during zoom.")
 		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
 
+		@Alias("use_spyglass_sounds")
 		@WidgetSize(Size.HALF)
-		@Comment("If enabled, the zoom will use spyglass sounds on zooming in and out.")
-		public final TrackedValue<Boolean> useSpyglassSounds = this.value(false);
+		@Comment("Adds the spyglass's sounds effects on zooming in and out")
+		public final TrackedValue<Boolean> spyglassSounds = this.value(false);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Adds sound effects on zoom scrolling.")

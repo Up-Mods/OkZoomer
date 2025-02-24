@@ -65,7 +65,7 @@ public class ManageZoomEvent {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds.value();
+		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds.value();
 
 		switch (OkZoomerConfigManager.CONFIG.features.zoomMode.value()) {
 			case HOLD -> {

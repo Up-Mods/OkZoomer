@@ -48,7 +48,7 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps, 16),
 		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false),
-		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.useSpyglassSounds, true)
+		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds, true)
 	);
 
 	public static final Map<ConfigEnums.ConfigEnum, Map<TrackedValue<?>, Object>> PRESET_ENUM_TO_PRESET = Map.of(
