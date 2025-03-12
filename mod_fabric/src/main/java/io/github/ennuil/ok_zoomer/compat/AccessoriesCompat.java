@@ -5,6 +5,6 @@ import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 
 public class AccessoriesCompat {
 	public static void init() {
-		ZoomUtils.addSpyglassProvider(player -> player.accessoriesCapability().isEquipped(FabricZoomUtils.IS_VALID_SPYGLASS));
+		//ZoomUtils.addSpyglassProvider(player -> player.accessoriesCapability().isEquipped(FabricZoomUtils.IS_VALID_SPYGLASS));
 	}
 }
