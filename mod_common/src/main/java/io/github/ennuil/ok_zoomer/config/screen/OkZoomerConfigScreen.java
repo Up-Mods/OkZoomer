@@ -4,7 +4,7 @@ import io.github.ennuil.ok_zoomer.config.ConfigEnums;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.config.metadata.WidgetSize;
 import io.github.ennuil.ok_zoomer.config.screen.components.LabelledEditBox;
-import io.github.ennuil.ok_zoomer.config.screen.components.OkZoomerAbstractSelectionList;
+import io.github.ennuil.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
@@ -35,7 +35,7 @@ public class OkZoomerConfigScreen extends Screen {
 	private final Screen parent;
 	private ConfigTextUtils configTextUtils;
 	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
-	private OkZoomerAbstractSelectionList entryListWidget;
+	private OkZoomerSelectionList selectionList;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
 	private final Set<TrackedValue<Object>> invalidValues;
@@ -53,9 +53,9 @@ public class OkZoomerConfigScreen extends Screen {
 	protected void init() {
 		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
 		this.configTextUtils = new ConfigTextUtils(config);
-		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 32);
+		this.selectionList = new OkZoomerSelectionList(this.minecraft, this.width, this.height - 64, 32);
 
-		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
+		this.selectionList.addCategory(Component.translatable("config.ok_zoomer.presets"));
 		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
 			.withValues(ConfigEnums.ZoomPresets.values())
 			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
@@ -67,11 +67,11 @@ public class OkZoomerConfigScreen extends Screen {
 				button -> this.resetToPreset(presetButton.getValue()))
 			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.apply_preset.tooltip")))
 			.build();
-		this.entryListWidget.addButton(presetButton, resetButton);
+		this.selectionList.addButton(presetButton, resetButton);
 
 		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
-				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
+				this.selectionList.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
 
 				for (var subNode : section) {
 					var size = subNode.metadata(WidgetSize.TYPE);
@@ -183,14 +183,14 @@ public class OkZoomerConfigScreen extends Screen {
 				}
 
 				if (this.buttonBuffer != null) {
-					this.entryListWidget.addButton(buttonBuffer, null);
+					this.selectionList.addButton(buttonBuffer, null);
 					this.buttonBuffer = null;
 				}
 			}
 		}
 
-		this.entryListWidget.finish();
-		this.addRenderableWidget(this.entryListWidget);
+		this.selectionList.finish();
+		this.addRenderableWidget(this.selectionList);
 
 		this.layout.addTitleHeader(this.title, this.font);
 		var footerLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(8));
@@ -204,7 +204,7 @@ public class OkZoomerConfigScreen extends Screen {
 	@Override
 	protected void repositionElements() {
 		this.layout.arrangeElements();
-		this.entryListWidget.updateSize(this.width, this.layout);
+		this.selectionList.updateSize(this.width, this.layout);
 	}
 
 	private void addOptionToList(AbstractWidget button, WidgetSize.Size size) {
@@ -212,15 +212,15 @@ public class OkZoomerConfigScreen extends Screen {
 			if (this.buttonBuffer == null) {
 				this.buttonBuffer = button;
 			} else {
-				this.entryListWidget.addButton(this.buttonBuffer, button);
+				this.selectionList.addButton(this.buttonBuffer, button);
 				this.buttonBuffer = null;
 			}
 		} else {
 			if (this.buttonBuffer != null) {
-				this.entryListWidget.addButton(this.buttonBuffer, null);
+				this.selectionList.addButton(this.buttonBuffer, null);
 				this.buttonBuffer = null;
 			}
-			this.entryListWidget.addButton(button);
+			this.selectionList.addButton(button);
 		}
 	}
 
@@ -240,9 +240,9 @@ public class OkZoomerConfigScreen extends Screen {
 	}
 
 	private void refresh() {
-		var scrollAmount = this.entryListWidget.getScrollAmount();
+		var scrollAmount = this.selectionList.getScrollAmount();
 		this.rebuildWidgets();
-		this.entryListWidget.setScrollAmount(scrollAmount);
+		this.selectionList.setScrollAmount(scrollAmount);
 	}
 
 	private void resetNewValues() {

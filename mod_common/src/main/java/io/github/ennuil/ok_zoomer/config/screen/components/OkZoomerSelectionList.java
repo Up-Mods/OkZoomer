@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
+public class OkZoomerSelectionList extends AbstractContainerWidget {
 	private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
 	private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
 	private static final ResourceLocation MENU_LIST_BACKGROUND = ResourceLocation.withDefaultNamespace("textures/gui/menu_list_background.png");
@@ -47,7 +47,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 	@Nullable
 	private Entry hovered;
 
-	public OkZoomerAbstractSelectionList(Minecraft minecraft, int width, int height, int y) {
+	public OkZoomerSelectionList(Minecraft minecraft, int width, int height, int y) {
 		super(0, y, width, height, CommonComponents.EMPTY);
 		this.minecraft = minecraft;
 		this.children = new ArrayList<>();
@@ -483,7 +483,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 
 		@Override
 		public boolean isFocused() {
-			return OkZoomerAbstractSelectionList.this.getFocused() == this;
+			return OkZoomerSelectionList.this.getFocused() == this;
 		}
 
 		@Override
@@ -567,7 +567,7 @@ public class OkZoomerAbstractSelectionList extends AbstractContainerWidget {
 		@Override
 		public void render(GuiGraphics graphics, int x, int y, int rowWidth, int mouseX, int mouseY, float delta) {
 			graphics.fill(x, y + 1, x + rowWidth, y + 19, 0xA0000000);
-			graphics.drawCenteredString(OkZoomerAbstractSelectionList.this.minecraft.font, this.title, x + rowWidth / 2, y + 6, CommonColors.WHITE);
+			graphics.drawCenteredString(OkZoomerSelectionList.this.minecraft.font, this.title, x + rowWidth / 2, y + 6, CommonColors.WHITE);
 		}
 
 		@Override
