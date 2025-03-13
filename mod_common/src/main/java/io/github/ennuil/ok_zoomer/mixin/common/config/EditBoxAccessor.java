@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.mixin.common;
+package io.github.ennuil.ok_zoomer.mixin.common.config;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;

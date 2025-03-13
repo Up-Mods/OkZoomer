@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.mixin.common;
+package io.github.ennuil.ok_zoomer.mixin.common.config;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import io.github.ennuil.ok_zoomer.config.screen.components.LabelledEditBox;

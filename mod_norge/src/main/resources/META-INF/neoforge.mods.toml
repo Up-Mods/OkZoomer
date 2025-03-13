@@ -21,14 +21,14 @@ A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4.0-beta,)"
+versionRange = "[21.5.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.ok_zoomer]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.4,1.22)"
+versionRange = "[1.21.5,1.22)"
 ordering = "NONE"
 side = "CLIENT"
 

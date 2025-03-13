@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.mixin.common;
+package io.github.ennuil.ok_zoomer.mixin.common.distance;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

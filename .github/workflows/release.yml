@@ -11,7 +11,7 @@ env:
 
 jobs:
   publish:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -37,7 +37,7 @@ jobs:
         run: python ./ci/hissboom.py "mod_norge/build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
-        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
         with:
           github-token: ${{ github.token }}
           version: ${{ env.TAG }}
@@ -48,7 +48,7 @@ jobs:
             mod_norge/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Fabric)
         id: publish_fabric
-        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
             mod_fabric/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Neo)
         id: publish_neo
-        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
+        uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}

@@ -1,4 +1,4 @@
-package io.github.ennuil.ok_zoomer.mixin.common;
+package io.github.ennuil.ok_zoomer.mixin.common.distance;
 
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
