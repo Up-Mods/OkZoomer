@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(RenderPipelines.class)
 public abstract class RenderPipelinesMixin {
+	// TODO - Figure out a way to do this without shaders once more
+	// TODO - "Hide Crosshair" can be disabled, make it so it also reverts to the Vanilla shader if disabled
 	@ModifyReceiver(
 		method = "<clinit>",
 		at = @At(

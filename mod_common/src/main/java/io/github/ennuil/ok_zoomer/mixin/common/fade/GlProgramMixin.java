@@ -4,6 +4,7 @@ import com.mojang.blaze3d.opengl.GlProgram;
 import com.mojang.blaze3d.opengl.Uniform;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +35,11 @@ public abstract class GlProgramMixin {
 	@Inject(method = "setDefaultUniforms", at = @At(value = "TAIL"))
 	private void setupCrosshairFadeUniform2(VertexFormat.Mode mode, Matrix4f matrix4f, Matrix4f matrix4f2, float f, float g, CallbackInfo ci) {
 		if (this.CROSSHAIR_FADE != null) {
-			this.CROSSHAIR_FADE.set(1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true)));
+			if (OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value()) {
+				this.CROSSHAIR_FADE.set(1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true)));
+			} else {
+				this.CROSSHAIR_FADE.set(1.0F);
+			}
 		}
 	}
 }
