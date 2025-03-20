@@ -4,20 +4,20 @@
 	"package": "io.github.ennuil.ok_zoomer.mixin.common",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"AbstractClientPlayerMixin",
+		"GameRendererMixin",
+		"GuiMixin",
+		"MouseHandlerMixin",
 		"config.EditBoxAccessor",
 		"config.EditBoxMixin",
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
 		"distance.LevelRendererMixin",
+		"fade.GlCommandEncoderMixin",
 		"fade.GlProgramMixin",
-		"fade.RenderPipelinesMixin",
 		"key_binds.AbstractSelectionListAccessor",
 		"key_binds.KeyBindsListAccessor",
-		"key_binds.KeyEntryMixin",
-		"AbstractClientPlayerMixin",
-		"GameRendererMixin",
-		"GuiMixin",
-		"MouseHandlerMixin"
+		"key_binds.KeyEntryMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

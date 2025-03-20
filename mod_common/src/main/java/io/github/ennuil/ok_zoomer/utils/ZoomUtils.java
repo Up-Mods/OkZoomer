@@ -32,6 +32,7 @@ public class ZoomUtils {
 
 	private static Predicate<LocalPlayer> hasSpyglass = player -> player.isCreative();
 	private static boolean safeSmartOcclusion = false;
+	private static boolean modifyPipeline = false;
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
 	public static void changeZoomDivisor(boolean increase) {
@@ -151,5 +152,13 @@ public class ZoomUtils {
 			case ON -> true;
 			case OFF -> false;
 		};
+	}
+
+	public static boolean shouldModifyPipeline() {
+		return ZoomUtils.modifyPipeline;
+	}
+
+	public static void setModifyPipeline(boolean modifyPipeline) {
+		ZoomUtils.modifyPipeline = modifyPipeline;
 	}
 }
