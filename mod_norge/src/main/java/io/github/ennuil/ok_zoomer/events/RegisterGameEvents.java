@@ -8,6 +8,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.client.event.lifecycle.ClientStartedEvent;
 
 @EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME, modid = "ok_zoomer")
 public class RegisterGameEvents {
@@ -15,6 +16,12 @@ public class RegisterGameEvents {
 	public static void onClientTick(ClientTickEvent.Pre event) {
 		ManageZoomEvent.startClientTick(Minecraft.getInstance());
 		ManageExtraKeysEvent.startClientTick(Minecraft.getInstance());
+	}
+
+	// Currently affected by a NeoForge bug
+	@SubscribeEvent
+	public static void onClientStarted(ClientStartedEvent event) {
+		ApplyLoadOnceOptionsEvent.readyClient(event.getClient());
 	}
 
 	@SubscribeEvent

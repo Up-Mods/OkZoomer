@@ -29,7 +29,8 @@ neoForge {
 	version = libs.versions.neoforge.get()
 
 	parchment {
-		minecraftVersion = libs.versions.minecraft.get()
+		//minecraftVersion = libs.versions.minecraft.get()
+		minecraftVersion = "1.21.4"
 		mappingsVersion = libs.versions.parchment.get()
 	}
 
@@ -51,6 +52,6 @@ dependencies {
 	jarJar libs.wrench.wrapper
 
 	// Accessories refuses to put some versions on their Maven...
-	compileOnly libs.accessories.norge
+	//compileOnly libs.accessories.norge
 	//runtimeOnly libs.accessories.norge
 }

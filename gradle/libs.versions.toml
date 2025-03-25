@@ -1,16 +1,16 @@
 [versions]
-minecraft = "1.21.5-rc1"
+minecraft = "1.21.5"
 parchment = "2025.02.16"
 
-fabric_loom = "1.10.4"
+fabric_loom = "1.10.5"
 fabric_loader = "0.16.10"
-moddevgradle = "2.0.78"
-neoforge = "21.4.111-beta"
+moddevgradle = "2.0.79"
+neoforge = "21.5.0-beta"
 
 fabric_api = "0.119.2+1.21.5"
 wrench_wrapper = "0.6.2"
 
-modmenu = "14.0.0-beta.2"
+modmenu = "14.0.0-rc.1"
 accessories = "1.2.18-beta+1.21.4"
 
 [libraries]

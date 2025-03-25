@@ -23,8 +23,6 @@ public class OkZoomerClientMod {
 		OkZoomerConfigManager.init();
 		NorgeSoundEvents.SOUND_EVENTS.register(bus);
 
-		ApplyLoadOnceOptionsEvent.readyClient(Minecraft.getInstance());
-
 		mod.registerExtensionPoint(IConfigScreenFactory.class, ((mod2, screen) -> new OkZoomerConfigScreen(screen)));
 
 		NorgeZoomUtils.defineSafeSmartOcclusion();
