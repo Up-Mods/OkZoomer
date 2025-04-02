@@ -39,6 +39,7 @@ public class ConfigEnums {
 
 	public enum SeeDistantEntitiesModes implements ConfigEnum {
 		OFF,
+		SAFE,
 		ON
 	}
 

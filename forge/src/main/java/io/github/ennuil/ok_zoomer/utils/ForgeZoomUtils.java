@@ -1,7 +1,6 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.ModList;
 
 import java.util.function.Predicate;
 
@@ -17,9 +16,8 @@ public class ForgeZoomUtils {
 	}
 
 	public static void defineSafeSmartOcclusion() {
-		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
-		if (ModList.get().isLoaded("sodium")) {
-			ZoomUtils.enableSafeSmartOcclusion();
-		}
+		// Embeddium doesn't have the improvements that Sodium 0.5.13 have
+		// It is not safe to check for Sodium here, we need to check for a better mod that does not exist
+		// So! Do not do the check!
 	}
 }

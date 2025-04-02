@@ -4,8 +4,10 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,6 +27,22 @@ public abstract class GameRendererMixin {
 			if (Zoom.getZoomOverlay() != null) {
 				Zoom.getZoomOverlay().tick(zooming, divisor, Zoom.getTransitionMode());
 			}
+		}
+	}
+
+	@ModifyExpressionValue(
+		method = "renderLevel",
+		at = @At(
+			value = "INVOKE",
+			target = "Ljava/lang/Integer;intValue()I",
+			remap = false
+		)
+	)
+	private int modifyCulling(int original) {
+		if (!Zoom.isZooming() || !ZoomUtils.hasSmartOcclusion()) {
+			return original;
+		} else {
+			return Mth.positiveCeilDiv(original, Math.max(1, Mth.floor(Zoom.getZoomDivisor())));
 		}
 	}
 

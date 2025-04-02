@@ -177,8 +177,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Improves performance by making the game render less of the world while zoomed in. This feature depends on the Sodium mod in order to work.")
+		public final TrackedValue<Boolean> smartOcclusion = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar. This may have a performance impact during zoom.")
-		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.OFF);
+		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
 
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the current zoom divisor is forgotten once zooming is finished.")
