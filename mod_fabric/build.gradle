@@ -34,7 +34,7 @@ dependencies {
 }
 
 loom {
-	def atFile = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+	def atFile = project(':mod_common').file("src/main/resources/${mod_id}.accesswidener")
 	if (atFile.exists()) {
 		accessWidenerPath.set(atFile)
 	}

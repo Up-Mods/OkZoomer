@@ -3,13 +3,13 @@ plugins {
 }
 
 dependencies {
-	compileOnly(project(":common")) {
+	compileOnly(project(":mod_common")) {
 		transitive = false
 	}
 }
 
 sourceSets.main {
-	def common = project(":common").sourceSets.main
+	def common = project(":mod_common").sourceSets.main
 	java.srcDirs(common.java)
 	resources.srcDirs(common.resources)
 }

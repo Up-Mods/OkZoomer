@@ -2,12 +2,12 @@
 minecraft = "1.20.1"
 parchment = "2023.09.03"
 
-fabric_loom = "1.9.2"
-fabric_loader = "0.16.9"
-moddevgradle = "2.0.73"
-forge = "1.20.1-47.3.22"
+fabric_loom = "1.10.5"
+fabric_loader = "0.16.10"
+moddevgradle = "2.0.80"
+forge = "1.20.1-47.4.0"
 
-fabric_api = "0.92.2+1.20.1"
+fabric_api = "0.92.5+1.20.1"
 wrench_wrapper = "0.6.2"
 
 modmenu = "7.2.2"

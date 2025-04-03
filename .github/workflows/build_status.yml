@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout
@@ -21,22 +21,22 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --rerun-tasks
       - name: Detonate JARs (Fabric)
-        run: python ./ci/hissboom.py "./fabric/build/libs/*.jar"
+        run: python ./ci/hissboom.py "./mod_fabric/build/libs/*.jar"
       - name: Detonate JARs (Forge)
-        run: python ./ci/hissboom.py "./forge/build/libs/*.jar"
+        run: python ./ci/hissboom.py "./mod_forge/build/libs/*.jar"
       - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
           path: |
-            fabric/build/libs/*.jar
-            !fabric/build/libs/*-dev.jar
+            mod_fabric/build/libs/*.jar
+            !mod_fabric/build/libs/*-dev.jar
       - name: Upload build artifacts (Forge)
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}-Forge-${{ github.sha }}
           path: |
-            forge/build/libs/*.jar
-            !forge/build/libs/*-dev.jar
+            mod_forge/build/libs/*.jar
+            !mod_forge/build/libs/*-dev.jar
