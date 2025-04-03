@@ -15,15 +15,15 @@ group = 'io.github.ennuil.ok_zoomer'
 
 java {
 	withSourcesJar()
-	if(JavaVersion.current() < JavaVersion.toVersion(javaVersion)) {
+	if (JavaVersion.current() < JavaVersion.toVersion(javaVersion)) {
 		toolchain {
 			languageVersion.set(JavaLanguageVersion.of(javaVersion))
 		}
 	}
-	else {
-		sourceCompatibility = JavaVersion.toVersion(javaVersion)
-		targetCompatibility = JavaVersion.toVersion(javaVersion)
-	}
+}
+
+compileJava {
+	options.release = javaVersion
 }
 
 repositories {
