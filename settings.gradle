@@ -19,4 +19,4 @@ plugins {
 
 rootProject.name = 'OkZoomer'
 
-include('common', 'fabric', 'norge')
+include('mod_common', 'mod_fabric', 'mod_norge')

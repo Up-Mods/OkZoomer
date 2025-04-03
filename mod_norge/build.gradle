@@ -1,0 +1,56 @@
+plugins {
+	id 'mod_conventions_loader'
+	alias libs.plugins.moddevgradle
+}
+
+base.archivesName = 'ok_zoomer-neo'
+
+repositories {
+	maven { url = 'https://maven.neoforged.net/releases' }
+	maven { url = 'https://maven.su5ed.dev/releases' }
+}
+
+processResources {
+	it.filteringCharset 'UTF-8'
+
+	def expandProps = [
+		'version'                       : project.version,
+		'curseforge_id'					: project.curseforge_id,
+		'modrinth_id'					: project.modrinth_id,
+	]
+	it.inputs.properties(expandProps)
+
+	it.filesMatching('META-INF/neoforge.mods.toml') {
+		it.expand expandProps
+	}
+}
+
+neoForge {
+	version = libs.versions.neoforge.get()
+
+	parchment {
+		minecraftVersion = libs.versions.minecraft.get()
+		mappingsVersion = libs.versions.parchment.get()
+	}
+
+	runs {
+		client {
+			client()
+		}
+	}
+
+	mods {
+		"${mod_id}" {
+			sourceSet(sourceSets.main)
+		}
+	}
+}
+
+dependencies {
+	implementation libs.wrench.wrapper
+	jarJar libs.wrench.wrapper
+
+	// Accessories refuses to put some versions on their Maven...
+	compileOnly libs.accessories.norge
+	//runtimeOnly libs.accessories.norge
+}

@@ -32,9 +32,9 @@ jobs:
           MAVEN_UPLOAD_PASSWORD: ${{ secrets.MAVEN_UPLOAD_PASSWORD }}
         run: ./gradlew publish
       - name: Detonate JARs (Fabric)
-        run: python ./ci/hissboom.py "fabric/build/libs/*.jar"
+        run: python ./ci/hissboom.py "mod_fabric/build/libs/*.jar"
       - name: Detonate JARs (Neo)
-        run: python ./ci/hissboom.py "norge/build/libs/*.jar"
+        run: python ./ci/hissboom.py "mod_norge/build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -42,10 +42,10 @@ jobs:
           github-token: ${{ github.token }}
           version: ${{ env.TAG }}
           files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            fabric/build/libs/*-@(sources|javadoc).jar
-            norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            norge/build/libs/*-@(sources|javadoc).jar
+            mod_fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            mod_fabric/build/libs/*-@(sources|javadoc).jar
+            mod_norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            mod_norge/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Fabric)
         id: publish_fabric
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -54,8 +54,8 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ env.TAG }}+fabric
           files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            fabric/build/libs/*-@(sources|javadoc).jar
+            mod_fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            mod_fabric/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Neo)
         id: publish_neo
         uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -64,8 +64,8 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ env.TAG }}+neo
           files: |
-            norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            norge/build/libs/*-@(sources|javadoc).jar
+            mod_norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
+            mod_norge/build/libs/*-@(sources|javadoc).jar
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:

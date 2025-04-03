@@ -2,17 +2,18 @@
 minecraft = "1.21.1"
 parchment = "2024.11.17"
 
-fabric_loom = "1.9.2"
-fabric_loader = "0.16.9"
-moddevgradle = "2.0.72"
-neoforge = "21.1.93"
+fabric_loom = "1.10.4"
+fabric_loader = "0.16.10"
+moddevgradle = "2.0.78"
+neoforge = "21.1.143"
 
-fabric_api = "0.114.0+1.21.1"
-wrench_wrapper = "0.6.1"
+fabric_api = "0.115.4+1.21.1"
+wrench_wrapper = "0.6.2"
 
 modmenu = "11.0.3"
 trinkets = "3.10.0"
 cca = "6.1.1"
+accessories = "1.1.0-beta.35+1.21.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -26,6 +27,9 @@ modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
 cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
+
+accessories_fabric = { module = "io.wispforest:accessories-fabric", version.ref = "accessories" }
+accessories_norge = { module = "io.wispforest:accessories-neoforge", version.ref = "accessories" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
