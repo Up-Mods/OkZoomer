@@ -1,11 +1,13 @@
 modLoader = "javafml"
 loaderVersion = "[47.0,48.0)"
 license = "All rights reserved"
+issueTrackerURL = "https://github.com/Up-Mods/OkZoomer/issues"
 
 [[mods]]
 modId = "ok_zoomer"
 version = "${version}"
 displayName = "Ok Zoomer"
+displayURL = "https://modrinth.com/mod/aXf2OSFU"
 logoFile = "icon.png"
 authors = "Ennui Langeweile and Up"
 description = """
