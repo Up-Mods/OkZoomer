@@ -1,6 +1,7 @@
 package io.github.ennuil.ok_zoomer.utils;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.ModList;
 
 import java.util.function.Predicate;
 
@@ -16,8 +17,12 @@ public class ForgeZoomUtils {
 	}
 
 	public static void defineSafeSmartOcclusion() {
-		// Embeddium doesn't have the improvements that Sodium 0.5.13 have
-		// It is not safe to check for Sodium here, we need to check for a better mod that does not exist
-		// So! Do not do the check!
+		// We implemented the original vanilla hack (which Sodium supplants by checking for all camera changes) into Embeddium
+		// Embeddium will scream about it for reasonable reasons (imagine if the patch broke? that would be bad!)
+		// Therefore, we will scream about it too! ((Neo)Forge does not let you add an issue tracker link)
+		if (ModList.get().isLoaded("embeddium")) {
+			ZoomUtils.LOGGER.info("Mixining into Embeddium in order to implement a missing change that new Sodium updates implements. If you find any zoom issues, report it to us on our issue tracker! It should be fine though!");
+			ZoomUtils.enableSafeSmartOcclusion();
+		}
 	}
 }
