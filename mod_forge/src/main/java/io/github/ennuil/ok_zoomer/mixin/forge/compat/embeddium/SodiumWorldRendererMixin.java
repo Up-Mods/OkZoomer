@@ -34,7 +34,8 @@ public abstract class SodiumWorldRendererMixin {
 		method = "setupTerrain",
 		at = @At(
 			value = "FIELD",
-			target = "Lme/jellysquid/mods/sodium/client/render/SodiumWorldRenderer;lastCameraX:D"
+			target = "Lme/jellysquid/mods/sodium/client/render/SodiumWorldRenderer;lastCameraX:D",
+			ordinal = 1
 		)
 	)
 	private void storeLastDivisor(CallbackInfo ci, @Share("zoomDivisor") LocalIntRef zoomDivisor) {
