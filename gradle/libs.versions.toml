@@ -1,29 +1,25 @@
 [versions]
 minecraft = "1.21.5"
-parchment = "2025.02.16"
+parchment = "2025.04.19"
 
 fabric_loom = "1.10.5"
-fabric_loader = "0.16.10"
-moddevgradle = "2.0.79"
-neoforge = "21.5.0-beta"
+fabric_loader = "0.16.14"
+moddevgradle = "2.0.89"
+neoforge = "21.5.71-beta"
 
-fabric_api = "0.119.2+1.21.5"
+fabric_api = "0.124.2+1.21.5"
 wrench_wrapper = "0.6.2"
 
-modmenu = "14.0.0-rc.1"
-accessories = "1.2.18-beta+1.21.4"
+modmenu = "14.0.0-rc.2"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.4", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.5", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-
-accessories_fabric = { module = "io.wispforest:accessories-fabric", version.ref = "accessories" }
-accessories_norge = { module = "io.wispforest:accessories-neoforge", version.ref = "accessories" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
