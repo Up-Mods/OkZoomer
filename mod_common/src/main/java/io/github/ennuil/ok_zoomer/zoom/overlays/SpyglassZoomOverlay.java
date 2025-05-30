@@ -3,7 +3,7 @@ package io.github.ennuil.ok_zoomer.zoom.overlays;
 import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
@@ -45,11 +45,11 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		int y = (guiHeight - height) / 2;
 		int borderX = x + width;
 		int borderY = y + height;
-		graphics.blit(RenderType::guiTextured, textureId, x, y, 0.0F, 0.0F, width, height, width, height);
-		graphics.fill(RenderType.guiOverlay(), 0, borderY, guiWidth, guiHeight, -90, CommonColors.BLACK);
-		graphics.fill(RenderType.guiOverlay(), 0, 0, guiWidth, y, -90, CommonColors.BLACK);
-		graphics.fill(RenderType.guiOverlay(), 0, y, x, borderY, -90, CommonColors.BLACK);
-		graphics.fill(RenderType.guiOverlay(), borderX, y, guiWidth, borderY, -90, CommonColors.BLACK);
+		graphics.blit(RenderPipelines.GUI_TEXTURED, textureId, x, y, 0.0F, 0.0F, width, height, width, height);
+		graphics.fill(RenderPipelines.GUI, 0, borderY, guiWidth, guiHeight, CommonColors.BLACK);
+		graphics.fill(RenderPipelines.GUI, 0, 0, guiWidth, y, CommonColors.BLACK);
+		graphics.fill(RenderPipelines.GUI, 0, y, x, borderY, CommonColors.BLACK);
+		graphics.fill(RenderPipelines.GUI, borderX, y, guiWidth, borderY, CommonColors.BLACK);
 	}
 
 	@Override

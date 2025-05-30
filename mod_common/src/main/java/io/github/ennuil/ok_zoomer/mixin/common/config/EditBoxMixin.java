@@ -31,13 +31,13 @@ public abstract class EditBoxMixin {
 	}
 
 	@ModifyExpressionValue(
-		method = "renderWidget",
+		method = "updateTextPosition",
 		at = @At(
 			value = "FIELD",
 			target = "Lnet/minecraft/client/gui/components/EditBox;height:I"
 		)
 	)
 	private int modifyHeight2(int original) {
-		return (EditBox) (Object) this instanceof LabelledEditBox ? original - 12 : original;
+		return (EditBox) (Object) this instanceof LabelledEditBox ? original + 12 : original;
 	}
 }

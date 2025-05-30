@@ -13,7 +13,6 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -76,11 +75,11 @@ public abstract class GuiMixin {
 			float fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
 			translation = 2.0F / ((1.0F / fov) - 1.0F);
 			scale = 1.0F / fov;
-			graphics.pose().pushPose();
-			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
-			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().pushMatrix();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation));
+			graphics.pose().scale(scale, scale);
 			original.call(graphics, deltaTracker);
-			graphics.pose().popPose();
+			graphics.pose().popMatrix();
 		}
 	}
 
@@ -91,26 +90,19 @@ public abstract class GuiMixin {
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
-			// TODO - This has been recycled once, this should become a method
-			var lastPose = graphics.pose().last().pose();
-			graphics.pose().popPose();
-			graphics.pose().popPose();
-			graphics.pose().pushPose();
-			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
+			// TODO - This fix is too suspicious, test it on pre-releases
+			graphics.pose().popMatrix();
 			original.call(graphics, deltaTracker);
-			graphics.pose().pushPose();
-			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
-			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().pushMatrix();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation));
+			graphics.pose().scale(scale, scale);
 		}
 	}
 
 	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
 	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
 	@WrapOperation(
-		method = {
-			"method_55807",
-			"lambda$new$6"
-		},
+		method = "renderDebugOverlay",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
@@ -121,15 +113,17 @@ public abstract class GuiMixin {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, graphics);
 		} else {
-			var lastPose = graphics.pose().last().pose();
-			graphics.pose().popPose();
-			graphics.pose().popPose();
-			graphics.pose().pushPose();
-			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
+			graphics.pose().popMatrix();
 			original.call(instance, graphics);
-			graphics.pose().pushPose();
-			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
-			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().pushMatrix();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation));
+			graphics.pose().scale(scale, scale);
+
 		}
+	}
+
+	@WrapMethod(method = "renderCrosshair")
+	private void a(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
+		original.call(guiGraphics, deltaTracker);
 	}
 }

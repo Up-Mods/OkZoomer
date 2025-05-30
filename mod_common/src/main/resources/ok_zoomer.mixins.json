@@ -1,25 +1,23 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "io.github.ennuil.ok_zoomer.mixin.common",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"AbstractClientPlayerMixin",
-		"GameRendererMixin",
-		"GuiMixin",
-		"MouseHandlerMixin",
-		"config.EditBoxAccessor",
-		"config.EditBoxMixin",
-		"distance.BlockEntityRendererMixin",
-		"distance.IntegratedServerMixin",
-		"distance.LevelRendererMixin",
-		"fade.GlCommandEncoderMixin",
-		"fade.GlProgramMixin",
-		"key_binds.AbstractSelectionListAccessor",
-		"key_binds.KeyBindsListAccessor",
-		"key_binds.KeyEntryMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.ennuil.ok_zoomer.mixin.common",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "AbstractClientPlayerMixin",
+    "GameRendererMixin",
+    "GuiMixin",
+    "MouseHandlerMixin",
+    "config.EditBoxAccessor",
+    "config.EditBoxMixin",
+    "distance.BlockEntityRendererMixin",
+    "distance.IntegratedServerMixin",
+    "distance.LevelRendererMixin",
+    "key_binds.AbstractSelectionListAccessor",
+    "key_binds.KeyBindsListAccessor",
+    "key_binds.KeyEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
