@@ -8,6 +8,13 @@ base.archivesName = 'ok_zoomer-neo'
 repositories {
 	maven { url = 'https://maven.neoforged.net/releases' }
 	maven { url = 'https://maven.su5ed.dev/releases' }
+	maven {
+		url 'https://prmaven.neoforged.net/NeoForge/pr2297' // https://github.com/neoforged/NeoForge/pull/2297
+		content {
+			includeModule('net.neoforged', 'neoforge')
+			includeModule('net.neoforged', 'testframework')
+		}
+	}
 }
 
 processResources {

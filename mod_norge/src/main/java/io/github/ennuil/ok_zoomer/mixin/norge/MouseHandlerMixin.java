@@ -26,4 +26,6 @@ public abstract class MouseHandlerMixin {
 			k.set(Zoom.getMouseModifier().applyYModifier(k.get(), g, movementTime, zoomDivisor, transitionDivisor));
 		}
 	}
+
+	// FIXME - Norge 1.21.6's alpha broke the common MouseHandler mixin with no obvious way to fix it. Pray it gets fixed for rc1
 }

@@ -18,7 +18,6 @@ public class RegisterGameEvents {
 		ManageExtraKeysEvent.startClientTick(Minecraft.getInstance());
 	}
 
-	// Currently affected by a NeoForge bug
 	@SubscribeEvent
 	public static void onClientStarted(ClientStartedEvent event) {
 		ApplyLoadOnceOptionsEvent.readyClient(event.getClient());
