@@ -49,6 +49,8 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           version: ${{ env.TAG }}+fabric
+          game-versions: '>=1.21.6-pre1 <1.22'
+          game-version-filter: any
           files: |
             mod_fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             mod_fabric/build/libs/*-@(sources|javadoc).jar
