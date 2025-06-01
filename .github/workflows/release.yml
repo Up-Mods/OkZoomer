@@ -33,8 +33,6 @@ jobs:
         run: ./gradlew publish
       - name: Detonate JARs (Fabric)
         run: python ./ci/hissboom.py "mod_fabric/build/libs/*.jar"
-      - name: Detonate JARs (Neo)
-        run: python ./ci/hissboom.py "mod_norge/build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
         uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -44,8 +42,6 @@ jobs:
           files: |
             mod_fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             mod_fabric/build/libs/*-@(sources|javadoc).jar
-            mod_norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            mod_norge/build/libs/*-@(sources|javadoc).jar
       - name: Publish (Fabric)
         id: publish_fabric
         uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -56,16 +52,6 @@ jobs:
           files: |
             mod_fabric/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
             mod_fabric/build/libs/*-@(sources|javadoc).jar
-      - name: Publish (Neo)
-        id: publish_neo
-        uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
-        with:
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          version: ${{ env.TAG }}+neo
-          files: |
-            mod_norge/build/libs/!(*-@(dev|sources|javadoc|slim)).jar
-            mod_norge/build/libs/*-@(sources|javadoc).jar
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:

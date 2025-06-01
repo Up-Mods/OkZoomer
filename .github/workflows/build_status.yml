@@ -22,8 +22,6 @@ jobs:
         run: ./gradlew build --rerun-tasks
       - name: Detonate JARs (Fabric)
         run: python ./ci/hissboom.py "./mod_fabric/build/libs/*.jar"
-      - name: Detonate JARs (Neo)
-        run: python ./ci/hissboom.py "./mod_norge/build/libs/*.jar"
       - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
@@ -32,11 +30,3 @@ jobs:
           path: |
             mod_fabric/build/libs/*.jar
             !mod_fabric/build/libs/*-dev.jar
-      - name: Upload build artifacts (Neo)
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.event.repository.name }}-Neo-${{ github.sha }}
-          path: |
-            mod_norge/build/libs/*.jar
-            !mod_norge/build/libs/*-dev.jar
