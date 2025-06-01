@@ -7,12 +7,20 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -122,8 +130,37 @@ public abstract class GuiMixin {
 		}
 	}
 
-	@WrapMethod(method = "renderCrosshair")
-	private void a(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
-		original.call(guiGraphics, deltaTracker);
+	// The "fade the whole pipeline" approach was too good to last forever,
+	// We'll just fade the crosshair sprites one-by-one
+	@WrapOperation(
+		method = "renderCrosshair",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIII)V"
+		)
+	)
+	private void fadeCrosshair(GuiGraphics instance, RenderPipeline renderPipeline, ResourceLocation resourceLocation, int i, int j, int k, int l, Operation<Void> original) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value()) {
+			float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
+			instance.blitSprite(renderPipeline, resourceLocation, i, j, k, l, ARGB.colorFromFloat(fade, fade, fade, fade));
+		} else {
+			original.call(instance, renderPipeline, resourceLocation, i, j, k, l);
+		}
+	}
+
+	@WrapOperation(
+		method = "renderCrosshair",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIIIIIII)V"
+		)
+	)
+	private void fadeCrosshairAttack(GuiGraphics instance, RenderPipeline renderPipeline, ResourceLocation resourceLocation, int i, int j, int k, int l, int m, int n, int o, int p, Operation<Void> original) {
+		if (OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value()) {
+			float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
+			instance.blitSprite(renderPipeline, resourceLocation, i, j, k, l, m, n, o, p, ARGB.colorFromFloat(fade, fade, fade, fade));
+		} else {
+			original.call(instance, renderPipeline, resourceLocation, i, j, k, l, m, n, o, p);
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package io.github.ennuil.ok_zoomer;
 
-import io.github.ennuil.ok_zoomer.compat.AccessoriesCompat;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
 import io.github.ennuil.ok_zoomer.events.*;
 import io.github.ennuil.ok_zoomer.key_binds.ZoomKeyBinds;
@@ -40,10 +39,5 @@ public class OkZoomerClientMod implements ClientModInitializer {
 
 		FabricZoomUtils.defineSafeSmartOcclusion();
 		FabricZoomUtils.addInitialPredicates();
-
-		// Mod Compat
-		if (FabricLoader.getInstance().isModLoaded("accessories")) {
-			AccessoriesCompat.init();
-		}
 	}
 }

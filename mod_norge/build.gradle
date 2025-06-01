@@ -50,8 +50,4 @@ neoForge {
 dependencies {
 	implementation libs.wrench.wrapper
 	jarJar libs.wrench.wrapper
-
-	// Accessories refuses to put some versions on their Maven...
-	//compileOnly libs.accessories.norge
-	//runtimeOnly libs.accessories.norge
 }
