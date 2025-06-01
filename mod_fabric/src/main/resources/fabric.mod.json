@@ -25,9 +25,9 @@
 		"ok_zoomer_fabric.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.10",
+		"fabricloader": ">=0.16.14",
 		"minecraft": ">=1.21.5 <1.22",
-		"fabric-api": ">=0.118.6"
+		"fabric-api": ">=0.125.2"
 	},
 	"custom": {
 		"mc-publish": {
