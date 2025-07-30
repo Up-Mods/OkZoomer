@@ -1,13 +1,13 @@
 [versions]
-minecraft = "1.21.7"
-parchment = "2025.06.29"
+minecraft = "1.21.8"
+parchment = "2025.07.20"
 
-fabric_loom = "1.10.5"
-fabric_loader = "0.16.14"
-moddevgradle = "2.0.99"
-neoforge = "21.7.7-beta"
+fabric_loom = "1.11.4"
+fabric_loader = "0.17.0"
+moddevgradle = "2.0.105"
+neoforge = "21.8.23"
 
-fabric_api = "0.128.2+1.21.7"
+fabric_api = "0.130.0+1.21.8"
 wrench_wrapper = "0.6.2"
 
 modmenu = "15.0.0-beta.3"
@@ -15,7 +15,7 @@ modmenu = "15.0.0-beta.3"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.6", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.8", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
