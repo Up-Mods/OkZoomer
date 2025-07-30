@@ -20,18 +20,21 @@ public abstract class MouseHandlerMixin {
 	// Handles zoom scrolling
 	@Inject(
 		method = "onScroll",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"),
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"
+		),
 		cancellable = true
 	)
-	private void zoomerOnMouseScroll(CallbackInfo ci, @Local int k) {
-		if (k != 0) {
+	private void zoomScrollOnScroll(CallbackInfo ci, @Local int i) {
+		if (i != 0) {
 			if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
 				if (OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isDown()) return;
 				}
 
 				if (Zoom.isZooming()) {
-					ZoomUtils.changeZoomDivisor(k > 0);
+					ZoomUtils.changeZoomDivisor(i > 0);
 					ci.cancel();
 				}
 			}
@@ -44,13 +47,13 @@ public abstract class MouseHandlerMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;set(Lcom/mojang/blaze3d/platform/InputConstants$Key;Z)V"),
 		cancellable = true
 	)
-	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, @Local boolean bl, @Local(ordinal = 3) int i) {
+	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci, @Local(ordinal = 0) boolean flag) {
 		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
 			if (OkZoomerConfigManager.CONFIG.features.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
-			if (i == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && bl && Zoom.isZooming()) {
+			if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && flag && Zoom.isZooming()) {
 				if (OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();
@@ -62,7 +65,10 @@ public abstract class MouseHandlerMixin {
 	// Prevents the spyglass from working if zooming replaces its zoom
 	@ModifyExpressionValue(
 		method = "turnPlayer",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z")
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z"
+		)
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isScoping) {
 		if (switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
