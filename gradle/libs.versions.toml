@@ -2,9 +2,9 @@
 minecraft = "1.21.8"
 parchment = "2025.07.20"
 
-fabric_loom = "1.11.4"
-fabric_loader = "0.17.0"
-moddevgradle = "2.0.105"
+fabric_loom = "1.11.6"
+fabric_loader = "0.17.2"
+moddevgradle = "2.0.107"
 neoforge = "21.8.23"
 
 fabric_api = "0.130.0+1.21.8"
