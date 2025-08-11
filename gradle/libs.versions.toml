@@ -5,9 +5,9 @@ parchment = "2025.04.19"
 fabric_loom = "1.11.6"
 fabric_loader = "0.17.2"
 moddevgradle = "2.0.107"
-neoforge = "21.5.71-beta"
+neoforge = "21.5.91"
 
-fabric_api = "0.124.2+1.21.5"
+fabric_api = "0.128.2+1.21.5"
 wrench_wrapper = "0.6.2"
 
 modmenu = "14.0.0-rc.2"
