@@ -31,7 +31,7 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyExpressionValue(
-		method = "renderLevel",
+		method = "getProjectionMatrixForCulling",
 		at = @At(
 			value = "INVOKE",
 			target = "Ljava/lang/Integer;intValue()I",
@@ -55,7 +55,7 @@ public abstract class GameRendererMixin {
 		}
 	}
 
-	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
+	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
 	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.features.reduceViewBobbing.value()) {
 			return bob;
