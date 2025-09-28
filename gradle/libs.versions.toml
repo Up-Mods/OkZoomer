@@ -1,16 +1,16 @@
 [versions]
 minecraft = "1.21.8"
-parchment = "2025.07.20"
+parchment = "2025.09.14"
 
-fabric_loom = "1.11.6"
+fabric_loom = "1.11.8"
 fabric_loader = "0.17.2"
 moddevgradle = "2.0.107"
-neoforge = "21.8.31"
+neoforge = "21.8.47"
 
-fabric_api = "0.131.0+1.21.8"
+fabric_api = "0.133.4+1.21.8"
 wrench_wrapper = "0.6.2"
 
-modmenu = "15.0.0-beta.3"
+modmenu = "15.0.0"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
