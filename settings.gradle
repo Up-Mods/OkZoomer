@@ -15,4 +15,4 @@ plugins {
 
 rootProject.name = 'OkZoomer'
 
-include('mod_common', 'mod_fabric', 'mod_norge')
+include('mod_common', 'mod_fabric') //, 'mod_norge') // FIXME re-enable neoforge once 1.21.9 releases

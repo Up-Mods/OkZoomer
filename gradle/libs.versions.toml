@@ -1,13 +1,13 @@
 [versions]
-minecraft = "1.21.8"
-parchment = "2025.09.14"
+minecraft = "1.21.9-rc1"
+parchment = "2025.09.14" # FIXME parchment is not yet updated to 1.21.9
 
 fabric_loom = "1.11.8"
 fabric_loader = "0.17.2"
 moddevgradle = "2.0.107"
 neoforge = "21.8.47"
 
-fabric_api = "0.133.4+1.21.8"
+fabric_api = "0.133.13+1.21.9"
 wrench_wrapper = "0.6.2"
 
 modmenu = "15.0.0"
