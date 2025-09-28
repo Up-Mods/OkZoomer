@@ -128,7 +128,7 @@
 	"toast.ok_zoomer.unbind_conflicting_key.success": "Unbound the conflicting key",
 	"toast.ok_zoomer.unbind_conflicting_key.no_conflict": "No conflicting keys found",
 	"tag.item.ok_zoomer.zoom_dependencies": "Zoom Dependencies",
-	"key.ok_zoomer.category": "Zoom",
+	"key.category.ok_zoomer.zoom": "Zoom",
 	"key.ok_zoomer.decrease_zoom": "Decrease Zoom",
 	"key.ok_zoomer.increase_zoom": "Increase Zoom",
 	"key.ok_zoomer.reset_zoom": "Reset Zoom",

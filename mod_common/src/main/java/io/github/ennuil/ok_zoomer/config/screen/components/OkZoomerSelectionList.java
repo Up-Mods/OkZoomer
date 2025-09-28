@@ -17,6 +17,7 @@ import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -189,21 +190,21 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
 		if (!this.scrolling) {
 			int pos = (this.width - this.getX()) / 2 + 156;
-			if (mouseX > pos && mouseX < pos + 6) {
+			if (event.x() > pos && event.x() < pos + 6) {
 				this.scrolling = true;
 				return true;
 			}
 		}
 
-		if (!this.isMouseOver(mouseX, mouseY)) {
-			return false;
+		if (!this.isMouseOver(event.x(), event.y())) {
+			return super.mouseClicked(event, isDoubleClick);
 		} else {
-			var entry = this.getEntryAtPosition(mouseX, mouseY);
+			var entry = this.getEntryAtPosition(event.x(), event.y());
 			if (entry != null) {
-				if (entry.mouseClicked(mouseX, mouseY, button)) {
+				if (entry.mouseClicked(event, isDoubleClick)) {
 					var subEntry = this.getFocused();
 					if (subEntry != entry && subEntry != null) {
 						subEntry.setFocused(null);
@@ -226,13 +227,13 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
+	public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
+		if (super.mouseDragged(event, deltaX, deltaY)) {
 			return true;
-		} else if (button == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
-			if (mouseY < this.getY()) {
+		} else if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
+			if (event.y() < this.getY()) {
 				this.setScrollAmount(0);
-			} else if (mouseY > this.getY() + this.height) {
+			} else if (event.y() > this.getY() + this.height) {
 				this.setScrollAmount(this.contentHeight);
 			} else {
 				int size = Mth.clamp((this.height * this.height) / this.contentHeight, 0, this.height - 6);
@@ -247,12 +248,12 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		if (this.scrolling) {
 			this.scrolling = false;
 			return true;
 		} else {
-			return super.mouseReleased(mouseX, mouseY, button);
+			return super.mouseReleased(event);
 		}
 	}
 
@@ -260,10 +261,12 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 	public void setFocused(@Nullable GuiEventListener child) {
 		super.setFocused(child);
 
-		int i = this.children.indexOf(child);
-		if (i >= 0) {
-			if (this.minecraft.getLastInputType().isKeyboard()) {
-				this.ensureVisible(i);
+		if(child instanceof OkZoomerSelectionList.Entry entry) {
+			int i = this.children.indexOf(entry);
+			if (i >= 0) {
+				if (this.minecraft.getLastInputType().isKeyboard()) {
+					this.ensureVisible(i);
+				}
 			}
 		}
 	}
@@ -393,29 +396,28 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 	public ComponentPath nextFocusPath(FocusNavigationEvent event) {
 		if (this.children.isEmpty()) {
 			return null;
-		} else if (!(event instanceof FocusNavigationEvent.ArrowNavigation arrowNav)) {
+		} else if (!(event instanceof FocusNavigationEvent.ArrowNavigation(ScreenDirection direction))) {
 			return super.nextFocusPath(event);
 		} else {
-			var entry = (Entry) this.getFocused();
+			var entry = this.getFocused();
 
-			if (arrowNav.direction().getAxis() == ScreenAxis.HORIZONTAL && entry != null) {
+			if (direction.getAxis() == ScreenAxis.HORIZONTAL && entry != null) {
 				return ComponentPath.path(this, entry.nextFocusPath(event));
 			} else {
 				int i = -1;
-				var navDir = arrowNav.direction();
 				if (entry != null) {
 					i = entry.children().indexOf(entry.getFocused());
 				}
 
 				if (i == -1) {
-					switch (navDir) {
+					switch (direction) {
 						case LEFT -> {
 							i = Integer.MAX_VALUE;
-							navDir = ScreenDirection.DOWN;
+							direction = ScreenDirection.DOWN;
 						}
 						case RIGHT -> {
 							i = 0;
-							navDir = ScreenDirection.DOWN;
+							direction = ScreenDirection.DOWN;
 						}
 						default -> i = 0;
 					}
@@ -425,12 +427,12 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 				ComponentPath path = null;
 
 				while (path == null) {
-					entry2 = this.nextEntry(navDir, entryx -> !entryx.children().isEmpty(), entry2);
+					entry2 = this.nextEntry(direction, entryx -> !entryx.children().isEmpty(), entry2);
 					if (entry2 == null) {
 						return null;
 					}
 
-					path = entry2.getFocusPathAtIndex(arrowNav, i);
+					path = entry2.getFocusPathAtIndex(event, i);
 				}
 
 				return ComponentPath.path(this, path);
@@ -512,8 +514,8 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 		@Nullable
 		@Override
 		public ComponentPath nextFocusPath(FocusNavigationEvent event) {
-			if (event instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation) {
-				int i = switch (arrowNavigation.direction()) {
+			if (event instanceof FocusNavigationEvent.ArrowNavigation(ScreenDirection direction)) {
+				int i = switch (direction) {
 					case LEFT -> -1;
 					case RIGHT -> 1;
 					case UP, DOWN -> 0;
@@ -539,18 +541,18 @@ public class OkZoomerSelectionList extends AbstractContainerWidget {
 			var list = this.narratables();
 			var narrationData = Screen.findNarratableWidget(list, this.lastNarratable);
 			if (narrationData != null) {
-				if (narrationData.priority.isTerminal()) {
-					this.lastNarratable = narrationData.entry;
+				if (narrationData.priority().isTerminal()) {
+					this.lastNarratable = narrationData.entry();
 				}
 
 				if (!list.isEmpty()) {
-					narrationElementOutput.add(NarratedElementType.POSITION, Component.translatable("narrator.position.object_list", narrationData.index + 1, list.size()));
-					if (narrationData.priority == NarratableEntry.NarrationPriority.FOCUSED) {
+					narrationElementOutput.add(NarratedElementType.POSITION, Component.translatable("narrator.position.object_list", narrationData.index() + 1, list.size()));
+					if (narrationData.priority() == NarratableEntry.NarrationPriority.FOCUSED) {
 						narrationElementOutput.add(NarratedElementType.USAGE, Component.translatable("narration.component_list.usage"));
 					}
 				}
 
-				narrationData.entry.updateNarration(narrationElementOutput.nest());
+				narrationData.entry().updateNarration(narrationElementOutput.nest());
 			}
 		}
 

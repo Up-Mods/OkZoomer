@@ -85,7 +85,7 @@
 	"toast.ok_zoomer.unbind_conflicting_key.success": "已解除衝突按鍵綁定",
 	"toast.ok_zoomer.unbind_conflicting_key.no_conflict": "找不到衝突按鍵",
 	"tag.item.ok_zoomer.zoom_dependencies": "縮放依賴",
-	"key.ok_zoomer.category": "縮放",
+	"key.category.ok_zoomer.zoom": "縮放",
 	"key.ok_zoomer.decrease_zoom": "縮小",
 	"key.ok_zoomer.increase_zoom": "放大",
 	"key.ok_zoomer.reset_zoom": "重設縮放",

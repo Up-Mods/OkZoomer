@@ -2,6 +2,7 @@ package io.github.ennuil.ok_zoomer.key_binds;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
+import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
@@ -11,7 +12,7 @@ public class ZoomKeyBinds {
 	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.features.extraKeyBinds.getRealValue();
 
 	// The "Zoom" category
-	public static final String ZOOM_CATEGORY = "key.ok_zoomer.category";
+	public static final KeyMapping.Category ZOOM_CATEGORY = KeyMapping.Category.register(ModUtils.id("zoom"));
 
 	// The zoom key bind, which will be registered
 	public static final KeyMapping ZOOM_KEY = new KeyMapping("key.ok_zoomer.zoom", GLFW.GLFW_KEY_C, ZOOM_CATEGORY);

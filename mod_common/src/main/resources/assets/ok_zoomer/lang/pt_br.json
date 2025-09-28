@@ -128,7 +128,7 @@
 	"toast.ok_zoomer.unbind_conflicting_key.success": "Atalho conflitante corrigido",
 	"toast.ok_zoomer.unbind_conflicting_key.no_conflict": "Atalho conflitante não foi encontrado",
 	"tag.item.ok_zoomer.zoom_dependencies": "Dependências do zoom",
-	"key.ok_zoomer.category": "Zoom",
+	"key.category.ok_zoomer.zoom": "Zoom",
 	"key.ok_zoomer.decrease_zoom": "Diminuir zoom",
 	"key.ok_zoomer.increase_zoom": "Aumentar zoom",
 	"key.ok_zoomer.reset_zoom": "Reiniciar zoom",

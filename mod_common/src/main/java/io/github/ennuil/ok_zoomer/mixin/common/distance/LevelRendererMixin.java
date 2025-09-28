@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
 	@ModifyArg(
-		method = "collectVisibleEntities",
+		method = "extractVisibleEntities",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/entity/Entity;setViewScale(D)V"

@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import io.github.ennuil.ok_zoomer.config.OkZoomerConfigManager;
@@ -111,7 +110,7 @@ public abstract class GuiMixin {
 		),
 		allow = 1
 	)
-	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original, @Local(argsOnly = true) DeltaTracker deltaTracker) {
+	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, graphics);
 		} else {
@@ -120,7 +119,6 @@ public abstract class GuiMixin {
 			graphics.pose().pushMatrix();
 			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation));
 			graphics.pose().scale(scale, scale);
-
 		}
 	}
 

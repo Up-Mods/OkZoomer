@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyBindsList.KeyEntry.class)
-public abstract class KeyEntryMixin {
+public abstract class KeyEntryMixin extends KeyBindsList.Entry {
 	@Unique
 	private static final WidgetSprites SETTINGS_BUTTON_SPRITE = new WidgetSprites(
 		ModUtils.id("key_binds/settings"),
@@ -57,10 +57,10 @@ public abstract class KeyEntryMixin {
 		}
 	}
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-	private void renderSettingsButton(GuiGraphics graphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick, CallbackInfo ci) {
+	@Inject(method = "renderContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
+	private void renderSettingsButton(GuiGraphics graphics, int mouseX, int mouseY, boolean bl, float partialTick, CallbackInfo ci) {
 		if (this.settingsButton != null) {
-			this.settingsButton.setPosition(this.changeButton.getX() - 25, top - 2);
+			this.settingsButton.setPosition(this.changeButton.getX() - 25, this.getContentY() - 2);
 			this.settingsButton.render(graphics, mouseX, mouseY, partialTick);
 		}
 	}
