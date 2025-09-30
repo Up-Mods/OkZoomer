@@ -1,6 +1,7 @@
 [versions]
 minecraft = "1.21.9"
-parchment = "2025.09.14" # FIXME parchment is not yet updated to 1.21.9
+parchment_minecraft = "1.21.8"
+parchment_mappings = "2025.09.14" # FIXME parchment is not yet updated to 1.21.9
 
 fabric_loom = "1.11.8"
 fabric_loader = "0.17.2"
@@ -15,7 +16,6 @@ modmenu = "15.0.0"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21.8", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
 wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
