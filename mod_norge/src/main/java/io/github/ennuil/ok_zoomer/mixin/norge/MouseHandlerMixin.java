@@ -15,15 +15,15 @@ public abstract class MouseHandlerMixin {
 		method = "turnPlayer",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/Options;invertYMouse()Lnet/minecraft/client/OptionInstance;"
+			target = "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"
 		)
 	)
-	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 4) LocalDoubleRef j, @Local(ordinal = 5) LocalDoubleRef k, @Local(ordinal = 3) double g) {
+	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 4) LocalDoubleRef d0, @Local(ordinal = 5) LocalDoubleRef d1, @Local(ordinal = 3) double d4) {
 		if (Zoom.isModifierActive()) {
 			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
 			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			j.set(Zoom.getMouseModifier().applyXModifier(j.get(), g, movementTime, zoomDivisor, transitionDivisor));
-			k.set(Zoom.getMouseModifier().applyYModifier(k.get(), g, movementTime, zoomDivisor, transitionDivisor));
+			d0.set(Zoom.getMouseModifier().applyXModifier(d0.get(), d4, movementTime, zoomDivisor, transitionDivisor));
+			d1.set(Zoom.getMouseModifier().applyYModifier(d1.get(), d4, movementTime, zoomDivisor, transitionDivisor));
 		}
 	}
 }
