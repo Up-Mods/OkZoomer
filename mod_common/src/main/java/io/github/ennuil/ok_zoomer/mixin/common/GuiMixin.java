@@ -98,28 +98,6 @@ public abstract class GuiMixin {
 		}
 	}
 
-//	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
-//	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
-//	@WrapOperation(
-//		method = "renderDebugOverlay",
-//		at = @At(
-//			value = "INVOKE",
-//			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
-//		),
-//		allow = 1
-//	)
-//	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original) {
-//		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
-//			original.call(instance, graphics);
-//		} else {
-//			graphics.pose().popMatrix();
-//			original.call(instance, graphics);
-//			graphics.pose().pushMatrix();
-//			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation));
-//			graphics.pose().scale(scale, scale);
-//		}
-//	}
-
 	// The "fade the whole pipeline" approach was too good to last forever,
 	// We'll just fade on GuiGraphics level
 	@WrapMethod(method = "renderCrosshair")
