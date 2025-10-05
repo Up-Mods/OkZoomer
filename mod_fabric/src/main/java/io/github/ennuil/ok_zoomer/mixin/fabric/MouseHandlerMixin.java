@@ -1,9 +1,11 @@
 package io.github.ennuil.ok_zoomer.mixin.fabric;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.MouseHandler;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,20 +29,24 @@ public abstract class MouseHandlerMixin {
 		CURSOR_SENSITIVITY.set(f);
 	}
 
-	@Inject(
+	@WrapOperation(
 		method = "turnPlayer",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/player/LocalPlayer;turn(DD)V"
 		)
 	)
-	private void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef i, @Local(ordinal = 2) LocalDoubleRef j) {
+	private void applyZoomChanges(LocalPlayer instance, double x, double y, Operation<Void> original, double movementTime){
 		if (Zoom.isModifierActive()) {
 			double f = CURSOR_SENSITIVITY.get();
 			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
 			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, zoomDivisor, transitionDivisor));
-			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, zoomDivisor, transitionDivisor));
+			original.call(instance,
+				Zoom.getMouseModifier().applyXModifier(x, f, movementTime, zoomDivisor, transitionDivisor),
+				Zoom.getMouseModifier().applyYModifier(y, f, movementTime, zoomDivisor, transitionDivisor)
+			);
+		} else {
+			original.call(instance, x, y);
 		}
 		CURSOR_SENSITIVITY.remove();
 	}
