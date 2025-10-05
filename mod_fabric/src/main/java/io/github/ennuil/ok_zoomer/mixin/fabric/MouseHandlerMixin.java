@@ -45,7 +45,7 @@ public abstract class MouseHandlerMixin {
 				Zoom.getMouseModifier().applyXModifier(x, f, movementTime, zoomDivisor, transitionDivisor),
 				Zoom.getMouseModifier().applyYModifier(y, f, movementTime, zoomDivisor, transitionDivisor)
 			);
-		}else{
+		} else {
 			original.call(instance, x, y);
 		}
 		CURSOR_SENSITIVITY.remove();

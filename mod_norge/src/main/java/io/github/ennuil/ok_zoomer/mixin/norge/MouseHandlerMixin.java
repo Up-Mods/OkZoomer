@@ -27,7 +27,7 @@ public abstract class MouseHandlerMixin {
 				Zoom.getMouseModifier().applyXModifier(x, cursorSpeed, movementTime, zoomDivisor, transitionDivisor),
 				Zoom.getMouseModifier().applyYModifier(y, cursorSpeed, movementTime, zoomDivisor, transitionDivisor)
 			);
-		}e lse{
+		} else {
 			original.call(instance, x, y);
 		}
 	}
