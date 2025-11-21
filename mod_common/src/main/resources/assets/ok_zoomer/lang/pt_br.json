@@ -38,6 +38,8 @@
 	"config.ok_zoomer.features.persistent_interface.tooltip": "Retém a interface durante o zoom.",
 	"config.ok_zoomer.features.extra_key_binds": "Atalhos extra",
 	"config.ok_zoomer.features.extra_key_binds.tooltip": "Adiciona atalhos de manipulação do zoom junto com o atalho do zoom. Uma reinicialização do jogo será necessária para aplicar as mudanças.",
+	"config.ok_zoomer.features.zoom_hands": "Zoom nas mãos",
+	"config.ok_zoomer.features.zoom_hands.tooltip": "Aplica zoom nas mãos durante o zoom.",
 	"config.ok_zoomer.features.zoom_overlay": "Sobreposição de zoom",
 	"config.ok_zoomer.features.zoom_overlay.off": "Não",
 	"config.ok_zoomer.features.zoom_overlay.off.tooltip": "Desativa a sobreposição de zoom.",

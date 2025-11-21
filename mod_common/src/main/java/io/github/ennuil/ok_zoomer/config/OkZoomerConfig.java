@@ -78,6 +78,10 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> extraKeyBinds = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("Zooms the hand when zooming.")
+		public final TrackedValue<Boolean> zoomHands = this.value(true);
+
+		@WidgetSize(Size.HALF)
 		@Comment("""
 			"OFF": Disables the zoom overlay.
 			"VIGNETTE": Uses a vignette as the zoom overlay. The vignette texture can be found at assets/ok_zoomer/textures/misc/zoom_overlay.png

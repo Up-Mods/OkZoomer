@@ -38,6 +38,8 @@
 	"config.ok_zoomer.features.persistent_interface.tooltip": "Retains the interface when zooming.",
 	"config.ok_zoomer.features.extra_key_binds": "Extra Key Binds",
 	"config.ok_zoomer.features.extra_key_binds.tooltip": "Adds zoom manipulation keys along with the zoom key. A game restart will be required in order to apply the changes.",
+	"config.ok_zoomer.features.zoom_hands": "Zoom Hands",
+	"config.ok_zoomer.features.zoom_hands.tooltip": "Zooms the hand when zooming.",
 	"config.ok_zoomer.features.zoom_overlay": "Zoom Overlay",
 	"config.ok_zoomer.features.zoom_overlay.off": "Off",
 	"config.ok_zoomer.features.zoom_overlay.off.tooltip": "Disables the zoom overlay.",

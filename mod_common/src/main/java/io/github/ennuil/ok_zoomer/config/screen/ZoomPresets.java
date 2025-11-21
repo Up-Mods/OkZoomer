@@ -12,6 +12,7 @@ public class ZoomPresets {
 	public static final Map<TrackedValue<?>, Object> COMPETITIVE = Map.of(
 		OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false,
 		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.features.zoomHands, false,
 		OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false
 	);
 
