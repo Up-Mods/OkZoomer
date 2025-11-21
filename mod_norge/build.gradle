@@ -44,6 +44,6 @@ neoForge {
 }
 
 dependencies {
-	implementation libs.wrench.wrapper
-	jarJar libs.wrench.wrapper
+	implementation libs.wrench.wrapper.api.neoforge
+	jarJar libs.bundles.wrench.wrapper.neoforge
 }

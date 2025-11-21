@@ -1,28 +1,32 @@
 [versions]
-minecraft = "1.21.9"
-parchment_minecraft = "1.21.8"
-parchment_mappings = "2025.09.14" # FIXME parchment is not yet updated to 1.21.9
+minecraft = "1.21.10"
+parchment_minecraft = "1.21.10"
+parchment_mappings = "2025.10.12"
 
-fabric_loom = "1.11.8"
-fabric_loader = "0.17.2"
-moddevgradle = "2.0.110"
-neoforge = "21.9.0-beta"
+fabric_loom = "1.13.3"
+fabric_loader = "0.18.1"
+moddevgradle = "2.0.118"
+neoforge = "21.10.52-beta"
 
-fabric_api = "0.133.14+1.21.9"
-wrench_wrapper = "0.6.2"
+fabric_api = "0.138.3+1.21.10"
+wrench_wrapper = "0.7.2"
 
-modmenu = "15.0.0"
+modmenu = "16.0.0-rc.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
-wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_fabric = { module = "page.langeweile.wrench_wrapper:api_fabric", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_neoforge = { module = "page.langeweile.wrench_wrapper:api_neoforge", version.ref = "wrench_wrapper" }
+wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:impl", version.ref = "wrench_wrapper" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
+wrench_wrapper_fabric = ["wrench_wrapper_api_fabric", "wrench_wrapper_impl"]
+wrench_wrapper_neoforge = ["wrench_wrapper_api_neoforge", "wrench_wrapper_impl"]
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }

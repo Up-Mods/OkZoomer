@@ -2,7 +2,6 @@ package io.github.ennuil.ok_zoomer.config;
 
 import io.github.ennuil.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import io.github.ennuil.ok_zoomer.utils.ModUtils;
-import io.github.ennuil.ok_zoomer.wrench_wrapper.WrenchWrapper;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import io.github.ennuil.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
 import io.github.ennuil.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
@@ -14,6 +13,7 @@ import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import net.minecraft.resources.ResourceLocation;
+import page.langeweile.wrench_wrapper.api.WrenchWrapper;
 
 public class OkZoomerConfigManager {
 	public static final OkZoomerConfig CONFIG = WrenchWrapper.create(ModUtils.MOD_NAMESPACE, "config", OkZoomerConfig.class);
