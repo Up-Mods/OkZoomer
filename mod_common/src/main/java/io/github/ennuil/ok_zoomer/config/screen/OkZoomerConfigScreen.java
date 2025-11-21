@@ -53,7 +53,7 @@ public class OkZoomerConfigScreen extends Screen {
 	protected void init() {
 		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
 		this.configTextUtils = new ConfigTextUtils(config);
-		this.selectionList = new OkZoomerSelectionList(this.minecraft, this.width, this.height - 64, 32);
+		this.selectionList = new OkZoomerSelectionList(this.minecraft, this.width, this.height - 64, 32, this);
 
 		this.selectionList.addCategory(Component.translatable("config.ok_zoomer.presets"));
 		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
@@ -189,7 +189,6 @@ public class OkZoomerConfigScreen extends Screen {
 			}
 		}
 
-		this.selectionList.finish();
 		this.addRenderableWidget(this.selectionList);
 
 		this.layout.addTitleHeader(this.title, this.font);
@@ -240,7 +239,7 @@ public class OkZoomerConfigScreen extends Screen {
 	}
 
 	private void refresh() {
-		var scrollAmount = this.selectionList.getScrollAmount();
+		var scrollAmount = this.selectionList.scrollAmount();
 		this.rebuildWidgets();
 		this.selectionList.setScrollAmount(scrollAmount);
 	}

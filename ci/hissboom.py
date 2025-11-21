@@ -1,4 +1,4 @@
-# Copyright © 2024 Ennui Langeweile, All rights reserved.
+# Copyright © 2024-2025 Ennui Langeweile, All rights reserved.
 #
 # ..It ain't rocket science though, expect this to be open-sourced somewhere else
 
@@ -23,7 +23,7 @@ def hissboomify_zip(origin: IO[bytes], target: IO[bytes], is_jij: bool):
     zip.close()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("path", help="The path of the files you want to detonate")
+parser.add_argument("path", help="The path of the files to be detonated")
 args = parser.parse_args()
 
 for path in glob.glob(args.path):
