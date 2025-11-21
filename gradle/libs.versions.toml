@@ -9,7 +9,7 @@ moddevgradle = "2.0.118"
 neoforge = "21.10.52-beta"
 
 fabric_api = "0.138.3+1.21.10"
-wrench_wrapper = "0.7.2"
+wrench_wrapper = "0.8.0"
 
 modmenu = "16.0.0-rc.1"
 
