@@ -27,7 +27,6 @@ compileJava {
 }
 
 repositories {
-	mavenCentral()
 	exclusiveContent {
 		forRepository {
 			maven {
@@ -42,16 +41,26 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				name = "Modrinth"
-				url = "https://api.modrinth.com/maven"
+				name = "Up's Mods"
+				url = "https://maven.uuid.gg/releases"
 			}
 		}
 		filter {
-			includeGroup("maven.modrinth")
+			includeGroup("page.langeweile.wrench_wrapper")
 		}
 	}
-	maven { url = 'https://maven.uuid.gg/releases' } // Up's Mods
-	maven { url = 'https://maven.quiltmc.org/repository/release' }
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Quilt"
+				url = "https://maven.quiltmc.org/repository/release"
+			}
+		}
+		filter {
+			includeGroupAndSubgroups("org.quiltmc")
+		}
+	}
+	mavenCentral()
 }
 
 jar {
