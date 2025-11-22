@@ -1,21 +1,18 @@
 package io.github.ennuil.ok_zoomer.mixin.fabric;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import io.github.ennuil.ok_zoomer.zoom.Zoom;
 import net.minecraft.client.MouseHandler;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin {
-	@Unique
-	private static final ThreadLocal<Double> CURSOR_SENSITIVITY = new ThreadLocal<>();
-
 	@Inject(
 		method = "turnPlayer",
 		at = @At(
@@ -24,8 +21,8 @@ public abstract class MouseHandlerMixin {
 			opcode = Opcodes.GETFIELD
 		)
 	)
-	private void captureMouseSensitivity(double movementTime, CallbackInfo ci, @Local(ordinal = 3) double f) {
-		CURSOR_SENSITIVITY.set(f);
+	private void captureMouseSensitivity(double movementTime, CallbackInfo ci, @Local(ordinal = 3) double f, @Share("cursorSensitivity") LocalDoubleRef cursorSensitivity) {
+		cursorSensitivity.set(f);
 	}
 
 	@Inject(
@@ -35,15 +32,13 @@ public abstract class MouseHandlerMixin {
 			target = "Lnet/minecraft/client/tutorial/Tutorial;onMouse(DD)V"
 		)
 	)
-	private void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef i, @Local(ordinal = 2) LocalDoubleRef j) {
+	private void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef i, @Local(ordinal = 2) LocalDoubleRef j, @Share("cursorSensitivity") LocalDoubleRef cursorSensitivity) {
 		if (Zoom.isModifierActive()) {
-			double f = CURSOR_SENSITIVITY.get();
+			double f = cursorSensitivity.get();
 			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
 			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
 			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, zoomDivisor, transitionDivisor));
 			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, zoomDivisor, transitionDivisor));
 		}
-
-		CURSOR_SENSITIVITY.remove();
 	}
 }
