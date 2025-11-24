@@ -25,7 +25,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Provides a selection of unusual options.")
 	public final TweaksConfig tweaks = new TweaksConfig();
 
-	public static class FeaturesConfig extends Section {
+	public static final class FeaturesConfig extends Section {
 		@WidgetSize(Size.HALF)
 		@Comment("""
 			"OFF": Disables the zoom's cinematic camera.
@@ -100,7 +100,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<SpyglassModes> spyglassMode = this.value(SpyglassModes.OFF);
 	}
 
-	public static class ZoomValuesConfig extends Section  {
+	public static final class ZoomValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
 		@Comment("Determines the number to be used on the exponential curve. If unsure, keep this value at 2.")
 		@IntegerRange(min = 2, max = Integer.MAX_VALUE)
@@ -154,7 +154,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Integer> upperScrollSteps = this.value(10);
 	}
 
-	public static class TransitionValuesConfig extends Section  {
+	public static final class TransitionValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
 		@Comment("The factor used for smooth zoom transitions. A lower value means a smoother transition, a higher value means a faster one.")
 		@Alias("smooth_multiplier")
@@ -167,7 +167,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Double> linearStep = this.value(0.2);
 	}
 
-	public static class TweaksConfig extends Section  {
+	public static final class TweaksConfig extends Section  {
 		@WidgetSize(Size.FULL)
 		@Comment("If pressed, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
 		public final TrackedValue<Boolean> unbindConflictingKey = this.value(true);
