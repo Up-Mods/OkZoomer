@@ -5,7 +5,7 @@ minecraft_unobfuscated = "1.21.11-rc2_unobfuscated"
 fabric_loom = "1.14.4"
 fabric_loader = "0.18.1"
 moddevgradle = "2.0.121"
-neoforge = "21.11.0-alpha.1.21.11-pre3.20251201.145838"
+neoforge = "21.10.64"
 
 fabric_api = "0.139.4+1.21.11"
 wrench_wrapper = "0.8.1"

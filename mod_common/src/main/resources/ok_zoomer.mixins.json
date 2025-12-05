@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "io.github.ennuil.ok_zoomer.mixin.common",
+	"package": "page.langeweile.ok_zoomer.mixin.common",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"AbstractClientPlayerMixin",

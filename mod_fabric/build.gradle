@@ -27,7 +27,7 @@ dependencies {
 }
 
 loom {
-	def atFile = project(':mod_common').file("src/main/resources/${mod_id}.accesswidener")
+	def atFile = project(':mod_common').file("src/main/resources/ok_zoomer.accesswidener")
 	if (atFile.exists()) {
 		accessWidenerPath.set(atFile)
 	}
@@ -42,7 +42,7 @@ loom {
 	}
 
 	mods {
-		"${mod_id}" {
+		"ok_zoomer" {
 			sourceSet sourceSets.main
 		}
 	}

@@ -9,7 +9,7 @@ val curseforgeId = "354047"
 val modrinthId = "aXf2OSFU"
 
 version = System.getenv().get("TAG") ?: "0.0.0"
-group = "io.github.ennuil.ok_zoomer"
+group = "page.langeweile.ok_zoomer"
 
 java {
 	withSourcesJar()

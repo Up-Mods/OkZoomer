@@ -1,0 +1,59 @@
+package page.langeweile.ok_zoomer.config.screen;
+
+import org.quiltmc.config.api.values.TrackedValue;
+import page.langeweile.ok_zoomer.config.ConfigEnums;
+import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
+
+import java.util.Map;
+
+public class ZoomPresets {
+	public static final Map<TrackedValue<?>, Object> CAMERA = Map.of();
+
+	public static final Map<TrackedValue<?>, Object> COMPETITIVE = Map.of(
+		OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false,
+		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false,
+		OkZoomerConfigManager.CONFIG.features.zoomHands, false
+	);
+
+	public static final Map<TrackedValue<?>, Object> CLASSIC = Map.of(
+		OkZoomerConfigManager.CONFIG.features.cinematicCamera, ConfigEnums.CinematicCameraOptions.VANILLA,
+		OkZoomerConfigManager.CONFIG.features.reduceSensitivity, false,
+		OkZoomerConfigManager.CONFIG.features.zoomTransition, ConfigEnums.ZoomTransitionOptions.OFF,
+		OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false,
+		OkZoomerConfigManager.CONFIG.features.zoomScrolling, false,
+		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false
+		//OkZoomerConfigManager.CONFIG.features.extraKeyBinds, false - We'll maybe do that once we guarantee that is dynamic
+	);
+
+	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
+		OkZoomerConfigManager.CONFIG.features.zoomMode, ConfigEnums.ZoomModes.PERSISTENT,
+		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false,
+		OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 0
+	);
+
+	public static final Map<TrackedValue<?>, Object> SPYGLASS = Map.ofEntries(
+		Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, true),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.hideCrosshair, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, ConfigEnums.ZoomOverlays.SPYGLASS),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, ConfigEnums.SpyglassModes.BOTH),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollBase, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit, 20),
+		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
+		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds, true)
+	);
+
+	public static final Map<ConfigEnums.ConfigEnum, Map<TrackedValue<?>, Object>> PRESET_ENUM_TO_PRESET = Map.of(
+		ConfigEnums.ZoomPresets.CAMERA, CAMERA,
+		ConfigEnums.ZoomPresets.COMPETITIVE, COMPETITIVE,
+		ConfigEnums.ZoomPresets.CLASSIC, CLASSIC,
+		ConfigEnums.ZoomPresets.PERSISTENT, PERSISTENT,
+		ConfigEnums.ZoomPresets.SPYGLASS, SPYGLASS
+	);
+}
