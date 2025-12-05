@@ -9,16 +9,14 @@ import io.github.ennuil.ok_zoomer.utils.ModUtils;
 import io.github.ennuil.ok_zoomer.utils.ZoomUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import org.quiltmc.config.api.Configs;
 import org.quiltmc.config.api.Constraint;
@@ -31,7 +29,7 @@ import java.util.Set;
 
 // TODO - You may have dropped your silly data-driven config screen idea, but you still want to streamline the config screen. Do Config v2!
 public class OkZoomerConfigScreen extends Screen {
-	private final ResourceLocation configId;
+	private final Identifier configId;
 	private final Screen parent;
 	private ConfigTextUtils configTextUtils;
 	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
@@ -56,10 +54,12 @@ public class OkZoomerConfigScreen extends Screen {
 		this.selectionList = new OkZoomerSelectionList(this.minecraft, this.width, this.height - 64, 32, this);
 
 		this.selectionList.addCategory(Component.translatable("config.ok_zoomer.presets"));
-		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
+		var presetButton = CycleButton.builder(
+			value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))),
+				ConfigEnums.ZoomPresets.CAMERA
+			)
 			.withValues(ConfigEnums.ZoomPresets.values())
 			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
-			.withInitialValue(ConfigEnums.ZoomPresets.CAMERA)
 			.create(0, 0, 150, 20,
 				Component.translatable("config.ok_zoomer.presets.preset"));
 		var resetButton = Button.builder(
@@ -169,10 +169,12 @@ public class OkZoomerConfigScreen extends Screen {
 							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
-							var button = CycleButton.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, value))
+							var button = CycleButton.builder(
+								value -> this.configTextUtils.getEnumOptionText(trackedValue, value),
+									(ConfigEnums.ConfigEnum) this.newValues.get(trackie)
+								)
 								.withValues((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
 								.withTooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, value)))
-								.withInitialValue((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
 								.create(
 									0, 0, 150, 20,
 									this.configTextUtils.getOptionText(trackedValue),

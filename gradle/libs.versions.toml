@@ -1,20 +1,20 @@
 [versions]
-minecraft = "1.21.10"
-parchment_minecraft = "1.21.10"
-parchment_mappings = "2025.10.12"
+minecraft = "1.21.11-rc2"
+minecraft_unobfuscated = "1.21.11-rc2_unobfuscated"
 
-fabric_loom = "1.13.3"
+fabric_loom = "1.14.4"
 fabric_loader = "0.18.1"
-moddevgradle = "2.0.118"
-neoforge = "21.10.52-beta"
+moddevgradle = "2.0.121"
+neoforge = "21.11.0-alpha.1.21.11-pre3.20251201.145838"
 
-fabric_api = "0.138.3+1.21.10"
+fabric_api = "0.139.4+1.21.11"
 wrench_wrapper = "0.8.1"
 
-modmenu = "16.0.0-rc.1"
+modmenu = "17.0.0-alpha.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+minecraft_unobfuscated = { module = "com.mojang:minecraft", version.ref = "minecraft_unobfuscated" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
@@ -29,5 +29,6 @@ wrench_wrapper_fabric = ["wrench_wrapper_api_fabric", "wrench_wrapper_impl"]
 wrench_wrapper_neoforge = ["wrench_wrapper_api_neoforge", "wrench_wrapper_impl"]
 
 [plugins]
-fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
+fabric_loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric_loom" }
+fabric_loom-remap = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric_loom" }
 moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }

@@ -12,8 +12,8 @@ public class ZoomPresets {
 	public static final Map<TrackedValue<?>, Object> COMPETITIVE = Map.of(
 		OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false,
 		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
-		OkZoomerConfigManager.CONFIG.features.zoomHands, false,
-		OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false,
+		OkZoomerConfigManager.CONFIG.features.zoomHands, false
 	);
 
 	public static final Map<TrackedValue<?>, Object> CLASSIC = Map.of(
@@ -23,32 +23,29 @@ public class ZoomPresets {
 		OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false,
 		OkZoomerConfigManager.CONFIG.features.zoomScrolling, false,
 		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false
 		//OkZoomerConfigManager.CONFIG.features.extraKeyBinds, false - We'll maybe do that once we guarantee that is dynamic
-		OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false
 	);
 
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
 		OkZoomerConfigManager.CONFIG.features.zoomMode, ConfigEnums.ZoomModes.PERSISTENT,
 		OkZoomerConfigManager.CONFIG.features.persistentInterface, true,
-		OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 0,
-		OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false
+		OkZoomerConfigManager.CONFIG.features.hideCrosshair, false,
+		OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 0
 	);
 
 	public static final Map<TrackedValue<?>, Object> SPYGLASS = Map.ofEntries(
 		Map.entry(OkZoomerConfigManager.CONFIG.features.reduceViewBobbing, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomScrolling, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.persistentInterface, true),
+		Map.entry(OkZoomerConfigManager.CONFIG.features.hideCrosshair, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.zoomOverlay, ConfigEnums.ZoomOverlays.SPYGLASS),
 		Map.entry(OkZoomerConfigManager.CONFIG.features.spyglassMode, ConfigEnums.SpyglassModes.BOTH),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollBase, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit, 20),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.zoomDivisor, 10.0),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.lowerScrollSteps, 8),
-		Map.entry(OkZoomerConfigManager.CONFIG.legacyScrollValues.upperScrollSteps, 16),
 		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
-		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair, false),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds, true)
 	);
 

@@ -12,7 +12,7 @@ import io.github.ennuil.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
 import io.github.ennuil.ok_zoomer.zoom.transitions.InstantTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.LinearTransitionMode;
 import io.github.ennuil.ok_zoomer.zoom.transitions.SmoothTransitionMode;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import page.langeweile.wrench_wrapper.api.WrenchWrapper;
 
 public class OkZoomerConfigManager {
@@ -42,7 +42,7 @@ public class OkZoomerConfigManager {
 		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
 		// You won't do it without a nice placeholder texture though (that isn't Michael lmfao)
 		var overlayTextureId = CONFIG.features.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
-			? ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png")
+			? Identifier.withDefaultNamespace("textures/misc/spyglass_scope.png")
 			: ModUtils.id("textures/misc/zoom_overlay.png");
 
 		Zoom.setZoomOverlay(

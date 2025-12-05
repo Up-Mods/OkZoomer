@@ -4,18 +4,18 @@ import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 
 // An implementation of the spyglass overlay as a zoom overlay
 public class SpyglassZoomOverlay implements ZoomOverlay {
-	private final ResourceLocation textureId;
+	private final Identifier textureId;
 	//private Minecraft minecraft;
 	private float scale;
 	private boolean active;
 
-	public SpyglassZoomOverlay(ResourceLocation textureId) {
+	public SpyglassZoomOverlay(Identifier textureId) {
 		this.textureId = textureId;
 		this.scale = 0.5F;
 		this.active = false;

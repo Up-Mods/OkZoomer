@@ -4,13 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.CommonColors;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,7 +27,9 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 	}
 
 	public void addCategory(Component component) {
-		this.addEntry(new CategoryEntry(component, this.screen));
+		int baseline = 9;
+		int padding = this.children().isEmpty() ? 0 : baseline * 2;
+		this.addEntry(new CategoryEntry(component, this.screen, padding), padding + baseline + 4);
 	}
 
 	public void addButton(AbstractWidget button) {
@@ -49,53 +49,35 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 	}
 
 	static class CategoryEntry extends Entry {
-		private final Component title;
+		private final int paddingTop;
+		private final StringWidget widget;
 
-		private CategoryEntry(Component title, Screen screen) {
+		private CategoryEntry(Component title, Screen screen, int paddingTop) {
 			super(screen);
-			this.title = title;
+			this.widget = new StringWidget(title, screen.getFont());
+			this.paddingTop = paddingTop;
 		}
 
 		@Override
 		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-			int x = this.screen.width / 2 - 155;
-			int y = this.getContentY();
-			int rowWidth = 310;
-
-			graphics.fill(x, y + 1, x + rowWidth, y + 19, 0xA0000000);
-			graphics.drawCenteredString(this.screen.getFont(), this.title, x + rowWidth / 2, y + 6, CommonColors.WHITE);
-		}
-
-		@Override
-		public int getHeight() {
-			return 20;
+			this.widget.setPosition(this.screen.width / 2 - 155, this.getContentY() + this.paddingTop);
+			this.widget.render(graphics, mouseX, mouseY, partialTick);
 		}
 
 		@Override
 		public @NotNull List<? extends GuiEventListener> children() {
-			return List.of();
+			return List.of(this.widget);
 		}
 
 		@Override
 		public @NotNull List<? extends NarratableEntry> narratables() {
-			return List.of(new NarratableEntry() {
-				@Override
-				public @NotNull NarrationPriority narrationPriority() {
-					return NarrationPriority.HOVERED;
-				}
-
-				@Override
-				public void updateNarration(NarrationElementOutput narrationElementOutput) {
-					narrationElementOutput.add(NarratedElementType.TITLE, CategoryEntry.this.title);
-				}
-			});
+			return List.of(this.widget);
 		}
 	}
 
 	static class ButtonEntry extends Entry {
 		private final AbstractWidget leftButton;
 		private final AbstractWidget rightButton;
-		private final int entryHeight;
 		private final List<AbstractWidget> buttons;
 
 		public ButtonEntry(AbstractWidget button, Screen screen) {
@@ -103,7 +85,6 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 			button.setWidth(310);
 			this.leftButton = button;
 			this.rightButton = null;
-			this.entryHeight = button.getHeight() + 4;
 			this.buttons = List.of(button);
 		}
 
@@ -111,7 +92,6 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 			super(screen);
 			this.leftButton = leftButton;
 			this.rightButton = rightButton;
-			this.entryHeight = (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
 			this.buttons = rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
 		}
 
@@ -130,12 +110,9 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 			}
 		}
 
-		// Yes, I don't exactly like this either, but this allows for gaps of 5 pixels as well as a nice bottom padding
-		// against the end of the page
-		// (This used to be a hardcoded reference to 24)
 		@Override
 		public int getHeight() {
-			return this.entryHeight;
+			return (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
 		}
 
 		@Override

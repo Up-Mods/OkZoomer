@@ -3,6 +3,7 @@ package io.github.ennuil.ok_zoomer.mixin.common.config;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import io.github.ennuil.ok_zoomer.config.screen.components.LabelledEditBox;
 import net.minecraft.client.gui.components.EditBox;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -34,7 +35,8 @@ public abstract class EditBoxMixin {
 		method = "updateTextPosition",
 		at = @At(
 			value = "FIELD",
-			target = "Lnet/minecraft/client/gui/components/EditBox;height:I"
+			target = "Lnet/minecraft/client/gui/components/EditBox;height:I",
+			opcode = Opcodes.GETFIELD
 		)
 	)
 	private int modifyHeight2(int original) {

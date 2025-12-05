@@ -25,11 +25,6 @@ processResources {
 neoForge {
 	version = libs.versions.neoforge.get()
 
-	parchment {
-		minecraftVersion = libs.versions.parchment.minecraft.get()
-		mappingsVersion = libs.versions.parchment.mappings.get()
-	}
-
 	runs {
 		client {
 			client()

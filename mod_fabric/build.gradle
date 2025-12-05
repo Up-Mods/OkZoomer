@@ -1,6 +1,6 @@
 plugins {
 	id 'mod_conventions_loader'
-	alias libs.plugins.fabric.loom
+	alias libs.plugins.fabric.loom.remap
 }
 
 repositories {
@@ -13,10 +13,7 @@ base.archivesName = 'ok_zoomer-fabric'
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
 	minecraft libs.minecraft
-	mappings(loom.layered {
-		it.officialMojangMappings()
-		it.parchment "org.parchmentmc.data:parchment-${libs.versions.parchment.minecraft.get()}:${libs.versions.parchment.mappings.get()}"
-	})
+	mappings loom.officialMojangMappings()
 	modImplementation libs.fabric.loader
 
 	modImplementation libs.fabric.api
@@ -35,10 +32,6 @@ loom {
 		accessWidenerPath.set(atFile)
 	}
 
-	mixin {
-		useLegacyMixinAp = false
-	}
-
 	runs {
 		named('client') {
 			client()
@@ -52,20 +45,5 @@ loom {
 		"${mod_id}" {
 			sourceSet sourceSets.main
 		}
-	}
-}
-
-processResources {
-	it.filteringCharset 'UTF-8'
-
-	def expandProps = [
-		'version'                       : project.version,
-		'curseforge_id'					: project.curseforge_id,
-		'modrinth_id'					: project.modrinth_id,
-	]
-	it.inputs.properties(expandProps)
-
-	it.filesMatching('fabric.mod.json') {
-		it.expand expandProps
 	}
 }

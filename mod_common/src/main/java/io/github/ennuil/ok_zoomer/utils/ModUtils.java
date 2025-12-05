@@ -1,13 +1,13 @@
 package io.github.ennuil.ok_zoomer.utils;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModUtils {
 	public static final String MOD_NAMESPACE = "ok_zoomer";
 
-	private static final ResourceLocation MOD_NAMESPACE_ID = ResourceLocation.fromNamespaceAndPath(MOD_NAMESPACE, "");
+	private static final Identifier MOD_NAMESPACE_ID = Identifier.fromNamespaceAndPath(MOD_NAMESPACE, "");
 
-	public static ResourceLocation id(String path) {
+	public static Identifier id(String path) {
 		return MOD_NAMESPACE_ID.withPath(path);
 	}
 }

@@ -4,15 +4,15 @@ import io.github.ennuil.ok_zoomer.zoom.transitions.TransitionMode;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-	private final ResourceLocation textureId;
+	private final Identifier textureId;
 	private boolean active;
 
-	public ZoomerZoomOverlay(ResourceLocation textureId) {
+	public ZoomerZoomOverlay(Identifier textureId) {
 		this.textureId = textureId;
 		this.active = false;
 	}

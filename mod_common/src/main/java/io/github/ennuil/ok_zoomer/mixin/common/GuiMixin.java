@@ -85,7 +85,7 @@ public abstract class GuiMixin {
 	@WrapMethod(method = "renderCrosshair")
 	private void hideCrosshair(GuiGraphics graphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		boolean persistentInterface = OkZoomerConfigManager.CONFIG.features.persistentInterface.value();
-		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
+		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.features.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
@@ -102,7 +102,7 @@ public abstract class GuiMixin {
 	// We'll just fade on GuiGraphics level
 	@WrapMethod(method = "renderCrosshair")
 	private void fadeCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value()) {
+		if (OkZoomerConfigManager.CONFIG.features.hideCrosshair.value()) {
 			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true)));
 			original.call(guiGraphics, deltaTracker);
 			ZoomUtils.setFadeModifier(null);

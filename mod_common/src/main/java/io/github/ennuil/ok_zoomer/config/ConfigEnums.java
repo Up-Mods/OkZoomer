@@ -19,11 +19,6 @@ public class ConfigEnums {
 		PERSISTENT
 	}
 
-	public enum ScrollingModes implements ConfigEnum {
-		EXPONENTIAL,
-		LEGACY
-	}
-
 	public enum ZoomOverlays implements ConfigEnum {
 		OFF,
 		VIGNETTE,

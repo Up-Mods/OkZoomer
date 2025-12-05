@@ -16,9 +16,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Allows for precise tweaking of the zoom.")
 	public final ZoomValuesConfig zoomValues = new ZoomValuesConfig();
 
-	@Comment("Allows to configure the \"Legacy\" scrolling mode.")
-	public final LegacyScrollValuesConfig legacyScrollValues = new LegacyScrollValuesConfig();
-
 	@Comment("Allows for precise tweaking of zoom transitions.")
 	public final TransitionValuesConfig transitionValues = new TransitionValuesConfig();
 
@@ -63,15 +60,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> zoomScrolling = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("""
-			"EXPONENTIAL": The zoom will scroll in an exponential way, making zoom steps consistent. This may be harder to configure currently.
-			"LEGACY": The zoom will scroll in an arbitrary way. This may be easier to configure currently, but scrolling may feel harder on higher zoom levels.
-			""")
-		public final TrackedValue<ScrollingModes> scrollingMode = this.value(ScrollingModes.EXPONENTIAL);
-
-		@WidgetSize(Size.HALF)
 		@Comment("Retains the interface when zooming.")
 		public final TrackedValue<Boolean> persistentInterface = this.value(false);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Hides the crosshair while zooming.")
+		public final TrackedValue<Boolean> hideCrosshair = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Adds zoom manipulation keys along with the zoom key. A game reboot will be required in order to apply the changes.")
@@ -127,33 +121,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Double> cinematicMultiplier = this.value(4.0);
 	}
 
-	public static class LegacyScrollValuesConfig extends Section {
-		@WidgetSize(Size.HALF)
-		@Comment("The divisor used to apply zoom to the FOV. A higher value means more zoom.")
-		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> zoomDivisor = this.value(4.0);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The minimum zoom divisor that you can scroll down.")
-		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> minimumZoomDivisor = this.value(1.0);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The maximum zoom divisor that you can scroll up.")
-		@FloatRange(min = Double.MIN_NORMAL, max = Double.MAX_VALUE)
-		public final TrackedValue<Double> maximumZoomDivisor = this.value(50.0);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The number of steps between the zoom divisor and the minimum zoom divisor. Used by zoom scrolling.")
-		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
-		public final TrackedValue<Integer> lowerScrollSteps = this.value(5);
-
-		@WidgetSize(Size.HALF)
-		@Comment("The number of steps between the zoom divisor and the maximum zoom divisor. Used by zoom scrolling.")
-		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
-		public final TrackedValue<Integer> upperScrollSteps = this.value(10);
-	}
-
 	public static final class TransitionValuesConfig extends Section  {
 		@WidgetSize(Size.HALF)
 		@Comment("The factor used for smooth zoom transitions. A lower value means a smoother transition, a higher value means a faster one.")
@@ -171,10 +138,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.FULL)
 		@Comment("If pressed, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
 		public final TrackedValue<Boolean> unbindConflictingKey = this.value(true);
-
-		@WidgetSize(Size.HALF)
-		@Comment("Hides the crosshair while zooming.")
-		public final TrackedValue<Boolean> hideCrosshair = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Allows for resetting the zoom with the middle mouse button.")
