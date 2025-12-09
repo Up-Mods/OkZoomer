@@ -5,7 +5,17 @@ plugins {
 
 base.archivesName = "ok_zoomer-neo"
 
-repositories {}
+repositories {
+	exclusiveContent {
+		forRepository {
+			// Temporary during pre-release cycle
+			maven("https://prmaven.neoforged.net/NeoForge/pr2815")
+		}
+		filter {
+			includeModule("net.neoforged", "neoforge")
+		}
+	}
+}
 
 neoForge {
 	version = libs.versions.neoforge.get()

@@ -3,9 +3,7 @@ plugins {
 }
 
 dependencies {
-	compileOnly(project(":mod_common")) {
-		setTransitive(false)
-	}
+	compileOnly(project(":mod_common"))
 }
 
 sourceSets.main {
