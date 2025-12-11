@@ -32,7 +32,7 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		// Register events without entrypoints aughhhhhhhh
 		ClientTickEvents.START_CLIENT_TICK.register(ManageZoomEvent::startClientTick);
 		ClientTickEvents.START_CLIENT_TICK.register(ManageExtraKeysEvent::startClientTick);
-		ClientLifecycleEvents.CLIENT_STARTED.register(ApplyLoadOnceOptionsEvent::readyClient);
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> ApplyLoadOnceOptionsEvent.readyClient());
 		ClientTickEvents.END_CLIENT_TICK.register(OpenScreenEvent::endClientTick);
 		ClientCommandRegistrationCallback.EVENT.register(RegisterCommands::registerCommands);
 

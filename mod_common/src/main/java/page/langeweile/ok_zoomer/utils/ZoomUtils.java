@@ -1,7 +1,5 @@
 package page.langeweile.ok_zoomer.utils;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.player.LocalPlayer;
@@ -13,7 +11,6 @@ import net.minecraft.world.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
-import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 import java.util.function.Predicate;
@@ -74,32 +71,6 @@ public class ZoomUtils {
 
 	public static void keepZoomStepsWithinBounds() {
 		zoomStep = Mth.clamp(zoomStep, 0, OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value());
-	}
-
-	// The method used for unbinding the "Save Toolbar Activator"
-	public static void unbindConflictingKey(Minecraft client, boolean userPrompted) {
-		if (ZoomKeyBinds.ZOOM_KEY.isDefault()) {
-			if (client.options.keySaveHotbarActivator.isDefault()) {
-				if (userPrompted) {
-					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding...");
-					client.getToastManager().addToast(SystemToast.multiline(
-						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
-						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.success")));
-				} else {
-					ZoomUtils.LOGGER.info("[Ok Zoomer] The \"Save Toolbar Activator\" keybind was occupying C! Unbinding... This process won't be repeated until specified in the config.");
-				}
-				client.options.keySaveHotbarActivator.setKey(InputConstants.UNKNOWN);
-				client.options.save();
-				KeyMapping.resetMapping();
-			} else {
-				ZoomUtils.LOGGER.info("[Ok Zoomer] No conflicts with the \"Save Toolbar Activator\" keybind were found!");
-				if (userPrompted) {
-					client.getToastManager().addToast(SystemToast.multiline(
-						client, TOAST_ID, Component.translatable("toast.ok_zoomer.title"),
-						Component.translatable("toast.ok_zoomer.unbind_conflicting_key.no_conflict")));
-				}
-			}
-		}
 	}
 
 	public static boolean hasSpyglass(LocalPlayer player) {

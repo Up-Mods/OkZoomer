@@ -83,22 +83,12 @@ public class OkZoomerConfigScreen extends Screen {
 						this.newValues.putIfAbsent(trackie, trackedValue.getRealValue());
 
 						if (trackedValue.value() instanceof Boolean) {
-							AbstractWidget button;
-							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
-								button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
-									.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
-									.create(
-										0, 0, 150, 20,
-										this.configTextUtils.getOptionText(trackedValue),
-										(button_, value) -> this.newValues.replace(trackie, value));
-							} else {
-								// TODO - ew, hardcoding; we can do better than that
-								button = Button.builder(
-										Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key"),
-										button_ -> ZoomUtils.unbindConflictingKey(this.minecraft, true))
-									.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip")))
-									.build();
-							}
+							var button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
+								.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
+								.create(
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue),
+									(button_, value) -> this.newValues.replace(trackie, value));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Double) {
 							var button = new LabelledEditBox(

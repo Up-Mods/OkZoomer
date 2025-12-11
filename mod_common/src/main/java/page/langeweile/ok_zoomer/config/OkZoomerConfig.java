@@ -139,10 +139,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	}
 
 	public static final class TweaksConfig extends Section  {
-		@WidgetSize(Size.FULL)
-		@Comment("If pressed, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
-		public final TrackedValue<Boolean> unbindConflictingKey = this.value(true);
-
 		@WidgetSize(Size.HALF)
 		@Comment("Allows for resetting the zoom with the middle mouse button.")
 		public final TrackedValue<Boolean> resetZoomWithMouse = this.value(true);

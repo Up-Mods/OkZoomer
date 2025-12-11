@@ -37,7 +37,7 @@ public class RegisterEvents {
 
 	@SubscribeEvent
 	public static void onClientStarted(ClientStartedEvent event) {
-		ApplyLoadOnceOptionsEvent.readyClient(event.getClient());
+		ApplyLoadOnceOptionsEvent.readyClient();
 	}
 
 	@SubscribeEvent
