@@ -49,11 +49,15 @@ public class CinematicCameraMouseModifier implements MouseModifier {
 	@Override
 	public void tick(boolean active) {
 		this.ensureClient();
-		this.cinematicCameraEnabled = this.minecraft.options.smoothCamera;
+		if (this.minecraft.options.smoothCamera && !this.cinematicCameraEnabled) {
+			this.cursorXZoomSmoother.reset();
+			this.cursorYZoomSmoother.reset();
+		}
 		if (!active && this.active) {
 			this.cursorXZoomSmoother.reset();
 			this.cursorYZoomSmoother.reset();
 		}
+		this.cinematicCameraEnabled = this.minecraft.options.smoothCamera;
 		this.active = active;
 	}
 

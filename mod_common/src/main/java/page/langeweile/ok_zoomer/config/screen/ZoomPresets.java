@@ -45,7 +45,7 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit, 20),
-		Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
+		//Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
 		Map.entry(OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds, true)
 	);
 

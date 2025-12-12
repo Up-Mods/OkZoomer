@@ -1,6 +1,8 @@
 package page.langeweile.ok_zoomer.config;
 
+import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.config.ConfigEnums.CinematicCameraOptions;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
@@ -11,8 +13,6 @@ import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
-import page.langeweile.ok_zoomer.zoom.transitions.InstantTransitionMode;
-import page.langeweile.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import page.langeweile.wrench_wrapper.api.WrenchWrapper;
 
 public class OkZoomerConfigManager {
@@ -28,11 +28,10 @@ public class OkZoomerConfigManager {
 	public static void configureZoomInstance() {
 		// Sets zoom transition
 		Zoom.setTransitionMode(
-			switch (CONFIG.features.zoomTransition.value()) {
-				case SMOOTH -> new SmoothTransitionMode(CONFIG.transitionValues.smoothTransitionFactor.value().floatValue());
-				case EXPERIMENTAL -> new EasedTransitionMode();
-				default -> new InstantTransitionMode();
-			}
+			new EasedTransitionMode(
+				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.inwardTransitionMode.value()),
+				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.outwardTransitionMode.value())
+			)
 		);
 
 		// Sets mouse modifier
@@ -52,6 +51,15 @@ public class OkZoomerConfigManager {
 				default -> null;
 			}
 		);
+	}
+
+	public static FloatUnaryOperator getZoomTransitionOperator(ConfigEnums.ZoomTransitionModes mode) {
+		return switch (mode) {
+			case INSTANT -> f -> 1.0F;
+			case LINEAR -> f -> f;
+			case SMOOTH -> f -> (float) (1.0 - Math.pow(2.0, -10.0 * f));
+			case SPRING -> f -> (float) (Math.pow(2.0, -10.0F * f) * Mth.sin((f * 10.0F - 0.75F) * 1.5F) + 1.0F);
+		};
 	}
 
 	public static void configureZoomModifier() {

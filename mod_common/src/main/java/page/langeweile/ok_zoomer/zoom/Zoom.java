@@ -3,13 +3,15 @@ package page.langeweile.ok_zoomer.zoom;
 import page.langeweile.ok_zoomer.zoom.modifiers.MouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomOverlay;
+import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
+import page.langeweile.ok_zoomer.zoom.transitions.InstantTransitionMode;
 import page.langeweile.ok_zoomer.zoom.transitions.SmoothTransitionMode;
 import page.langeweile.ok_zoomer.zoom.transitions.TransitionMode;
 
 public class Zoom {
 	private static boolean zooming = false;
 	private static double zoomDivisor = 4.0F;
-	private static TransitionMode transitionMode = new SmoothTransitionMode();
+	private static TransitionMode transitionMode = new InstantTransitionMode();
 	private static MouseModifier mouseModifier = new ZoomDivisorMouseModifier();
 	private static ZoomOverlay zoomOverlay = null;
 

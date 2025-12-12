@@ -7,6 +7,13 @@ public class ConfigEnums {
 		MULTIPLIED
 	}
 
+	public enum ZoomTransitionModes implements ConfigEnum {
+		INSTANT,
+		LINEAR,
+		SMOOTH,
+		SPRING
+	}
+
 	public enum ZoomTransitionOptions implements ConfigEnum {
 		OFF,
 		SMOOTH,

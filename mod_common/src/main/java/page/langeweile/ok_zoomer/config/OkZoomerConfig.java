@@ -10,17 +10,37 @@ import page.langeweile.ok_zoomer.config.metadata.WidgetSize.Size;
 
 @SerializedNameConvention(NamingSchemes.SNAKE_CASE)
 public class OkZoomerConfig extends ReflectiveConfig {
+	@Comment("Options affecting the transitions between zooming in and zooming out.")
+	public final ZoomTransitionConfig zoomTransition = new ZoomTransitionConfig();
+
 	@Comment("Allows for configuring the main zoom features.")
 	public final FeaturesConfig features = new FeaturesConfig();
 
 	@Comment("Allows for precise tweaking of the zoom.")
 	public final ZoomValuesConfig zoomValues = new ZoomValuesConfig();
 
-	@Comment("Allows for precise tweaking of zoom transitions.")
-	public final TransitionValuesConfig transitionValues = new TransitionValuesConfig();
-
 	@Comment("Provides a selection of unusual options.")
 	public final TweaksConfig tweaks = new TweaksConfig();
+
+	public static final class ZoomTransitionConfig extends Section {
+		@WidgetSize(Size.HALF)
+		@Comment("yay")
+		public final TrackedValue<ZoomTransitionModes> inwardTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
+
+		@WidgetSize(Size.HALF)
+		@Comment("yay")
+		public final TrackedValue<ZoomTransitionModes> outwardTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
+
+		@WidgetSize(Size.HALF)
+		@Comment("test")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> easeInTicks = this.value(8);
+
+		@WidgetSize(Size.HALF)
+		@Comment("test")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		public final TrackedValue<Integer> easeOutTicks = this.value(8);
+	}
 
 	public static final class FeaturesConfig extends Section {
 		@WidgetSize(Size.HALF)
@@ -118,24 +138,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("The multiplier used by the multiplied cinematic camera.")
 		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
 		public final TrackedValue<Double> cinematicMultiplier = this.value(4.0);
-	}
-
-	public static final class TransitionValuesConfig extends Section  {
-		@WidgetSize(Size.FULL)
-		@Comment("The factor used for smooth zoom transitions. A lower value means a smoother transition, a higher value means a faster one.")
-		@Alias("smooth_multiplier")
-		@FloatRange(min = Double.MIN_NORMAL, max = 1.0)
-		public final TrackedValue<Double> smoothTransitionFactor = this.value(0.6);
-
-		@WidgetSize(Size.HALF)
-		@Comment("test")
-		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
-		public final TrackedValue<Integer> easeInTicks = this.value(5);
-
-		@WidgetSize(Size.HALF)
-		@Comment("test")
-		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
-		public final TrackedValue<Integer> easeOutTicks = this.value(5);
 	}
 
 	public static final class TweaksConfig extends Section  {

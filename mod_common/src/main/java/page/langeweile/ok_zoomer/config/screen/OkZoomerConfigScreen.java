@@ -23,7 +23,6 @@ import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
 import page.langeweile.ok_zoomer.config.screen.components.LabelledEditBox;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
-import page.langeweile.ok_zoomer.utils.ZoomUtils;
 
 import java.util.Locale;
 import java.util.Map;
