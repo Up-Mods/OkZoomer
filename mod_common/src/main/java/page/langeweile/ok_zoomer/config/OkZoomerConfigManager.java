@@ -30,7 +30,9 @@ public class OkZoomerConfigManager {
 		Zoom.setTransitionMode(
 			new EasedTransitionMode(
 				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.inwardTransitionMode.value()),
-				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.outwardTransitionMode.value())
+				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.outwardTransitionMode.value()),
+				getInwardZoomTransitionTicks(),
+				getOutwardZoomTransitionTicks()
 			)
 		);
 
@@ -60,6 +62,18 @@ public class OkZoomerConfigManager {
 			case SMOOTH -> f -> (float) (1.0 - Math.pow(2.0, -10.0 * f));
 			case SPRING -> f -> (float) (Math.pow(2.0, -10.0F * f) * Mth.sin((f * 10.0F - 0.75F) * 1.5F) + 1.0F);
 		};
+	}
+
+	public static int getInwardZoomTransitionTicks() {
+		return OkZoomerConfigManager.CONFIG.zoomTransition.inwardTransitionMode.value() != ConfigEnums.ZoomTransitionModes.INSTANT
+			? OkZoomerConfigManager.CONFIG.zoomTransition.easeInTicks.value()
+			: 0;
+	}
+
+	public static int getOutwardZoomTransitionTicks() {
+		return OkZoomerConfigManager.CONFIG.zoomTransition.outwardTransitionMode.value() != ConfigEnums.ZoomTransitionModes.INSTANT
+			? OkZoomerConfigManager.CONFIG.zoomTransition.easeOutTicks.value()
+			: 0;
 	}
 
 	public static void configureZoomModifier() {

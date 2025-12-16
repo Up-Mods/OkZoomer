@@ -5,13 +5,14 @@ pluginManagement {
         maven("https://maven.fabricmc.net")
         gradlePluginPortal()
     }
+
+	includeBuild("build-logic")
 }
 
 plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention").version("1.0.0")
 }
 
-includeBuild("build-logic")
 include("mod_common")
 include("mod_fabric")
 include("mod_norge")

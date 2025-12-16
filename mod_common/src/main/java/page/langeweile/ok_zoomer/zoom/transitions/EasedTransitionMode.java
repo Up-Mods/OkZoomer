@@ -2,14 +2,15 @@ package page.langeweile.ok_zoomer.zoom.transitions;
 
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.util.Mth;
-import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 
 public class EasedTransitionMode implements TransitionMode {
 	private final FloatUnaryOperator inwardTransitionMode;
 	private final FloatUnaryOperator outwardTransitionMode;
+	private final int targetInwardTicks;
+	private final int targetOutwardTicks;
+
 	private boolean active;
 	private int ticks;
-	private int targetTicks;
 	private float startZoomMultiplier;
 	private float startFadeMultiplier;
 	private float internalMultiplier;
@@ -17,9 +18,16 @@ public class EasedTransitionMode implements TransitionMode {
 	private float internalFade;
 	private float lastInternalFade;
 
-	public EasedTransitionMode(FloatUnaryOperator inwardTransitionMode, FloatUnaryOperator outwardTransitionMode) {
+	public EasedTransitionMode(
+		FloatUnaryOperator inwardTransitionMode,
+		FloatUnaryOperator outwardTransitionMode,
+		int targetInwardTicks,
+		int targetOutwardTicks
+	) {
 		this.inwardTransitionMode = inwardTransitionMode;
 		this.outwardTransitionMode = outwardTransitionMode;
+		this.targetInwardTicks = targetInwardTicks;
+		this.targetOutwardTicks = targetOutwardTicks;
 		this.active = false;
 		this.ticks = 1;
 		this.startZoomMultiplier = 1.0F;
@@ -32,7 +40,7 @@ public class EasedTransitionMode implements TransitionMode {
 
 	@Override
 	public boolean getActive() {
-		return this.active || this.ticks <= this.targetTicks;
+		return this.active || this.ticks <= this.targetOutwardTicks;
 	}
 
 	@Override
@@ -51,60 +59,53 @@ public class EasedTransitionMode implements TransitionMode {
 		float zoomMultiplier = (float) (1.0 / divisor);
 		float fadeMultiplier = active ? 1.0F : 0.0F;
 
-		this.targetTicks = active
-			? OkZoomerConfigManager.CONFIG.zoomTransition.easeInTicks.value()
-			: OkZoomerConfigManager.CONFIG.zoomTransition.easeOutTicks.value();
+		boolean skipTransition = active && this.targetInwardTicks == 0 || !active && this.targetOutwardTicks == 0;
 
-		float oppositeTargetTicks = active
-			? OkZoomerConfigManager.CONFIG.zoomTransition.easeOutTicks.value()
-			: OkZoomerConfigManager.CONFIG.zoomTransition.easeInTicks.value();
-
-		if (this.ticks <= this.targetTicks) {
-			this.ticks += 1;
-		}
-
-		this.lastInternalMultiplier = this.internalMultiplier;
-		this.lastInternalFade = this.internalFade;
-
-		if (this.active != active) {
-			if (active && this.ticks >= oppositeTargetTicks) {
-				this.internalMultiplier = 1.0F;
-				this.internalFade = 0.0F;
-			}
-			this.ticks = 1;
-			this.startZoomMultiplier = this.internalMultiplier;
-			this.startFadeMultiplier = this.internalFade;
-		}
-
-		float rawProgress = Math.min(this.ticks, this.targetTicks) / (float) this.targetTicks;
-		float progress = this.ticks <= this.targetTicks
-			? (active ? inwardTransitionMode.apply(rawProgress) : outwardTransitionMode.apply(rawProgress))
-			: 1.0F;
-		progress = Math.min(progress, 1.2F);
-
-		System.out.println("progress :" + progress + " - ticks: " + ticks + " - start: " + this.startZoomMultiplier);
-
-		if (this.ticks <= this.targetTicks) {
-			this.internalMultiplier = Mth.lerp(progress, this.startZoomMultiplier, active ? zoomMultiplier : 1.0F);
-			this.internalFade = Mth.lerp(progress, this.startFadeMultiplier, active ? fadeMultiplier : 0.0F);
-		} else {
-			// TODO - Move to tick-based logic
-			this.internalMultiplier += (zoomMultiplier - this.internalMultiplier) * 0.6F;
-			this.internalFade += (fadeMultiplier - this.internalFade) * 0.6F;
-		}
-
-		// TODO - Hacky hack, replace this with a properly optimized solution
-		/*
-		if (inwardTransitionMode.apply(0.0F) == 1.0F) {
+		if (skipTransition) {
+			this.internalMultiplier = active ? zoomMultiplier : 1.0F;
+			this.internalFade = active ? fadeMultiplier : 1.0F;
 			this.lastInternalMultiplier = this.internalMultiplier;
-			this.lastInternalFade = 0.0F;
+			this.lastInternalFade = this.internalFade;
+		} else {
+			int targetTicks = active ? targetInwardTicks : targetOutwardTicks;
+			int oppositeTargetTicks = active ? targetOutwardTicks : targetInwardTicks;
+
+			if (this.ticks <= targetTicks) {
+				this.ticks += 1;
+			}
+
+			this.lastInternalMultiplier = this.internalMultiplier;
+			this.lastInternalFade = this.internalFade;
+
+			if (this.active != active) {
+				if (active && this.ticks >= oppositeTargetTicks) {
+					this.internalMultiplier = 1.0F;
+					this.internalFade = 0.0F;
+				}
+				this.ticks = 1;
+				this.startZoomMultiplier = this.internalMultiplier;
+				this.startFadeMultiplier = this.internalFade;
+			}
+
+			float rawProgress = Math.min(this.ticks, targetTicks) / (float) targetTicks;
+			float progress = this.ticks <= targetTicks
+				? (active ? inwardTransitionMode.apply(rawProgress) : outwardTransitionMode.apply(rawProgress))
+				: 1.0F;
+			progress = Math.min(progress, 1.2F);
+
+			System.out.println("progress :" + progress + " - ticks: " + ticks + " - start: " + this.startZoomMultiplier);
+
+			if (this.ticks <= targetTicks) {
+				this.internalMultiplier = Mth.lerp(progress, this.startZoomMultiplier, active ? zoomMultiplier : 1.0F);
+				this.internalFade = Mth.lerp(progress, this.startFadeMultiplier, active ? fadeMultiplier : 0.0F);
+			} else {
+				// TODO - Move to tick-based logic
+				this.internalMultiplier += (zoomMultiplier - this.internalMultiplier) * 0.6F;
+				this.internalFade += (fadeMultiplier - this.internalFade) * 0.6F;
+			}
 		}
-		 */
 
 		this.active = active;
-	}
-	private static float lerp(float delta, float p0, float p1) {
-		return (1.0F - delta) * p0 + delta * p1;
 	}
 
 	@Override
