@@ -1,1 +1,1 @@
-Copyright © 2019-2025 Ennui Langeweile, All rights reserved.
+Copyright © 2019-2026 Ennui Langeweile, All rights reserved.
