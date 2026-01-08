@@ -35,10 +35,9 @@ public abstract class MouseHandlerMixin {
 	private void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef i, @Local(ordinal = 2) LocalDoubleRef j, @Share("cursorSensitivity") LocalDoubleRef cursorSensitivity) {
 		if (Zoom.isModifierActive()) {
 			double f = cursorSensitivity.get();
-			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
 			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, zoomDivisor, transitionDivisor));
-			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, zoomDivisor, transitionDivisor));
+			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, transitionDivisor));
+			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, transitionDivisor));
 		}
 	}
 }

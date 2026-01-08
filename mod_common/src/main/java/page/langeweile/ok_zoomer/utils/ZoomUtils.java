@@ -34,9 +34,9 @@ public class ZoomUtils {
 	public static void changeZoomDivisor(boolean increase) {
 		// TODO - Replace client references with an argument
 		var minecraft = Minecraft.getInstance();
-		int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
-		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
-		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value();
+		int scrollBase = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase.value();
+		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution.value();
+		int upperScrollStep = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollStepLimit.value();
 		int lowerScrollStep = 0;
 
 		int lastZoomStep = zoomStep;
@@ -50,7 +50,7 @@ public class ZoomUtils {
 			Zoom.setZoomDivisor(1);
 		}
 
-		if (lastZoomStep != zoomStep && OkZoomerConfigManager.CONFIG.tweaks.scrollSounds.value()) {
+		if (lastZoomStep != zoomStep && OkZoomerConfigManager.CONFIG.zoomScrolling.scrollSounds.value()) {
 			minecraft.player.playSound(Portals.getScrollSound(), 1.0F, 1.0F);
 		}
 
@@ -61,16 +61,16 @@ public class ZoomUtils {
 
 	// The method used by both the "Reset Zoom" keybind and the "Reset Zoom With Mouse" tweak
 	public static void resetZoomDivisor(boolean userPrompted) {
-		if (!userPrompted && !OkZoomerConfigManager.CONFIG.tweaks.forgetZoomDivisor.value()) return;
+		if (!userPrompted && !OkZoomerConfigManager.CONFIG.zoomScrolling.forgetScrollStep.value()) return;
 
-		int scrollBase = OkZoomerConfigManager.CONFIG.zoomValues.scrollBase.value();
-		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomValues.scrollResolution.value();
-		zoomStep = OkZoomerConfigManager.CONFIG.zoomValues.defaultScrollStep.value();
+		int scrollBase = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase.value();
+		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution.value();
+		ZoomUtils.zoomStep = OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep.value();
 		Zoom.setZoomDivisor(Math.pow(scrollBase, (double) zoomStep / scrollResolution));
 	}
 
 	public static void keepZoomStepsWithinBounds() {
-		zoomStep = Mth.clamp(zoomStep, 0, OkZoomerConfigManager.CONFIG.zoomValues.scrollStepLimit.value());
+		ZoomUtils.zoomStep = Mth.clamp(zoomStep, 0, OkZoomerConfigManager.CONFIG.zoomScrolling.scrollStepLimit.value());
 	}
 
 	public static boolean hasSpyglass(LocalPlayer player) {
@@ -86,11 +86,11 @@ public class ZoomUtils {
 	}
 
 	public static boolean hasSmartOcclusion() {
-		return OkZoomerConfigManager.CONFIG.tweaks.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
+		return OkZoomerConfigManager.CONFIG.appearance.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
 	}
 
 	public static boolean canSeeDistantEntities() {
-		return switch (OkZoomerConfigManager.CONFIG.tweaks.seeDistantEntities.value()) {
+		return switch (OkZoomerConfigManager.CONFIG.appearance.seeDistantEntities.value()) {
 			case SAFE -> ZoomUtils.safeSmartOcclusion;
 			case ON -> true;
 			case OFF -> false;

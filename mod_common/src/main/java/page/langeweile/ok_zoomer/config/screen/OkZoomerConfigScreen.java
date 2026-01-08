@@ -2,10 +2,7 @@ package page.langeweile.ok_zoomer.config.screen;
 
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
@@ -20,8 +17,8 @@ import org.quiltmc.config.api.values.ValueTreeNode;
 import page.langeweile.ok_zoomer.config.ConfigEnums;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
-import page.langeweile.ok_zoomer.config.screen.components.LabelledEditBox;
-import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerDoubleSlider;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 
 import java.util.Locale;
@@ -90,75 +87,109 @@ public class OkZoomerConfigScreen extends Screen {
 									(button_, value) -> this.newValues.replace(trackie, value));
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Double) {
-							var button = new LabelledEditBox(
-								this.font,
-								0, 0, 150, 32,
-								this.configTextUtils.getOptionText(trackedValue)
-							);
-							button.setValue(((Double) this.newValues.get(trackie)).toString());
-							button.setResponder(value -> {
-								try {
-									double min = Double.NEGATIVE_INFINITY;
-									double max = Double.POSITIVE_INFINITY;
+							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
+								var slider = new OkZoomerDoubleSlider(
+									(TrackedValue<Double>) (Object) trackie,
+									this.configTextUtils.getOptionText(trackie),
+									0, 0, 150, 20,
+									(double) this.newValues.get(trackie),
+									value -> this.newValues.replace(trackie, value)
+								);
+								slider.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+								this.addOptionToList(slider, size);
+							} else {
+								var button = new EditBox(
+									this.font,
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue)
+								);
+								button.setValue(((Double) this.newValues.get(trackie)).toString());
+								button.setResponder(value -> {
+									try {
+										double min = Double.NEGATIVE_INFINITY;
+										double max = Double.POSITIVE_INFINITY;
 
-									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?> range) {
-											min = Math.max(((Constraint.Range<Double>) range).min(), min);
-											max = Math.min(((Constraint.Range<Double>) range).max(), max);
+										for (var constraint : trackedValue.constraints()) {
+											if (constraint instanceof Constraint.Range<?> range) {
+												min = Math.max(((Constraint.Range<Double>) range).min(), min);
+												max = Math.min(((Constraint.Range<Double>) range).max(), max);
+											}
 										}
-									}
 
-									double parsedValue = Double.parseDouble(value);
-									if (parsedValue < min || parsedValue > max) {
-										// Yes, this isn't exactly right but oh well
-										throw new IndexOutOfBoundsException();
-									}
+										double parsedValue = Double.parseDouble(value);
+										if (parsedValue < min || parsedValue > max) {
+											// Yes, this isn't exactly right but oh well
+											throw new IndexOutOfBoundsException();
+										}
 
-									this.newValues.replace(trackie, parsedValue);
-									this.invalidValues.remove(trackie);
-									button.setTextColor(0xFFE0E0E0);
-								} catch (NumberFormatException | IndexOutOfBoundsException e) {
-									this.invalidValues.add(trackie);
-									button.setTextColor(CommonColors.RED);
-								}
-							});
-							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
-							this.addOptionToList(button, size);
+										this.newValues.replace(trackie, parsedValue);
+										this.invalidValues.remove(trackie);
+										button.setTextColor(0xFFE0E0E0);
+									} catch (NumberFormatException | IndexOutOfBoundsException e) {
+										this.invalidValues.add(trackie);
+										button.setTextColor(CommonColors.RED);
+									}
+								});
+								button.setTooltip(Tooltip.create(
+									CommonComponents.joinLines(
+										this.configTextUtils.getOptionText(trackedValue),
+										this.configTextUtils.getOptionTextTooltip(trackedValue)
+									)
+								));
+								this.addOptionToList(button, size);
+							}
 						} else if (trackedValue.value() instanceof Integer) {
-							var button = new LabelledEditBox(
-								this.font,
-								0, 0, 150, 32,
-								this.configTextUtils.getOptionText(trackedValue)
-							);
-							button.setValue(((Integer) this.newValues.get(trackie)).toString());
-							button.setResponder(value -> {
-								try {
-									int min = Integer.MIN_VALUE;
-									int max = Integer.MAX_VALUE;
+							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
+								var slider = new OkZoomerIntegerSlider(
+									(TrackedValue<Integer>) (Object) trackie,
+									this.configTextUtils.getOptionText(trackie),
+									0, 0, 150, 20,
+									(int) this.newValues.get(trackie),
+									value -> this.newValues.replace(trackie, value)
+								);
+								slider.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+								this.addOptionToList(slider, size);
+							} else {
+								var button = new EditBox(
+									this.font,
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue)
+								);
+								button.setValue(((Integer) this.newValues.get(trackie)).toString());
+								button.setResponder(value -> {
+									try {
+										int min = Integer.MIN_VALUE;
+										int max = Integer.MAX_VALUE;
 
-									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?> range) {
-											min = Math.max(((Constraint.Range<Integer>) range).min(), min);
-											max = Math.min(((Constraint.Range<Integer>) range).max(), max);
+										for (var constraint : trackedValue.constraints()) {
+											if (constraint instanceof Constraint.Range<?> range) {
+												min = Math.max(((Constraint.Range<Integer>) range).min(), min);
+												max = Math.min(((Constraint.Range<Integer>) range).max(), max);
+											}
 										}
-									}
 
-									int parsedValue = Integer.parseInt(value);
-									if (parsedValue < min || parsedValue > max) {
-										// Yes, this isn't exactly right but oh well
-										throw new IndexOutOfBoundsException();
-									}
+										int parsedValue = Integer.parseInt(value);
+										if (parsedValue < min || parsedValue > max) {
+											// Yes, this isn't exactly right but oh well
+											throw new IndexOutOfBoundsException();
+										}
 
-									this.newValues.replace(trackie, parsedValue);
-									this.invalidValues.remove(trackie);
-									button.setTextColor(0xFFE0E0E0);
-								} catch (NumberFormatException | IndexOutOfBoundsException e) {
-									this.invalidValues.add(trackie);
-									button.setTextColor(CommonColors.RED);
-								}
-							});
-							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
-							this.addOptionToList(button, size);
+										this.newValues.replace(trackie, parsedValue);
+										this.invalidValues.remove(trackie);
+										button.setTextColor(0xFFE0E0E0);
+									} catch (NumberFormatException | IndexOutOfBoundsException e) {
+										this.invalidValues.add(trackie);
+										button.setTextColor(CommonColors.RED);
+									}
+								});
+								button.setTooltip(Tooltip.create(
+									CommonComponents.joinLines(
+										this.configTextUtils.getOptionText(trackedValue),
+										this.configTextUtils.getOptionTextTooltip(trackedValue)
+									)
+								));
+								this.addOptionToList(button, size);
+							}
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
 							var button = CycleButton.builder(
 								value -> this.configTextUtils.getEnumOptionText(trackedValue, value),

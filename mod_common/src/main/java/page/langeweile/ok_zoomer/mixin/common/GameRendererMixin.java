@@ -70,7 +70,7 @@ public abstract class GameRendererMixin {
 
 	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
 	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks, @Local(argsOnly = true) boolean useFovSetting) {
-		if (!Zoom.isTransitionActive() || is3DCrosshair || (!useFovSetting && !OkZoomerConfigManager.CONFIG.features.zoomHands.value())) {
+		if (!Zoom.isTransitionActive() || is3DCrosshair || (!useFovSetting && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value())) {
 			return original;
 		} else {
 			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
@@ -79,7 +79,7 @@ public abstract class GameRendererMixin {
 
 	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
 	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
-		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.features.reduceViewBobbing.value()) {
+		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
 		} else {
 			return Zoom.getTransitionMode().applyZoom(bob, delta);

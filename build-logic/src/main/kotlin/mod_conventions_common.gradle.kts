@@ -24,14 +24,6 @@ java {
 repositories {
 	exclusiveContent {
 		forRepository {
-			maven("https://maven.parchmentmc.org")
-		}
-		filter {
-			includeGroupAndSubgroups("org.parchmentmc")
-		}
-	}
-	exclusiveContent {
-		forRepository {
 			maven("https://maven.uuid.gg/releases")
 		}
 		filter {
@@ -44,6 +36,14 @@ repositories {
 		}
 		filter {
 			includeGroupAndSubgroups("org.quiltmc")
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven("https://maven.caffeinemc.net/releases")
+		}
+		filter {
+			includeGroup("net.caffeinemc")
 		}
 	}
 	mavenCentral()

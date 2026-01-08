@@ -2,12 +2,12 @@
 minecraft = "1.21.11"
 minecraft_unobfuscated = "1.21.11_unobfuscated"
 
-fabric_loom = "1.14.4"
-fabric_loader = "0.18.1"
-moddevgradle = "2.0.123"
-neoforge = "21.11.0-beta"
+fabric_loom = "1.15.0-alpha.22"
+fabric_loader = "0.18.4"
+moddevgradle = "2.0.137"
+neoforge = "21.11.12-beta"
 
-fabric_api = "0.139.4+1.21.11"
+fabric_api = "0.140.2+1.21.11"
 wrench_wrapper = "0.8.1"
 
 modmenu = "17.0.0-alpha.1"
@@ -21,6 +21,7 @@ fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fab
 wrench_wrapper_api_fabric = { module = "page.langeweile.wrench_wrapper:api_fabric", version.ref = "wrench_wrapper" }
 wrench_wrapper_api_neoforge = { module = "page.langeweile.wrench_wrapper:api_neoforge", version.ref = "wrench_wrapper" }
 wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:impl", version.ref = "wrench_wrapper" }
+
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".

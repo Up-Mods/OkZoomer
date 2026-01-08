@@ -42,4 +42,8 @@ public class ConfigTextUtils {
 	public Component getEnumOptionTextTooltip(TrackedValue<?> trackedValue, ConfigEnums.ConfigEnum configEnum) {
 		return Component.translatable(String.format("config.%s.%s.%s.tooltip", this.config.family(), this.scheme.coerce(trackedValue.key().toString()), configEnum.toString().toLowerCase(Locale.ROOT)));
 	}
+
+	public Component getSliderOptionText(TrackedValue<?> trackedValue) {
+		return Component.translatable(String.format("config.%s.%s.%s", this.config.family(), this.scheme.coerce(trackedValue.key().toString()), trackedValue.value()));
+	}
 }

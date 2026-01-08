@@ -26,7 +26,7 @@ public class ManageZoomEvent {
 		/* If you want to reimplement mandatory spyglass control? It's easy:
 		 * Quilt Config has value overrides, use them. This mod is ARR but it's anti-vulture;
 		 * You can make a third-party addon mod, I won't bite. */
-		boolean disableZoom = switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		boolean disableZoom = switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
 				case REQUIRE_ITEM, BOTH -> true;
 				default -> false;
 			} && !ZoomUtils.hasSpyglass(minecraft.player);
@@ -39,7 +39,7 @@ public class ManageZoomEvent {
 		}
 
 		// Handle zoom mode changes.
-		if (!OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.HOLD)) {
+		if (!OkZoomerConfigManager.CONFIG.controls.zoomMode.value().equals(ZoomModes.HOLD)) {
 			if (!persistentZoom) {
 				persistentZoom = true;
 				lastZooming = true;
@@ -53,7 +53,7 @@ public class ManageZoomEvent {
 		}
 
 		// Gathers all variables about if the press was with zoom key or with the spyglass
-		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		boolean isUsingSpyglass = switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		};
@@ -65,9 +65,9 @@ public class ManageZoomEvent {
 		// This makes toggling usable and the zoom divisor adjustable
 		if (zooming == lastZooming) return;
 
-		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.tweaks.spyglassSounds.value();
+		boolean doSpyglassSound = OkZoomerConfigManager.CONFIG.controls.spyglassSounds.value();
 
-		switch (OkZoomerConfigManager.CONFIG.features.zoomMode.value()) {
+		switch (OkZoomerConfigManager.CONFIG.controls.zoomMode.value()) {
 			case HOLD -> {
 				// If the zoom needs to be held, then the zoom signal is determined by if the key is pressed or not
 				Zoom.setZooming(zooming);
@@ -90,7 +90,7 @@ public class ManageZoomEvent {
 		}
 
 		if (doSpyglassSound && (!spyglassUse && !lastZoomWasSpyglass)) {
-			boolean soundDirection = !OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ZoomModes.PERSISTENT)
+			boolean soundDirection = !OkZoomerConfigManager.CONFIG.controls.zoomMode.value().equals(ZoomModes.PERSISTENT)
 				? Zoom.isZooming()
 				: keyPress;
 

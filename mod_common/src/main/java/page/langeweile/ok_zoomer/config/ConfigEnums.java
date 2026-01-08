@@ -11,6 +11,7 @@ public class ConfigEnums {
 		INSTANT,
 		LINEAR,
 		SMOOTH,
+		SINE,
 		SPRING
 	}
 

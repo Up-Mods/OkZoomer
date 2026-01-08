@@ -13,7 +13,9 @@ public class Zoom {
 		x -> 1.0F,
 		x -> 1.0F,
 		0,
-		0
+		0,
+		false,
+		false
 	);
 	private static MouseModifier mouseModifier = new ZoomDivisorMouseModifier();
 	private static ZoomOverlay zoomOverlay = null;

@@ -4,10 +4,12 @@ import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.util.Mth;
 
 public class EasedTransitionMode implements TransitionMode {
-	private final FloatUnaryOperator inwardTransitionMode;
-	private final FloatUnaryOperator outwardTransitionMode;
-	private final int targetInwardTicks;
-	private final int targetOutwardTicks;
+	private final FloatUnaryOperator startTransitionMode;
+	private final FloatUnaryOperator endTransitionMode;
+	private final int targetStartTicks;
+	private final int targetEndTicks;
+	private final boolean invertStartTransition;
+	private final boolean invertEndTransition;
 
 	private boolean active;
 	private int ticks;
@@ -19,15 +21,20 @@ public class EasedTransitionMode implements TransitionMode {
 	private float lastInternalFade;
 
 	public EasedTransitionMode(
-		FloatUnaryOperator inwardTransitionMode,
-		FloatUnaryOperator outwardTransitionMode,
-		int targetInwardTicks,
-		int targetOutwardTicks
+		FloatUnaryOperator startTransitionMode,
+		FloatUnaryOperator endTransitionMode,
+		int targetStartTicks,
+		int targetEndTicks,
+		boolean invertStartTransition,
+		boolean invertEndTransition
 	) {
-		this.inwardTransitionMode = inwardTransitionMode;
-		this.outwardTransitionMode = outwardTransitionMode;
-		this.targetInwardTicks = targetInwardTicks;
-		this.targetOutwardTicks = targetOutwardTicks;
+		this.startTransitionMode = startTransitionMode;
+		this.endTransitionMode = endTransitionMode;
+		this.targetStartTicks = targetStartTicks;
+		this.targetEndTicks = targetEndTicks;
+		this.invertStartTransition = invertStartTransition;
+		this.invertEndTransition = invertEndTransition;
+
 		this.active = false;
 		this.ticks = 1;
 		this.startZoomMultiplier = 1.0F;
@@ -40,7 +47,7 @@ public class EasedTransitionMode implements TransitionMode {
 
 	@Override
 	public boolean getActive() {
-		return this.active || this.ticks <= this.targetOutwardTicks;
+		return this.active || this.ticks <= this.targetEndTicks;
 	}
 
 	@Override
@@ -59,7 +66,7 @@ public class EasedTransitionMode implements TransitionMode {
 		float zoomMultiplier = (float) (1.0 / divisor);
 		float fadeMultiplier = active ? 1.0F : 0.0F;
 
-		boolean skipTransition = active && this.targetInwardTicks == 0 || !active && this.targetOutwardTicks == 0;
+		boolean skipTransition = active && this.targetStartTicks == 0 || !active && this.targetEndTicks == 0;
 
 		if (skipTransition) {
 			this.internalMultiplier = active ? zoomMultiplier : 1.0F;
@@ -67,8 +74,9 @@ public class EasedTransitionMode implements TransitionMode {
 			this.lastInternalMultiplier = this.internalMultiplier;
 			this.lastInternalFade = this.internalFade;
 		} else {
-			int targetTicks = active ? targetInwardTicks : targetOutwardTicks;
-			int oppositeTargetTicks = active ? targetOutwardTicks : targetInwardTicks;
+			int targetTicks = active ? targetStartTicks : targetEndTicks;
+			int oppositeTargetTicks = active ? targetEndTicks : targetStartTicks;
+			boolean invert = active ? invertStartTransition : invertEndTransition;
 
 			if (this.ticks <= targetTicks) {
 				this.ticks += 1;
@@ -88,10 +96,13 @@ public class EasedTransitionMode implements TransitionMode {
 			}
 
 			float rawProgress = Math.min(this.ticks, targetTicks) / (float) targetTicks;
+			if (invert) {
+				rawProgress = 1.0F - rawProgress;
+			}
 			float progress = this.ticks <= targetTicks
-				? (active ? inwardTransitionMode.apply(rawProgress) : outwardTransitionMode.apply(rawProgress))
+				? (active ? startTransitionMode.apply(rawProgress) : endTransitionMode.apply(rawProgress))
 				: 1.0F;
-			progress = Math.min(progress, 1.2F);
+			progress = Math.min(invert ? 1.0F - progress : progress, 1.2F);
 
 			System.out.println("progress :" + progress + " - ticks: " + ticks + " - start: " + this.startZoomMultiplier);
 

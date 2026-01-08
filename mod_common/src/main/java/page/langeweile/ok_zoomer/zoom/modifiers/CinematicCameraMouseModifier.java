@@ -27,7 +27,7 @@ public class CinematicCameraMouseModifier implements MouseModifier {
 	}
 
 	@Override
-	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
+	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		if (this.cinematicCameraEnabled) {
 			this.cursorXZoomSmoother.reset();
 			return cursorDeltaX;
@@ -37,7 +37,7 @@ public class CinematicCameraMouseModifier implements MouseModifier {
 	}
 
 	@Override
-	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
+	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		if (this.cinematicCameraEnabled) {
 			this.cursorYZoomSmoother.reset();
 			return cursorDeltaY;

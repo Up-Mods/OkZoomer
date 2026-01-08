@@ -76,8 +76,6 @@
 	"config.ok_zoomer.tweaks.see_distant_entities.safe.tooltip": "缩放时扩展实体距离，使远处的生物和某些方块可见。仅在安装 Sodium 时启用。",
 	"config.ok_zoomer.tweaks.see_distant_entities.on": "开启",
 	"config.ok_zoomer.tweaks.see_distant_entities.on.tooltip": "缩放时扩展实体距离，使远处的生物和某些方块可见。未安装 Sodium 时，缩放期间可能严重影响性能。",
-	"config.ok_zoomer.tweaks.forget_zoom_divisor": "遗忘缩放倍数",
-	"config.ok_zoomer.tweaks.forget_zoom_divisor.tooltip": "如果启用，缩放完成后将遗忘当前缩放倍数。",
 	"config.ok_zoomer.tweaks.spyglass_sounds": "使用望远镜音效",
 	"config.ok_zoomer.tweaks.spyglass_sounds.tooltip": "如果启用，缩放时将使用望远镜的音效。",
 	"config.ok_zoomer.tweaks.scroll_sounds": "滚动音效",
