@@ -18,7 +18,8 @@ import page.langeweile.ok_zoomer.config.ConfigEnums;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerDoubleSlider;
-import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 
 import java.util.Locale;

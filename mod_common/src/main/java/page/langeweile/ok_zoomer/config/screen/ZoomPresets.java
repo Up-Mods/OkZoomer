@@ -10,14 +10,13 @@ public class ZoomPresets {
 	public static final Map<TrackedValue<?>, Object> CAMERA = Map.of();
 
 	public static final Map<TrackedValue<?>, Object> COMPETITIVE = Map.of(
-		OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false,
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
 		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
-		OkZoomerConfigManager.CONFIG.appearance.zoomHands, false
+		OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false
 	);
 
 	public static final Map<TrackedValue<?>, Object> CLASSIC = Map.of(
-		OkZoomerConfigManager.CONFIG.controls.cinematicCamera, false,
+		OkZoomerConfigManager.CONFIG.controls.cinematicCamera, true,
 		OkZoomerConfigManager.CONFIG.controls.reduceSensitivity, false,
 		OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false,
 		OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false,
@@ -30,6 +29,11 @@ public class ZoomPresets {
 		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 0
 	);
 
+	public static final Map<TrackedValue<?>, Object> ZOOMINATOR = Map.of(
+		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 15,
+		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10
+	);
+
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
 		OkZoomerConfigManager.CONFIG.controls.zoomMode, ConfigEnums.ZoomModes.PERSISTENT,
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
@@ -38,18 +42,19 @@ public class ZoomPresets {
 	);
 
 	public static final Map<TrackedValue<?>, Object> SPYGLASS = Map.ofEntries(
-		Map.entry(OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 10),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false),
-		Map.entry(OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true),
-		Map.entry(OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false),
-		Map.entry(OkZoomerConfigManager.CONFIG.appearance.zoomOverlay, ConfigEnums.ZoomOverlays.SPYGLASS),
-		Map.entry(OkZoomerConfigManager.CONFIG.controls.spyglassMode, ConfigEnums.SpyglassModes.BOTH),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollStepLimit, 20),
-		//Map.entry(OkZoomerConfigManager.CONFIG.transitionValues.smoothTransitionFactor, 0.5),
-		Map.entry(OkZoomerConfigManager.CONFIG.controls.spyglassSounds, true)
+		Map.entry(OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true),
+		Map.entry(OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.appearance.zoomOverlay, ConfigEnums.ZoomOverlays.SPYGLASS),
+		Map.entry(OkZoomerConfigManager.CONFIG.controls.spyglassSounds, true),
+		Map.entry(OkZoomerConfigManager.CONFIG.controls.spyglassMode, ConfigEnums.SpyglassModes.BOTH)
 	);
 
 	public static final Map<ConfigEnums.ConfigEnum, Map<TrackedValue<?>, Object>> PRESET_ENUM_TO_PRESET = Map.of(

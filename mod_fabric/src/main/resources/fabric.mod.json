@@ -24,9 +24,6 @@
 		],
 		"preLaunch": [
 			"page.langeweile.ok_zoomer.OkZoomerPreLaunchMod"
-		],
-		"sodium:config_api_user": [
-			"page.langeweile.ok_zoomer.config.sodium.SodiumTest"
 		]
 	},
 	"mixins": [

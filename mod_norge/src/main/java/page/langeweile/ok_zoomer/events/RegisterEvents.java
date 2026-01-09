@@ -32,7 +32,7 @@ public class RegisterEvents {
 	@SubscribeEvent
 	public static void onClientTick(ClientTickEvent.Pre event) {
 		ManageZoomEvent.startClientTick(Minecraft.getInstance());
-		ManageExtraKeysEvent.startClientTick(Minecraft.getInstance());
+		ManageExtraKeysEvent.startClientTick();
 	}
 
 	@SubscribeEvent

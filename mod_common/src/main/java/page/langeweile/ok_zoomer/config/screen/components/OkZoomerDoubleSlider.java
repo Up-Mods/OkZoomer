@@ -4,10 +4,8 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import org.quiltmc.config.api.Constraint;
 import org.quiltmc.config.api.values.TrackedValue;
 import page.langeweile.ok_zoomer.config.metadata.RangeSubset;
-import page.langeweile.ok_zoomer.config.screen.ConfigTextUtils;
 
 import java.util.function.Consumer;
 

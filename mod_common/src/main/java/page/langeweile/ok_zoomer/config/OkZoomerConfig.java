@@ -14,25 +14,26 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	@Comment("Options affecting the transitions between zooming in and zooming out.")
 	public final ZoomTransitionConfig zoomTransition = new ZoomTransitionConfig();
 
-	@Comment("c")
+	@Comment("Options affecting the visual aspects of zooming.")
 	public final AppearanceConfig appearance = new AppearanceConfig();
 
-	@Comment("b")
+	@Comment("Options affecting the way zooming is controlled.")
 	public final ControlsConfig controls = new ControlsConfig();
 
-	@Comment("a")
+	@Comment("Options affecting the Zoom Scrolling feature.")
 	public final ZoomScrollingConfig zoomScrolling = new ZoomScrollingConfig();
 
-	@Comment("Provides a selection of unusual options.")
+	@Comment("Technical options that don't fit elsewhere.")
 	public final TweaksConfig tweaks = new TweaksConfig();
 
 	public static final class ZoomTransitionConfig extends Section {
+		// TODO - These should resemble the other enum comments
 		@WidgetSize(Size.HALF)
-		@Comment("yay")
+		@Comment("Determines which animation curve to use when zooming in.")
 		public final TrackedValue<ZoomTransitionModes> startTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)
-		@Comment("yay")
+		@Comment("Determines which animation curve to use when zooming out.")
 		public final TrackedValue<ZoomTransitionModes> endTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)

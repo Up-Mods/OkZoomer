@@ -1,6 +1,5 @@
 package page.langeweile.ok_zoomer.events;
 
-import net.minecraft.client.Minecraft;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.OwoUtils;
 

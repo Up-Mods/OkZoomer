@@ -1,7 +1,6 @@
 package page.langeweile.ok_zoomer.utils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -19,8 +18,6 @@ import java.util.function.Predicate;
 public class ZoomUtils {
 	// The logger, used everywhere to print messages to the console
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
-
-	public static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
 	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ModUtils.id("zoom_dependencies"));
 

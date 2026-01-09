@@ -1,24 +1,12 @@
 package page.langeweile.ok_zoomer.config;
 
 public class ConfigEnums {
-	public enum CinematicCameraOptions implements ConfigEnum {
-		OFF,
-		VANILLA,
-		MULTIPLIED
-	}
-
 	public enum ZoomTransitionModes implements ConfigEnum {
 		INSTANT,
 		LINEAR,
 		SMOOTH,
 		SINE,
 		SPRING
-	}
-
-	public enum ZoomTransitionOptions implements ConfigEnum {
-		OFF,
-		SMOOTH,
-		EXPERIMENTAL
 	}
 
 	public enum ZoomModes implements ConfigEnum {
