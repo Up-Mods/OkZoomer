@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import page.langeweile.ok_zoomer.config.ConfigEnums.ZoomModes;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
-import page.langeweile.ok_zoomer.utils.Portals;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
@@ -91,7 +90,7 @@ public class ManageZoomEvent {
 				? Zoom.isZooming()
 				: keyPress;
 
-			minecraft.player.playSound(soundDirection ? Portals.getZoomInSound() : Portals.getZoomOutSound(), 1.0F, 1.0F);
+			minecraft.player.playSound(soundDirection ? ZoomUtils.ZOOM_IN_SOUND : ZoomUtils.ZOOM_OUT_SOUND, 1.0F, 1.0F);
 		}
 
 		// Set the previous zoom signal for the next tick

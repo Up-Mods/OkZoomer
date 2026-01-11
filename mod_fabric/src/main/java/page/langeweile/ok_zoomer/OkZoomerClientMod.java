@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.events.*;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
-import page.langeweile.ok_zoomer.sound.FabricSoundEvents;
 import page.langeweile.ok_zoomer.utils.FabricZoomUtils;
 
 // This class is responsible for registering the commands and packets
@@ -25,9 +24,6 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.INCREASE_ZOOM_KEY);
 			KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.RESET_ZOOM_KEY);
 		}
-
-		// Initialize zoom sound events
-		FabricSoundEvents.init();
 
 		// Register events without entrypoints aughhhhhhhh
 		ClientTickEvents.START_CLIENT_TICK.register(ManageZoomEvent::startClientTick);

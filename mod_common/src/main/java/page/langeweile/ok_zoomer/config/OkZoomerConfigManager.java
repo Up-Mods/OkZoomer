@@ -7,7 +7,6 @@ import page.langeweile.ok_zoomer.utils.ModUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 import page.langeweile.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
-import page.langeweile.ok_zoomer.zoom.modifiers.MultipliedCinematicCameraMouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomerZoomOverlay;
@@ -80,12 +79,9 @@ public class OkZoomerConfigManager {
 
 	public static void configureZoomModifier() {
 		boolean cinematicCamera = CONFIG.controls.cinematicCamera.value();
-		boolean isMultiplied = CONFIG.controls.cinematicMultiplier.value() != 1.0F;
 		boolean reduceSensitivity = CONFIG.controls.reduceSensitivity.value();
 		if (cinematicCamera) {
-			var cinematicModifier = isMultiplied
-				? new CinematicCameraMouseModifier()
-				: new MultipliedCinematicCameraMouseModifier(CONFIG.controls.cinematicMultiplier.value());
+			var cinematicModifier = new CinematicCameraMouseModifier(CONFIG.controls.cinematicCameraSpeed.value());
 
 			Zoom.setMouseModifier(reduceSensitivity
 				? new ContainingMouseModifier(cinematicModifier, new ZoomDivisorMouseModifier())

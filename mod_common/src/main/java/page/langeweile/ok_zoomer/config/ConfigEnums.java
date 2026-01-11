@@ -38,6 +38,7 @@ public class ConfigEnums {
 		CAMERA,
 		COMPETITIVE,
 		CLASSIC,
+		ZOOMINATOR,
 		PERSISTENT,
 		SPYGLASS
 	}

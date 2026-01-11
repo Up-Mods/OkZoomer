@@ -74,9 +74,9 @@ public class EasedTransitionMode implements TransitionMode {
 			this.lastInternalMultiplier = this.internalMultiplier;
 			this.lastInternalFade = this.internalFade;
 		} else {
-			int targetTicks = active ? targetStartTicks : targetEndTicks;
-			int oppositeTargetTicks = active ? targetEndTicks : targetStartTicks;
-			boolean invert = active ? invertStartTransition : invertEndTransition;
+			int targetTicks = active ? this.targetStartTicks : this.targetEndTicks;
+			int oppositeTargetTicks = active ? this.targetEndTicks : this.targetStartTicks;
+			boolean invert = active ? this.invertStartTransition : this.invertEndTransition;
 
 			if (this.ticks <= targetTicks) {
 				this.ticks += 1;

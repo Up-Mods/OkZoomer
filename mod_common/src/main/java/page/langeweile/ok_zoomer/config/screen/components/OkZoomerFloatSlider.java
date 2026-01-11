@@ -9,14 +9,14 @@ import page.langeweile.ok_zoomer.config.metadata.RangeSubset;
 
 import java.util.function.Consumer;
 
-public class OkZoomerDoubleSlider extends AbstractSliderButton {
+public class OkZoomerFloatSlider extends AbstractSliderButton {
 	private final Component optionText;
 	private final double minValue;
 	private final double maxValue;
-	private final Consumer<Double> responder;
-	private double internalValue;
+	private final Consumer<Float> responder;
+	private float internalValue;
 
-	public OkZoomerDoubleSlider(TrackedValue<Double> trackedValue, Component optionText, int x, int y, int width, int height, double value, Consumer<Double> responder) {
+	public OkZoomerFloatSlider(TrackedValue<Float> trackedValue, Component optionText, int x, int y, int width, int height, float value, Consumer<Float> responder) {
 		super(x, y, width, height, CommonComponents.optionNameValue(
 			optionText,
 			Component.literal(String.valueOf(value))
@@ -37,7 +37,7 @@ public class OkZoomerDoubleSlider extends AbstractSliderButton {
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 
-		this.value = Math.clamp(value, minValue, maxValue) / (maxValue - minValue);
+		this.value = (Math.clamp(value, minValue, maxValue) - minValue) / (maxValue - minValue);
 		this.updateMessage();
 	}
 
@@ -51,7 +51,7 @@ public class OkZoomerDoubleSlider extends AbstractSliderButton {
 
 	@Override
 	protected void applyValue() {
-		double value = Mth.floor(Mth.lerp(Mth.clamp(this.value, 0.0, 1.0), this.minValue, this.maxValue) * 5.0) / 5.0;
+		float value = (float) (Mth.floor(Mth.lerp(Mth.clamp(this.value, 0.0, 1.0), this.minValue, this.maxValue) * 10.0) / 10.0);
 		this.responder.accept(value);
 		this.internalValue = value;
 	}

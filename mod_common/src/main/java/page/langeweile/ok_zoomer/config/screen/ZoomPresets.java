@@ -16,22 +16,24 @@ public class ZoomPresets {
 	);
 
 	public static final Map<TrackedValue<?>, Object> CLASSIC = Map.of(
-		OkZoomerConfigManager.CONFIG.controls.cinematicCamera, true,
-		OkZoomerConfigManager.CONFIG.controls.reduceSensitivity, false,
-		OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false,
-		OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false,
-		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
-		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
-		//OkZoomerConfigManager.CONFIG.controls.extraKeyBinds, false - We'll maybe do that once we guarantee that is dynamic
 		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionMode, ConfigEnums.ZoomTransitionModes.INSTANT,
 		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionMode, ConfigEnums.ZoomTransitionModes.INSTANT,
 		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 0,
-		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 0
+		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 0,
+		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
+		OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing, false,
+		OkZoomerConfigManager.CONFIG.controls.cinematicCamera, true,
+		OkZoomerConfigManager.CONFIG.controls.reduceSensitivity, false,
+		OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false
+		//OkZoomerConfigManager.CONFIG.controls.extraKeyBinds, false - We'll maybe do that once we guarantee that is dynamic
 	);
 
 	public static final Map<TrackedValue<?>, Object> ZOOMINATOR = Map.of(
-		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 15,
-		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10
+		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 20,
+		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10,
+		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
+		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false
 	);
 
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
@@ -61,6 +63,7 @@ public class ZoomPresets {
 		ConfigEnums.ZoomPresets.CAMERA, CAMERA,
 		ConfigEnums.ZoomPresets.COMPETITIVE, COMPETITIVE,
 		ConfigEnums.ZoomPresets.CLASSIC, CLASSIC,
+		ConfigEnums.ZoomPresets.ZOOMINATOR, ZOOMINATOR,
 		ConfigEnums.ZoomPresets.PERSISTENT, PERSISTENT,
 		ConfigEnums.ZoomPresets.SPYGLASS, SPYGLASS
 	);

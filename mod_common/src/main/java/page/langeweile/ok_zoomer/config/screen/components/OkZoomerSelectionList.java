@@ -99,7 +99,6 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			int x = this.screen.width / 2 - 155;
 			int y = this.getContentY();
-			int rowWidth = 310;
 
 			this.leftButton.setPosition(x, y + 2);
 			this.leftButton.render(graphics, mouseX, mouseY, partialTick);

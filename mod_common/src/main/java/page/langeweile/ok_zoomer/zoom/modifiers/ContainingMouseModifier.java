@@ -26,7 +26,7 @@ public class ContainingMouseModifier implements MouseModifier {
 	@Override
 	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		double returnedValue = cursorDeltaX;
-		for (MouseModifier modifier : modifiers) {
+		for (var modifier : modifiers) {
 			returnedValue = modifier.applyXModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
 		}
 
@@ -36,7 +36,7 @@ public class ContainingMouseModifier implements MouseModifier {
 	@Override
 	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		double returnedValue = cursorDeltaY;
-		for (MouseModifier modifier : modifiers) {
+		for (var modifier : modifiers) {
 			returnedValue = modifier.applyYModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
 		}
 
@@ -45,16 +45,14 @@ public class ContainingMouseModifier implements MouseModifier {
 
 	@Override
 	public void tick(boolean active) {
-		boolean generalActive = false;
+		boolean anyActive = false;
 		for (MouseModifier modifier : modifiers) {
-			if (modifier == null) continue;
-
 			modifier.tick(active);
 
-			if (!generalActive) {
-				generalActive = modifier.getActive();
+			if (active) {
+				anyActive = true;
 			}
 		}
-		this.active = generalActive;
+		this.active = anyActive;
 	}
 }

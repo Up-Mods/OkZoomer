@@ -17,7 +17,6 @@ import org.quiltmc.config.api.values.ValueTreeNode;
 import page.langeweile.ok_zoomer.config.ConfigEnums;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
-import page.langeweile.ok_zoomer.config.screen.components.OkZoomerDoubleSlider;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
@@ -87,13 +86,13 @@ public class OkZoomerConfigScreen extends Screen {
 									this.configTextUtils.getOptionText(trackedValue),
 									(button_, value) -> this.newValues.replace(trackie, value));
 							this.addOptionToList(button, size);
-						} else if (trackedValue.value() instanceof Double) {
+						} else if (trackedValue.value() instanceof Float) {
 							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
-								var slider = new OkZoomerDoubleSlider(
-									(TrackedValue<Double>) (Object) trackie,
+								var slider = new page.langeweile.ok_zoomer.config.screen.components.OkZoomerFloatSlider(
+									(TrackedValue<Float>) (Object) trackie,
 									this.configTextUtils.getOptionText(trackie),
 									0, 0, 150, 20,
-									(double) this.newValues.get(trackie),
+									(float) this.newValues.get(trackie),
 									value -> this.newValues.replace(trackie, value)
 								);
 								slider.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
@@ -104,20 +103,20 @@ public class OkZoomerConfigScreen extends Screen {
 									0, 0, 150, 20,
 									this.configTextUtils.getOptionText(trackedValue)
 								);
-								button.setValue(((Double) this.newValues.get(trackie)).toString());
+								button.setValue(((Float) this.newValues.get(trackie)).toString());
 								button.setResponder(value -> {
 									try {
-										double min = Double.NEGATIVE_INFINITY;
-										double max = Double.POSITIVE_INFINITY;
+										float min = Float.NEGATIVE_INFINITY;
+										float max = Float.POSITIVE_INFINITY;
 
 										for (var constraint : trackedValue.constraints()) {
 											if (constraint instanceof Constraint.Range<?> range) {
-												min = Math.max(((Constraint.Range<Double>) range).min(), min);
-												max = Math.min(((Constraint.Range<Double>) range).max(), max);
+												min = Math.max(((Constraint.Range<Float>) range).min(), min);
+												max = Math.min(((Constraint.Range<Float>) range).max(), max);
 											}
 										}
 
-										double parsedValue = Double.parseDouble(value);
+										float parsedValue = Float.parseFloat(value);
 										if (parsedValue < min || parsedValue > max) {
 											// Yes, this isn't exactly right but oh well
 											throw new IndexOutOfBoundsException();

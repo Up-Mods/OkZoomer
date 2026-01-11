@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,10 @@ public class ZoomUtils {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Ok Zoomer");
 
 	public static final TagKey<Item> ZOOM_DEPENDENCIES_TAG = TagKey.create(Registries.ITEM, ModUtils.id("zoom_dependencies"));
+
+	public static final SoundEvent ZOOM_IN_SOUND = SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.zoom_in"));
+	public static final SoundEvent ZOOM_OUT_SOUND = SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.zoom_out"));
+	public static final SoundEvent SCROLL_SOUND = SoundEvent.createVariableRangeEvent(ModUtils.id("zoom.scroll"));
 
 	public static int zoomStep = 0;
 
@@ -48,7 +53,7 @@ public class ZoomUtils {
 		}
 
 		if (lastZoomStep != zoomStep && OkZoomerConfigManager.CONFIG.zoomScrolling.scrollSounds.value()) {
-			minecraft.player.playSound(Portals.getScrollSound(), 1.0F, 1.0F);
+			minecraft.player.playSound(ZoomUtils.SCROLL_SOUND, 1.0F, 1.0F);
 		}
 
 		if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {

@@ -1,7 +1,10 @@
 package page.langeweile.ok_zoomer.config;
 
 import org.quiltmc.config.api.ReflectiveConfig;
-import org.quiltmc.config.api.annotations.*;
+import org.quiltmc.config.api.annotations.Comment;
+import org.quiltmc.config.api.annotations.FloatRange;
+import org.quiltmc.config.api.annotations.IntegerRange;
+import org.quiltmc.config.api.annotations.SerializedNameConvention;
 import org.quiltmc.config.api.metadata.NamingSchemes;
 import org.quiltmc.config.api.values.TrackedValue;
 import page.langeweile.ok_zoomer.config.ConfigEnums.*;
@@ -102,9 +105,9 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 		@WidgetSize(Size.HALF)
 		@Comment("The multiplier used by the multiplied cinematic camera.")
-		@FloatRange(min = Double.MIN_NORMAL, max = 32.0)
-		@RangeSubset(min = 1, max = 32)
-		public final TrackedValue<Double> cinematicMultiplier = this.value(1.0);
+		@FloatRange(min = Float.MIN_NORMAL, max = 32.0F)
+		@RangeSubset(min = 1, max = 16)
+		public final TrackedValue<Float> cinematicCameraSpeed = this.value(1.0F);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Divides the mouse sensitivity with the zoom divisor while zooming.")
@@ -127,7 +130,6 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> extraKeyBinds = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Alias("spyglass_dependency")
 		@Comment("""
 			"OFF": Zooming won't require a spyglass and won't replace its zoom.
 			"REQUIRE_ITEM": Zooming will require a spyglass in order to work. This option is configurable through the ok_zoomer:zoom_dependencies item tag.
