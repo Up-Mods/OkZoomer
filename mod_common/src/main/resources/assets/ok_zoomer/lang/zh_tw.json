@@ -1,4 +1,5 @@
 {
+	"fml.menu.mods.info.description.ok_zoomer": "一個強大、精簡且高度可自定義的縮放模組。縮放功能由你掌控！",
 	"modmenu.descriptionTranslation.ok_zoomer": "一個強大、精簡且高度可自定義的縮放模組。縮放功能由你掌控！",
 	"config.ok_zoomer.title": "Ok Zoomer 設定",
 	"config.ok_zoomer.appearance.reduce_view_bobbing": "減少視角搖晃",

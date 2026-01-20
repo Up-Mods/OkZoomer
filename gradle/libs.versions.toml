@@ -2,15 +2,15 @@
 minecraft = "1.21.11"
 minecraft_unobfuscated = "1.21.11_unobfuscated"
 
-fabric_loom = "1.15.0-alpha.22"
+fabric_loom = "1.15.1"
 fabric_loader = "0.18.4"
-moddevgradle = "2.0.137"
-neoforge = "21.11.12-beta"
+moddevgradle = "2.0.139"
+neoforge = "21.11.36-beta"
 
-fabric_api = "0.140.2+1.21.11"
+fabric_api = "0.141.1+1.21.11"
 wrench_wrapper = "0.8.1"
 
-modmenu = "17.0.0-alpha.1"
+modmenu = "17.0.0-beta.2"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
