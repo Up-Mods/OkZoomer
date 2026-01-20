@@ -16,8 +16,8 @@ public class ZoomPresets {
 	);
 
 	public static final Map<TrackedValue<?>, Object> CLASSIC = Map.of(
-		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionMode, ConfigEnums.ZoomTransitionModes.INSTANT,
-		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionMode, ConfigEnums.ZoomTransitionModes.INSTANT,
+		OkZoomerConfigManager.CONFIG.zoomTransition.startTransition, ConfigEnums.ZoomTransitionModes.INSTANT,
+		OkZoomerConfigManager.CONFIG.zoomTransition.endTransition, ConfigEnums.ZoomTransitionModes.INSTANT,
 		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 0,
 		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 0,
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
@@ -33,7 +33,9 @@ public class ZoomPresets {
 		OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 20,
 		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10,
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
-		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false
+		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
+		// TODO - This tries to replicates the "70%" smoothness, double-check with Desmos later
+		OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 6
 	);
 
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
@@ -47,6 +49,7 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false),
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 10), // Equivalent to 0.5 smoothness
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep, 10),

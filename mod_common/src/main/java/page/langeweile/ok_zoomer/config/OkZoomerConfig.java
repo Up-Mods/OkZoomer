@@ -30,23 +30,34 @@ public class OkZoomerConfig extends ReflectiveConfig {
 	public final TweaksConfig tweaks = new TweaksConfig();
 
 	public static final class ZoomTransitionConfig extends Section {
-		// TODO - These should resemble the other enum comments
 		@WidgetSize(Size.HALF)
-		@Comment("Determines which animation curve to use when zooming in.")
-		public final TrackedValue<ZoomTransitionModes> startTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
+		@Comment("""
+			"INSTANT": The zoom will abruptly transition between its off and on states.
+			"LINEAR": The zoom will linearly transition between its off and on states.
+			"SMOOTH": The zoom will smoothly transition between its off and on states using the game's smooth curve.
+			"SINE": The zoom will smoothly transition between its off and on states using a sine curve.
+			"SPRING": The zoom will bouncily transition between its off and on states. Avoid using it too often!
+			""")
+		public final TrackedValue<ZoomTransitionModes> startTransition = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Determines which animation curve to use when zooming out.")
-		public final TrackedValue<ZoomTransitionModes> endTransitionMode = this.value(ZoomTransitionModes.SMOOTH);
+		@Comment("""
+			"INSTANT": The zoom will abruptly transition between its on and off states.
+			"LINEAR": The zoom will linearly transition between its on and off states.
+			"SMOOTH": The zoom will smoothly transition between its on and off states using the game's smooth curve.
+			"SINE": The zoom will smoothly transition between its on and off states using a sine curve.
+			"SPRING": The zoom will bouncily transition between its on and off states. Avoid using it too often!
+			""")
+		public final TrackedValue<ZoomTransitionModes> endTransition = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)
-		@Comment("How long should the end transition last for. 1 second is equal to 20 ticks.")
+		@Comment("How long should the end transition last for. 20 ticks is equal to 1 second.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
 		public final TrackedValue<Integer> startTransitionTicks = this.value(8);
 
 		@WidgetSize(Size.HALF)
-		@Comment("How long should the start transition last for. 1 second is equal to 20 ticks.")
+		@Comment("How long should the start transition last for. 20 ticks is equal to 1 second.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
 		public final TrackedValue<Integer> endTransitionTicks = this.value(8);
@@ -155,6 +166,22 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("If enabled, the current scroll step is forgotten once zooming is finished.")
 		public final TrackedValue<Boolean> forgetScrollStep = this.value(true);
+
+		@WidgetSize(Size.HALF)
+		@Comment("""
+			"INSTANT": The zoom will abruptly transition between each increment.
+			"LINEAR": The zoom will linearly transition between each increment.
+			"SMOOTH": The zoom will smoothly transition between each increment using the game's smooth curve.
+			"SINE": The zoom will smoothly transition between each increment using a sine curve.
+			"SPRING": The zoom will bouncily transition between each increment. Avoid using it too often!
+			""")
+		public final TrackedValue<ZoomTransitionModes> transition = this.value(ZoomTransitionModes.SMOOTH);
+
+		@WidgetSize(Size.HALF)
+		@Comment("How long should the transition last for. 20 ticks is equal to 1 second.")
+		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
+		@RangeSubset(min = 0, max = 100)
+		public final TrackedValue<Integer> transitionTicks = this.value(8);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Determines the number to be used on the exponential curve. If unsure, keep this value at 2.")

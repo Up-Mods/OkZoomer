@@ -27,10 +27,12 @@ public class OkZoomerConfigManager {
 		// Sets zoom transition
 		Zoom.setTransitionMode(
 			new EasedTransitionMode(
-				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionMode.value()),
-				getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionMode.value()),
-				getInwardZoomTransitionTicks(),
-				getOutwardZoomTransitionTicks(),
+				OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.startTransition.value()),
+				OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.endTransition.value()),
+				OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomScrolling.transition.value()),
+				OkZoomerConfigManager.getStartTransitionTicks(),
+				OkZoomerConfigManager.getEndTransitionTicks(),
+				OkZoomerConfigManager.getScrollTransitionTicks(),
 				OkZoomerConfigManager.CONFIG.zoomTransition.invertStartTransition.value(),
 				OkZoomerConfigManager.CONFIG.zoomTransition.invertEndTransition.value()
 			)
@@ -65,15 +67,21 @@ public class OkZoomerConfigManager {
 		};
 	}
 
-	public static int getInwardZoomTransitionTicks() {
-		return OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionMode.value() != ConfigEnums.ZoomTransitionModes.INSTANT
+	public static int getStartTransitionTicks() {
+		return OkZoomerConfigManager.CONFIG.zoomTransition.startTransition.value() != ConfigEnums.ZoomTransitionModes.INSTANT
 			? OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks.value()
 			: 0;
 	}
 
-	public static int getOutwardZoomTransitionTicks() {
-		return OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionMode.value() != ConfigEnums.ZoomTransitionModes.INSTANT
+	public static int getEndTransitionTicks() {
+		return OkZoomerConfigManager.CONFIG.zoomTransition.endTransition.value() != ConfigEnums.ZoomTransitionModes.INSTANT
 			? OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks.value()
+			: 0;
+	}
+
+	public static int getScrollTransitionTicks() {
+		return OkZoomerConfigManager.CONFIG.zoomScrolling.transition.value() != ConfigEnums.ZoomTransitionModes.INSTANT
+			? OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks.value()
 			: 0;
 	}
 

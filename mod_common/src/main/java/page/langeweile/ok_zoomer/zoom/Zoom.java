@@ -12,6 +12,8 @@ public class Zoom {
 	private static TransitionMode transitionMode = new EasedTransitionMode(
 		x -> 1.0F,
 		x -> 1.0F,
+		x -> 1.0F,
+		0,
 		0,
 		0,
 		false,

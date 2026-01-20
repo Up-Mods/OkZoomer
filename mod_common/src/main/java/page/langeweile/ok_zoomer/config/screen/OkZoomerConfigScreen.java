@@ -17,6 +17,7 @@ import org.quiltmc.config.api.values.ValueTreeNode;
 import page.langeweile.ok_zoomer.config.ConfigEnums;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerFloatSlider;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;
 import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
@@ -88,7 +89,7 @@ public class OkZoomerConfigScreen extends Screen {
 							this.addOptionToList(button, size);
 						} else if (trackedValue.value() instanceof Float) {
 							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
-								var slider = new page.langeweile.ok_zoomer.config.screen.components.OkZoomerFloatSlider(
+								var slider = new OkZoomerFloatSlider(
 									(TrackedValue<Float>) (Object) trackie,
 									this.configTextUtils.getOptionText(trackie),
 									0, 0, 150, 20,
