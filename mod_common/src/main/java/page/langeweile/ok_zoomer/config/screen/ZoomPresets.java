@@ -34,8 +34,12 @@ public class ZoomPresets {
 		OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10,
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
 		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
-		// TODO - This tries to replicates the "70%" smoothness, double-check with Desmos later
-		OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 6
+		OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse, false,
+		// Best effort attempt at replicating Zoomify's zoom scrolling feeling without its jankiness
+		OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 12,
+		OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution, 3,
+		OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep, 6,
+		OkZoomerConfigManager.CONFIG.zoomScrolling.scrollStepLimit, 24
 	);
 
 	public static final Map<TrackedValue<?>, Object> PERSISTENT = Map.of(
