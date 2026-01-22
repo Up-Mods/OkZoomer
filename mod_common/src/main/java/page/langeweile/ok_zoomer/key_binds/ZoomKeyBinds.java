@@ -9,7 +9,7 @@ import page.langeweile.ok_zoomer.utils.ModUtils;
 // Manages the zoom key binds themselves
 public class ZoomKeyBinds {
 	// TODO - Bleh, immutability; I have a plan
-	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.features.extraKeyBinds.getRealValue();
+	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.controls.extraKeyBinds.getRealValue();
 
 	// The "Zoom" category
 	public static final KeyMapping.Category ZOOM_CATEGORY = KeyMapping.Category.register(ModUtils.id("zoom"));

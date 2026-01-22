@@ -29,8 +29,8 @@ public abstract class MouseHandlerMixin {
 	)
 	private void zoomScrollOnScroll(CallbackInfo ci, @Local int i) {
 		if (i != 0) {
-			if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
-				if (OkZoomerConfigManager.CONFIG.features.zoomMode.value().equals(ConfigEnums.ZoomModes.PERSISTENT)) {
+			if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
+				if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value().equals(ConfigEnums.ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isDown()) return;
 				}
 
@@ -52,13 +52,13 @@ public abstract class MouseHandlerMixin {
 		cancellable = true
 	)
 	private void zoomerOnMouseButton(long window, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
-		if (OkZoomerConfigManager.CONFIG.features.zoomScrolling.value()) {
-			if (OkZoomerConfigManager.CONFIG.features.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
+		if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
+			if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
 			if (buttonInfo.button() == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
-				if (OkZoomerConfigManager.CONFIG.tweaks.resetZoomWithMouse.value()) {
+				if (OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();
 				}
@@ -75,7 +75,7 @@ public abstract class MouseHandlerMixin {
 		)
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isScoping) {
-		if (switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {

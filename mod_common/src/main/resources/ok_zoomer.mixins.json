@@ -8,8 +8,6 @@
 		"GameRendererMixin",
 		"GuiMixin",
 		"MouseHandlerMixin",
-		"config.EditBoxAccessor",
-		"config.EditBoxMixin",
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
 		"distance.LevelRendererMixin",
