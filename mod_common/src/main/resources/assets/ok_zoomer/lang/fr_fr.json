@@ -139,7 +139,7 @@
 	"config.ok_zoomer.presets.preset.classic": "Classique",
 	"config.ok_zoomer.presets.preset.classic.tooltip": "Un zoom qui reproduit fidèlement celui d’OptiFine.",
 	"config.ok_zoomer.presets.preset.zoominator": "Zoominator",
-	"config.ok_zoomer.presets.preset.zoominator.tooltip": "Un zoom qui imite de près celui de Zoomify, sans en reproduire les limitations techniques.",
+	"config.ok_zoomer.presets.preset.zoominator.tooltip": "Un zoom qui simule de près celui de Zoomify, sans en reproduire les limitations techniques.",
 	"config.ok_zoomer.presets.preset.persistent": "Persistant",
 	"config.ok_zoomer.presets.preset.persistent.tooltip": "Un zoom configuré en tenant compte du mode Persistant.",
 	"config.ok_zoomer.presets.preset.spyglass": "Longue-vue",
