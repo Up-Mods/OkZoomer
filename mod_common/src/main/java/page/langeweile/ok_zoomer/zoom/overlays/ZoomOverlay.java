@@ -2,7 +2,7 @@ package page.langeweile.ok_zoomer.zoom.overlays;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import page.langeweile.ok_zoomer.zoom.transitions.TransitionMode;
+import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
 /**
  * The zoom overlay is the component that handles the rendering of an overlay.
@@ -12,9 +12,9 @@ public interface ZoomOverlay {
 
 	default boolean cancelOverlayRendering() { return false; }
 
-	void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, TransitionMode transitionMode);
+	void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, EasedTransitionMode transitionMode);
 
-	void tick(boolean active, double divisor, TransitionMode transitionMode);
+	void tick(boolean active, double divisor, EasedTransitionMode transitionMode);
 
 	default void tickBeforeRender(DeltaTracker deltaTracker) {}
 }

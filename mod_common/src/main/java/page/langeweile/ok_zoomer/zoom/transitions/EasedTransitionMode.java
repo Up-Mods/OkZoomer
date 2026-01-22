@@ -3,7 +3,7 @@ package page.langeweile.ok_zoomer.zoom.transitions;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.util.Mth;
 
-public class EasedTransitionMode implements TransitionMode {
+public class EasedTransitionMode {
 	private final FloatUnaryOperator startTransition;
 	private final FloatUnaryOperator endTransition;
 	private final FloatUnaryOperator scrollTransition;
@@ -55,23 +55,19 @@ public class EasedTransitionMode implements TransitionMode {
 		this.scrollMode = false;
 	}
 
-	@Override
 	public boolean getActive() {
 		return this.active || this.ticks <= this.targetEndTicks;
 	}
 
-	@Override
 	public float applyZoom(float fov, float tickDelta) {
 		return fov * Mth.lerp(tickDelta, this.lastInternalMultiplier, this.internalMultiplier);
 	}
 
-	@Override
 	public float getFade(float tickDelta) {
 		return Mth.lerp(tickDelta, this.lastInternalFade, this.internalFade);
 	}
 
 	// Once logic is finished? Throw this mess into a profiler
-	@Override
 	public void tick(boolean active, double divisor) {
 		float zoomMultiplier = (float) (1.0 / divisor);
 		float fadeMultiplier = active ? 1.0F : 0.0F;
@@ -148,7 +144,6 @@ public class EasedTransitionMode implements TransitionMode {
 		this.lastZoomMultiplier = zoomMultiplier;
 	}
 
-	@Override
 	public double getInternalMultiplier() {
 		return this.internalMultiplier;
 	}

@@ -63,6 +63,7 @@ public class OkZoomerConfigManager {
 			case LINEAR -> f -> f;
 			case SMOOTH -> f -> (float) (1.0 - Math.pow(2.0, -10.0 * f));
 			case SINE -> f -> (float) (1.0 - Math.cos(f * Math.PI / 2.0));
+			case BALANCED -> f -> (float) (1.0 - Math.pow(1.0 - f, 3.0));
 			case SPRING -> f -> (float) (Math.pow(2.0, -10.0F * f) * Mth.sin((f * 10.0F - 0.75F) * 1.5F) + 1.0F);
 		};
 	}

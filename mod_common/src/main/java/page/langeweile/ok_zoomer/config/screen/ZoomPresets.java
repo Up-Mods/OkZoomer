@@ -35,7 +35,7 @@ public class ZoomPresets {
 		OkZoomerConfigManager.CONFIG.appearance.persistentInterface, true,
 		OkZoomerConfigManager.CONFIG.appearance.hideCrosshair, false,
 		OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse, false,
-		// Best effort attempt at replicating Zoomify's zoom scrolling feeling without its jankiness
+		// Best effort attempt at replicating Zoomify's scroll feeling without its jankiness
 		OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 12,
 		OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution, 3,
 		OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep, 6,
@@ -53,7 +53,7 @@ public class ZoomPresets {
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.startTransitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomTransition.endTransitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling, false),
-		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 10), // Equivalent to 0.5 smoothness
+		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution, 10),
 		Map.entry(OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep, 10),

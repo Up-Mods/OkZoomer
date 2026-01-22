@@ -6,6 +6,7 @@ public class ConfigEnums {
 		LINEAR,
 		SMOOTH,
 		SINE,
+		BALANCED,
 		SPRING
 	}
 

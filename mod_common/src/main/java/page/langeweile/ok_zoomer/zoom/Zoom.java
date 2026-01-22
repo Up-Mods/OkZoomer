@@ -4,12 +4,11 @@ import page.langeweile.ok_zoomer.zoom.modifiers.MouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomOverlay;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
-import page.langeweile.ok_zoomer.zoom.transitions.TransitionMode;
 
 public class Zoom {
 	private static boolean zooming = false;
 	private static double zoomDivisor = 4.0F;
-	private static TransitionMode transitionMode = new EasedTransitionMode(
+	private static EasedTransitionMode transitionMode = new EasedTransitionMode(
 		x -> 1.0F,
 		x -> 1.0F,
 		x -> 1.0F,
@@ -38,11 +37,11 @@ public class Zoom {
 		Zoom.zooming = zooming;
 	}
 
-	public static TransitionMode getTransitionMode() {
-		return transitionMode;
+	public static EasedTransitionMode getTransitionMode() {
+		return Zoom.transitionMode;
 	}
 
-	public static void setTransitionMode(TransitionMode transitionMode) {
+	public static void setTransitionMode(EasedTransitionMode transitionMode) {
 		Zoom.transitionMode = transitionMode;
 	}
 
