@@ -2,6 +2,7 @@ package page.langeweile.ok_zoomer.config;
 
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Ease;
 import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
@@ -61,9 +62,10 @@ public class OkZoomerConfigManager {
 		return switch (mode) {
 			case INSTANT -> f -> 1.0F;
 			case LINEAR -> f -> f;
-			case SMOOTH -> f -> (float) (1.0 - Math.pow(2.0, -10.0 * f));
-			case SINE -> f -> (float) (1.0 - Math.cos(f * Math.PI / 2.0));
-			case BALANCED -> f -> (float) (1.0 - Math.pow(1.0 - f, 3.0));
+			case SMOOTH -> Ease::outExpo;
+			case SINE -> Ease::outSine;
+			case BALANCED -> Ease::outCubic;
+			// While the rest is out-of-shelf easings.net easings (yes, Mojang copied them), the Out Elastic easing has been modified to be less nausea-inducing
 			case SPRING -> f -> (float) (Math.pow(2.0, -10.0F * f) * Mth.sin((f * 10.0F - 0.75F) * 1.5F) + 1.0F);
 		};
 	}
