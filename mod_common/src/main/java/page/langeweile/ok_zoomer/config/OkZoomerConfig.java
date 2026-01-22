@@ -36,6 +36,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			"LINEAR": The zoom will linearly transition between its off and on states.
 			"SMOOTH": The zoom will smoothly transition between its off and on states using the game's smooth curve.
 			"SINE": The zoom will smoothly transition between its off and on states using a sine curve.
+			"BALANCED": The zoom will smoothly transition between its off and on states using cubic interpolation, balancing between linearity and smoothness.
 			"SPRING": The zoom will bouncily transition between its off and on states. Avoid using it too often!
 			""")
 		public final TrackedValue<ZoomTransitionModes> startTransition = this.value(ZoomTransitionModes.SMOOTH);
@@ -46,28 +47,29 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			"LINEAR": The zoom will linearly transition between its on and off states.
 			"SMOOTH": The zoom will smoothly transition between its on and off states using the game's smooth curve.
 			"SINE": The zoom will smoothly transition between its on and off states using a sine curve.
+			"BALANCED": The zoom will smoothly transition between its on and off states using cubic interpolation, balancing between linearity and smoothness.
 			"SPRING": The zoom will bouncily transition between its on and off states. Avoid using it too often!
 			""")
 		public final TrackedValue<ZoomTransitionModes> endTransition = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)
-		@Comment("How long should the end transition last for. 20 ticks is equal to 1 second.")
+		@Comment("Controls how long the end transition should last for. 20 ticks is equal to 1 second.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
 		public final TrackedValue<Integer> startTransitionTicks = this.value(8);
 
 		@WidgetSize(Size.HALF)
-		@Comment("How long should the start transition last for. 20 ticks is equal to 1 second.")
+		@Comment("Controls how long the start transition should last for. 20 ticks is equal to 1 second.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
 		public final TrackedValue<Integer> endTransitionTicks = this.value(8);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Inverts the start transition in a temporal way.")
+		@Comment("Inverts the start transition's curve.")
 		public final TrackedValue<Boolean> invertStartTransition = this.value(false);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Inverts the end transition in a temporal way.")
+		@Comment("Inverts the end transition's curve.")
 		public final TrackedValue<Boolean> invertEndTransition = this.value(false);
 	}
 
@@ -107,21 +109,17 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 	public static final class ControlsConfig extends Section {
 		@WidgetSize(Size.HALF)
-		@Comment("""
-			"OFF": Disables the zoom's cinematic camera.
-			"VANILLA": Uses the game's cinematic camera while zooming.
-			"MULTIPLIED": Uses the cinematic camera with a configurable multiplier while zooming.
-			""")
+		@Comment("Uses the game's cinematic camera while zooming.")
 		public final TrackedValue<Boolean> cinematicCamera = this.value(false);
 
 		@WidgetSize(Size.HALF)
-		@Comment("The multiplier used by the multiplied cinematic camera.")
+		@Comment("Changes the speed of the cinematic camera.")
 		@FloatRange(min = Float.MIN_NORMAL, max = 32.0F)
 		@RangeSubset(min = 1, max = 16)
 		public final TrackedValue<Float> cinematicCameraSpeed = this.value(1.0F);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Divides the mouse sensitivity with the zoom divisor while zooming.")
+		@Comment("Reduces the mouse sensitivity proportionally to how far the zoom is.")
 		public final TrackedValue<Boolean> reduceSensitivity = this.value(true);
 
 		@WidgetSize(Size.HALF)
@@ -133,11 +131,11 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<ZoomModes> zoomMode = this.value(ZoomModes.HOLD);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Adds the spyglass's sounds effects on zooming in and out")
+		@Comment("Adds the spyglass's sounds effects on alternating zoom.")
 		public final TrackedValue<Boolean> spyglassSounds = this.value(false);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Adds zoom manipulation keys along with the zoom key. A game reboot will be required in order to apply the changes.")
+		@Comment("Adds zoom manipulation keys along with the zoom key. A game restart will be required in order to apply the changes.")
 		public final TrackedValue<Boolean> extraKeyBinds = this.value(true);
 
 		@WidgetSize(Size.HALF)
@@ -173,12 +171,13 @@ public class OkZoomerConfig extends ReflectiveConfig {
 			"LINEAR": The zoom will linearly transition between each increment.
 			"SMOOTH": The zoom will smoothly transition between each increment using the game's smooth curve.
 			"SINE": The zoom will smoothly transition between each increment using a sine curve.
+			"BALANCED": The zoom will smoothly transition between each increment using cubic interpolation, balancing between linearity and smoothness.
 			"SPRING": The zoom will bouncily transition between each increment. Avoid using it too often!
 			""")
 		public final TrackedValue<ZoomTransitionModes> transition = this.value(ZoomTransitionModes.SMOOTH);
 
 		@WidgetSize(Size.HALF)
-		@Comment("How long should the transition last for. 20 ticks is equal to 1 second.")
+		@Comment("Controls how long should the transition last for. 20 ticks is equal to 1 second.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
 		public final TrackedValue<Integer> transitionTicks = this.value(8);
