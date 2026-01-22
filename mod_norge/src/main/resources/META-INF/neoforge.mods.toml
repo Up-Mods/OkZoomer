@@ -21,7 +21,7 @@ A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.11.0-alpha,)"
+versionRange = "[21.11.0-beta,)"
 ordering = "NONE"
 side = "CLIENT"
 

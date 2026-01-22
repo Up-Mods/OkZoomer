@@ -2,7 +2,7 @@
 minecraft = "1.21.11"
 minecraft_unobfuscated = "1.21.11_unobfuscated"
 
-fabric_loom = "1.15.1"
+fabric_loom = "1.15.2"
 fabric_loader = "0.18.4"
 moddevgradle = "2.0.139"
 neoforge = "21.11.36-beta"
