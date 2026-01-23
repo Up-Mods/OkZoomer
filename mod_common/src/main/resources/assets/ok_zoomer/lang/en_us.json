@@ -147,6 +147,7 @@
 	"config.ok_zoomer.presets.apply_preset": "Apply Preset",
 	"config.ok_zoomer.presets.apply_preset.tooltip": "Resets the settings to the selected preset.",
 	"config.ok_zoomer.discard_changes": "Discard Changes",
+	"config.ok_zoomer.sodium.page.zoom": "Zoom",
 	"tag.item.ok_zoomer.zoom_dependencies": "Zoom Dependencies",
 	"key.category.ok_zoomer.zoom": "Zoom",
 	"key.ok_zoomer.decrease_zoom": "Decrease Zoom",

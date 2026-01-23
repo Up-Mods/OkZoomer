@@ -147,6 +147,7 @@
 	"config.ok_zoomer.presets.apply_preset": "套用預設配置",
 	"config.ok_zoomer.presets.apply_preset.tooltip": "將設定重置為選定的預設配置。",
 	"config.ok_zoomer.discard_changes": "捨棄變更",
+	"config.ok_zoomer.sodium.page.zoom": "縮放",
 	"tag.item.ok_zoomer.zoom_dependencies": "縮放附屬項",
 	"key.category.ok_zoomer.zoom": "縮放",
 	"key.ok_zoomer.decrease_zoom": "減少縮放",

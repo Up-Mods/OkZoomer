@@ -78,6 +78,7 @@
 	"config.ok_zoomer.presets.apply_preset": "应用预设",
 	"config.ok_zoomer.presets.apply_preset.tooltip": "将设置重置为所选预设。",
 	"config.ok_zoomer.discard_changes": "放弃更改",
+	"config.ok_zoomer.sodium.page.zoom": "缩放",
 	"tag.item.ok_zoomer.zoom_dependencies": "缩放依赖",
 	"key.category.ok_zoomer.zoom": "缩放",
 	"key.ok_zoomer.decrease_zoom": "减小缩放",

@@ -19,6 +19,8 @@ dependencies {
 	modCompileOnly(libs.modmenu)
 	modLocalRuntime(libs.modmenu)
 
+	modCompileOnly(libs.sodium.fabric)
+
 	modImplementation(libs.wrench.wrapper.api.fabric)
 
 	include(libs.bundles.wrench.wrapper.fabric)

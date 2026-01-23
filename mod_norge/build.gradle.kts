@@ -36,4 +36,6 @@ neoForge {
 dependencies {
 	implementation(libs.wrench.wrapper.api.neoforge)
 	jarJar(libs.bundles.wrench.wrapper.neoforge)
+
+	compileOnly(libs.sodium.neoforge)
 }

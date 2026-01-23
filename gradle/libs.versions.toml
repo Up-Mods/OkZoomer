@@ -11,6 +11,7 @@ fabric_api = "0.141.1+1.21.11"
 wrench_wrapper = "0.8.1"
 
 modmenu = "17.0.0-beta.2"
+sodium = "0.8.2+mc1.21.11"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -23,6 +24,8 @@ wrench_wrapper_api_neoforge = { module = "page.langeweile.wrench_wrapper:api_neo
 wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:impl", version.ref = "wrench_wrapper" }
 
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
+sodium_fabric = { module = "net.caffeinemc:sodium-fabric-api", version.ref = "sodium" }
+sodium_neoforge = { module = "net.caffeinemc:sodium-neoforge-api", version.ref = "sodium" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
