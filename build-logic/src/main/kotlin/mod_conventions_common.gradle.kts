@@ -40,10 +40,10 @@ repositories {
 	}
 	exclusiveContent {
 		forRepository {
-			maven("https://maven.caffeinemc.net/releases")
+			maven("https://maven.parchmentmc.org")
 		}
 		filter {
-			includeGroup("net.caffeinemc")
+			includeGroup("org.parchmentmc.data")
 		}
 	}
 	mavenCentral()

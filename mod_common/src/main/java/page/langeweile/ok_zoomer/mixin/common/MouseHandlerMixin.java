@@ -3,7 +3,6 @@ package page.langeweile.ok_zoomer.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.client.input.MouseButtonInfo;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +26,7 @@ public abstract class MouseHandlerMixin {
 		),
 		cancellable = true
 	)
-	private void zoomScrollOnScroll(CallbackInfo ci, @Local int i) {
+	private void zoomScrollOnScroll(CallbackInfo ci, @Local(ordinal = 2) int i) {
 		if (i != 0) {
 			if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
 				if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value().equals(ConfigEnums.ZoomModes.PERSISTENT)) {
@@ -44,20 +43,20 @@ public abstract class MouseHandlerMixin {
 
 	// Handles the zoom scrolling reset through the middle button
 	@Inject(
-		method = "onButton",
+		method = "onPress",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/KeyMapping;set(Lcom/mojang/blaze3d/platform/InputConstants$Key;Z)V"
 		),
 		cancellable = true
 	)
-	private void zoomerOnMouseButton(long window, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
+	private void zoomerOnMouseButton(long window, int button, int action, int modifiers, CallbackInfo ci) {
 		if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
 			if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
-			if (buttonInfo.button() == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
+			if (button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
 				if (OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();

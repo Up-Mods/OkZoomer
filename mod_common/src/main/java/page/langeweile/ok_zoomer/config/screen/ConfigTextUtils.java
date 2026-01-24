@@ -1,7 +1,7 @@
 package page.langeweile.ok_zoomer.config.screen;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.config.api.Config;
 import org.quiltmc.config.api.annotations.SerializedNameConvention;
 import org.quiltmc.config.api.metadata.NamingScheme;
@@ -19,7 +19,7 @@ public class ConfigTextUtils {
 		this.scheme = this.config.metadata(SerializedNameConvention.TYPE);
 	}
 
-	public static Component getConfigTitle(Identifier configId) {
+	public static Component getConfigTitle(ResourceLocation configId) {
 		return Component.translatable("config." + configId.getNamespace() + ".title");
 	}
 

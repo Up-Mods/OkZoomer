@@ -20,6 +20,11 @@ repositories {
 neoForge {
 	version = libs.versions.neoforge.get()
 
+	parchment {
+		minecraftVersion = libs.versions.minecraft.get()
+		mappingsVersion = libs.versions.parchment.get()
+	}
+
 	runs {
 		register("client") {
 			client()
@@ -37,5 +42,5 @@ dependencies {
 	implementation(libs.wrench.wrapper.api.neoforge)
 	jarJar(libs.bundles.wrench.wrapper.neoforge)
 
-	compileOnly(libs.sodium.neoforge)
+	runtimeOnly(libs.wrench.wrapper.impl)
 }

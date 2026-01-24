@@ -9,12 +9,8 @@
 		"GuiMixin",
 		"MouseHandlerMixin",
 		"distance.BlockEntityRendererMixin",
-		"distance.IntegratedServerMixin",
-		"distance.LevelRendererMixin",
-		"fade.GuiGraphicsMixin",
-		"key_binds.AbstractSelectionListAccessor",
-		"key_binds.KeyBindsListAccessor",
-		"key_binds.KeyEntryMixin"
+		"distance.EntityMixin",
+		"distance.IntegratedServerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -8,7 +8,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.event.lifecycle.ClientStartedEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import page.langeweile.ok_zoomer.config.screen.OkZoomerConfigScreen;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
@@ -33,11 +32,6 @@ public class RegisterEvents {
 	public static void onClientTick(ClientTickEvent.Pre event) {
 		ManageZoomEvent.startClientTick(Minecraft.getInstance());
 		ManageExtraKeysEvent.startClientTick();
-	}
-
-	@SubscribeEvent
-	public static void onClientStarted(ClientStartedEvent event) {
-		ApplyLoadOnceOptionsEvent.readyClient();
 	}
 
 	@SubscribeEvent

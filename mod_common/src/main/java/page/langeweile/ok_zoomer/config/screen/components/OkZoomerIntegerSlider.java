@@ -43,10 +43,10 @@ public class OkZoomerIntegerSlider extends AbstractSliderButton {
 
 	@Override
 	protected void updateMessage() {
-		this.message = CommonComponents.optionNameValue(
+		this.setMessage(CommonComponents.optionNameValue(
 			optionText,
 			Component.literal(String.valueOf(this.internalValue))
-		);
+		));
 	}
 
 	@Override

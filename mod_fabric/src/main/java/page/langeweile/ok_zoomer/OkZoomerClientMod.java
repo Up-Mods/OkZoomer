@@ -5,6 +5,8 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.loader.api.FabricLoader;
+import page.langeweile.ok_zoomer.compat.TrinketsCompat;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.events.*;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
@@ -34,5 +36,9 @@ public class OkZoomerClientMod implements ClientModInitializer {
 
 		FabricZoomUtils.defineSafeSmartOcclusion();
 		FabricZoomUtils.addInitialPredicates();
+
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			TrinketsCompat.init();
+		}
 	}
 }

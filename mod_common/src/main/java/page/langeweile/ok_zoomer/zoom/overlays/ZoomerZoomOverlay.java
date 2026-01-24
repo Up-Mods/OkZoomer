@@ -1,18 +1,18 @@
 package page.langeweile.ok_zoomer.zoom.overlays;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
+import net.minecraft.resources.ResourceLocation;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
-	private final Identifier textureId;
+	private final ResourceLocation textureId;
 	private boolean active;
 
-	public ZoomerZoomOverlay(Identifier textureId) {
+	public ZoomerZoomOverlay(ResourceLocation textureId) {
 		this.textureId = textureId;
 		this.active = false;
 	}
@@ -24,9 +24,18 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 
 	@Override
 	public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, EasedTransitionMode transitionMode) {
+		RenderSystem.disableDepthTest();
+		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		float fade = transitionMode.getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
-		int color = ARGB.colorFromFloat(1.0F, fade, fade, fade);
-		graphics.blit(RenderPipelines.VIGNETTE, this.textureId, 0, 0, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight(), color);
+		RenderSystem.setShaderColor(fade, fade, fade, 1.0F);
+		graphics.blit(this.textureId, 0, 0, -90, 0.0F, 0.0F, graphics.guiWidth(), graphics.guiHeight(), graphics.guiWidth(), graphics.guiHeight());
+		RenderSystem.depthMask(true);
+		RenderSystem.enableDepthTest();
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableBlend();
 	}
 
 	@Override

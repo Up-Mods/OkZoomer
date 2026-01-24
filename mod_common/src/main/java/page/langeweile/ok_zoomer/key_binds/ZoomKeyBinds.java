@@ -12,7 +12,7 @@ public class ZoomKeyBinds {
 	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.controls.extraKeyBinds.getRealValue();
 
 	// The "Zoom" category
-	public static final KeyMapping.Category ZOOM_CATEGORY = KeyMapping.Category.register(ModUtils.id("zoom"));
+	public static final String ZOOM_CATEGORY = "key.category.ok_zoomer.zoom";
 
 	// The zoom key bind, which will be registered
 	public static final KeyMapping ZOOM_KEY = new KeyMapping("key.ok_zoomer.zoom", GLFW.GLFW_KEY_C, ZOOM_CATEGORY);

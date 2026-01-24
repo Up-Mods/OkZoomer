@@ -2,15 +2,9 @@ package page.langeweile.ok_zoomer.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.ProjectionType;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
-import net.minecraft.client.renderer.CachedPerspectiveProjectionMatrixBuffer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
@@ -26,17 +20,6 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-	@Shadow
-	@Final
-	private CachedPerspectiveProjectionMatrixBuffer hud3dProjectionMatrixBuffer;
-
-	@Shadow
-	@Final
-	private Minecraft minecraft;
-
-	@Unique
-	private static boolean is3DCrosshair;
-
 	@Inject(method = "tick()V", at = @At("HEAD"))
 	private void tickInstances(CallbackInfo info) {
 		boolean zooming = Zoom.isZooming();
@@ -53,7 +36,7 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyExpressionValue(
-		method = "getProjectionMatrixForCulling",
+		method = "renderLevel",
 		at = @At(
 			value = "INVOKE",
 			target = "Ljava/lang/Integer;intValue()I",
@@ -69,15 +52,15 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
-	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks, @Local(argsOnly = true) boolean useFovSetting) {
-		if (!Zoom.isTransitionActive() || is3DCrosshair || (!useFovSetting && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value())) {
+	private double modifyFov(double original, @Local(argsOnly = true) float partialTicks, @Local(argsOnly = true) boolean useFovSetting) {
+		if (!Zoom.isTransitionActive() || (!useFovSetting && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value())) {
 			return original;
 		} else {
-			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
+			return Zoom.getTransitionMode().applyZoom((float) original, partialTicks);
 		}
 	}
 
-	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
+	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
 	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
@@ -85,35 +68,4 @@ public abstract class GameRendererMixin {
 			return Zoom.getTransitionMode().applyZoom(bob, delta);
 		}
 	}
-
-	@WrapOperation(
-		method = "renderLevel",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render3dCrosshair(Lnet/minecraft/client/Camera;)V"
-		)
-	)
-	private void prevent3DCrosshairZoom(DebugScreenOverlay instance, Camera camera, Operation<Void> original, @Local(ordinal = 0) float f) {
-		if (!Zoom.isTransitionActive()) {
-			original.call(instance, camera);
-		} else {
-			is3DCrosshair = true;
-			var buffer = RenderSystem.getProjectionMatrixBuffer();
-			var type = RenderSystem.getProjectionType();
-			RenderSystem.setProjectionMatrix(
-				this.hud3dProjectionMatrixBuffer.getBuffer(
-					this.minecraft.getWindow().getWidth(),
-					this.minecraft.getWindow().getHeight(),
-					this.getFov(camera, f, false)
-				),
-				ProjectionType.PERSPECTIVE
-			);
-			original.call(instance, camera);
-			is3DCrosshair = false;
-			RenderSystem.setProjectionMatrix(buffer, type);
-		}
-	}
-
-	@Shadow
-	protected abstract float getFov(Camera camera, float partialTick, boolean useFovSetting);
 }

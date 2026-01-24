@@ -5,13 +5,17 @@ plugins {
 
 repositories {
 	maven("https://maven.terraformersmc.com/releases")
+	maven("https://maven.ladysnake.org/releases")
 }
 
 base.archivesName = "ok_zoomer-fabric"
 
 dependencies {
 	minecraft(libs.minecraft)
-	mappings(loom.officialMojangMappings())
+	mappings(loom.layered {
+		this.officialMojangMappings()
+		this.parchment(libs.parchment)
+	})
 	modImplementation(libs.fabric.loader)
 
 	modImplementation(libs.fabric.api)
@@ -19,7 +23,7 @@ dependencies {
 	modCompileOnly(libs.modmenu)
 	modLocalRuntime(libs.modmenu)
 
-	modCompileOnly(libs.sodium.fabric)
+	modCompileOnly(libs.bundles.trinkets)
 
 	modImplementation(libs.wrench.wrapper.api.fabric)
 

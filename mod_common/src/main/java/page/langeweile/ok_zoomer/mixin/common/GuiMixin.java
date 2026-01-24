@@ -3,19 +3,22 @@ package page.langeweile.ok_zoomer.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.DebugScreenOverlay;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
-import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(Gui.class)
@@ -74,11 +77,11 @@ public abstract class GuiMixin {
 			float fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
 			this.translation = 2.0F / ((1.0F / fov) - 1.0F);
 			this.scale = 1.0F / fov;
-			graphics.pose().pushMatrix();
-			graphics.pose().translate(-(graphics.guiWidth() / this.translation), -(graphics.guiHeight() / this.translation));
-			graphics.pose().scale(this.scale, this.scale);
+			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / this.translation), -(graphics.guiHeight() / this.translation), 0.0F);
+			graphics.pose().scale(this.scale, this.scale, 1.0F);
 			original.call(graphics, deltaTracker);
-			graphics.pose().popMatrix();
+			graphics.pose().popPose();
 		}
 	}
 
@@ -87,27 +90,54 @@ public abstract class GuiMixin {
 		boolean persistentInterface = OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value();
 		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
+			if (hideCrosshair) {
+				float fade = 1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true));
+				RenderSystem.setShaderColor(fade, fade, fade, fade);
+			}
 			original.call(graphics, deltaTracker);
+			if (hideCrosshair) {
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			}
 		} else {
-			// TODO - This fix is too suspicious, test it on pre-releases
-			graphics.pose().popMatrix();
+			// TODO - This has been recycled once, this should become a method
+			var lastPose = graphics.pose().last().pose();
+			graphics.pose().popPose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose();
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 			original.call(graphics, deltaTracker);
-			graphics.pose().pushMatrix();
-			graphics.pose().translate(-(graphics.guiWidth() / this.translation), -(graphics.guiHeight() / this.translation));
-			graphics.pose().scale(this.scale, this.scale);
+			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+			graphics.pose().scale(scale, scale, 1.0F);
 		}
 	}
 
-	// The "fade the whole pipeline" approach was too good to last forever,
-	// We'll just fade on GuiGraphics level
-	@WrapMethod(method = "renderCrosshair")
-	private void fadeCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value()) {
-			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true)));
-			original.call(guiGraphics, deltaTracker);
-			ZoomUtils.setFadeModifier(null);
+	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
+	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
+	@WrapOperation(
+		method = {
+			"method_55807",
+			"lambda$new$6"
+		},
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
+		),
+		allow = 1
+	)
+	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original, @Local(argsOnly = true) DeltaTracker deltaTracker) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+			original.call(instance, graphics);
 		} else {
-			original.call(guiGraphics, deltaTracker);
+			var lastPose = graphics.pose().last().pose();
+			graphics.pose().popPose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose();
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
+			original.call(instance, graphics);
+			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+			graphics.pose().scale(scale, scale, 1.0F);
 		}
 	}
 }

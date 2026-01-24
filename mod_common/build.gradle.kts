@@ -1,6 +1,6 @@
 plugins {
 	id("mod_conventions_common")
-	alias(libs.plugins.fabric.loom)
+	alias(libs.plugins.fabric.loom.remap)
 }
 
 base.archivesName = "ok_zoomer-common"
@@ -8,9 +8,13 @@ base.archivesName = "ok_zoomer-common"
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
-	minecraft(libs.minecraft.unobfuscated)
-	compileOnly(libs.fabric.loader)
-	compileOnly(libs.wrench.wrapper.api.fabric)
+	minecraft(libs.minecraft)
+	mappings(loom.layered {
+		this.officialMojangMappings()
+		this.parchment(libs.parchment)
+	})
+	modCompileOnly(libs.fabric.loader)
+	modCompileOnly(libs.wrench.wrapper.api.fabric)
 }
 
 loom {

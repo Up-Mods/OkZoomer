@@ -1,7 +1,7 @@
 package page.langeweile.ok_zoomer.config;
 
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
@@ -45,7 +45,7 @@ public class OkZoomerConfigManager {
 		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
 		// You won't do it without a nice placeholder texture though (that isn't Michael lmfao)
 		var overlayTextureId = CONFIG.appearance.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
-			? Identifier.withDefaultNamespace("textures/misc/spyglass_scope.png")
+			? ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png")
 			: ModUtils.id("textures/misc/zoom_overlay.png");
 
 		Zoom.setZoomOverlay(

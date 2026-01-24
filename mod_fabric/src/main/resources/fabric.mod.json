@@ -24,9 +24,6 @@
 		],
 		"preLaunch": [
 			"page.langeweile.ok_zoomer.OkZoomerPreLaunchMod"
-		],
-		"sodium:config_api_user": [
-			"page.langeweile.ok_zoomer.config.sodium.OkZoomerSodiumEntry"
 		]
 	},
 	"mixins": [
@@ -34,9 +31,9 @@
 		"ok_zoomer_fabric.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.17.2",
-		"minecraft": ">=1.21.11 <26.1-",
-		"fabric-api": ">=0.133.14"
+		"fabricloader": ">=0.16.7",
+		"minecraft": ">=1.21.0 <1.21.2",
+		"fabric-api": ">=0.102.0"
 	},
 	"custom": {
 		"mc-publish": {

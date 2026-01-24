@@ -1,21 +1,22 @@
 package page.langeweile.ok_zoomer.zoom.overlays;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
 // An implementation of the spyglass overlay as a zoom overlay
 public class SpyglassZoomOverlay implements ZoomOverlay {
-	private final Identifier textureId;
+	private final ResourceLocation textureId;
 	//private Minecraft minecraft;
 	private float scale;
 	private boolean active;
 
-	public SpyglassZoomOverlay(Identifier textureId) {
+	public SpyglassZoomOverlay(ResourceLocation textureId) {
 		this.textureId = textureId;
 		this.scale = 0.5F;
 		this.active = false;
@@ -45,11 +46,13 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		int y = (guiHeight - height) / 2;
 		int borderX = x + width;
 		int borderY = y + height;
-		graphics.blit(RenderPipelines.GUI_TEXTURED, textureId, x, y, 0.0F, 0.0F, width, height, width, height);
-		graphics.fill(RenderPipelines.GUI, 0, borderY, guiWidth, guiHeight, CommonColors.BLACK);
-		graphics.fill(RenderPipelines.GUI, 0, 0, guiWidth, y, CommonColors.BLACK);
-		graphics.fill(RenderPipelines.GUI, 0, y, x, borderY, CommonColors.BLACK);
-		graphics.fill(RenderPipelines.GUI, borderX, y, guiWidth, borderY, CommonColors.BLACK);
+		RenderSystem.enableBlend();
+		graphics.blit(this.textureId, x, y, 0.0F, 0.0F, width, height, width, height);
+		RenderSystem.disableBlend();
+		graphics.fill(RenderType.guiOverlay(), 0, borderY, guiWidth, guiHeight, CommonColors.BLACK);
+		graphics.fill(RenderType.guiOverlay(), 0, 0, guiWidth, y, CommonColors.BLACK);
+		graphics.fill(RenderType.guiOverlay(), 0, y, x, borderY, CommonColors.BLACK);
+		graphics.fill(RenderType.guiOverlay(), borderX, y, guiWidth, borderY, CommonColors.BLACK);
 	}
 
 	@Override

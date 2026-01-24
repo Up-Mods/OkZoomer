@@ -21,14 +21,14 @@ A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.11.0-alpha,)"
+versionRange = "[21.0.0,21.2.0)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.ok_zoomer]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.11,26.1)"
+versionRange = "[1.21.1,1.21.2)"
 ordering = "NONE"
 side = "CLIENT"
 
@@ -39,9 +39,6 @@ reason = "The mod \"okzoomer-neoforge\", a now-redundant port of Ok Zoomer, caus
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
-
-[modproperties.ok_zoomer]
-"sodium:config_api_user" = "page.langeweile.ok_zoomer.config.sodium.OkZoomerSodiumEntry"
 
 [mc-publish]
 modrinth = "${modrinth_id}"

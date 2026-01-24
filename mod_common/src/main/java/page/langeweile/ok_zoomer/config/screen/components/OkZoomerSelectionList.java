@@ -27,9 +27,7 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 	}
 
 	public void addCategory(Component component) {
-		int baseline = 9;
-		int padding = this.children().isEmpty() ? 0 : baseline * 2;
-		this.addEntry(new CategoryEntry(component, this.screen, padding), padding + baseline + 4);
+		this.addEntry(new CategoryEntry(component, this.screen));
 	}
 
 	public void addButton(AbstractWidget button) {
@@ -48,19 +46,17 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 		}
 	}
 
-	static class CategoryEntry extends Entry {
-		private final int paddingTop;
+	class CategoryEntry extends Entry {
 		private final StringWidget widget;
 
-		private CategoryEntry(Component title, Screen screen, int paddingTop) {
+		private CategoryEntry(Component title, Screen screen) {
 			super(screen);
-			this.widget = new StringWidget(title, screen.getFont());
-			this.paddingTop = paddingTop;
+			this.widget = new StringWidget(title, OkZoomerSelectionList.this.minecraft.font);
 		}
 
 		@Override
-		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
-			this.widget.setPosition(this.screen.width / 2 - 155, this.getContentY() + this.paddingTop);
+		public void render(GuiGraphics graphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
+			this.widget.setPosition(this.screen.width / 2 - 155, top + 14);
 			this.widget.render(graphics, mouseX, mouseY, partialTick);
 		}
 
@@ -96,9 +92,9 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 		}
 
 		@Override
-		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		public void render(GuiGraphics graphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
 			int x = this.screen.width / 2 - 155;
-			int y = this.getContentY();
+			int y = top;
 
 			this.leftButton.setPosition(x, y + 2);
 			this.leftButton.render(graphics, mouseX, mouseY, partialTick);
@@ -107,11 +103,6 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 				this.rightButton.setPosition(x + 160, y + 2);
 				this.rightButton.render(graphics, mouseX, mouseY, partialTick);
 			}
-		}
-
-		@Override
-		public int getHeight() {
-			return (rightButton != null ? Math.max(leftButton.getHeight(), rightButton.getHeight()) : leftButton.getHeight()) + 4;
 		}
 
 		@Override
