@@ -220,6 +220,11 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@WidgetSize(Size.HALF)
 		@Comment("Prints a random owo in the console when the game starts.")
 		public final TrackedValue<Boolean> printOwoOnStart = this.value(true);
+
+		@WidgetSize(Size.FULL)
+		@Comment("If enabled, the \"Save Toolbar Activator\" keybind will be unbound if there's a conflict with the zoom key.")
+		public final TrackedValue<Boolean> unbindConflictingKey = this.value(true);
+
 	}
 
 	// TODO - What if we had a secret Debug section?

@@ -1,5 +1,6 @@
 package page.langeweile.ok_zoomer;
 
+import com.mojang.datafixers.kinds.App;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -30,7 +31,10 @@ public class OkZoomerClientMod implements ClientModInitializer {
 		// Register events without entrypoints aughhhhhhhh
 		ClientTickEvents.START_CLIENT_TICK.register(ManageZoomEvent::startClientTick);
 		ClientTickEvents.START_CLIENT_TICK.register(client -> ManageExtraKeysEvent.startClientTick());
-		ClientLifecycleEvents.CLIENT_STARTED.register(client -> ApplyLoadOnceOptionsEvent.readyClient());
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			ApplyLoadOnceOptionsEvent.readyClient();
+			ApplyLoadOnceOptionsEvent.readyClientFabric(client);
+		});
 		ClientTickEvents.END_CLIENT_TICK.register(OpenScreenEvent::endClientTick);
 		ClientCommandRegistrationCallback.EVENT.register(RegisterCommands::registerCommands);
 

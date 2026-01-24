@@ -80,6 +80,10 @@ public class OkZoomerConfigScreen extends Screen {
 						this.newValues.putIfAbsent(trackie, trackedValue.getRealValue());
 
 						if (trackedValue.value() instanceof Boolean) {
+							if (trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
+								continue;
+							}
+
 							var button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
 								.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
 								.create(
