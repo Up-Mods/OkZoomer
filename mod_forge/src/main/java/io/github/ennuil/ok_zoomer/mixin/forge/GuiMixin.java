@@ -31,7 +31,6 @@ public abstract class GuiMixin {
 			// TODO - This has been recycled once, this should become a method
 			var lastPose = graphics.pose().last().pose();
 			graphics.pose().popPose();
-			graphics.pose().popPose();
 			graphics.pose().pushPose();
 			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 			original.call(graphics);

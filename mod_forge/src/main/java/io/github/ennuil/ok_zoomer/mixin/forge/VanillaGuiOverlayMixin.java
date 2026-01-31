@@ -21,7 +21,8 @@ public abstract class VanillaGuiOverlayMixin {
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraftforge/client/gui/overlay/ForgeGui;renderHUDText(IILnet/minecraft/client/gui/GuiGraphics;)V"
-		)
+		),
+		remap = false
 	)
 	private static void ensureDebugHudVisibility(ForgeGui instance, int screenWidth, int screenHeight, GuiGraphics graphics, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {

@@ -39,7 +39,8 @@
 			],
 			"dependencies": [
 				"fabric-api(required){curseforge:306612}{modrinth:P7dR8mSH}",
-				"trinkets(optional){curseforge:341284}{modrinth:5aaWibi9}"
+				"trinkets(optional){curseforge:341284}{modrinth:5aaWibi9}",
+				"accessories(optional){curseforge:938917}{modrinth:jtmvUHXj}"
 			]
 		}
 	}

@@ -16,10 +16,8 @@
 		"common.MouseHandlerMixin",
 		"forge.BlockEntityRendererMixin",
 		"forge.ForgeGuiMixin",
-		"forge.GameRendererMixin",
 		"forge.GuiMixin",
-		"forge.MouseHandlerMixin",
-		"forge.VanillaGuiOverlayMixin"
+		"forge.MouseHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
