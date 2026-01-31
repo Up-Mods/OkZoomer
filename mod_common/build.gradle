@@ -16,7 +16,7 @@ dependencies {
 	})
 	modImplementation libs.fabric.loader
 
-	compileOnly libs.wrench.wrapper
+	compileOnly libs.wrench.wrapper.api.fabric
 }
 
 loom {

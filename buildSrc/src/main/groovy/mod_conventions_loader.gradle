@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-	compileOnly(project(":mod_common")) {
+	implementation(project(":mod_common")) {
 		transitive = false
 	}
 }

@@ -48,18 +48,16 @@ legacyForge {
 }
 
 dependencies {
-	annotationProcessor libs.sponge
+	annotationProcessor libs.mixin
 	annotationProcessor libs.mixinextras.common
 
-	implementation libs.wrench.wrapper
-	jarJar libs.wrench.wrapper
+	implementation libs.wrench.wrapper.api.forge
+	runtimeOnly libs.wrench.wrapper.impl
+	jarJar libs.bundles.wrench.wrapper.forge
 
 	compileOnly libs.mixinextras.common
 	implementation libs.mixinextras.forge
 	jarJar libs.mixinextras.forge
-
-	modCompileOnly libs.accessories.norge
-	//modRuntimeOnly libs.accessories.norge
 }
 
 mixin {

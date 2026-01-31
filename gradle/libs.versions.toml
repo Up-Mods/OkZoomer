@@ -5,15 +5,14 @@ parchment = "2023.09.03"
 fabric_loom = "1.15.3"
 fabric_loader = "0.18.4"
 moddevgradle = "2.0.140"
-forge = "1.20.1-47.4.16"
+forge = "1.20.1-47.4.0"
 
 fabric_api = "0.92.5+1.20.1"
-wrench_wrapper = "0.6.2"
+wrench_wrapper = "0.8.1"
 
 modmenu = "7.2.2"
 trinkets = "3.7.2"
 cca = "6.1.2"
-accessories = "1.0.0-beta.47+1.20.1"
 
 mixin = "0.17.0+mixin.0.8.7"
 mixinextras = "0.5.3"
@@ -24,23 +23,25 @@ fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_l
 parchment = { module = "org.parchmentmc.data:parchment-1.20.1", version.ref = "parchment" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
-wrench_wrapper = { module = "io.github.ennuil:wrench_wrapper", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_fabric = { module = "page.langeweile.wrench_wrapper:api_fabric", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_forge = { module = "page.langeweile.wrench_wrapper:api_forge", version.ref = "wrench_wrapper" }
+wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:impl", version.ref = "wrench_wrapper" }
+
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
 cca_base = { module = "org.ladysnake.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cca_entity = { module = "org.ladysnake.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 
-accessories_fabric = { module = "io.wispforest:accessories-fabric", version.ref = "accessories" }
-accessories_norge = { module = "io.wispforest:accessories-neoforge", version.ref = "accessories" }
-
-sponge = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
+mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mixin" }
 mixinextras_common = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinextras" }
 mixinextras_forge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinextras" }
 
 # If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
 [bundles]
 trinkets = ["trinkets", "cca_base", "cca_entity"]
+wrench_wrapper_fabric = ["wrench_wrapper_api_fabric", "wrench_wrapper_impl"]
+wrench_wrapper_forge = ["wrench_wrapper_api_forge", "wrench_wrapper_impl"]
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }

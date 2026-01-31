@@ -25,15 +25,12 @@ dependencies {
 	modCompileOnly libs.modmenu
 	modLocalRuntime libs.modmenu
 
-	implementation libs.wrench.wrapper
+	implementation libs.wrench.wrapper.api.fabric
 
 	modCompileOnly libs.bundles.trinkets
 	//modLocalRuntime libs.bundles.trinkets
 
-	modCompileOnly libs.accessories.fabric
-	modLocalRuntime libs.accessories.fabric
-
-	include libs.wrench.wrapper
+	include libs.bundles.wrench.wrapper.fabric
 }
 
 loom {

@@ -16,9 +16,15 @@
 	"icon": "assets/ok_zoomer/icon.png",
 	"environment": "client",
 	"entrypoints": {
-		"client": ["io.github.ennuil.ok_zoomer.OkZoomerClientMod"],
-		"modmenu": ["io.github.ennuil.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"],
-		"preLaunch": ["io.github.ennuil.ok_zoomer.OkZoomerPreLaunchMod"]
+		"client": [
+			"page.langeweile.ok_zoomer.OkZoomerClientMod"
+		],
+		"modmenu": [
+			"page.langeweile.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"
+		],
+		"preLaunch": [
+			"page.langeweile.ok_zoomer.OkZoomerPreLaunchMod"
+		]
 	},
 	"mixins": [
 		"ok_zoomer.mixins.json",
