@@ -3,7 +3,7 @@ plugins {
 	`maven-publish`
 }
 
-val javaVersion = 21
+val javaVersion = 25
 
 val curseforgeId = "354047"
 val modrinthId = "aXf2OSFU"

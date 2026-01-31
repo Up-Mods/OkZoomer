@@ -9,7 +9,7 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			// Temporary during pre-release cycle
-			maven("https://maven.neoforged.net/releases")
+			maven("https://prmaven.neoforged.net/NeoForge/pr2879")
 		}
 		filter {
 			includeModule("net.neoforged", "neoforge")

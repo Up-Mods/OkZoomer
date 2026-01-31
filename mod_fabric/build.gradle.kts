@@ -1,6 +1,6 @@
 plugins {
 	id("mod_conventions_loader")
-	alias(libs.plugins.fabric.loom.remap)
+	alias(libs.plugins.fabric.loom)
 }
 
 repositories {
@@ -11,17 +11,16 @@ base.archivesName = "ok_zoomer-fabric"
 
 dependencies {
 	minecraft(libs.minecraft)
-	mappings(loom.officialMojangMappings())
-	modImplementation(libs.fabric.loader)
+	implementation(libs.fabric.loader)
 
-	modImplementation(libs.fabric.api)
+	implementation(libs.fabric.api)
 
-	modCompileOnly(libs.modmenu)
-	modLocalRuntime(libs.modmenu)
+	compileOnly(libs.modmenu)
+	localRuntime(libs.modmenu)
 
-	modCompileOnly(libs.sodium.fabric)
+	compileOnly(libs.sodium.neoforge)
 
-	modImplementation(libs.wrench.wrapper.api.fabric)
+	implementation(libs.wrench.wrapper.api.fabric)
 
 	include(libs.bundles.wrench.wrapper.fabric)
 }

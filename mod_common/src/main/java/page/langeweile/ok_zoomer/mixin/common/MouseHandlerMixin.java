@@ -2,6 +2,7 @@ package page.langeweile.ok_zoomer.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
 import org.lwjgl.glfw.GLFW;
@@ -20,6 +21,21 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin {
 	@Inject(
+		method = "turnPlayer",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/tutorial/Tutorial;onMouse(DD)V"
+		)
+	)
+	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(name = "xo") LocalDoubleRef xo, @Local(name = "yo") LocalDoubleRef yo, @Local(name = "sens") double sens) {
+		if (Zoom.isModifierActive()) {
+			double transitionMultiplier = Zoom.getTransitionMode().getInternalMultiplier();
+			xo.set(Zoom.getMouseModifier().applyXModifier(xo.get(), sens, movementTime, transitionMultiplier));
+			yo.set(Zoom.getMouseModifier().applyYModifier(yo.get(), sens, movementTime, transitionMultiplier));
+		}
+	}
+
+	@Inject(
 		method = "onScroll",
 		at = @At(
 			value = "INVOKE",
@@ -27,15 +43,15 @@ public abstract class MouseHandlerMixin {
 		),
 		cancellable = true
 	)
-	private void zoomScrollOnScroll(CallbackInfo ci, @Local int i) {
-		if (i != 0) {
+	private void zoomScrollOnScroll(CallbackInfo ci, @Local int wheel) {
+		if (wheel != 0) {
 			if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
 				if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value().equals(ConfigEnums.ZoomModes.PERSISTENT)) {
 					if (!ZoomKeyBinds.ZOOM_KEY.isDown()) return;
 				}
 
 				if (Zoom.isZooming()) {
-					ZoomUtils.changeZoomDivisor(i > 0);
+					ZoomUtils.changeZoomDivisor(wheel > 0);
 					ci.cancel();
 				}
 			}
@@ -51,13 +67,13 @@ public abstract class MouseHandlerMixin {
 		),
 		cancellable = true
 	)
-	private void zoomerOnMouseButton(long window, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
+	private void zoomerOnMouseButton(long handle, MouseButtonInfo rawButtonInfo, int action, CallbackInfo ci) {
 		if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
 			if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
-			if (buttonInfo.button() == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
+			if (rawButtonInfo.button() == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
 				if (OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();

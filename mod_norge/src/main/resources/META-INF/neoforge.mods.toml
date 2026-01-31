@@ -5,9 +5,6 @@ license = "All rights reserved"
 [[mixins]]
 config = "ok_zoomer.mixins.json"
 
-[[mixins]]
-config = "ok_zoomer_norge.mixins.json"
-
 [[mods]]
 modId = "ok_zoomer"
 version = "${version}"
