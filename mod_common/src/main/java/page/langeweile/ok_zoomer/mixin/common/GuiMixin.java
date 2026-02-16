@@ -103,7 +103,7 @@ public abstract class GuiMixin {
 	@WrapMethod(method = "renderCrosshair")
 	private void fadeCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value()) {
-			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true)));
+			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true)));
 			original.call(guiGraphics, deltaTracker);
 			ZoomUtils.setFadeModifier(null);
 		} else {
