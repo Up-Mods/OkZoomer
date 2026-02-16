@@ -10,8 +10,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
-import net.minecraft.client.renderer.CachedPerspectiveProjectionMatrixBuffer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Projection;
+import net.minecraft.client.renderer.ProjectionMatrixBuffer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +30,11 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public abstract class GameRendererMixin {
 	@Shadow
 	@Final
-	private CachedPerspectiveProjectionMatrixBuffer hud3dProjectionMatrixBuffer;
+	private ProjectionMatrixBuffer hud3dProjectionMatrixBuffer;
+
+	@Shadow
+	@Final
+	private Projection hudProjection;
 
 	@Shadow
 	@Final
@@ -93,27 +99,19 @@ public abstract class GameRendererMixin {
 			target = "Lnet/minecraft/client/gui/components/DebugScreenOverlay;render3dCrosshair(Lnet/minecraft/client/Camera;)V"
 		)
 	)
-	private void prevent3DCrosshairZoom(DebugScreenOverlay instance, Camera camera, Operation<Void> original, @Local(ordinal = 0) float f) {
+	private void prevent3DCrosshairZoom(DebugScreenOverlay instance, Camera camera, Operation<Void> original, @Local CameraRenderState cameraState) {
 		if (!Zoom.isTransitionActive()) {
 			original.call(instance, camera);
 		} else {
 			is3DCrosshair = true;
 			var buffer = RenderSystem.getProjectionMatrixBuffer();
 			var type = RenderSystem.getProjectionType();
-			RenderSystem.setProjectionMatrix(
-				this.hud3dProjectionMatrixBuffer.getBuffer(
-					this.minecraft.getWindow().getWidth(),
-					this.minecraft.getWindow().getHeight(),
-					this.getFov(camera, f, false)
-				),
-				ProjectionType.PERSPECTIVE
-			);
+
+			this.hudProjection.setupPerspective(0.05F, 100.0F, cameraState.hudFov, this.minecraft.getWindow().getWidth(), this.minecraft.getWindow().getHeight());
+			RenderSystem.setProjectionMatrix(this.hud3dProjectionMatrixBuffer.getBuffer(this.hudProjection), ProjectionType.PERSPECTIVE);
 			original.call(instance, camera);
 			is3DCrosshair = false;
 			RenderSystem.setProjectionMatrix(buffer, type);
 		}
 	}
-
-	@Shadow
-	protected abstract float getFov(Camera camera, float partialTick, boolean useFovSetting);
 }

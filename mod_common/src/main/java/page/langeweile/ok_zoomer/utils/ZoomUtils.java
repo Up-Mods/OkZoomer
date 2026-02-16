@@ -57,7 +57,7 @@ public class ZoomUtils {
 		}
 
 		if (OkZoomerConfigManager.CONFIG.tweaks.debugScrolling.value()) {
-			minecraft.player.displayClientMessage(Component.literal( zoomStep + " - " + divisor), true);
+			minecraft.player.sendOverlayMessage(Component.literal( zoomStep + " - " + divisor));
 		}
 	}
 
