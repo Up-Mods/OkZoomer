@@ -76,7 +76,7 @@ public class EasedTransitionMode {
 
 		if (skipTransition) {
 			this.internalMultiplier = active ? zoomMultiplier : 1.0F;
-			this.internalFade = active ? fadeMultiplier : 1.0F;
+			this.internalFade = active ? fadeMultiplier : 0.0F;
 			this.lastInternalMultiplier = this.internalMultiplier;
 			this.lastInternalFade = this.internalFade;
 		} else {
