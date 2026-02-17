@@ -4,7 +4,7 @@ minecraft = "26.1-snapshot-7"
 fabric_loom = "1.15.3"
 fabric_loader = "0.18.4"
 moddevgradle = "2.0.140"
-neoforge = "26.1.0.0-alpha.0+snapshot-4.20260123.181022"
+neoforge = "26.1.0.0-alpha.0+snapshot-7.20260217.173927"
 
 fabric_api = "0.143.4+26.1"
 wrench_wrapper = "0.8.1"

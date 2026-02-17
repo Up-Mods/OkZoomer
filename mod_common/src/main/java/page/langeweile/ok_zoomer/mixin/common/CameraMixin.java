@@ -1,15 +1,12 @@
 package page.langeweile.ok_zoomer.mixin.common;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;
 import net.minecraft.client.Camera;
-import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.zoom.Zoom;
@@ -34,13 +31,7 @@ public class CameraMixin {
 		}
 	}
 
-	@ModifyExpressionValue(
-		method = "calculateFov",
-			at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/Camera;modifyFovBasedOnDeathOrFluid(FF)F"
-		)
-	)
+	@ModifyReturnValue(method = "calculateFov", at = @At("TAIL"))
 	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks) {
 		if (!Zoom.isTransitionActive()) {
 			return original;
@@ -49,13 +40,7 @@ public class CameraMixin {
 		}
 	}
 
-	@ModifyExpressionValue(
-		method = "calculateHudFov",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/Camera;modifyFovBasedOnDeathOrFluid(FF)F"
-		)
-	)
+	@ModifyReturnValue(method = "calculateHudFov", at = @At("RETURN"))
 	private float modifyHandFov(float original, @Local(argsOnly = true) float partialTicks) {
 		if (!Zoom.isTransitionActive() && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
 			return original;
