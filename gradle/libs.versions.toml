@@ -1,12 +1,13 @@
 [versions]
-minecraft = "26.1-snapshot-7"
+minecraft = "26.1-snapshot-9"
 
-fabric_loom = "1.15.3"
+shadow = "9.3.1"
+fabric_loom = "1.15.4"
 fabric_loader = "0.18.4"
 moddevgradle = "2.0.140"
-neoforge = "26.1.0.0-alpha.0+snapshot-7.20260217.173927"
+neoforge = "26.1.0.0-alpha.12+snapshot-7"
 
-fabric_api = "0.143.4+26.1"
+fabric_api = "0.143.5+26.1"
 wrench_wrapper = "0.8.1"
 
 modmenu = "18.0.0-alpha.5"
@@ -31,5 +32,6 @@ wrench_wrapper_fabric = ["wrench_wrapper_api_fabric", "wrench_wrapper_impl"]
 wrench_wrapper_neoforge = ["wrench_wrapper_api_neoforge", "wrench_wrapper_impl"]
 
 [plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 fabric_loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric_loom" }
 moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }

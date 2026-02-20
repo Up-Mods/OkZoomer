@@ -1,3 +1,5 @@
+import kotlin.text.set
+
 plugins {
 	id("mod_conventions_loader")
 	alias(libs.plugins.fabric.loom)
@@ -8,6 +10,16 @@ repositories {
 }
 
 base.archivesName = "ok_zoomer-fabric"
+
+java {
+	withSourcesJar()
+
+	if (JavaVersion.current() < JavaVersion.toVersion(25)) {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(25))
+		}
+	}
+}
 
 dependencies {
 	minecraft(libs.minecraft)

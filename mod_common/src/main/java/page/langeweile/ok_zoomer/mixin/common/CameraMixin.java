@@ -1,5 +1,6 @@
 package page.langeweile.ok_zoomer.mixin.common;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Camera;
@@ -9,12 +10,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
+import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(Camera.class)
 public class CameraMixin {
 	@Shadow
-	private int matrixPropertiesDirty;
+	private float fov;
 
 	@Inject(method = "tick()V", at = @At("HEAD"))
 	private void tickInstances(CallbackInfo info) {
@@ -49,23 +51,18 @@ public class CameraMixin {
 		}
 	}
 
-	// TODO - Fix culling more thoroughly
-	/*
-	@ModifyArg(
+	@ModifyExpressionValue(
 		method = "createProjectionMatrixForCulling",
 		at = @At(
 			value = "INVOKE",
-			target = "Lorg/joml/Matrix4f;perspective(FFFFZ)Lorg/joml/Matrix4f;"
-		),
-		index = 0
+			target = "Ljava/lang/Math;max(FF)F"
+		)
 	)
-	private float modifyCulling(float original) {
-		if (!Zoom.isZooming()) {
+	private float modifyCullingFov(float original) {
+		if (!ZoomUtils.hasSmartOcclusion() || !Zoom.isZooming()) {
 			return original;
 		} else {
-			this.matrixPropertiesDirty |= 3;
-			return (float) (original * Zoom.getTransitionMode().getInternalMultiplier());
+			return this.fov;
 		}
 	}
-	 */
 }

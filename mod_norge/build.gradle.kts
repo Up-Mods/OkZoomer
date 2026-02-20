@@ -5,11 +5,20 @@ plugins {
 
 base.archivesName = "ok_zoomer-neo"
 
+java {
+	withSourcesJar()
+
+	if (JavaVersion.current() < JavaVersion.toVersion(25)) {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(25))
+		}
+	}
+}
+
 repositories {
 	exclusiveContent {
 		forRepository {
-			// Temporary during pre-release cycle
-			maven("https://prmaven.neoforged.net/NeoForge/pr2879")
+			maven("https://maven.neoforged.net/releases")
 		}
 		filter {
 			includeModule("net.neoforged", "neoforge")

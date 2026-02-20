@@ -23,22 +23,14 @@ jobs:
           java-version: 25
           cache: 'gradle'
       - name: Build with Gradle
-        run: ./gradlew build --rerun-tasks
+        run: ./gradlew :mod:build
       - name: Detonate JARs
         run: |
-          python ./ci/hissboom.py "./mod_fabric/build/libs/*.jar"
-          python ./ci/hissboom.py "./mod_norge/build/libs/*.jar"
-      - name: Upload build artifacts (Fabric)
+          python ./ci/hissboom.py "./mod/build/libs/*.jar"
+      - name: Upload build artifacts
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-${{ github.sha }}
           path: |
-            mod_fabric/build/libs/*.jar
-      - name: Upload build artifacts (Neo)
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.event.repository.name }}-Neo-${{ github.sha }}
-          path: |
-            mod_norge/build/libs/*.jar
+            mod/build/libs/*.jar

@@ -13,6 +13,7 @@ plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention").version("1.0.0")
 }
 
+include("mod")
 include("mod_common")
 include("mod_fabric")
 include("mod_norge")

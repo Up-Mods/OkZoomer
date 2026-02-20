@@ -5,6 +5,7 @@ plugins {
 
 val javaVersion = 25
 
+// TODO - Get rid of mc-publish stuff
 val curseforgeId = "354047"
 val modrinthId = "aXf2OSFU"
 
@@ -67,26 +68,5 @@ tasks.processResources {
 			"curseforge_id" to curseforgeId,
 			"modrinth_id" to modrinthId
 		))
-	}
-}
-
-publishing {
-	publications {
-		create<MavenPublication>("maven") {
-			artifactId = base.archivesName.get()
-			from(components["java"])
-		}
-	}
-
-	repositories {
-		val env = System.getenv()
-		if (env.contains("MAVEN_UPLOAD_URL")) {
-			maven(uri(env["MAVEN_UPLOAD_URL"]!!)) {
-				credentials {
-					username = env["MAVEN_UPLOAD_USERNAME"]
-					password = env["MAVEN_UPLOAD_PASSWORD"]
-				}
-			}
-		}
 	}
 }
