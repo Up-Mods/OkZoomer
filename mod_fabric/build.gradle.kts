@@ -1,5 +1,3 @@
-import kotlin.text.set
-
 plugins {
 	id("mod_conventions_loader")
 	alias(libs.plugins.fabric.loom)

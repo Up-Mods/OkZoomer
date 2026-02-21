@@ -19,8 +19,5 @@
 	],
 	"injectors": {
 		"defaultRequire": 1
-	},
-	"mixins": [
-		"UtilMixin"
-	]
+	}
 }
