@@ -30,7 +30,10 @@ dependencies {
 
 	implementation(libs.wrench.wrapper.api.fabric)
 
-	include(libs.bundles.wrench.wrapper.fabric)
+	// Instead of bundling both API and Implementation, let's only bundle API
+	// The NeoForge distro will bundle Implementation due to JarJar being more finicky than JiJ
+	//include(libs.bundles.wrench.wrapper.fabric)
+	include(libs.wrench.wrapper.api.fabric)
 }
 
 loom {
