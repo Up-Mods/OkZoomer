@@ -89,7 +89,6 @@ public abstract class GuiMixin {
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
-			// TODO - This fix is too suspicious, test it on pre-releases
 			graphics.pose().popMatrix();
 			original.call(graphics, deltaTracker);
 			graphics.pose().pushMatrix();

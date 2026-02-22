@@ -6,7 +6,6 @@
 	"client": [
 		"AbstractClientPlayerMixin",
 		"CameraMixin",
-		"GameRendererMixin",
 		"GuiMixin",
 		"MouseHandlerMixin",
 		"distance.BlockEntityRendererMixin",

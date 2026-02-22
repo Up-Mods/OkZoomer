@@ -42,9 +42,10 @@ public class CameraMixin {
 		}
 	}
 
+	// TODO - This affects the debug crosshair as well, make it not affect that!
 	@ModifyReturnValue(method = "calculateHudFov", at = @At("RETURN"))
 	private float modifyHandFov(float original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.isTransitionActive() && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
+		if (!Zoom.isTransitionActive() || !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
 			return original;
 		} else {
 			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
