@@ -1,5 +1,6 @@
 package page.langeweile.ok_zoomer;
 
+import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -20,7 +21,7 @@ public class OkZoomerClientMod {
 
 		OkZoomerConfigManager.init();
 
-		mod.registerExtensionPoint(IConfigScreenFactory.class, ((mod2, screen) -> new OkZoomerConfigScreen(screen)));
+		mod.registerExtensionPoint(IConfigScreenFactory.class, ((mod2, screen) -> (Screen) new OkZoomerConfigScreen(screen)));
 
 		NorgeZoomUtils.defineSafeSmartOcclusion();
 		NorgeZoomUtils.addInitialPredicates();

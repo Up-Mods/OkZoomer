@@ -3,7 +3,9 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":mod_common"))
+	implementation(project(":mod_common")) {
+		isTransitive = false
+	}
 }
 
 sourceSets.main {

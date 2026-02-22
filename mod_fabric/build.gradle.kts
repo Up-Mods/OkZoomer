@@ -12,10 +12,8 @@ base.archivesName = "ok_zoomer-fabric"
 java {
 	withSourcesJar()
 
-	if (JavaVersion.current() < JavaVersion.toVersion(25)) {
-		toolchain {
-			languageVersion.set(JavaLanguageVersion.of(25))
-		}
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(25))
 	}
 }
 

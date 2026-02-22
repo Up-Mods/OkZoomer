@@ -1,5 +1,5 @@
 plugins {
-	id("mod_conventions_loader")
+	id("mod_conventions_common")
 	alias(libs.plugins.moddevgradle)
 }
 
@@ -8,17 +8,15 @@ base.archivesName = "ok_zoomer-neo"
 java {
 	withSourcesJar()
 
-	if (JavaVersion.current() < JavaVersion.toVersion(25)) {
-		toolchain {
-			languageVersion.set(JavaLanguageVersion.of(25))
-		}
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(25))
 	}
 }
 
 repositories {
 	exclusiveContent {
 		forRepository {
-			maven("https://maven.neoforged.net/releases")
+			maven("https://prmaven.neoforged.net/NeoForge/pr2975")
 		}
 		filter {
 			includeModule("net.neoforged", "neoforge")
@@ -43,8 +41,18 @@ neoForge {
 }
 
 dependencies {
+	implementation(project(":mod_common")) {
+		isTransitive = false
+	}
+
 	implementation(libs.wrench.wrapper.api.neoforge)
 	jarJar(libs.bundles.wrench.wrapper.neoforge)
 
 	compileOnly(libs.sodium.neoforge)
+}
+
+sourceSets.main {
+	val common = project(":mod_common").sourceSets.main.get()
+	java.srcDirs(common.java) // TODO - *sigh* all of this in the name of patches
+	resources.srcDirs(common.resources)
 }
