@@ -39,8 +39,3 @@ side = "BOTH"
 
 [modproperties.ok_zoomer]
 "sodium:config_api_user" = "page.langeweile.ok_zoomer.config.sodium.OkZoomerSodiumEntry"
-
-[mc-publish]
-modrinth = "${modrinth_id}"
-curseforge = "${curseforge_id}"
-loaders = [ "neoforge" ]

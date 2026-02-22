@@ -59,14 +59,8 @@ tasks.processResources {
 
 	val version = project.version
 	inputs.property("version", version)
-	inputs.property("curseforge_id", curseforgeId)
-	inputs.property("modrinth_id", modrinthId)
 
 	filesMatching(listOf("fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
-		expand(mapOf(
-			"version" to version,
-			"curseforge_id" to curseforgeId,
-			"modrinth_id" to modrinthId
-		))
+		expand("version" to version)
 	}
 }
