@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ForgeZoomUtils;
+import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(ForgeGui.class)
 public class ForgeGuiMixin {
@@ -17,7 +18,7 @@ public class ForgeGuiMixin {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !page.langeweile.ok_zoomer.zoom.Zoom.getTransitionMode().getActive()) {
 			original.call(graphics, partialTick);
 		} else {
-			float fov = page.langeweile.ok_zoomer.zoom.Zoom.getTransitionMode().applyZoom(1.0F, partialTick);
+			float fov = Zoom.getTransitionMode().applyZoom(1.0F, partialTick);
 			ForgeZoomUtils.translation = 2.0F / ((1.0F / fov) - 1.0F);
 			ForgeZoomUtils.scale = 1.0F / fov;
 			graphics.pose().pushPose();

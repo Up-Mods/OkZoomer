@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
@@ -14,8 +13,6 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(VanillaGuiOverlay.class)
 public abstract class VanillaGuiOverlayMixin {
-	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
-	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
 	@WrapOperation(
 		method = "lambda$static$18",
 		at = @At(
@@ -28,15 +25,31 @@ public abstract class VanillaGuiOverlayMixin {
 		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, screenWidth, screenHeight, graphics);
 		} else {
-			var lastPose = graphics.pose().last().pose();
 			graphics.pose().popPose();
-			graphics.pose().pushPose();
-			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 			original.call(instance, screenWidth, screenHeight, graphics);
 			graphics.pose().pushPose();
 			graphics.pose().translate(-(graphics.guiWidth() / ForgeZoomUtils.translation), -(graphics.guiHeight() / ForgeZoomUtils.translation), 0.0F);
 			graphics.pose().scale(ForgeZoomUtils.scale, ForgeZoomUtils.scale, 1.0F);
+		}
+	}
+
+	@WrapOperation(
+		method = "lambda$static$22",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraftforge/client/gui/overlay/ForgeGui;renderSubtitles(Lnet/minecraft/client/gui/GuiGraphics;)V"
+		),
+		remap = false
+	)
+	private static void ensureSubtitlesVisibility(ForgeGui instance, GuiGraphics graphics, Operation<Void> original) {
+		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+			original.call(instance, graphics);
+		} else {
+			graphics.pose().popPose();
+			original.call(instance, graphics);
 			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / ForgeZoomUtils.translation), -(graphics.guiHeight() / ForgeZoomUtils.translation), 0.0F);
+			graphics.pose().scale(ForgeZoomUtils.scale, ForgeZoomUtils.scale, 1.0F);
 		}
 	}
 }

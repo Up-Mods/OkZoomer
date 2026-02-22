@@ -28,17 +28,18 @@ public abstract class GuiMixin {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 		} else {
-			// TODO - This has been recycled once, this should become a method
 			var lastPose = graphics.pose().last().pose();
-			graphics.pose().popPose();
-			graphics.pose().popPose();
+			graphics.pose().popPose(); // Pops the translation pose
+			graphics.pose().popPose(); // Pops the zoom pose
 			graphics.pose().pushPose();
 			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 			original.call(graphics);
-			graphics.pose().pushPose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose(); // Restores zoom pose
 			graphics.pose().translate(-(graphics.guiWidth() / ForgeZoomUtils.translation), -(graphics.guiHeight() / ForgeZoomUtils.translation), 0.0F);
 			graphics.pose().scale(ForgeZoomUtils.scale, ForgeZoomUtils.scale, 1.0F);
-			graphics.pose().pushPose();
+			graphics.pose().pushPose(); // Restores translation pose
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 		}
 	}
 }
