@@ -145,7 +145,7 @@ public abstract class GuiMixin {
 	@WrapOperation(
 		method = {
 			"method_55806",
-			"lambda$new$5"
+			"lambda$new$7"
 		},
 		at = @At(
 			value = "INVOKE",
