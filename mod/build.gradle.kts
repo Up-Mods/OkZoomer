@@ -36,6 +36,7 @@ dependencies {
 	}
 }
 
+// TODO - Somehow make a source JAR from all of this
 tasks.shadowJar {
 	archiveClassifier = ""
 }

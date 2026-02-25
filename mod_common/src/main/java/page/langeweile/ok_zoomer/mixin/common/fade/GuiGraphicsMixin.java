@@ -17,7 +17,7 @@ public abstract class GuiGraphicsMixin {
 	private void modifyFade(RenderPipeline pipeline, GpuTextureView textureView, GpuSampler sampler, int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color, Operation<Void> original) {
 		if (ZoomUtils.getFadeModifier() != null) {
 			float fade = ZoomUtils.getFadeModifier();
-			if (pipeline.getBlendFunction().isPresent() && pipeline.getBlendFunction().get().destAlpha() == DestFactor.ZERO) {
+			if (pipeline.getColorTargetState().blendFunction().isPresent() && pipeline.getColorTargetState().blendFunction().get().destAlpha() == DestFactor.ZERO) {
 				original.call(pipeline, textureView, sampler, x0, y0, x1, y1, u0, u1, v0, v1, ARGB.scaleRGB(color, fade));
 			} else {
 				original.call(pipeline, textureView, sampler, x0, y0, x1, y1, u0, u1, v0, v1, ARGB.color(fade, color));

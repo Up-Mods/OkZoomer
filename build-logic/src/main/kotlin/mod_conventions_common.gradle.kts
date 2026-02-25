@@ -12,16 +12,6 @@ val modrinthId = "aXf2OSFU"
 version = System.getenv().get("TAG") ?: "0.0.0"
 group = "page.langeweile.ok_zoomer"
 
-java {
-	withSourcesJar()
-
-	if (JavaVersion.current() < JavaVersion.toVersion(javaVersion)) {
-		toolchain {
-			languageVersion.set(JavaLanguageVersion.of(javaVersion))
-		}
-	}
-}
-
 repositories {
 	exclusiveContent {
 		forRepository {
