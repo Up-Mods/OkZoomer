@@ -14,7 +14,7 @@ public class RegisterGameEvents {
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
 		ManageZoomEvent.startClientTick(Minecraft.getInstance());
-		ManageExtraKeysEvent.startClientTick(Minecraft.getInstance());
+		ManageExtraKeysEvent.startClientTick();
 	}
 
 	@SubscribeEvent

@@ -3,16 +3,12 @@
 	"minVersion": "0.8",
 	"package": "page.langeweile.ok_zoomer.mixin.common",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-      "EntityMixin"
-	],
 	"client": [
-      "AbstractClientPlayerMixin",
-      "EditBoxAccessor",
-      "EditBoxMixin",
-      "GameRendererMixin",
-      "IntegratedServerMixin",
-      "MouseHandlerMixin"
+			"AbstractClientPlayerMixin",
+			"GameRendererMixin",
+			"MouseHandlerMixin",
+			"distance.EntityMixin",
+			"distance.IntegratedServerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

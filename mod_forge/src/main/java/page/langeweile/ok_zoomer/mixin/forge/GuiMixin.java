@@ -16,8 +16,8 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public abstract class GuiMixin {
 	@WrapMethod(method = "renderCrosshair")
 	private void hideCrosshair(GuiGraphics graphics, Operation<Void> original) {
-		boolean persistentInterface = OkZoomerConfigManager.CONFIG.features.persistentInterface.value();
-		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
+		boolean persistentInterface = OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value();
+		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			if (hideCrosshair) {
 				float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getFrameTime());

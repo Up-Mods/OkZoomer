@@ -3,10 +3,9 @@ package page.langeweile.ok_zoomer.config.screen;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.*;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -19,10 +18,10 @@ import org.quiltmc.config.api.values.ValueTreeNode;
 import page.langeweile.ok_zoomer.config.ConfigEnums;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
-import page.langeweile.ok_zoomer.config.screen.components.LabelledEditBox;
-import page.langeweile.ok_zoomer.config.screen.components.OkZoomerAbstractSelectionList;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerFloatSlider;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerIntegerSlider;
+import page.langeweile.ok_zoomer.config.screen.components.OkZoomerSelectionList;
 import page.langeweile.ok_zoomer.utils.ModUtils;
-import page.langeweile.ok_zoomer.utils.ZoomUtils;
 
 import java.util.Locale;
 import java.util.Map;
@@ -33,7 +32,8 @@ public class OkZoomerConfigScreen extends Screen {
 	private final ResourceLocation configId;
 	private final Screen parent;
 	private ConfigTextUtils configTextUtils;
-	private OkZoomerAbstractSelectionList entryListWidget;
+	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
+	private OkZoomerSelectionList selectionList;
 
 	private final Map<TrackedValue<Object>, Object> newValues;
 	private final Set<TrackedValue<Object>> invalidValues;
@@ -51,10 +51,12 @@ public class OkZoomerConfigScreen extends Screen {
 	protected void init() {
 		var config = Configs.getConfig(this.configId.getNamespace(), this.configId.getPath());
 		this.configTextUtils = new ConfigTextUtils(config);
-		this.entryListWidget = new OkZoomerAbstractSelectionList(this.minecraft, this.width, this.height - 64, 32);
+		this.selectionList = new OkZoomerSelectionList(this.minecraft, this.width, this.height - 64, 32, this);
 
-		this.entryListWidget.addCategory(Component.translatable("config.ok_zoomer.presets"));
-		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT))))
+		this.selectionList.addCategory(Component.translatable("config.ok_zoomer.presets"));
+		var presetButton = CycleButton.<ConfigEnums.ZoomPresets>builder(
+			value -> Component.translatable(String.format("config.ok_zoomer.presets.preset.%s", value.toString().toLowerCase(Locale.ROOT)))
+			)
 			.withValues(ConfigEnums.ZoomPresets.values())
 			.withTooltip(value -> Tooltip.create(Component.translatable(String.format("config.ok_zoomer.presets.preset.%s.tooltip", value.toString().toLowerCase(Locale.ROOT)))))
 			.withInitialValue(ConfigEnums.ZoomPresets.CAMERA)
@@ -65,11 +67,11 @@ public class OkZoomerConfigScreen extends Screen {
 				button -> this.resetToPreset(presetButton.getValue()))
 			.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.presets.apply_preset.tooltip")))
 			.build();
-		this.entryListWidget.addButton(presetButton, resetButton);
+		this.selectionList.addButton(presetButton, resetButton);
 
 		for (var node : config.nodes()) {
 			if (node instanceof ValueTreeNode.Section section) {
-				this.entryListWidget.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
+				this.selectionList.addCategory(this.configTextUtils.getCategoryText(section.key().toString()));
 
 				for (var subNode : section) {
 					var size = subNode.metadata(WidgetSize.TYPE);
@@ -79,95 +81,125 @@ public class OkZoomerConfigScreen extends Screen {
 						this.newValues.putIfAbsent(trackie, trackedValue.getRealValue());
 
 						if (trackedValue.value() instanceof Boolean) {
-							AbstractWidget button;
-							if (!trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
-								button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
-									.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
-									.create(
-										0, 0, 150, 20,
-										this.configTextUtils.getOptionText(trackedValue),
-										(button_, value) -> this.newValues.replace(trackie, value));
-							} else {
-								// TODO - ew, hardcoding; we can do better than that
-								button = Button.builder(
-										Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key"),
-										button_ -> ZoomUtils.unbindConflictingKey(this.minecraft, true))
-									.tooltip(Tooltip.create(Component.translatable("config.ok_zoomer.tweaks.unbind_conflicting_key.tooltip")))
-									.build();
+							if (trackedValue.equals(OkZoomerConfigManager.CONFIG.tweaks.unbindConflictingKey)) {
+								continue;
 							}
-							this.addOptionToList(button, size);
-						} else if (trackedValue.value() instanceof Double) {
-							var button = new LabelledEditBox(
-								this.font,
-								0, 0, 150, 32,
-								this.configTextUtils.getOptionText(trackedValue)
-							);
-							button.setValue(((Double) this.newValues.get(trackie)).toString());
-							button.setResponder(value -> {
-								try {
-									double min = Double.NEGATIVE_INFINITY;
-									double max = Double.POSITIVE_INFINITY;
 
-									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?> range) {
-											min = Math.max(((Constraint.Range<Double>) range).min(), min);
-											max = Math.min(((Constraint.Range<Double>) range).max(), max);
+							var button = CycleButton.onOffBuilder((Boolean) this.newValues.get(trackie))
+								.withTooltip(value -> Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)))
+								.create(
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue),
+									(button_, value) -> this.newValues.replace(trackie, value));
+							this.addOptionToList(button, size);
+						} else if (trackedValue.value() instanceof Float) {
+							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
+								var slider = new OkZoomerFloatSlider(
+									(TrackedValue<Float>) (Object) trackie,
+									this.configTextUtils.getOptionText(trackie),
+									0, 0, 150, 20,
+									(float) this.newValues.get(trackie),
+									value -> this.newValues.replace(trackie, value)
+								);
+								slider.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+								this.addOptionToList(slider, size);
+							} else {
+								var button = new EditBox(
+									this.font,
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue)
+								);
+								button.setValue(((Float) this.newValues.get(trackie)).toString());
+								button.setResponder(value -> {
+									try {
+										float min = Float.NEGATIVE_INFINITY;
+										float max = Float.POSITIVE_INFINITY;
+
+										for (var constraint : trackedValue.constraints()) {
+											if (constraint instanceof Constraint.Range<?> range) {
+												min = Math.max(((Constraint.Range<Float>) range).min(), min);
+												max = Math.min(((Constraint.Range<Float>) range).max(), max);
+											}
 										}
-									}
 
-									double parsedValue = Double.parseDouble(value);
-									if (parsedValue < min || parsedValue > max) {
-										// Yes, this isn't exactly right but oh well
-										throw new IndexOutOfBoundsException();
-									}
+										float parsedValue = Float.parseFloat(value);
+										if (parsedValue < min || parsedValue > max) {
+											// Yes, this isn't exactly right but oh well
+											throw new IndexOutOfBoundsException();
+										}
 
-									this.newValues.replace(trackie, parsedValue);
-									this.invalidValues.remove(trackie);
-									button.setTextColor(0xFFE0E0E0);
-								} catch (NumberFormatException | IndexOutOfBoundsException e) {
-									this.invalidValues.add(trackie);
-									button.setTextColor(CommonColors.RED);
-								}
-							});
-							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
-							this.addOptionToList(button, size);
+										this.newValues.replace(trackie, parsedValue);
+										this.invalidValues.remove(trackie);
+										button.setTextColor(0xFFE0E0E0);
+									} catch (NumberFormatException | IndexOutOfBoundsException e) {
+										this.invalidValues.add(trackie);
+										button.setTextColor(CommonColors.RED);
+									}
+								});
+								button.setTooltip(Tooltip.create(
+									CommonComponents.joinLines(
+										this.configTextUtils.getOptionText(trackedValue),
+										this.configTextUtils.getOptionTextTooltip(trackedValue)
+									)
+								));
+								this.addOptionToList(button, size);
+							}
 						} else if (trackedValue.value() instanceof Integer) {
-							var button = new LabelledEditBox(
-								this.font,
-								0, 0, 150, 32,
-								this.configTextUtils.getOptionText(trackedValue)
-							);
-							button.setValue(((Integer) this.newValues.get(trackie)).toString());
-							button.setResponder(value -> {
-								try {
-									int min = Integer.MIN_VALUE;
-									int max = Integer.MAX_VALUE;
+							if (OkZoomerConfigManager.CONFIG.tweaks.numericSliders.value()) {
+								var slider = new OkZoomerIntegerSlider(
+									(TrackedValue<Integer>) (Object) trackie,
+									this.configTextUtils.getOptionText(trackie),
+									0, 0, 150, 20,
+									(int) this.newValues.get(trackie),
+									value -> this.newValues.replace(trackie, value)
+								);
+								slider.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
+								this.addOptionToList(slider, size);
+							} else {
+								var button = new EditBox(
+									this.font,
+									0, 0, 150, 20,
+									this.configTextUtils.getOptionText(trackedValue)
+								);
+								button.setValue(((Integer) this.newValues.get(trackie)).toString());
+								button.setResponder(value -> {
+									try {
+										int min = Integer.MIN_VALUE;
+										int max = Integer.MAX_VALUE;
 
-									for (var constraint : trackedValue.constraints()) {
-										if (constraint instanceof Constraint.Range<?> range) {
-											min = Math.max(((Constraint.Range<Integer>) range).min(), min);
-											max = Math.min(((Constraint.Range<Integer>) range).max(), max);
+										for (var constraint : trackedValue.constraints()) {
+											if (constraint instanceof Constraint.Range<?> range) {
+												min = Math.max(((Constraint.Range<Integer>) range).min(), min);
+												max = Math.min(((Constraint.Range<Integer>) range).max(), max);
+											}
 										}
-									}
 
-									int parsedValue = Integer.parseInt(value);
-									if (parsedValue < min || parsedValue > max) {
-										// Yes, this isn't exactly right but oh well
-										throw new IndexOutOfBoundsException();
-									}
+										int parsedValue = Integer.parseInt(value);
+										if (parsedValue < min || parsedValue > max) {
+											// Yes, this isn't exactly right but oh well
+											throw new IndexOutOfBoundsException();
+										}
 
-									this.newValues.replace(trackie, parsedValue);
-									this.invalidValues.remove(trackie);
-									button.setTextColor(0xFFE0E0E0);
-								} catch (NumberFormatException | IndexOutOfBoundsException e) {
-									this.invalidValues.add(trackie);
-									button.setTextColor(CommonColors.RED);
-								}
-							});
-							button.setTooltip(Tooltip.create(this.configTextUtils.getOptionTextTooltip(trackedValue)));
-							this.addOptionToList(button, size);
+										this.newValues.replace(trackie, parsedValue);
+										this.invalidValues.remove(trackie);
+										button.setTextColor(0xFFE0E0E0);
+									} catch (NumberFormatException | IndexOutOfBoundsException e) {
+										this.invalidValues.add(trackie);
+										button.setTextColor(CommonColors.RED);
+									}
+								});
+								button.setTooltip(Tooltip.create(
+									CommonComponents.joinLines(
+										this.configTextUtils.getOptionText(trackedValue),
+										this.configTextUtils.getOptionTextTooltip(trackedValue)
+									)
+								));
+								this.addOptionToList(button, size);
+							}
 						} else if (trackedValue.value() instanceof ConfigEnums.ConfigEnum configEnum) {
-							var button = CycleButton.<ConfigEnums.ConfigEnum>builder(value -> this.configTextUtils.getEnumOptionText(trackedValue, value))
+							var button = CycleButton.<ConfigEnums.ConfigEnum>builder(
+								value -> this.configTextUtils.getEnumOptionText(trackedValue, value)
+								)
 								.withValues((ConfigEnums.ConfigEnum[]) ((Enum<?>) configEnum).getDeclaringClass().getEnumConstants())
 								.withTooltip(value -> Tooltip.create(this.configTextUtils.getEnumOptionTextTooltip(trackedValue, value)))
 								.withInitialValue((ConfigEnums.ConfigEnum) this.newValues.get(trackie))
@@ -181,14 +213,13 @@ public class OkZoomerConfigScreen extends Screen {
 				}
 
 				if (this.buttonBuffer != null) {
-					this.entryListWidget.addButton(buttonBuffer, null);
+					this.selectionList.addButton(buttonBuffer, null);
 					this.buttonBuffer = null;
 				}
 			}
 		}
 
-		this.entryListWidget.finish();
-		this.addWidget(this.entryListWidget);
+		this.addWidget(this.selectionList);
 
 		this.addRenderableWidget(
 			Button.builder(Component.translatable("config.ok_zoomer.discard_changes"), button -> this.resetNewValues())
@@ -201,20 +232,25 @@ public class OkZoomerConfigScreen extends Screen {
 				.build());
 	}
 
+	@Override
+	public void renderBackground(GuiGraphics graphics) {
+		super.renderDirtBackground(graphics);
+	}
+
 	private void addOptionToList(AbstractWidget button, WidgetSize.Size size) {
 		if (size == WidgetSize.Size.HALF) {
 			if (this.buttonBuffer == null) {
 				this.buttonBuffer = button;
 			} else {
-				this.entryListWidget.addButton(this.buttonBuffer, button);
+				this.selectionList.addButton(this.buttonBuffer, button);
 				this.buttonBuffer = null;
 			}
 		} else {
 			if (this.buttonBuffer != null) {
-				this.entryListWidget.addButton(this.buttonBuffer, null);
+				this.selectionList.addButton(this.buttonBuffer, null);
 				this.buttonBuffer = null;
 			}
-			this.entryListWidget.addButton(button);
+			this.selectionList.addButton(button);
 		}
 	}
 
@@ -223,7 +259,7 @@ public class OkZoomerConfigScreen extends Screen {
 		this.renderBackground(graphics);
 		// Y: 20 is technically the vanilla Y, but I'd rather go for as close to 1.20.5 vanilla Y as possible
 		graphics.drawCenteredString(this.font, ConfigTextUtils.getConfigTitle(configId), this.width / 2, 15, CommonColors.WHITE);
-		this.entryListWidget.render(graphics, mouseX, mouseY, partialTick);
+		this.selectionList.render(graphics, mouseX, mouseY, partialTick);
 		super.render(graphics, mouseX, mouseY, partialTick);
 	}
 
@@ -243,9 +279,9 @@ public class OkZoomerConfigScreen extends Screen {
 	}
 
 	private void refresh() {
-		var scrollAmount = this.entryListWidget.getScrollAmount();
+		var scrollAmount = this.selectionList.getScrollAmount();
 		this.rebuildWidgets();
-		this.entryListWidget.setScrollAmount(scrollAmount);
+		this.selectionList.setScrollAmount(scrollAmount);
 	}
 
 	private void resetNewValues() {

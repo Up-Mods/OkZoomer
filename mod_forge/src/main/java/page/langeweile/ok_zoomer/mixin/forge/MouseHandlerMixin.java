@@ -20,10 +20,9 @@ public abstract class MouseHandlerMixin {
 	)
 	public void applyZoomChanges(CallbackInfo ci, @Local(ordinal = 1) double e, @Local(ordinal = 5) LocalDoubleRef k, @Local(ordinal = 6) LocalDoubleRef l, @Local(ordinal = 4) double h) {
 		if (Zoom.isModifierActive()) {
-			double zoomDivisor = Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0;
-			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			k.set(Zoom.getMouseModifier().applyXModifier(k.get(), h, e, zoomDivisor, transitionDivisor));
-			l.set(Zoom.getMouseModifier().applyYModifier(l.get(), h, e, zoomDivisor, transitionDivisor));
+			double transitionMultiplier = Zoom.getTransitionMode().getInternalMultiplier();
+			k.set(Zoom.getMouseModifier().applyXModifier(k.get(), h, e, transitionMultiplier));
+			l.set(Zoom.getMouseModifier().applyYModifier(l.get(), h, e, transitionMultiplier));
 		}
 	}
 }

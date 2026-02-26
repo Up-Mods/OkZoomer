@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer.mixin.forge;
+package page.langeweile.ok_zoomer.mixin.forge.distance;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.util.Mth;

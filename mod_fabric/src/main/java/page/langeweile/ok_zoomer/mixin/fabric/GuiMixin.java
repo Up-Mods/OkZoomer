@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
+import net.minecraft.client.gui.components.SubtitleOverlay;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -58,7 +59,7 @@ public abstract class GuiMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z")
 	)
 	private boolean activateSpyglassOverlay(boolean isScoping) {
-		if (switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {
@@ -70,15 +71,15 @@ public abstract class GuiMixin {
 
 	@WrapMethod(method = "render")
 	private void zoomGui(GuiGraphics graphics, float partialTick, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(graphics, partialTick);
 		} else {
 			float fov = Zoom.getTransitionMode().applyZoom(1.0F, partialTick);
-			translation = 2.0F / ((1.0F / fov) - 1.0F);
-			scale = 1.0F / fov;
+			this.translation = 2.0F / ((1.0F / fov) - 1.0F);
+			this.scale = 1.0F / fov;
 			graphics.pose().pushPose();
-			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
-			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().translate(-(graphics.guiWidth() / this.translation), -(graphics.guiHeight() / this.translation), 0.0F);
+			graphics.pose().scale(this.scale, this.scale, 1.0F);
 			original.call(graphics, partialTick);
 			graphics.pose().popPose();
 		}
@@ -86,8 +87,8 @@ public abstract class GuiMixin {
 
 	@WrapMethod(method = "renderCrosshair")
 	private void hideCrosshair(GuiGraphics graphics, Operation<Void> original) {
-		boolean persistentInterface = OkZoomerConfigManager.CONFIG.features.persistentInterface.value();
-		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.tweaks.hideCrosshair.value();
+		boolean persistentInterface = OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value();
+		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
 			if (hideCrosshair) {
 				float fade = 1.0F - Zoom.getTransitionMode().getFade(Minecraft.getInstance().getFrameTime());
@@ -98,20 +99,21 @@ public abstract class GuiMixin {
 				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 		} else {
-			// TODO - This has been recycled once, this should become a method
 			var lastPose = graphics.pose().last().pose();
-			graphics.pose().popPose();
+			graphics.pose().popPose(); // Pops the translation pose
+			graphics.pose().popPose(); // Pops the zoom pose
 			graphics.pose().pushPose();
 			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 			original.call(graphics);
-			graphics.pose().pushPose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose(); // Restores zoom pose
 			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
 			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().pushPose(); // Restores translation pose
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
 		}
 	}
 
-	// TODO - This is a very promising method to get individual HUDs persistent, but I'm not sure if it's bulletproof!
-	// It doesn't crash with Sodium nor ImmediatelyFast though, and that's good
 	@WrapOperation(
 		method = "render",
 		at = @At(
@@ -121,7 +123,30 @@ public abstract class GuiMixin {
 		allow = 1
 	)
 	private void ensureDebugHudVisibility(DebugScreenOverlay instance, GuiGraphics graphics, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+			original.call(instance, graphics);
+		} else {
+			var lastPose = graphics.pose().last().pose();
+			graphics.pose().popPose();
+			graphics.pose().pushPose();
+			graphics.pose().translate(0.0F, 0.0F, lastPose.getTranslation(new Vector3f()).z);
+			original.call(instance, graphics);
+			graphics.pose().pushPose();
+			graphics.pose().translate(-(graphics.guiWidth() / translation), -(graphics.guiHeight() / translation), 0.0F);
+			graphics.pose().scale(scale, scale, 1.0F);
+		}
+	}
+
+	@WrapOperation(
+		method = "render",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/gui/components/SubtitleOverlay;render(Lnet/minecraft/client/gui/GuiGraphics;)V"
+		),
+		allow = 1
+	)
+	private void ensureSubtitleVisibility(SubtitleOverlay instance, GuiGraphics graphics, Operation<Void> original) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, graphics);
 		} else {
 			var lastPose = graphics.pose().last().pose();

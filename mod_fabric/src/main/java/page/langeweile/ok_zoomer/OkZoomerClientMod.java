@@ -10,7 +10,6 @@ import page.langeweile.ok_zoomer.compat.TrinketsCompat;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.events.*;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
-import page.langeweile.ok_zoomer.sound.FabricSoundEvents;
 import page.langeweile.ok_zoomer.utils.FabricZoomUtils;
 
 // This class is responsible for registering the commands and packets
@@ -28,20 +27,19 @@ public class OkZoomerClientMod implements ClientModInitializer {
 			KeyBindingHelper.registerKeyBinding(ZoomKeyBinds.RESET_ZOOM_KEY);
 		}
 
-		// Initialize zoom sound events
-		FabricSoundEvents.init();
-
 		// Register events without entrypoints aughhhhhhhh
 		ClientTickEvents.START_CLIENT_TICK.register(ManageZoomEvent::startClientTick);
-		ClientTickEvents.START_CLIENT_TICK.register(ManageExtraKeysEvent::startClientTick);
-		ClientLifecycleEvents.CLIENT_STARTED.register(ApplyLoadOnceOptionsEvent::readyClient);
+		ClientTickEvents.START_CLIENT_TICK.register(client -> ManageExtraKeysEvent.startClientTick());
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			ApplyLoadOnceOptionsEvent.readyClient();
+			ApplyLoadOnceOptionsEvent.readyClientFabric(client);
+		});
 		ClientTickEvents.END_CLIENT_TICK.register(OpenScreenEvent::endClientTick);
 		ClientCommandRegistrationCallback.EVENT.register(RegisterCommands::registerCommands);
 
 		FabricZoomUtils.defineSafeSmartOcclusion();
 		FabricZoomUtils.addInitialPredicates();
 
-		// Mod compat
 		if (FabricLoader.getInstance().isModLoaded("trinkets") && !FabricLoader.getInstance().isModLoaded("accessories")) {
 			TrinketsCompat.init();
 		}

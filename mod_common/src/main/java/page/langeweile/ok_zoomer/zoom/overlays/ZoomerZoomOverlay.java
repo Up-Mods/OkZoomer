@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import page.langeweile.ok_zoomer.zoom.transitions.TransitionMode;
+import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
 // Implements the zoom overlay
 public class ZoomerZoomOverlay implements ZoomOverlay {
@@ -23,9 +23,10 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 	}
 
 	@Override
-	public void renderOverlay(GuiGraphics graphics, TransitionMode transitionMode) {
+	public void renderOverlay(GuiGraphics graphics, EasedTransitionMode transitionMode) {
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		float fade = transitionMode.getFade(Minecraft.getInstance().getFrameTime());
 		graphics.setColor(fade, fade, fade, 1.0F);
@@ -34,10 +35,11 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 		RenderSystem.enableDepthTest();
 		graphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.defaultBlendFunc();
+		RenderSystem.disableBlend();
 	}
 
 	@Override
-	public void tick(boolean active, double divisor, TransitionMode transitionMode) {
+	public void tick(boolean active, double divisor, EasedTransitionMode transitionMode) {
 		if (active || !transitionMode.getActive()) {
 			this.active = active;
 		}

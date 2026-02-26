@@ -22,7 +22,7 @@ public abstract class VanillaGuiOverlayMixin {
 		remap = false
 	)
 	private static void ensureDebugHudVisibility(ForgeGui instance, int screenWidth, int screenHeight, GuiGraphics graphics, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, screenWidth, screenHeight, graphics);
 		} else {
 			graphics.pose().popPose();
@@ -42,7 +42,7 @@ public abstract class VanillaGuiOverlayMixin {
 		remap = false
 	)
 	private static void ensureSubtitlesVisibility(ForgeGui instance, GuiGraphics graphics, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(instance, graphics);
 		} else {
 			graphics.pose().popPose();

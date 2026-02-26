@@ -3,22 +3,18 @@
 	"minVersion": "0.8",
 	"package": "page.langeweile.ok_zoomer.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"common.EntityMixin",
-		"forge.compat.embeddium.SodiumWorldRendererMixin"
-	],
 	"client": [
 		"common.AbstractClientPlayerMixin",
-		"common.EditBoxAccessor",
-		"common.EditBoxMixin",
 		"common.GameRendererMixin",
-		"common.IntegratedServerMixin",
 		"common.MouseHandlerMixin",
-		"forge.BlockEntityRendererMixin",
+		"common.distance.EntityMixin",
+		"common.distance.IntegratedServerMixin",
 		"forge.ForgeGuiMixin",
 		"forge.GuiMixin",
 		"forge.MouseHandlerMixin",
-		"forge.VanillaGuiOverlayMixin"
+		"forge.VanillaGuiOverlayMixin",
+		"forge.compat.embeddium.SodiumWorldRendererMixin",
+		"forge.distance.BlockEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

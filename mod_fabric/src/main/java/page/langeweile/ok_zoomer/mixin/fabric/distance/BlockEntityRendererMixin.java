@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer.mixin.fabric;
+package page.langeweile.ok_zoomer.mixin.fabric.distance;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

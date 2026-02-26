@@ -15,7 +15,7 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public class ForgeGuiMixin {
 	@WrapMethod(method = "render")
 	private void zoomGui(GuiGraphics graphics, float partialTick, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.features.persistentInterface.value() || !page.langeweile.ok_zoomer.zoom.Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(graphics, partialTick);
 		} else {
 			float fov = Zoom.getTransitionMode().applyZoom(1.0F, partialTick);
@@ -34,7 +34,7 @@ public class ForgeGuiMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z")
 	)
 	private boolean activateSpyglassOverlay(boolean isScoping) {
-		if (switch (OkZoomerConfigManager.CONFIG.features.spyglassMode.value()) {
+		if (switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
 			case REPLACE_ZOOM, BOTH -> true;
 			default -> false;
 		}) {

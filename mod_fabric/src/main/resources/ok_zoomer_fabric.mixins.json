@@ -4,9 +4,9 @@
 	"package": "page.langeweile.ok_zoomer.mixin.fabric",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
-      "BlockEntityRendererMixin",
       "GuiMixin",
-      "MouseHandlerMixin"
+			"MouseHandlerMixin",
+		  "distance.BlockEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -16,6 +16,12 @@ indent_style = tab
 [*.java]
 indent_style = tab
 
+[*.kt]
+indent_style = tab
+
+[*.kts]
+indent_style = tab
+
 [*.json]
 indent_style = tab
 tab_width = 2

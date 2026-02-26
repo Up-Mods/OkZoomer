@@ -3,13 +3,21 @@ package page.langeweile.ok_zoomer.zoom;
 import page.langeweile.ok_zoomer.zoom.modifiers.MouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
 import page.langeweile.ok_zoomer.zoom.overlays.ZoomOverlay;
-import page.langeweile.ok_zoomer.zoom.transitions.SmoothTransitionMode;
-import page.langeweile.ok_zoomer.zoom.transitions.TransitionMode;
+import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
 public class Zoom {
 	private static boolean zooming = false;
 	private static double zoomDivisor = 4.0F;
-	private static TransitionMode transitionMode = new SmoothTransitionMode();
+	private static EasedTransitionMode transitionMode = new EasedTransitionMode(
+		x -> 1.0F,
+		x -> 1.0F,
+		x -> 1.0F,
+		0,
+		0,
+		0,
+		false,
+		false
+	);
 	private static MouseModifier mouseModifier = new ZoomDivisorMouseModifier();
 	private static ZoomOverlay zoomOverlay = null;
 
@@ -29,11 +37,11 @@ public class Zoom {
 		Zoom.zooming = zooming;
 	}
 
-	public static TransitionMode getTransitionMode() {
-		return transitionMode;
+	public static EasedTransitionMode getTransitionMode() {
+		return Zoom.transitionMode;
 	}
 
-	public static void setTransitionMode(TransitionMode transitionMode) {
+	public static void setTransitionMode(EasedTransitionMode transitionMode) {
 		Zoom.transitionMode = transitionMode;
 	}
 

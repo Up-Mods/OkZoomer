@@ -47,8 +47,8 @@ public abstract class GameRendererMixin {
 	}
 
 	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
-	private double modifyFov(double original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.isTransitionActive()) {
+	private double modifyFov(double original, @Local(argsOnly = true) float partialTicks, @Local(argsOnly = true) boolean useFovSetting) {
+		if (!Zoom.isTransitionActive() || (!useFovSetting && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value())) {
 			return original;
 		} else {
 			return Zoom.getTransitionMode().applyZoom((float) original, partialTicks);
@@ -57,7 +57,7 @@ public abstract class GameRendererMixin {
 
 	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
 	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
-		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.features.reduceViewBobbing.value()) {
+		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
 		} else {
 			return Zoom.getTransitionMode().applyZoom(bob, delta);

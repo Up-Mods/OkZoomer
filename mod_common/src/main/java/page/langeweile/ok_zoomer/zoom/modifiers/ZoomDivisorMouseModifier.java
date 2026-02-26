@@ -19,12 +19,12 @@ public class ZoomDivisorMouseModifier implements MouseModifier {
 	}
 
 	@Override
-	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
+	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		return cursorDeltaX * (this.active ? transitionMultiplier : 1.0);
 	}
 
 	@Override
-	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double targetDivisor, double transitionMultiplier) {
+	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		return cursorDeltaY * (this.active ? transitionMultiplier : 1.0);
 	}
 

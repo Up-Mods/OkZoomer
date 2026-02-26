@@ -8,10 +8,10 @@ import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 // Manages the zoom key binds themselves
 public class ZoomKeyBinds {
 	// TODO - Bleh, immutability; I have a plan
-	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.features.extraKeyBinds.getRealValue();
+	private static final boolean ENABLE_EXTRA_KEY_BINDS = OkZoomerConfigManager.CONFIG.controls.extraKeyBinds.getRealValue();
 
 	// The "Zoom" category
-	public static final String ZOOM_CATEGORY = "key.ok_zoomer.category";
+	public static final String ZOOM_CATEGORY = "key.category.ok_zoomer.zoom";
 
 	// The zoom key bind, which will be registered
 	public static final KeyMapping ZOOM_KEY = new KeyMapping("key.ok_zoomer.zoom", GLFW.GLFW_KEY_C, ZOOM_CATEGORY);

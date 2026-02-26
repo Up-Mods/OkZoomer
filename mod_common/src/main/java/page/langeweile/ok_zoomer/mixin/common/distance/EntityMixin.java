@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer.mixin.common;
+package page.langeweile.ok_zoomer.mixin.common.distance;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;

@@ -11,19 +11,23 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
           java-version: 21
           cache: 'gradle'
       - name: Build with Gradle
         run: ./gradlew build --rerun-tasks
-      - name: Detonate JARs (Fabric)
-        run: python ./ci/hissboom.py "./mod_fabric/build/libs/*.jar"
-      - name: Detonate JARs (Forge)
-        run: python ./ci/hissboom.py "./mod_forge/build/libs/*.jar"
+      - name: Detonate JARs
+        run: |
+          python ./ci/hissboom.py "./mod_fabric/build/libs/*.jar"
+          python ./ci/hissboom.py "./mod_forge/build/libs/*.jar"
       - name: Upload build artifacts (Fabric)
         continue-on-error: true
         uses: actions/upload-artifact@v4
@@ -31,7 +35,6 @@ jobs:
           name: ${{ github.event.repository.name }}-Fabric-${{ github.sha }}
           path: |
             mod_fabric/build/libs/*.jar
-            !mod_fabric/build/libs/*-dev.jar
       - name: Upload build artifacts (Forge)
         continue-on-error: true
         uses: actions/upload-artifact@v4
@@ -39,4 +42,3 @@ jobs:
           name: ${{ github.event.repository.name }}-Forge-${{ github.sha }}
           path: |
             mod_forge/build/libs/*.jar
-            !mod_forge/build/libs/*-dev.jar
