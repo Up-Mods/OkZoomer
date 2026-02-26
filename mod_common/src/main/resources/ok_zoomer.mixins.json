@@ -1,22 +1,23 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "page.langeweile.ok_zoomer.mixin.common",
-	"compatibilityLevel": "JAVA_25",
-	"client": [
-		"AbstractClientPlayerMixin",
-		"CameraMixin",
-		"GuiMixin",
-		"MouseHandlerMixin",
-		"distance.BlockEntityRendererMixin",
-		"distance.IntegratedServerMixin",
-		"distance.LevelRendererMixin",
-		"fade.GuiGraphicsMixin",
-		"key_binds.AbstractSelectionListAccessor",
-		"key_binds.KeyBindsListAccessor",
-		"key_binds.KeyEntryMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "minVersion": "0.8",
+  "package": "page.langeweile.ok_zoomer.mixin.common",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "AbstractClientPlayerMixin",
+    "CameraMixin",
+    "GuiMixin",
+    "MouseHandlerMixin",
+    "distance.BlockEntityRendererMixin",
+    "distance.EntityRendererMixin",
+    "distance.IntegratedServerMixin",
+    "distance.LevelRendererMixin",
+    "fade.GuiGraphicsMixin",
+    "key_binds.AbstractSelectionListAccessor",
+    "key_binds.KeyBindsListAccessor",
+    "key_binds.KeyEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
