@@ -48,7 +48,10 @@ dependencies {
 
 	compileOnly(libs.mixinextras.common)
 	implementation(libs.mixinextras.forge)
-	jarJar(libs.mixinextras.forge)
+	// Why is MixinExtras shadowing ANTLR, Apache Commons and Gson???
+	jarJar(variantOf(libs.mixinextras.forge) {
+		classifier("slim")
+	})
 }
 
 mixin {
