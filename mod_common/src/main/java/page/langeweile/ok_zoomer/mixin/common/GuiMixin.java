@@ -6,9 +6,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,32 +26,32 @@ public abstract class GuiMixin {
 	private float scale = 0.0F;
 
 	@Inject(
-		method = "renderCameraOverlays",
+		method = "extractCameraOverlays",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/client/DeltaTracker;getGameTimeDeltaTicks()F"
 		)
 	)
-	private void injectZoomOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, CallbackInfo ci, @Share("cancelOverlay") LocalBooleanRef cancelOverlay) {
+	private void injectZoomOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci, @Share("cancelOverlay") LocalBooleanRef cancelOverlay) {
 		cancelOverlay.set(false);
 		if (Zoom.getZoomOverlay() != null) {
 			var overlay = Zoom.getZoomOverlay();
 			overlay.tickBeforeRender(deltaTracker);
 			if (overlay.getActive()) {
 				cancelOverlay.set(overlay.cancelOverlayRendering());
-				overlay.renderOverlay(graphics, deltaTracker, Zoom.getTransitionMode());
+				overlay.extractOverlay(graphics, deltaTracker, Zoom.getTransitionMode());
 			}
 		}
 	}
 
 	// Cancel the cancellable overlays
-	@ModifyExpressionValue(method = "renderCameraOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/CameraType;isFirstPerson()Z"))
+	@ModifyExpressionValue(method = "extractCameraOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/CameraType;isFirstPerson()Z"))
 	private boolean cancelOverlay(boolean original, @Share("cancelOverlay") LocalBooleanRef cancelOverlay) {
 		return original && !cancelOverlay.get();
 	}
 
 	@ModifyExpressionValue(
-		method = "renderCameraOverlays",
+		method = "extractCameraOverlays",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isScoping()Z")
 	)
 	private boolean activateSpyglassOverlay(boolean isScoping) {
@@ -66,8 +65,8 @@ public abstract class GuiMixin {
 		return isScoping;
 	}
 
-	@WrapMethod(method = "render")
-	private void zoomGui(GuiGraphics graphics, DeltaTracker deltaTracker, Operation<Void> original) {
+	@WrapMethod(method = "extractRenderState")
+	private void zoomGui(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
@@ -82,8 +81,8 @@ public abstract class GuiMixin {
 		}
 	}
 
-	@WrapMethod(method = "renderCrosshair")
-	private void hideCrosshair(GuiGraphics graphics, DeltaTracker deltaTracker, Operation<Void> original) {
+	@WrapMethod(method = "extractCrosshair")
+	private void hideCrosshair(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		boolean persistentInterface = OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value();
 		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value();
 		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
@@ -99,8 +98,8 @@ public abstract class GuiMixin {
 
 	// The "fade the whole pipeline" approach was too good to last forever,
 	// We'll just fade on GuiGraphics level
-	@WrapMethod(method = "renderCrosshair")
-	private void fadeCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
+	@WrapMethod(method = "extractCrosshair")
+	private void fadeCrosshair(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value()) {
 			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true)));
 			original.call(guiGraphics, deltaTracker);

@@ -1,11 +1,11 @@
 [versions]
-minecraft = "26.1-snapshot-11"
+minecraft = "26.1-pre-1"
 
 shadow = "9.3.2"
 fabric_loom = "1.15.4"
 fabric_loader = "0.18.4"
 moddevgradle = "2.0.140"
-neoforge = "26.1.0.0-alpha.14+snapshot-11"
+neoforge = "26.1.0.0-alpha.0+pre-1.20260310.230015"
 
 fabric_api = "0.143.11+26.1"
 wrench_wrapper = "0.8.1"

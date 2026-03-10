@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -57,11 +57,11 @@ public abstract class KeyEntryMixin extends KeyBindsList.Entry {
 		}
 	}
 
-	@Inject(method = "renderContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-	private void renderSettingsButton(GuiGraphics graphics, int mouseX, int mouseY, boolean bl, float partialTick, CallbackInfo ci) {
+	@Inject(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
+	private void renderSettingsButton(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean bl, float partialTick, CallbackInfo ci) {
 		if (this.settingsButton != null) {
 			this.settingsButton.setPosition(this.changeButton.getX() - 25, this.getContentY() - 2);
-			this.settingsButton.render(graphics, mouseX, mouseY, partialTick);
+			this.settingsButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		}
 	}
 

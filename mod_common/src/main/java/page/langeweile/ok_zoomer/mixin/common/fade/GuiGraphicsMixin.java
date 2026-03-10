@@ -6,14 +6,14 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.DestFactor;
 import com.mojang.blaze3d.textures.GpuSampler;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 import org.spongepowered.asm.mixin.Mixin;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 
-@Mixin(GuiGraphics.class)
+@Mixin(GuiGraphicsExtractor.class)
 public abstract class GuiGraphicsMixin {
-	@WrapMethod(method = "submitBlit")
+	@WrapMethod(method = "innerBlit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lcom/mojang/blaze3d/textures/GpuTextureView;Lcom/mojang/blaze3d/textures/GpuSampler;IIIIFFFFI)V")
 	private void modifyFade(RenderPipeline pipeline, GpuTextureView textureView, GpuSampler sampler, int x0, int y0, int x1, int y1, float u0, float u1, float v0, float v1, int color, Operation<Void> original) {
 		if (ZoomUtils.getFadeModifier() != null) {
 			float fade = ZoomUtils.getFadeModifier();
