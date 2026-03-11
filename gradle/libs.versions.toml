@@ -7,7 +7,7 @@ fabric_loader = "0.18.4"
 moddevgradle = "2.0.140"
 neoforge = "26.1.0.0-alpha.0+pre-1.20260310.230015"
 
-fabric_api = "0.143.11+26.1"
+fabric_api = "0.143.12+26.1"
 wrench_wrapper = "0.8.1"
 
 modmenu = "18.0.0-alpha.5"
