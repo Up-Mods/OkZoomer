@@ -35,8 +35,7 @@ jobs:
         run: ./gradlew publish
       - name: Detonate JARs
         run: |
-          python ./ci/hissboom.py "mod_fabric/build/libs/*.jar"
-          python ./ci/hissboom.py "mod_norge/build/libs/*.jar"
+          python ./ci/hissboom.py "mod/build/libs/*.jar"
       - name: Publish (GitHub Releases)
         id: publish_github
         uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # (new) v3.3.0
@@ -44,10 +43,8 @@ jobs:
           github-token: ${{ github.token }}
           version: ${{ env.TAG }}
           files: |
-            mod_fabric/build/libs/!(*-@(sources|javadoc|slim)).jar
-            mod_fabric/build/libs/-@(sources|javadoc).jar
-            mod_norge/build/libs/!(*-@(sources|javadoc|slim)).jar
-            mod_norge/build/libs/*-@(sources|javadoc).jar
+            mod/build/libs/!(*-@(sources|javadoc|slim)).jar
+            mod/build/libs/-@(sources|javadoc).jar
       - name: Notify Discord
         uses: Up-Mods/action-discord-release@main
         with:
