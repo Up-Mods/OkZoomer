@@ -69,6 +69,8 @@
 	"config.ok_zoomer.controls.cinematic_camera_speed.tooltip": "Altera a velocidade da câmera cinemática.",
 	"config.ok_zoomer.controls.reduce_sensitivity": "Reduzir sensibilidade",
 	"config.ok_zoomer.controls.reduce_sensitivity.tooltip": "Reduz a sensibilidade do mouse proporcionalmente à distância do zoom.",
+	"config.ok_zoomer.controls.sensitivity_scale": "Escala de sensibilidade",
+	"config.ok_zoomer.controls.sensitivity_scale.tooltip": "A escala de sensibilidade do mouse usado durante o zoom.",
 	"config.ok_zoomer.controls.zoom_mode": "Modo do zoom",
 	"config.ok_zoomer.controls.zoom_mode.hold": "Segurar",
 	"config.ok_zoomer.controls.zoom_mode.hold.tooltip": "O zoom irá depender da tecla do zoom ser segurado.",

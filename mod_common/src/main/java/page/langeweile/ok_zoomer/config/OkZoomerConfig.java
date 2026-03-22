@@ -123,6 +123,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<Boolean> reduceSensitivity = this.value(true);
 
 		@WidgetSize(Size.HALF)
+		@Comment("The scale of the mouse sensitivity used during zoom.")
+		@FloatRange(min = Float.MIN_NORMAL, max = 16.0F)
+		@RangeSubset(min = 1, max = 8)
+		public final TrackedValue<Float> sensitivityScale = this.value(1.0F);
+
+		@WidgetSize(Size.HALF)
 		@Comment("""
 			"HOLD": The zoom will require the zoom key to be held.
 			"TOGGLE": The zoom will be toggled by the zoom key.

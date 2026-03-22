@@ -30,6 +30,7 @@ public abstract class MouseHandlerMixin {
 	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(name = "xo") LocalDoubleRef xo, @Local(name = "yo") LocalDoubleRef yo, @Local(name = "sens") double sens) {
 		if (Zoom.isModifierActive()) {
 			double transitionMultiplier = Zoom.getTransitionMode().getInternalMultiplier();
+			transitionMultiplier *= OkZoomerConfigManager.CONFIG.controls.sensitivityScale.value();
 			xo.set(Zoom.getMouseModifier().applyXModifier(xo.get(), sens, movementTime, transitionMultiplier));
 			yo.set(Zoom.getMouseModifier().applyYModifier(yo.get(), sens, movementTime, transitionMultiplier));
 		}
