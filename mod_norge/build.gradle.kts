@@ -16,7 +16,7 @@ java {
 repositories {
 	exclusiveContent {
 		forRepository {
-			maven("https://prmaven.neoforged.net/NeoForge/pr2993")
+			maven("https://maven.neoforged.net/releases")
 		}
 		filter {
 			includeModule("net.neoforged", "neoforge")

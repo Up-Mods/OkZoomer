@@ -24,7 +24,7 @@ dependencies {
 	implementation(libs.fabric.api)
 
 	compileOnly(libs.modmenu)
-	//localRuntime(libs.modmenu)
+	localRuntime(libs.modmenu)
 
 	compileOnly(libs.sodium.neoforge)
 
