@@ -154,7 +154,6 @@
 	"key.ok_zoomer.increase_zoom": "增加縮放",
 	"key.ok_zoomer.reset_zoom": "重置縮放",
 	"key.ok_zoomer.zoom": "縮放",
-	"key.ok_zoomer.settings": "%s 的設定",
 	"sound.ok_zoomer.zoom.zoom_in": "縮放開始",
 	"sound.ok_zoomer.zoom.zoom_out": "縮放結束",
 	"sound.ok_zoomer.zoom.scroll": "縮放滾動"

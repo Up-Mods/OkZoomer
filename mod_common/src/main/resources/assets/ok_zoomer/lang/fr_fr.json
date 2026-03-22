@@ -153,7 +153,6 @@
 	"key.ok_zoomer.increase_zoom": "Augmenter le zoom",
 	"key.ok_zoomer.reset_zoom": "Réinitialiser le zoom",
 	"key.ok_zoomer.zoom": "Zoom",
-	"key.ok_zoomer.settings": "Paramètres de %s",
 	"sound.ok_zoomer.zoom.zoom_in": "Début du zoom",
 	"sound.ok_zoomer.zoom.zoom_out": "Fin du zoom",
 	"sound.ok_zoomer.zoom.scroll": "Défilement du zoom"

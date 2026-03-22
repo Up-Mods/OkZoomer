@@ -11,10 +11,7 @@
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
 		"distance.LevelRendererMixin",
-		"fade.GuiGraphicsMixin",
-		"key_binds.AbstractSelectionListAccessor",
-		"key_binds.KeyBindsListAccessor",
-		"key_binds.KeyEntryMixin"
+		"fade.GuiGraphicsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
