@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(MouseHandler.class)
@@ -21,6 +22,7 @@ public abstract class MouseHandlerMixin {
 	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 4) LocalDoubleRef d0, @Local(ordinal = 5) LocalDoubleRef d1, @Local(ordinal = 3) double d4) {
 		if (Zoom.isModifierActive()) {
 			double transitionMultiplier = Zoom.getTransitionMode().getInternalMultiplier();
+			transitionMultiplier *= OkZoomerConfigManager.CONFIG.controls.sensitivityScale.value();
 			d0.set(Zoom.getMouseModifier().applyXModifier(d0.get(), d4, movementTime, transitionMultiplier));
 			d1.set(Zoom.getMouseModifier().applyYModifier(d1.get(), d4, movementTime, transitionMultiplier));
 		}

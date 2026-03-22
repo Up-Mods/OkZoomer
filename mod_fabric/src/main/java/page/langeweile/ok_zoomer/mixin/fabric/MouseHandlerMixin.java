@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 @Mixin(MouseHandler.class)
@@ -35,9 +36,10 @@ public abstract class MouseHandlerMixin {
 	private void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(ordinal = 1) LocalDoubleRef i, @Local(ordinal = 2) LocalDoubleRef j, @Share("cursorSensitivity") LocalDoubleRef cursorSensitivity) {
 		if (Zoom.isModifierActive()) {
 			double f = cursorSensitivity.get();
-			double transitionDivisor = Zoom.getTransitionMode().getInternalMultiplier();
-			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, transitionDivisor));
-			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, transitionDivisor));
+			double transitionMultiplier = Zoom.getTransitionMode().getInternalMultiplier();
+			transitionMultiplier *= OkZoomerConfigManager.CONFIG.controls.sensitivityScale.value();
+			i.set(Zoom.getMouseModifier().applyXModifier(i.get(), f, movementTime, transitionMultiplier));
+			j.set(Zoom.getMouseModifier().applyYModifier(j.get(), f, movementTime, transitionMultiplier));
 		}
 	}
 }
