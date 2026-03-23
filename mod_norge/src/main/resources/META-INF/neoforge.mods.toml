@@ -14,6 +14,7 @@ authors = "Ennui Langeweile and Up"
 description = """
 A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!
 """
+updateJSONURL = "https://api.modrinth.com/updates/aXf2OSFU/forge_updates.json?neoforge=only"
 
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
