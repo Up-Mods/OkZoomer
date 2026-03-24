@@ -19,6 +19,7 @@ dependencies {
 	minecraft(libs.minecraft)
 	compileOnly(libs.fabric.loader)
 	compileOnly(libs.wrench.wrapper.api.fabric)
+	compileOnly(libs.sodium.fabric)
 }
 
 loom {

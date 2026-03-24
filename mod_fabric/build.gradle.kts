@@ -26,8 +26,6 @@ dependencies {
 	compileOnly(libs.modmenu)
 	localRuntime(libs.modmenu)
 
-	compileOnly(libs.sodium.neoforge)
-
 	implementation(libs.wrench.wrapper.api.fabric)
 
 	// Instead of bundling both API and Implementation, let's only bundle API
