@@ -17,13 +17,13 @@
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"page.langeweile.ok_zoomer.OkZoomerClientMod"
+			"page.langeweile.ok_zoomer.fabric.OkZoomerClientMod"
 		],
 		"modmenu": [
-			"page.langeweile.ok_zoomer.config.modmenu.OkZoomerModMenuEntry"
+			"page.langeweile.ok_zoomer.fabric.config.modmenu.OkZoomerModMenuEntry"
 		],
 		"preLaunch": [
-			"page.langeweile.ok_zoomer.OkZoomerPreLaunchMod"
+			"page.langeweile.ok_zoomer.fabric.OkZoomerPreLaunchMod"
 		],
 		"sodium:config_api_user": [
 			"page.langeweile.ok_zoomer.config.sodium.OkZoomerSodiumEntry"

@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer;
+package page.langeweile.ok_zoomer.fabric;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.quiltmc.config.api.annotations.ConfigFieldAnnotationProcessor;

@@ -1,6 +1,7 @@
-package page.langeweile.ok_zoomer.utils;
+package page.langeweile.ok_zoomer.norge.utils;
 
 import net.neoforged.fml.ModList;
+import page.langeweile.ok_zoomer.utils.ZoomUtils;
 
 public class NorgeZoomUtils {
 	// TODO - Bad! We need client tags for this!

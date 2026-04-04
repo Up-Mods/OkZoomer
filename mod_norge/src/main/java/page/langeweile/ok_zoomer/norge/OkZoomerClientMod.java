@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer;
+package page.langeweile.ok_zoomer.norge;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
@@ -11,7 +11,7 @@ import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.config.metadata.RangeSubset;
 import page.langeweile.ok_zoomer.config.metadata.WidgetSize;
 import page.langeweile.ok_zoomer.config.screen.OkZoomerConfigScreen;
-import page.langeweile.ok_zoomer.utils.NorgeZoomUtils;
+import page.langeweile.ok_zoomer.norge.utils.NorgeZoomUtils;
 
 @Mod(value = "ok_zoomer", dist = Dist.CLIENT)
 public class OkZoomerClientMod {

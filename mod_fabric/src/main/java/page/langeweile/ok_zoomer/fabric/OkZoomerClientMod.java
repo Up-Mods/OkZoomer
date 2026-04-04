@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer;
+package page.langeweile.ok_zoomer.fabric;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -7,8 +7,10 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.events.*;
+import page.langeweile.ok_zoomer.fabric.events.OpenScreenEvent;
+import page.langeweile.ok_zoomer.fabric.events.RegisterCommands;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
-import page.langeweile.ok_zoomer.utils.FabricZoomUtils;
+import page.langeweile.ok_zoomer.fabric.utils.FabricZoomUtils;
 
 // This class is responsible for registering the commands and packets
 public class OkZoomerClientMod implements ClientModInitializer {

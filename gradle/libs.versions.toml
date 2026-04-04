@@ -1,17 +1,17 @@
 [versions]
-minecraft = "26.1"
+minecraft = "26.1.1"
 
-shadow = "9.4.0"
+shadow = "9.4.1"
 fabric_loom = "1.15.5"
-fabric_loader = "0.18.4"
+fabric_loader = "0.18.5"
 moddevgradle = "2.0.141"
-neoforge = "26.1.0.1-beta"
+neoforge = "26.1.1.5-beta"
 
-fabric_api = "0.143.15+26.1"
+fabric_api = "0.145.3+26.1.1"
 wrench_wrapper = "0.8.1"
 
-modmenu = "18.0.0-alpha.6"
-sodium = "0.8.7+mc26.1"
+modmenu = "18.0.0-alpha.8"
+sodium = "0.8.9+mc26.1.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }

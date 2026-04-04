@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer.config.modmenu;
+package page.langeweile.ok_zoomer.fabric.config.modmenu;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

@@ -1,10 +1,10 @@
-package page.langeweile.ok_zoomer.events;
+package page.langeweile.ok_zoomer.fabric.events;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.commands.CommandBuildContext;
-import page.langeweile.ok_zoomer.utils.FabricZoomUtils;
+import page.langeweile.ok_zoomer.fabric.utils.FabricZoomUtils;
 
 public class RegisterCommands {
 	public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandBuildContext registryAccess) {

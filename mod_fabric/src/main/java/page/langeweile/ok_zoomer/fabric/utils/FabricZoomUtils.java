@@ -1,8 +1,9 @@
-package page.langeweile.ok_zoomer.utils;
+package page.langeweile.ok_zoomer.fabric.utils;
 
 import net.fabricmc.fabric.api.tag.client.v1.ClientTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.ItemStack;
+import page.langeweile.ok_zoomer.utils.ZoomUtils;
 
 import java.util.function.Predicate;
 

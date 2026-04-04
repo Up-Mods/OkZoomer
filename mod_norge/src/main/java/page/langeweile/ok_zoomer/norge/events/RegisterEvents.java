@@ -1,4 +1,4 @@
-package page.langeweile.ok_zoomer.events;
+package page.langeweile.ok_zoomer.norge.events;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
@@ -11,6 +11,9 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.lifecycle.ClientStartedEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import page.langeweile.ok_zoomer.config.screen.OkZoomerConfigScreen;
+import page.langeweile.ok_zoomer.events.ApplyLoadOnceOptionsEvent;
+import page.langeweile.ok_zoomer.events.ManageExtraKeysEvent;
+import page.langeweile.ok_zoomer.events.ManageZoomEvent;
 import page.langeweile.ok_zoomer.key_binds.ZoomKeyBinds;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = "ok_zoomer")
