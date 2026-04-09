@@ -3,7 +3,7 @@ plugins {
 	alias(libs.plugins.shadow)
 }
 
-base.archivesName = "ok_zoomer-universal"
+base.archivesName = "ok_zoomer"
 
 repositories {
 	exclusiveContent {
