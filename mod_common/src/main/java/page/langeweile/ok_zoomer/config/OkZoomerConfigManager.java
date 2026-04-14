@@ -1,5 +1,7 @@
 package page.langeweile.ok_zoomer.config;
 
+import com.mojang.blaze3d.pipeline.DepthStencilState;
+import com.mojang.blaze3d.platform.CompareOp;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Ease;
@@ -86,6 +88,14 @@ public class OkZoomerConfigManager {
 		return OkZoomerConfigManager.CONFIG.zoomScrolling.transition.value() != ConfigEnums.ZoomTransitionModes.INSTANT
 			? OkZoomerConfigManager.CONFIG.zoomScrolling.transitionTicks.value()
 			: 0;
+	}
+
+	public static int getDefaultZoomLimit() {
+		// If Reverse Z is detected, increase the default limit from 64x to 128x
+		// We don't always use 128x because the glitchy entity situation is horrible for that
+		return DepthStencilState.DEFAULT.depthTest().equals(CompareOp.GREATER_THAN_OR_EQUAL)
+			? 35
+			: 30;
 	}
 
 	public static void configureZoomModifier() {
