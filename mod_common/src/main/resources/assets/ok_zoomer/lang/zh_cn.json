@@ -63,8 +63,6 @@
 	"config.ok_zoomer.zoom_scrolling.scroll_step_limit": "滚动步数上限",
 	"config.ok_zoomer.zoom_scrolling.scroll_step_limit.tooltip": "缩放可达到的最大滚动步数。",
 	"config.ok_zoomer.tweaks": "调整",
-	"config.ok_zoomer.tweaks.show_settings_on_key": "按键显示设置",
-	"config.ok_zoomer.tweaks.show_settings_on_key.tooltip": "在缩放键绑定旁添加按钮以打开 Ok Zoomer 设置。",
 	"config.ok_zoomer.tweaks.debug_scrolling": "调试滚动",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "启动时打印 “owo”",
 	"config.ok_zoomer.tweaks.print_owo_on_start.tooltip": "游戏启动时在控制台中随机打印一个 “owo”。",

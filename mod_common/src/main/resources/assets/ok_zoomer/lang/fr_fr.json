@@ -124,8 +124,6 @@
 	"config.ok_zoomer.tweaks": "Ajustements",
 	"config.ok_zoomer.tweaks.numeric_sliders": "Curseurs numériques",
 	"config.ok_zoomer.tweaks.numeric_sliders.tooltip": "Utilise des curseurs pour les options numériques plutôt que des champs de saisie, au détriment d’une plage de valeurs réduite, mais plus simple à configurer.",
-	"config.ok_zoomer.tweaks.show_settings_on_key": "Bouton des paramètres",
-	"config.ok_zoomer.tweaks.show_settings_on_key.tooltip": "Ajoute un bouton pour ouvrir les paramètres de Ok Zoomer à côté du raccourci clavier du zoom.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Débogage du défilement",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Affiche des informations de débogage pour le défilement du zoom. Cela peut aider à sa configuration.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Afficher owo au démarrage",

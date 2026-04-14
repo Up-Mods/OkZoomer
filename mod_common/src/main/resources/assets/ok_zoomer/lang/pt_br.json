@@ -126,8 +126,6 @@
 	"config.ok_zoomer.tweaks": "Ajustes",
 	"config.ok_zoomer.tweaks.numeric_sliders": "Sliders numéricos",
 	"config.ok_zoomer.tweaks.numeric_sliders.tooltip": "Usa sliders para opções numéricas ao invés de entradas de nuḿeros, trocando a variedade de valores por uma maior facilidade de configuração.",
-	"config.ok_zoomer.tweaks.show_settings_on_key": "Mostrar definições no atalho",
-	"config.ok_zoomer.tweaks.show_settings_on_key.tooltip": "Adiciona um botão para abrir as definições do Ok Zoomer próximo ao atalho de zoom.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Depurar rolagem",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Mostra informações de depuração da rolagem de zoom. Isso pode ajudar com a configuração dela.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Imprimir owo ao iniciar",
