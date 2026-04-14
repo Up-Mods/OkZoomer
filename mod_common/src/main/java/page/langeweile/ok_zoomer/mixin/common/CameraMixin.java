@@ -52,6 +52,15 @@ public class CameraMixin {
 		}
 	}
 
+	@ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
+	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
+		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
+			return bob;
+		} else {
+			return Zoom.getTransitionMode().applyZoom(bob, delta);
+		}
+	}
+
 	@ModifyExpressionValue(
 		method = "createProjectionMatrixForCulling",
 		at = @At(
