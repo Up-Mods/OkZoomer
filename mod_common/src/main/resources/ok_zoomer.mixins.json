@@ -8,6 +8,7 @@
 		"CameraMixin",
 		"GuiMixin",
 		"MouseHandlerMixin",
+		"SubtitleOverlayMixin",
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
 		"distance.LevelRendererMixin",

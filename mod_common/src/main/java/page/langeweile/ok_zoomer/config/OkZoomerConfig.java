@@ -1,6 +1,5 @@
 package page.langeweile.ok_zoomer.config;
 
-import com.mojang.blaze3d.pipeline.DepthStencilState;
 import org.quiltmc.config.api.ReflectiveConfig;
 import org.quiltmc.config.api.annotations.Comment;
 import org.quiltmc.config.api.annotations.FloatRange;
@@ -216,8 +215,12 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 	public static final class TweaksConfig extends Section  {
 		@WidgetSize(Size.HALF)
-		@Comment("a")
+		@Comment("Uses sliders for numeric options instead of number inputs, trading number range for ease of configuration.")
 		public final TrackedValue<Boolean> numericSliders = this.value(true);
+
+		@WidgetSize(Size.HALF)
+		@Comment("Persists the closed captions even if Persistent Interface is disabled.")
+		public final TrackedValue<Boolean> persistentCaptions = this.value(true);
 
 		@WidgetSize(Size.HALF)
 		@Comment("Displays debug information for exponential zoom scrolling. Currently it may help with configuring the zoom scrolling.")

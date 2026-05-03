@@ -17,7 +17,8 @@ import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
-@Mixin(Gui.class)
+// This mixin should have a higher priority than Fabric API for compatibility reasons
+@Mixin(value = Gui.class, priority = 998)
 public abstract class GuiMixin {
 	@Unique
 	private float translation = 0.0F;

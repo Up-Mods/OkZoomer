@@ -126,6 +126,8 @@
 	"config.ok_zoomer.tweaks": "Tweaks",
 	"config.ok_zoomer.tweaks.numeric_sliders": "Numeric Sliders",
 	"config.ok_zoomer.tweaks.numeric_sliders.tooltip": "Uses sliders for numeric options instead of number inputs, trading number range for ease of configuration.",
+	"config.ok_zoomer.tweaks.persistent_captions": "Persistent Captions",
+	"config.ok_zoomer.tweaks.persistent_captions.tooltip": "Persists the closed captions even if Persistent Interface is disabled.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Debug Scrolling",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Displays debug information for zoom scrolling. This may help with configuring it",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Print owo on Start",

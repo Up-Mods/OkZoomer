@@ -126,6 +126,8 @@
 	"config.ok_zoomer.tweaks": "Ajustes",
 	"config.ok_zoomer.tweaks.numeric_sliders": "Sliders numéricos",
 	"config.ok_zoomer.tweaks.numeric_sliders.tooltip": "Usa sliders para opções numéricas ao invés de entradas de nuḿeros, trocando a variedade de valores por uma maior facilidade de configuração.",
+	"config.ok_zoomer.tweaks.persistent_captions": "Legendas persistentes",
+	"config.ok_zoomer.tweaks.persistent_captions.tooltip": "Persiste as legendas ocultas mesmo se a interface persistente estiver desativada.",
 	"config.ok_zoomer.tweaks.debug_scrolling": "Depurar rolagem",
 	"config.ok_zoomer.tweaks.debug_scrolling.tooltip": "Mostra informações de depuração da rolagem de zoom. Isso pode ajudar com a configuração dela.",
 	"config.ok_zoomer.tweaks.print_owo_on_start": "Imprimir owo ao iniciar",
