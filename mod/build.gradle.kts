@@ -1,6 +1,7 @@
 plugins {
 	id("mod_conventions_common")
 	alias(libs.plugins.shadow)
+	alias(libs.plugins.mod.publish.plugin)
 }
 
 base.archivesName = "ok_zoomer"
@@ -62,3 +63,26 @@ publishing {
 	}
 }
 
+// TODO - Mod Publish Plugin cannot be used without a port of Hissboom to Gradle
+publishMods {
+	displayName.set("Ok Zoomer ${version.get()}")
+	file = tasks.named<Jar>("jar").get().archiveFile
+	modLoaders = listOf("fabric", "neoforge")
+	changelog = "To Be Updated"
+	type = STABLE
+
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "4lDrPSXX"
+		minecraftVersions.addAll(listOf("26.1", "26.1.1", "26.1.2"))
+	}
+
+	curseforge {
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		projectId = "1465234"
+		minecraftVersions.addAll(listOf("26.1", "26.1.1", "26.1.2"))
+		javaVersions.addAll(listOf(JavaVersion.VERSION_25))
+		clientRequired = true
+		changelogType = "markdown"
+	}
+}
