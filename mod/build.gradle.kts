@@ -65,7 +65,7 @@ publishing {
 
 // TODO - Mod Publish Plugin cannot be used without a port of Hissboom to Gradle
 publishMods {
-	displayName.set("Ok Zoomer ${version.get()}")
+	displayName.set("${version.get()} (Fabric/NeoForge)")
 	file = tasks.named<Jar>("jar").get().archiveFile
 	modLoaders = listOf("fabric", "neoforge")
 	changelog = "To Be Updated"
