@@ -250,7 +250,7 @@ public class OkZoomerConfigScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		this.minecraft.setScreen(this.parent);
+		this.minecraft.gui.setScreen(this.parent);
 	}
 
 	@Override

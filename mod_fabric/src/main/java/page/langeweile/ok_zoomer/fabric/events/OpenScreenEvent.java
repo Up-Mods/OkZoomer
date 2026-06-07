@@ -7,7 +7,7 @@ import page.langeweile.ok_zoomer.fabric.utils.FabricZoomUtils;
 public class OpenScreenEvent {
 	public static void endClientTick(Minecraft minecraft) {
 		if (FabricZoomUtils.shouldOpenCommandScreen()) {
-			minecraft.setScreen(new OkZoomerConfigScreen(minecraft.screen));
+			minecraft.gui.setScreen(new OkZoomerConfigScreen(minecraft.gui.screen()));
 			FabricZoomUtils.setOpenCommandScreen(false);
 		}
 	}

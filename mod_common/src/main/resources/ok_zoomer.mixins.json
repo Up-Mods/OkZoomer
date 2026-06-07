@@ -11,7 +11,7 @@
 		"SubtitleOverlayMixin",
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
-		"distance.LevelRendererMixin",
+      "distance.LevelExtractorMixin",
 		"fade.GuiGraphicsMixin"
 	],
 	"injectors": {

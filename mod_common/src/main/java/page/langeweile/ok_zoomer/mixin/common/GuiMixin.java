@@ -8,6 +8,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,7 @@ import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
 // This mixin should have a higher priority than Fabric API for compatibility reasons
-@Mixin(value = Gui.class, priority = 998)
+@Mixin(value = Hud.class, priority = 998)
 public abstract class GuiMixin {
 	@Unique
 	private float translation = 0.0F;

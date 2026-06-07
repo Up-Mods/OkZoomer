@@ -16,6 +16,6 @@ public class OkZoomerSodiumEntry implements ConfigEntryPoint {
 				.setBaseThemeRGB(0xffdc5d))
 			.addPage(builder.createExternalPage()
 				.setName(Component.translatable("config.ok_zoomer.sodium.page.zoom"))
-				.setScreenConsumer(screen -> Minecraft.getInstance().setScreen(new OkZoomerConfigScreen(screen))));
+				.setScreenConsumer(screen -> Minecraft.getInstance().gui.setScreen(new OkZoomerConfigScreen(screen))));
 	}
 }

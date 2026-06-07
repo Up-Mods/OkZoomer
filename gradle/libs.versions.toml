@@ -1,19 +1,19 @@
 [versions]
-minecraft = "26.1.2"
+minecraft = "26.2-pre-4"
 
 shadow = "9.4.1"
 mod_publish_plugin = "1.1.0"
 
-fabric_loom = "1.16.1"
-fabric_loader = "0.19.2"
+fabric_loom = "1.16.3"
+fabric_loader = "0.19.3"
 moddevgradle = "2.0.141"
 neoforge = "26.1.2.36-beta"
 
-fabric_api = "0.148.0+26.1.2"
+fabric_api = "0.150.3+26.2"
 wrench_wrapper = "0.8.1"
 
-modmenu = "18.0.0-alpha.8"
-sodium = "0.8.10+mc26.1.2"
+modmenu = "20.0.0-alpha.1"
+sodium = "0.8.12+mc26.1.2"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
