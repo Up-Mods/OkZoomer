@@ -47,7 +47,7 @@ public class RegisterEvents {
 	public static void registerCommands(RegisterClientCommandsEvent event) {
 		event.getDispatcher().register(
 			Commands.literal("ok_zoomer").executes(ctx -> {
-				Minecraft.getInstance().setScreen(new OkZoomerConfigScreen(null));
+				Minecraft.getInstance().gui.setScreen(new OkZoomerConfigScreen(null));
 				return 0;
 			})
 		);

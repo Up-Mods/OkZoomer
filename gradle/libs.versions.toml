@@ -1,13 +1,13 @@
 [versions]
-minecraft = "26.2-pre-4"
+minecraft = "26.2-rc-1"
 
-shadow = "9.4.1"
+shadow = "9.4.2"
 mod_publish_plugin = "1.1.0"
 
-fabric_loom = "1.16.3"
+fabric_loom = "1.17.11"
 fabric_loader = "0.19.3"
 moddevgradle = "2.0.141"
-neoforge = "26.1.2.36-beta"
+neoforge = "26.2.0-alpha.0+rc-1.20260611.132638"
 
 fabric_api = "0.150.3+26.2"
 wrench_wrapper = "0.8.1"
