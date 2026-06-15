@@ -210,7 +210,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		@Comment("The maximum amount of scroll steps that the zoom may reach.")
 		@IntegerRange(min = 0, max = Integer.MAX_VALUE)
 		@RangeSubset(min = 0, max = 100)
-		public final TrackedValue<Integer> scrollStepLimit = this.value( OkZoomerConfigManager.getDefaultZoomLimit());
+		public final TrackedValue<Integer> scrollStepLimit = this.value(35);
 	}
 
 	public static final class TweaksConfig extends Section  {

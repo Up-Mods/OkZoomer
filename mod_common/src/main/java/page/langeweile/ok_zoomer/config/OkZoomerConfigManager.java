@@ -90,14 +90,6 @@ public class OkZoomerConfigManager {
 			: 0;
 	}
 
-	public static int getDefaultZoomLimit() {
-		// If Reverse Z is detected, increase the default limit from 64x to 128x
-		// We don't always use 128x because the glitchy entity situation is horrible for that
-		return DepthStencilState.DEFAULT.depthTest().equals(CompareOp.GREATER_THAN_OR_EQUAL)
-			? 35
-			: 30;
-	}
-
 	public static void configureZoomModifier() {
 		boolean cinematicCamera = CONFIG.controls.cinematicCamera.value();
 		boolean reduceSensitivity = CONFIG.controls.reduceSensitivity.value();
