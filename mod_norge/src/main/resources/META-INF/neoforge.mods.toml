@@ -19,14 +19,14 @@ updateJSONURL = "https://api.modrinth.com/updates/aXf2OSFU/forge_updates.json?ne
 [[dependencies.ok_zoomer]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.1.0-alpha,)"
+versionRange = "[26.2.0-alpha,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.ok_zoomer]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.1-,)"
+versionRange = "[26.2-,)"
 ordering = "NONE"
 side = "CLIENT"
 
