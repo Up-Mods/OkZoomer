@@ -91,6 +91,7 @@ public class ZoomUtils {
 		return OkZoomerConfigManager.CONFIG.appearance.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
 	}
 
+	// TODO - Split Safe Distant Entities from Safe Smart Occlusion
 	public static boolean canSeeDistantEntities() {
 		return switch (OkZoomerConfigManager.CONFIG.appearance.seeDistantEntities.value()) {
 			case SAFE -> ZoomUtils.safeSmartOcclusion;
