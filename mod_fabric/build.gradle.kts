@@ -44,9 +44,9 @@ loom {
 	runs {
 		named("client") {
 			client()
-			configName = "Fabric Client"
-			ideConfigGenerated(true)
-			runDir("run")
+			displayName = "Fabric Client"
+			generateRunConfig = true
+			runDirectory = projectDir.resolve("run")
 		}
 	}
 }
