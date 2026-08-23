@@ -27,8 +27,8 @@ public class FabricZoomUtils {
 		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
 		if (FabricLoader.getInstance().isModLoaded("sodium")) {
 			// Very Many Players causes https://github.com/Up-Mods/OkZoomer/issues/192, can't have that
-			if (FabricLoader.getInstance().isModLoaded("vmp")) {
-				return;
+			if (!FabricLoader.getInstance().isModLoaded("vmp")) {
+				ZoomUtils.enableSafeDistantEntities();
 			}
 
 			ZoomUtils.enableSafeSmartOcclusion();

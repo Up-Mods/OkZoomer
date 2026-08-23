@@ -15,8 +15,8 @@ public class NorgeZoomUtils {
 		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
 		if (ModList.get().isLoaded("sodium")) {
 			// Very Many Players causes https://github.com/Up-Mods/OkZoomer/issues/192, can't have that
-			if (ModList.get().isLoaded("vmp")) {
-				return;
+			if (!ModList.get().isLoaded("vmp")) {
+				ZoomUtils.enableSafeDistantEntities();
 			}
 
 			ZoomUtils.enableSafeSmartOcclusion();
