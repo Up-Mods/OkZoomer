@@ -61,6 +61,7 @@ public class CameraMixin {
 		}
 	}
 
+	// TODO - You can improve this mixin
 	@ModifyExpressionValue(
 		method = "createProjectionMatrixForCulling",
 		at = @At(
@@ -72,7 +73,7 @@ public class CameraMixin {
 		if (!ZoomUtils.hasSmartOcclusion() || !Zoom.isZooming()) {
 			return original;
 		} else {
-			return this.fov;
+			return Math.max(this.fov, 0.5F);
 		}
 	}
 }
