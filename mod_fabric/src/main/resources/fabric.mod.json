@@ -41,5 +41,10 @@
 		{
 			"file": "META-INF/jarjar/impl-0.8.1.jar"
 		}
-	]
+	],
+	"custom": {
+		"vmp:incompatibleConfig": [
+			"use_optimized_entity_tracking"
+		]
+	}
 }
