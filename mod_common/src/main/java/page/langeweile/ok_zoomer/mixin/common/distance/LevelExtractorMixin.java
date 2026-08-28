@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.extract.LevelExtractor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
@@ -17,10 +18,10 @@ public abstract class LevelExtractorMixin {
 		)
 	)
 	private double modifyViewScale(double original) {
-		if (!ZoomUtils.canSeeDistantEntities()) {
+		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.isTransitionActive()) {
 			return original;
 		} else {
-			return original * Math.max(1.0, Zoom.isZooming() ? Zoom.getZoomDivisor() : 1.0);
+			return original * (1.0 + ((double) ZoomUtils.zoomStep / OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution.value()));
 		}
 	}
 }
