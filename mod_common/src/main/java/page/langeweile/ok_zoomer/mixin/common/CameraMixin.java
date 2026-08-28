@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
@@ -61,19 +62,20 @@ public class CameraMixin {
 		}
 	}
 
-	// TODO - You can improve this mixin
-	@ModifyExpressionValue(
+	@ModifyArg(
 		method = "createProjectionMatrixForCulling",
 		at = @At(
 			value = "INVOKE",
 			target = "Ljava/lang/Math;max(FF)F"
-		)
+		),
+		index = 1
 	)
 	private float modifyCullingFov(float original) {
 		if (!ZoomUtils.hasSmartOcclusion() || !Zoom.isZooming()) {
 			return original;
 		} else {
-			return Math.max(this.fov, 0.5F);
+			// Can't be arbitrarily small or else glitching can occur
+			return 5.0F;
 		}
 	}
 }
