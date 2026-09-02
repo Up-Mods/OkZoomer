@@ -5,10 +5,6 @@ plugins {
 
 val javaVersion = 25
 
-// TODO - Get rid of mc-publish stuff
-val curseforgeId = "354047"
-val modrinthId = "aXf2OSFU"
-
 version = System.getenv().get("TAG") ?: "0.0.0"
 group = "page.langeweile.ok_zoomer"
 

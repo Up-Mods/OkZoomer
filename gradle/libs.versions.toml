@@ -10,7 +10,7 @@ moddevgradle = "2.0.141"
 neoforge = "26.2.0.64"
 
 fabric_api = "0.158.0+26.2"
-wrench_wrapper = "0.8.1"
+wrench_wrapper = "0.9.1"
 
 modmenu = "20.0.1"
 sodium = "0.8.12+mc26.1.2"
@@ -20,9 +20,9 @@ minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
-wrench_wrapper_api_fabric = { module = "page.langeweile.wrench_wrapper:api_fabric", version.ref = "wrench_wrapper" }
-wrench_wrapper_api_neoforge = { module = "page.langeweile.wrench_wrapper:api_neoforge", version.ref = "wrench_wrapper" }
-wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:impl", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_fabric = { module = "page.langeweile.wrench_wrapper:ww_api_fabric", version.ref = "wrench_wrapper" }
+wrench_wrapper_api_neoforge = { module = "page.langeweile.wrench_wrapper:ww_api_neoforge", version.ref = "wrench_wrapper" }
+wrench_wrapper_impl = { module = "page.langeweile.wrench_wrapper:ww_impl", version.ref = "wrench_wrapper" }
 
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 sodium_fabric = { module = "net.caffeinemc:sodium-fabric-api", version.ref = "sodium" }

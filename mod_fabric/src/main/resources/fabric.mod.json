@@ -39,7 +39,7 @@
 	},
 	"jars": [
 		{
-			"file": "META-INF/jarjar/impl-0.8.1.jar"
+			"file": "META-INF/jarjar/ww_impl-0.9.1.jar"
 		}
 	],
 	"custom": {
