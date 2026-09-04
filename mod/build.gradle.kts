@@ -81,7 +81,7 @@ publishMods {
 		projectId = "1465234"
 		minecraftVersions.addAll(listOf("26.2"))
 		javaVersions.addAll(listOf(JavaVersion.VERSION_25))
-		clientRequired = true
+		client = true
 		changelogType = "markdown"
 	}
 }

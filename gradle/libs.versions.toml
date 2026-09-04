@@ -1,15 +1,15 @@
 [versions]
 minecraft = "26.2"
 
-shadow = "9.4.2"
-mod_publish_plugin = "1.1.0"
+shadow = "9.6.1"
+mod_publish_plugin = "2.2.0"
 
-fabric_loom = "1.17.19"
-fabric_loader = "0.19.3"
-moddevgradle = "2.0.141"
-neoforge = "26.2.0.64"
+fabric_loom = "1.17.20"
+fabric_loader = "0.19.5"
+moddevgradle = "2.0.146"
+neoforge = "26.2.0.76"
 
-fabric_api = "0.158.0+26.2"
+fabric_api = "0.159.0+26.2"
 wrench_wrapper = "0.9.1"
 
 modmenu = "20.0.1"
