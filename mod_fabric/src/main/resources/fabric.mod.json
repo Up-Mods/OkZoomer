@@ -37,11 +37,6 @@
 		"minecraft": ">=26.2-",
 		"fabric-api": ">=0.150.3"
 	},
-	"jars": [
-		{
-			"file": "META-INF/jarjar/ww_impl-0.9.1.jar"
-		}
-	],
 	"custom": {
 		"vmp:incompatibleConfig": [
 			"use_optimized_entity_tracking"
