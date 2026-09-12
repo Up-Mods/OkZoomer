@@ -16,4 +16,4 @@ plugins {
 include("mod")
 include("mod_common")
 include("mod_fabric")
-include("mod_norge")
+//include("mod_norge")

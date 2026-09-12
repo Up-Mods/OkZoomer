@@ -32,9 +32,11 @@ dependencies {
 	implementation(project(":mod_fabric")) {
 		isTransitive = false
 	}
+	/*
 	implementation(project(":mod_norge")) {
 		isTransitive = false
 	}
+	 */
 }
 
 // TODO - Somehow make a source JAR from all of this

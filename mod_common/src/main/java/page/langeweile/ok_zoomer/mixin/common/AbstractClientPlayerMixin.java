@@ -13,13 +13,9 @@ public abstract class AbstractClientPlayerMixin {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isScoping()Z")
 	)
 	private boolean replaceSpyglassPlayerMovement(boolean isScoping) {
-		if (switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
-			case REPLACE_ZOOM, BOTH -> true;
-			default -> false;
-		}) {
-			return false;
-		}
-
-		return isScoping;
+		return switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
+			case REPLACE_ZOOM, BOTH -> false;
+			default -> isScoping;
+		};
 	}
 }

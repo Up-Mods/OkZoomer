@@ -29,7 +29,7 @@ public class ZoomUtils {
 	public static int zoomStep = 0;
 
 	private static Predicate<LocalPlayer> hasSpyglass = player -> player.isCreative();
-	private static boolean safeSmartOcclusion = false;
+	private static boolean safeSmartOcclusion = true;
 	private static boolean safeDistantEntities = false;
 	private static Float fadeModifier = null;
 
@@ -84,8 +84,8 @@ public class ZoomUtils {
 		ZoomUtils.hasSpyglass = ZoomUtils.hasSpyglass.or(provider);
 	}
 
-	public static void enableSafeSmartOcclusion() {
-		ZoomUtils.safeSmartOcclusion = true;
+	public static void disableSafeSmartOcclusion() {
+		ZoomUtils.safeSmartOcclusion = false;
 	}
 
 	public static void enableSafeDistantEntities() {

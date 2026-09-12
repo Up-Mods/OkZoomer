@@ -27,7 +27,6 @@ public class FabricZoomUtils {
 		// If Sodium is enabled, then we have all the pillars required to make Smart Occlusion work smoothly
 		if (FabricLoader.getInstance().isModLoaded("sodium")) {
 			ZoomUtils.enableSafeDistantEntities();
-			ZoomUtils.enableSafeSmartOcclusion();
 		}
 	}
 }

@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLMouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -68,13 +68,13 @@ public abstract class MouseHandlerMixin {
 		),
 		cancellable = true
 	)
-	private void zoomerOnMouseButton(long handle, MouseButtonInfo rawButtonInfo, int action, CallbackInfo ci) {
+	private void zoomerOnMouseButton(long handle, MouseButtonInfo rawButtonInfo, int action, CallbackInfo ci, @Local(ordinal = 0) boolean pressed) {
 		if (OkZoomerConfigManager.CONFIG.zoomScrolling.zoomScrolling.value()) {
 			if (OkZoomerConfigManager.CONFIG.controls.zoomMode.value() == ZoomModes.PERSISTENT && !ZoomKeyBinds.ZOOM_KEY.isDown()) {
 				return;
 			}
 
-			if (rawButtonInfo.button() == GLFW.GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW.GLFW_PRESS && Zoom.isZooming()) {
+			if (rawButtonInfo.button() == SDLMouse.SDL_BUTTON_MIDDLE && pressed && Zoom.isZooming()) {
 				if (OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();
@@ -92,13 +92,9 @@ public abstract class MouseHandlerMixin {
 		)
 	)
 	private boolean replaceSpyglassMouseMovement(boolean isScoping) {
-		if (switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
-			case REPLACE_ZOOM, BOTH -> true;
-			default -> false;
-		}) {
-			return false;
-		}
-
-		return isScoping;
+		return switch (OkZoomerConfigManager.CONFIG.controls.spyglassMode.value()) {
+			case REPLACE_ZOOM, BOTH -> false;
+			default -> isScoping;
+		};
 	}
 }
