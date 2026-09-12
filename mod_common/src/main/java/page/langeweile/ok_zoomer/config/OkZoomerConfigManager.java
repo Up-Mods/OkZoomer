@@ -1,7 +1,5 @@
 package page.langeweile.ok_zoomer.config;
 
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.platform.CompareOp;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Ease;

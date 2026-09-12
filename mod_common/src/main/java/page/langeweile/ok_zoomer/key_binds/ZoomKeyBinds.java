@@ -2,7 +2,6 @@ package page.langeweile.ok_zoomer.key_binds;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import org.lwjgl.glfw.GLFW;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ModUtils;
 
@@ -15,7 +14,7 @@ public class ZoomKeyBinds {
 	public static final KeyMapping.Category ZOOM_CATEGORY = KeyMapping.Category.register(ModUtils.id("zoom"));
 
 	// The zoom key bind, which will be registered
-	public static final KeyMapping ZOOM_KEY = new KeyMapping("key.ok_zoomer.zoom", GLFW.GLFW_KEY_C, ZOOM_CATEGORY);
+	public static final KeyMapping ZOOM_KEY = new KeyMapping("key.ok_zoomer.zoom", InputConstants.KEY_C, ZOOM_CATEGORY);
 
 	// The "Decrease Zoom" key bind
 	public static final KeyMapping DECREASE_ZOOM_KEY = getExtraKeyBind("key.ok_zoomer.decrease_zoom");
