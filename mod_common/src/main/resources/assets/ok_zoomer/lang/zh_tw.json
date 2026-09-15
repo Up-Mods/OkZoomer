@@ -1,6 +1,6 @@
 {
-	"fml.menu.mods.info.description.ok_zoomer": "一個強大、精簡且高度可自定義的縮放模組。縮放功能由你掌控！",
 	"modmenu.descriptionTranslation.ok_zoomer": "一個強大、精簡且高度可自定義的縮放模組。縮放功能由你掌控！",
+	"neoforge.screen.mods.info.description.ok_zoomer": "一個強大、精簡且高度可自定義的縮放模組。縮放功能由你掌控！",
 	"config.ok_zoomer.title": "Ok Zoomer 設定",
 	"config.ok_zoomer.zoom_transition": "縮放過渡",
 	"config.ok_zoomer.zoom_transition.start_transition": "開始過渡",

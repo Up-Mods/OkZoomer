@@ -1,6 +1,6 @@
 {
-	"fml.menu.mods.info.description.ok_zoomer": "A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!",
 	"modmenu.descriptionTranslation.ok_zoomer": "A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!",
+	"neoforge.screen.mods.info.description.ok_zoomer": "A zoom mod that is powerful, lean, and pretty customizable. The zoom is yours!",
 	"config.ok_zoomer.title": "Ok Zoomer Settings",
 	"config.ok_zoomer.zoom_transition": "Zoom Transitions",
 	"config.ok_zoomer.zoom_transition.start_transition": "Start Transition",

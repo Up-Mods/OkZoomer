@@ -1,6 +1,6 @@
 {
-	"fml.menu.mods.info.description.ok_zoomer": "Um mod de zoom poderoso, leve, e bem customizável. O zoom é seu!",
 	"modmenu.descriptionTranslation.ok_zoomer": "Um mod de zoom poderoso, leve, e bem customizável. O zoom é seu!",
+	"neoforge.screen.mods.info.description.ok_zoomer": "Um mod de zoom poderoso, leve, e bem customizável. O zoom é seu!",
 	"config.ok_zoomer.title": "Definições do Ok Zoomer",
 	"config.ok_zoomer.zoom_transition": "Transições de zoom",
 	"config.ok_zoomer.zoom_transition.start_transition": "Transição inicial",

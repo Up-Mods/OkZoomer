@@ -36,7 +36,6 @@ jobs:
         run: ./gradlew build
 
       - name: Maven Release
-        if: ${{ env.MAVEN_UPLOAD_URL }}
         run: ./gradlew publish
 
       - name: Publish on GitHub, Modrinth and CurseForge
