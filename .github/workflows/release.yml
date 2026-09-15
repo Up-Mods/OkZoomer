@@ -32,8 +32,8 @@ jobs:
         if: steps.extract_maven_upload_url.outputs.maven_upload_url
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          MODRINTH_API_KEY: ${{ secrets.MODRINTH_TOKEN }}
-          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
         run: ./gradlew publishMods
 
       - name: Notify Discord
