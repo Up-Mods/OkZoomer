@@ -39,7 +39,7 @@ jobs:
         if: ${{ env.MAVEN_UPLOAD_URL }}
         run: ./gradlew publish
 
-      - name: Publish on Modrinth and CurseForge
+      - name: Publish on GitHub, Modrinth and CurseForge
         run: ./gradlew publishMods
 
       - name: Notify Discord

@@ -83,4 +83,10 @@ publishMods {
 		client = true
 		changelogType = "markdown"
 	}
+
+	github {
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		repository = providers.environmentVariable("GITHUB_REPOSITORY")
+		commitish = providers.environmentVariable("TAG")
+	}
 }
