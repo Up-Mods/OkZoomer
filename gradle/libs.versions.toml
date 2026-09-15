@@ -1,5 +1,5 @@
 [versions]
-minecraft = "26.3-rc-2"
+minecraft = "26.3-rc-3"
 
 shadow = "9.6.1"
 mod_publish_plugin = "2.2.0"
@@ -7,7 +7,7 @@ mod_publish_plugin = "2.2.0"
 fabric_loom = "1.17.20"
 fabric_loader = "0.19.5"
 moddevgradle = "2.0.147"
-neoforge = "26.2.0.76"
+neoforge = "26.3.0-alpha.0+rc-3.20260914.212429"
 
 fabric_api = "0.160.4+26.3"
 wrench_wrapper = "0.9.1"
