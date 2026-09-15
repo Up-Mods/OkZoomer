@@ -51,12 +51,11 @@ publishing {
 	}
 
 	repositories {
-		val env = System.getenv()
-		if (env.contains("MAVEN_UPLOAD_URL")) {
-			maven(uri(env["MAVEN_UPLOAD_URL"]!!)) {
+		providers.environmentVariable("MAVEN_UPLOAD_URL").orNull?.let { mavenUrl ->
+			maven(mavenUrl) {
 				credentials {
-					username = env["MAVEN_UPLOAD_USERNAME"]
-					password = env["MAVEN_UPLOAD_PASSWORD"]
+					username = providers.environmentVariable("MAVEN_UPLOAD_USERNAME").get()
+					password = providers.environmentVariable("MAVEN_UPLOAD_PASSWORD").get()
 				}
 			}
 		}
