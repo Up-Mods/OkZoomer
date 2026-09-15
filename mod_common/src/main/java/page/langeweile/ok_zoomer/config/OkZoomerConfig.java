@@ -99,11 +99,11 @@ public class OkZoomerConfig extends ReflectiveConfig {
 		public final TrackedValue<ZoomOverlays> zoomOverlay = this.value(ZoomOverlays.OFF);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Improves performance by making the game render less of the world while zoomed in. This feature depends on the Sodium mod in order to work.")
+		@Comment("Improves performance by making the game render less of the world while zoomed in.")
 		public final TrackedValue<Boolean> smartOcclusion = this.value(true);
 
 		@WidgetSize(Size.HALF)
-		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar. This may have a performance impact during zoom.")
+		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar.")
 		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
 	}
 
