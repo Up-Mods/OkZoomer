@@ -71,13 +71,13 @@ publishMods {
 
 	modrinth {
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-		projectId = "4lDrPSXX"
+		projectId = "aXf2OSFU"
 		minecraftVersions.addAll(listOf("26.3-rc-3"))
 	}
 
 	curseforge {
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-		projectId = "1465234"
+		projectId = "354047"
 		minecraftVersions.addAll(listOf("26.3-Snapshot"))
 		javaVersions.addAll(listOf(JavaVersion.VERSION_25))
 		client = true
