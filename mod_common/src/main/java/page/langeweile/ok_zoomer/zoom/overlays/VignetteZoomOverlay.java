@@ -7,12 +7,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
-// Implements the zoom overlay
-public class ZoomerZoomOverlay implements ZoomOverlay {
+public class VignetteZoomOverlay implements ZoomOverlay {
 	private final Identifier textureId;
 	private boolean active;
 
-	public ZoomerZoomOverlay(Identifier textureId) {
+	public VignetteZoomOverlay(Identifier textureId) {
 		this.textureId = textureId;
 		this.active = false;
 	}
@@ -30,9 +29,7 @@ public class ZoomerZoomOverlay implements ZoomOverlay {
 	}
 
 	@Override
-	public void tick(boolean active, double divisor, EasedTransitionMode transitionMode) {
-		if (active || !transitionMode.getActive()) {
-			this.active = active;
-		}
+	public void tick(boolean active, boolean transitionActive) {
+		this.active = transitionActive;
 	}
 }

@@ -1,8 +1,5 @@
 package page.langeweile.ok_zoomer.zoom.modifiers;
 
-/**
- * The mouse modifier is the component that handles any change of behavior of the mouse.
- */
 public interface MouseModifier {
 	boolean getActive();
 
@@ -10,5 +7,5 @@ public interface MouseModifier {
 
 	double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier);
 
-	void tick(boolean active);
+	void tick(boolean active, boolean transitionActive);
 }

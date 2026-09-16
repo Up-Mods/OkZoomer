@@ -43,13 +43,10 @@ public class ZoomUtils {
 		int lastZoomStep = zoomStep;
 		zoomStep = increase ? Math.min(zoomStep + 1, upperScrollStep) :  Math.max(zoomStep - 1, -lowerScrollStep);
 
-		double divisor = 1.0;
-		if (zoomStep != 0) {
-			divisor = Math.pow(scrollBase, (double) zoomStep / scrollResolution);
-			Zoom.setZoomDivisor(divisor);
-		} else {
-			Zoom.setZoomDivisor(1);
-		}
+		float divisor = zoomStep != 0
+			? (float) Math.pow(scrollBase, (float) zoomStep / scrollResolution)
+			: 1.0F;
+		Zoom.setZoomDivisor(divisor);
 
 		if (lastZoomStep != zoomStep && OkZoomerConfigManager.CONFIG.zoomScrolling.scrollSounds.value()) {
 			minecraft.player.playSound(ZoomUtils.SCROLL_SOUND, 1.0F, 1.0F);
@@ -67,7 +64,7 @@ public class ZoomUtils {
 		int scrollBase = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollBase.value();
 		int scrollResolution = OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution.value();
 		ZoomUtils.zoomStep = OkZoomerConfigManager.CONFIG.zoomScrolling.defaultScrollStep.value();
-		Zoom.setZoomDivisor(Math.pow(scrollBase, (double) zoomStep / scrollResolution));
+		Zoom.setZoomDivisor((float) Math.pow(scrollBase, (float) zoomStep / scrollResolution));
 	}
 
 	public static void keepZoomStepsWithinBounds() {

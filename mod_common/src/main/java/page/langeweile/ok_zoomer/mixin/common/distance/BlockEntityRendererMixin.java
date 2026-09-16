@@ -12,10 +12,10 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public interface BlockEntityRendererMixin {
 	@WrapMethod(method = "getViewDistance")
 	private int modifyBlockEntityViewDistance(Operation<Integer> original) {
-		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.isTransitionActive()) {
+		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.getZoomCore().transitionMode().getActive()) {
 			return original.call();
 		} else {
-			return original.call() * Mth.ceil(1.0 / Zoom.getTransitionMode().getInternalMultiplier());
+			return original.call() * Mth.ceil(1.0 / Zoom.getZoomCore().transitionMode().getInternalMultiplier());
 		}
 	}
 }

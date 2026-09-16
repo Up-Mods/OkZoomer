@@ -1,18 +1,10 @@
 package page.langeweile.ok_zoomer.zoom.modifiers;
 
 //A sin was probably committed by using a lot of for each loops
-/**
- * A mouse modifier that contains multiple mouse modifiers.
- */
 public class ContainingMouseModifier implements MouseModifier {
 	private final MouseModifier[] modifiers;
 	private boolean active;
 
-	/**
-	 * Initializes an instance of the containing mouse modifier
-	 *
-	 * @param modifiers the contained mouse modifiers
-	*/
 	public ContainingMouseModifier(MouseModifier... modifiers) {
 		this.modifiers = modifiers;
 		this.active = false;
@@ -27,7 +19,9 @@ public class ContainingMouseModifier implements MouseModifier {
 	public double applyXModifier(double cursorDeltaX, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		double returnedValue = cursorDeltaX;
 		for (var modifier : modifiers) {
-			returnedValue = modifier.applyXModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
+			if (modifier.getActive()) {
+				returnedValue = modifier.applyXModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
+			}
 		}
 
 		return returnedValue;
@@ -37,22 +31,20 @@ public class ContainingMouseModifier implements MouseModifier {
 	public double applyYModifier(double cursorDeltaY, double cursorSensitivity, double mouseUpdateTimeDelta, double transitionMultiplier) {
 		double returnedValue = cursorDeltaY;
 		for (var modifier : modifiers) {
-			returnedValue = modifier.applyYModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
+			if (modifier.getActive()) {
+				returnedValue = modifier.applyYModifier(returnedValue, cursorSensitivity, mouseUpdateTimeDelta, transitionMultiplier);
+			}
 		}
 
 		return returnedValue;
 	}
 
 	@Override
-	public void tick(boolean active) {
-		boolean anyActive = false;
-		for (MouseModifier modifier : modifiers) {
-			modifier.tick(active);
-
-			if (active) {
-				anyActive = true;
-			}
+	public void tick(boolean active, boolean transitionActive) {
+		for (var modifier : modifiers) {
+			modifier.tick(active, transitionActive);
 		}
-		this.active = anyActive;
+
+		this.active = transitionActive;
 	}
 }

@@ -18,35 +18,39 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public class CameraMixin {
 	@Inject(method = "tick()V", at = @At("HEAD"))
 	private void tickInstances(CallbackInfo info) {
+		var zoomCore = Zoom.getZoomCore();
 		boolean zooming = Zoom.isZooming();
-		if (zooming || (Zoom.isTransitionActive() || Zoom.isModifierActive() || Zoom.isOverlayActive())) {
-			double divisor = zooming ? Zoom.getZoomDivisor() : 1.0;
-			Zoom.getTransitionMode().tick(zooming, divisor);
-			if (Zoom.getMouseModifier() != null) {
-				Zoom.getMouseModifier().tick(zooming);
+		boolean transitionActive = zoomCore.transitionMode().getActive();
+
+		if (zooming || zoomCore.transitionMode().getActive()) {
+			zoomCore.transitionMode().tick(zooming, zooming ? Zoom.getZoomDivisor() : 1.0F);
+
+			if (zoomCore.mouseModifier() != null) {
+				zoomCore.mouseModifier().tick(zooming, transitionActive);
 			}
-			if (Zoom.getZoomOverlay() != null) {
-				Zoom.getZoomOverlay().tick(zooming, divisor, Zoom.getTransitionMode());
+
+			if (zoomCore.zoomOverlay() != null) {
+				zoomCore.zoomOverlay().tick(zooming, transitionActive);
 			}
 		}
 	}
 
 	@ModifyReturnValue(method = "calculateFov", at = @At("TAIL"))
 	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.isTransitionActive()) {
+		if (!Zoom.getZoomCore().transitionMode().getActive()) {
 			return original;
 		} else {
-			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
+			return Zoom.getZoomCore().transitionMode().applyZoom(original, partialTicks);
 		}
 	}
 
 	// TODO - This affects the debug crosshair as well, make it not affect that!
 	@ModifyReturnValue(method = "calculateHudFov", at = @At("RETURN"))
 	private float modifyHandFov(float original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.isTransitionActive() || !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
+		if (!Zoom.getZoomCore().transitionMode().getActive() || !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
 			return original;
 		} else {
-			return Zoom.getTransitionMode().applyZoom(original, partialTicks);
+			return Zoom.getZoomCore().transitionMode().applyZoom(original, partialTicks);
 		}
 	}
 
@@ -55,7 +59,7 @@ public class CameraMixin {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
 		} else {
-			return Zoom.getTransitionMode().applyZoom(bob, cameraState.cameraEntityPartialTicks);
+			return Zoom.getZoomCore().transitionMode().applyZoom(bob, cameraState.cameraEntityPartialTicks);
 		}
 	}
 

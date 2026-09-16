@@ -36,12 +36,12 @@ public abstract class GuiMixin {
 	)
 	private void injectZoomOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci, @Share("cancelOverlay") LocalBooleanRef cancelOverlay) {
 		cancelOverlay.set(false);
-		if (Zoom.getZoomOverlay() != null) {
-			var overlay = Zoom.getZoomOverlay();
+		if (Zoom.getZoomCore().zoomOverlay() != null) {
+			var overlay = Zoom.getZoomCore().zoomOverlay();
 			overlay.tickBeforeRender(deltaTracker);
 			if (overlay.getActive()) {
 				cancelOverlay.set(overlay.cancelOverlayRendering());
-				overlay.extractOverlay(graphics, deltaTracker, Zoom.getTransitionMode());
+				overlay.extractOverlay(graphics, deltaTracker, Zoom.getZoomCore().transitionMode());
 			}
 		}
 	}
@@ -69,10 +69,10 @@ public abstract class GuiMixin {
 
 	@WrapMethod(method = "extractRenderState")
 	private void zoomGui(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, Operation<Void> original) {
-		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getTransitionMode().getActive()) {
+		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getZoomCore().transitionMode().getActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
-			float fov = Zoom.getTransitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
+			float fov = Zoom.getZoomCore().transitionMode().applyZoom(1.0F, deltaTracker.getGameTimeDeltaPartialTick(true));
 			this.translation = 2.0F / ((1.0F / fov) - 1.0F);
 			this.scale = 1.0F / fov;
 			graphics.pose().pushMatrix();
@@ -87,7 +87,7 @@ public abstract class GuiMixin {
 	private void hideCrosshair(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		boolean persistentInterface = OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value();
 		boolean hideCrosshair = OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value();
-		if (persistentInterface || hideCrosshair || !Zoom.isTransitionActive()) {
+		if (persistentInterface || hideCrosshair || !Zoom.getZoomCore().transitionMode().getActive()) {
 			original.call(graphics, deltaTracker);
 		} else {
 			graphics.pose().popMatrix();
@@ -103,7 +103,7 @@ public abstract class GuiMixin {
 	@WrapMethod(method = "extractCrosshair")
 	private void fadeCrosshair(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.appearance.hideCrosshair.value()) {
-			ZoomUtils.setFadeModifier(1.0F - Zoom.getTransitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true)));
+			ZoomUtils.setFadeModifier(1.0F - Zoom.getZoomCore().transitionMode().getFade(deltaTracker.getGameTimeDeltaPartialTick(true)));
 			original.call(guiGraphics, deltaTracker);
 			ZoomUtils.setFadeModifier(null);
 		} else {

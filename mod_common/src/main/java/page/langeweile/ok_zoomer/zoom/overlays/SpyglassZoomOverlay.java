@@ -8,7 +8,6 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
-// An implementation of the spyglass overlay as a zoom overlay
 public class SpyglassZoomOverlay implements ZoomOverlay {
 	private final Identifier textureId;
 	//private Minecraft minecraft;
@@ -32,7 +31,7 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 		return true;
 	}
 
-	// TODO - Consider whenever a third-person view block tweak option is desirable
+	// TODO - Consider whether a third-person view block tweak option is desirable
 	@Override
 	public void extractOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, EasedTransitionMode transitionMode) {
 		int guiWidth = graphics.guiWidth();
@@ -53,7 +52,7 @@ public class SpyglassZoomOverlay implements ZoomOverlay {
 	}
 
 	@Override
-	public void tick(boolean active, double divisor, EasedTransitionMode transitionMode) {
+	public void tick(boolean active, boolean transitionActive) {
 		this.active = active;
 	}
 

@@ -15,11 +15,11 @@ public abstract class SubtitleOverlayMixin {
 	private void zoomGui(GuiGraphicsExtractor graphics, Operation<Void> original) {
 		if (OkZoomerConfigManager.CONFIG.tweaks.persistentCaptions.value()
 			|| OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value()
-			|| !Zoom.getTransitionMode().getActive()
+			|| !Zoom.getZoomCore().transitionMode().getActive()
 		) {
 			original.call(graphics);
 		} else {
-			float fov = Zoom.getTransitionMode().applyZoom(1.0F, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
+			float fov = Zoom.getZoomCore().transitionMode().applyZoom(1.0F, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true));
 			float translation = 2.0F / ((1.0F / fov) - 1.0F);
 			float scale = 1.0F / fov;
 			graphics.pose().pushMatrix();

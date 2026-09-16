@@ -12,10 +12,10 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 public abstract class IntegratedServerMixin {
 	@WrapMethod(method = "getScaledTrackingDistance")
 	private int modifyEntityViewDistance(int trackingDistance, Operation<Integer> original) {
-		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.isTransitionActive()) {
+		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.getZoomCore().transitionMode().getActive()) {
 			return original.call(trackingDistance);
 		} else {
-			return original.call(trackingDistance * Mth.ceil(1.0 / Zoom.getTransitionMode().getInternalMultiplier()));
+			return original.call(trackingDistance * Mth.ceil(1.0 / Zoom.getZoomCore().transitionMode().getInternalMultiplier()));
 		}
 	}
 }

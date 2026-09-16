@@ -18,7 +18,7 @@ public abstract class LevelExtractorMixin {
 		)
 	)
 	private double modifyViewScale(double original) {
-		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.isTransitionActive()) {
+		if (!ZoomUtils.canSeeDistantEntities() || !Zoom.getZoomCore().transitionMode().getActive()) {
 			return original;
 		} else {
 			return original * (1.0 + ((double) ZoomUtils.zoomStep / OkZoomerConfigManager.CONFIG.zoomScrolling.scrollResolution.value()));

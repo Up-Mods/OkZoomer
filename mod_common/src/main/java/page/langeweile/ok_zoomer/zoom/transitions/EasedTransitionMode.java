@@ -68,17 +68,19 @@ public class EasedTransitionMode {
 	}
 
 	// Once logic is finished? Throw this mess into a profiler
-	public void tick(boolean active, double divisor) {
+	public void tick(boolean active, float divisor) {
 		float zoomMultiplier = (float) (1.0 / divisor);
 		float fadeMultiplier = active ? 1.0F : 0.0F;
 
-		boolean skipTransition = active && this.targetStartTicks == 0 || !active && this.targetEndTicks == 0;
+		boolean skipTransition = (active && this.targetStartTicks == 0 && !this.scrollMode) || !active && this.targetEndTicks == 0;
 
 		if (skipTransition) {
 			this.internalMultiplier = active ? zoomMultiplier : 1.0F;
 			this.internalFade = active ? fadeMultiplier : 0.0F;
 			this.lastInternalMultiplier = this.internalMultiplier;
 			this.lastInternalFade = this.internalFade;
+			this.scrollMode = active;
+			this.ticks = active ? this.targetScrollTicks : this.ticks;
 		} else {
 			int targetTicks = active ? (this.scrollMode ? this.targetScrollTicks : this.targetStartTicks) : this.targetEndTicks;
 			int oppositeTargetTicks = active ? this.targetEndTicks : this.targetStartTicks;
