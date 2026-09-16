@@ -104,7 +104,7 @@ public class OkZoomerConfig extends ReflectiveConfig {
 
 		@WidgetSize(Size.HALF)
 		@Comment("Expands the entity distance while zooming in, allowing creatures and certain blocks to be seen from afar.")
-		public final TrackedValue<SeeDistantEntitiesModes> seeDistantEntities = this.value(SeeDistantEntitiesModes.SAFE);
+		public final TrackedValue<Boolean> seeDistantEntities = this.value(true);
 	}
 
 	public static final class ControlsConfig extends Section {

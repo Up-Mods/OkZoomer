@@ -43,3 +43,4 @@ side = "BOTH"
 
 [modproperties.ok_zoomer]
 "sodium:config_api_user" = "page.langeweile.ok_zoomer.config.sodium.OkZoomerSodiumEntry"
+"vmp:incompatibleConfig" = [ "use_optimized_entity_tracking" ]

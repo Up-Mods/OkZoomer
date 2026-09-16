@@ -29,12 +29,6 @@ public class ConfigEnums {
 		BOTH
 	}
 
-	public enum SeeDistantEntitiesModes implements ConfigEnum {
-		OFF,
-		SAFE,
-		ON
-	}
-
 	public enum ZoomPresets implements ConfigEnum {
 		CAMERA,
 		COMPETITIVE,

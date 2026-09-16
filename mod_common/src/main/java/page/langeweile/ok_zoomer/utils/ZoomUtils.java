@@ -29,8 +29,6 @@ public class ZoomUtils {
 	public static int zoomStep = 0;
 
 	private static Predicate<LocalPlayer> hasSpyglass = player -> player.isCreative();
-	private static boolean safeSmartOcclusion = true;
-	private static boolean safeDistantEntities = false;
 	private static Float fadeModifier = null;
 
 	// The method used for changing the zoom divisor, used by zoom scrolling and the key binds
@@ -84,25 +82,12 @@ public class ZoomUtils {
 		ZoomUtils.hasSpyglass = ZoomUtils.hasSpyglass.or(provider);
 	}
 
-	public static void disableSafeSmartOcclusion() {
-		ZoomUtils.safeSmartOcclusion = false;
-	}
-
-	public static void enableSafeDistantEntities() {
-		ZoomUtils.safeDistantEntities = true;
-	}
-
 	public static boolean hasSmartOcclusion() {
-		return OkZoomerConfigManager.CONFIG.appearance.smartOcclusion.value() && ZoomUtils.safeSmartOcclusion;
+		return OkZoomerConfigManager.CONFIG.appearance.smartOcclusion.value();
 	}
 
-	// TODO - Split Safe Distant Entities from Safe Smart Occlusion
 	public static boolean canSeeDistantEntities() {
-		return switch (OkZoomerConfigManager.CONFIG.appearance.seeDistantEntities.value()) {
-			case SAFE -> ZoomUtils.safeDistantEntities;
-			case ON -> true;
-			case OFF -> false;
-		};
+		return OkZoomerConfigManager.CONFIG.appearance.seeDistantEntities.value();
 	}
 
 	public static Float getFadeModifier() {
