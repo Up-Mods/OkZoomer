@@ -22,7 +22,7 @@ public class CameraMixin {
 		boolean zooming = Zoom.isZooming();
 		boolean transitionActive = zoomCore.transitionMode().getActive();
 
-		if (zooming || zoomCore.transitionMode().getActive()) {
+		if (zooming || transitionActive) {
 			zoomCore.transitionMode().tick(zooming, zooming ? Zoom.getZoomDivisor() : 1.0F);
 
 			if (zoomCore.mouseModifier() != null) {

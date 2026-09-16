@@ -44,7 +44,7 @@ public class EasedTransitionMode {
 		this.invertEndTransition = invertEndTransition;
 
 		this.active = false;
-		this.ticks = 1;
+		this.ticks = this.targetEndTicks + 1;
 		this.startZoomMultiplier = 1.0F;
 		this.startFadeMultiplier = 0.0F;
 		this.lastZoomMultiplier = 1.0F;

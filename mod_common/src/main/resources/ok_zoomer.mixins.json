@@ -6,7 +6,7 @@
 	"client": [
 		"AbstractClientPlayerMixin",
 		"CameraMixin",
-		"GuiMixin",
+      "HudMixin",
 		"LevelExtractorMixin",
 		"MouseHandlerMixin",
 		"SubtitleOverlayMixin",
