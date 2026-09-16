@@ -7,11 +7,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
-public class VignetteZoomOverlay implements ZoomOverlay {
+public class VignetteOverlay implements Overlay {
 	private final Identifier textureId;
 	private boolean active;
 
-	public VignetteZoomOverlay(Identifier textureId) {
+	public VignetteOverlay(Identifier textureId) {
 		this.textureId = textureId;
 		this.active = false;
 	}

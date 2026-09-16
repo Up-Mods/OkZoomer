@@ -8,13 +8,13 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
-public class SpyglassZoomOverlay implements ZoomOverlay {
+public class SpyglassOverlay implements Overlay {
 	private final Identifier textureId;
 	//private Minecraft minecraft;
 	private float scale;
 	private boolean active;
 
-	public SpyglassZoomOverlay(Identifier textureId) {
+	public SpyglassOverlay(Identifier textureId) {
 		this.textureId = textureId;
 		this.scale = 0.5F;
 		this.active = false;

@@ -29,8 +29,8 @@ public class CameraMixin {
 				zoomCore.mouseModifier().tick(zooming, transitionActive);
 			}
 
-			if (zoomCore.zoomOverlay() != null) {
-				zoomCore.zoomOverlay().tick(zooming, transitionActive);
+			if (zoomCore.overlay() != null) {
+				zoomCore.overlay().tick(zooming, transitionActive);
 			}
 		}
 	}

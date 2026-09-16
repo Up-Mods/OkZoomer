@@ -4,7 +4,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 
-public interface ZoomOverlay {
+public interface Overlay {
 	boolean getActive();
 
 	default boolean cancelOverlayRendering() { return false; }

@@ -11,9 +11,9 @@ import page.langeweile.ok_zoomer.zoom.modifiers.CinematicCameraMouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ContainingMouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.MouseModifier;
 import page.langeweile.ok_zoomer.zoom.modifiers.ZoomDivisorMouseModifier;
-import page.langeweile.ok_zoomer.zoom.overlays.SpyglassZoomOverlay;
-import page.langeweile.ok_zoomer.zoom.overlays.VignetteZoomOverlay;
-import page.langeweile.ok_zoomer.zoom.overlays.ZoomOverlay;
+import page.langeweile.ok_zoomer.zoom.overlays.Overlay;
+import page.langeweile.ok_zoomer.zoom.overlays.SpyglassOverlay;
+import page.langeweile.ok_zoomer.zoom.overlays.VignetteOverlay;
 import page.langeweile.ok_zoomer.zoom.transitions.EasedTransitionMode;
 import page.langeweile.wrench_wrapper.api.WrenchWrapper;
 
@@ -31,11 +31,11 @@ public class OkZoomerConfigManager {
 		Zoom.setZoomCore(new ZoomCore(
 			OkZoomerConfigManager.configureTransition(),
 			OkZoomerConfigManager.configureMouseModifier(),
-			OkZoomerConfigManager.configureZoomOverlay()
+			OkZoomerConfigManager.configureOverlay()
 		));
 	}
 
-	public static FloatUnaryOperator getZoomTransitionOperator(ConfigEnums.ZoomTransitionModes mode) {
+	public static FloatUnaryOperator getTransitionOperator(ConfigEnums.ZoomTransitionModes mode) {
 		return switch (mode) {
 			case INSTANT -> _ -> 1.0F;
 			case LINEAR -> f -> f;
@@ -67,9 +67,9 @@ public class OkZoomerConfigManager {
 
 	public static EasedTransitionMode configureTransition() {
 		return new EasedTransitionMode(
-			OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.startTransition.value()),
-			OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.endTransition.value()),
-			OkZoomerConfigManager.getZoomTransitionOperator(OkZoomerConfigManager.CONFIG.zoomScrolling.transition.value()),
+			OkZoomerConfigManager.getTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.startTransition.value()),
+			OkZoomerConfigManager.getTransitionOperator(OkZoomerConfigManager.CONFIG.zoomTransition.endTransition.value()),
+			OkZoomerConfigManager.getTransitionOperator(OkZoomerConfigManager.CONFIG.zoomScrolling.transition.value()),
 			OkZoomerConfigManager.getStartTransitionTicks(),
 			OkZoomerConfigManager.getEndTransitionTicks(),
 			OkZoomerConfigManager.getScrollTransitionTicks(),
@@ -92,15 +92,15 @@ public class OkZoomerConfigManager {
 		}
 	}
 
-	public static ZoomOverlay configureZoomOverlay() {
-		// TODO - Restore the "Use Spyglass Texture" option as a "Use Custom Texture" option
+	public static Overlay configureOverlay() {
+		// TODO - Restore the "Use Spyglass Texture" option as a new mode
 		var overlayTextureId = CONFIG.appearance.zoomOverlay.value() == ConfigEnums.ZoomOverlays.SPYGLASS
 			? Identifier.withDefaultNamespace("textures/misc/spyglass_scope.png")
 			: ModUtils.id("textures/misc/zoom_overlay.png");
 
 		return switch (CONFIG.appearance.zoomOverlay.value()) {
-			case VIGNETTE -> new VignetteZoomOverlay(overlayTextureId);
-			case SPYGLASS -> new SpyglassZoomOverlay(overlayTextureId);
+			case VIGNETTE -> new VignetteOverlay(overlayTextureId);
+			case SPYGLASS -> new SpyglassOverlay(overlayTextureId);
 			default -> null;
 		};
 	}

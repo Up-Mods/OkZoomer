@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Hud;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,8 +35,8 @@ public abstract class GuiMixin {
 	)
 	private void injectZoomOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo ci, @Share("cancelOverlay") LocalBooleanRef cancelOverlay) {
 		cancelOverlay.set(false);
-		if (Zoom.getZoomCore().zoomOverlay() != null) {
-			var overlay = Zoom.getZoomCore().zoomOverlay();
+		if (Zoom.getZoomCore().overlay() != null) {
+			var overlay = Zoom.getZoomCore().overlay();
 			overlay.tickBeforeRender(deltaTracker);
 			if (overlay.getActive()) {
 				cancelOverlay.set(overlay.cancelOverlayRendering());
