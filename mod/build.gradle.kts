@@ -64,7 +64,7 @@ publishing {
 
 publishMods {
 	displayName.set("${version.get()} (Fabric/NeoForge)")
-	file = tasks.named<Jar>("jar").get().archiveFile
+	file = tasks.named<Jar>("shadowJar").get().archiveFile
 	modLoaders = listOf("fabric", "neoforge")
 	changelog = "To Be Updated"
 	type = STABLE
@@ -72,15 +72,31 @@ publishMods {
 	modrinth {
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		projectId = "aXf2OSFU"
-		minecraftVersions.addAll(listOf("26.3-rc-3"))
+		minecraftVersions.addAll(listOf("26.3"))
+
+		optional {
+			id = "P7dR8mSH" // Fabric API
+		}
+
+		optional {
+			id = "mOgUt4GM" // Mod Menu
+		}
+
+		optional {
+			id = "AANobbMI" // Sodium
+		}
 	}
 
 	curseforge {
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 		projectId = "354047"
-		minecraftVersions.addAll(listOf("26.3-Snapshot"))
+		minecraftVersions.addAll(listOf("26.3"))
 		javaVersions.addAll(listOf(JavaVersion.VERSION_25))
 		client = true
 		changelogType = "markdown"
+
+		optional("fabric-api")
+		optional("modmenu")
+		optional("sodium")
 	}
 }
