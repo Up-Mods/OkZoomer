@@ -38,7 +38,7 @@ jobs:
       - name: Maven Release
         run: ./gradlew publish
 
-      - name: Publish on GitHub, Modrinth and CurseForge
+      - name: Publish on Modrinth, CurseForge and GitHub
         run: ./gradlew publishMods
 
       - name: Notify Discord

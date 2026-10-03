@@ -2,14 +2,14 @@
 minecraft = "26.3"
 
 shadow = "9.6.1"
-mod_publish_plugin = "2.2.0"
+mod_publish_plugin = "2.2.1"
 
-fabric_loom = "1.18.1"
+fabric_loom = "1.18.2"
 fabric_loader = "0.19.5"
-moddevgradle = "2.0.147"
-neoforge = "26.3.0.0-beta"
+moddevgradle = "2.0.148"
+neoforge = "26.3.0.43-beta"
 
-fabric_api = "0.160.5+26.3"
+fabric_api = "0.161.0+26.3"
 wrench_wrapper = "0.9.3"
 
 modmenu = "21.0.0-beta.1"
