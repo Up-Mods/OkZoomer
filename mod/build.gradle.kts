@@ -72,7 +72,7 @@ publishMods {
 	modrinth {
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		projectId = "aXf2OSFU"
-		minecraftVersions.addAll(listOf("26.2"))
+		minecraftVersions.addAll(listOf("26.1.2", "26.1.1", "26.1"))
 
 		optional {
 			id = "P7dR8mSH" // Fabric API
@@ -90,7 +90,7 @@ publishMods {
 	curseforge {
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 		projectId = "354047"
-		minecraftVersions.addAll(listOf("26.2"))
+		minecraftVersions.addAll(listOf("26.1.2", "26.1.1", "26.1"))
 		javaVersions.addAll(listOf(JavaVersion.VERSION_25))
 		client = true
 		changelogType = "markdown"

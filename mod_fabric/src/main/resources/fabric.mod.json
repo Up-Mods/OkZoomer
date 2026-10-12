@@ -33,9 +33,9 @@
 		"ok_zoomer.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.19.5",
-		"minecraft": ">=26.2- <=26.3",
-		"fabric-api": ">=0.160.4"
+		"fabricloader": ">=0.18.4",
+		"minecraft": ">=26.1- <=26.2",
+		"fabric-api": ">=0.143.12"
 	},
 	"jars": [
 		{

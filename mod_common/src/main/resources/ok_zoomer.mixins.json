@@ -6,13 +6,13 @@
 	"client": [
 		"AbstractClientPlayerMixin",
 		"CameraMixin",
-		"HudMixin",
-		"LevelExtractorMixin",
+		"GuiMixin",
+		"LevelRendererMixin",
 		"MouseHandlerMixin",
 		"SubtitleOverlayMixin",
 		"distance.BlockEntityRendererMixin",
 		"distance.IntegratedServerMixin",
-		"distance.LevelExtractorMixin",
+		"distance.LevelRendererMixin",
 		"fade.GuiGraphicsMixin"
 	],
 	"injectors": {

@@ -1,6 +1,6 @@
 package page.langeweile.ok_zoomer.mixin.common.distance;
 
-import net.minecraft.client.renderer.extract.LevelExtractor;
+import net.minecraft.client.renderer.LevelRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -8,8 +8,8 @@ import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
-@Mixin(LevelExtractor.class)
-public abstract class LevelExtractorMixin {
+@Mixin(LevelRenderer.class)
+public abstract class LevelRendererMixin {
 	@ModifyArg(
 		method = "extractVisibleEntities",
 		at = @At(
