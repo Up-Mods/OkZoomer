@@ -3,9 +3,9 @@ package page.langeweile.ok_zoomer.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
-import org.lwjgl.sdl.SDLMouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -75,7 +75,7 @@ public abstract class MouseHandlerMixin {
 				return;
 			}
 
-			if (rawButtonInfo.button() == SDLMouse.SDL_BUTTON_MIDDLE && pressed && Zoom.isZooming()) {
+			if (rawButtonInfo.button() == InputConstants.MOUSE_BUTTON_MIDDLE && pressed && Zoom.isZooming()) {
 				if (OkZoomerConfigManager.CONFIG.zoomScrolling.resetZoomWithMouse.value()) {
 					ZoomUtils.resetZoomDivisor(true);
 					ci.cancel();

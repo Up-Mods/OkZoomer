@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,11 +54,11 @@ public class CameraMixin {
 	}
 
 	@ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
-	private float modifyBob(float bob, @Local(argsOnly = true) CameraRenderState cameraState) {
+	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
 		} else {
-			return Zoom.getZoomCore().transitionMode().applyZoom(bob, cameraState.cameraEntityPartialTicks);
+			return Zoom.getZoomCore().transitionMode().applyZoom(bob, delta);
 		}
 	}
 
