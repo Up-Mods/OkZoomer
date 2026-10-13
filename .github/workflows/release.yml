@@ -46,6 +46,6 @@ jobs:
         with:
           version: ${{ github.ref_name }}
           webhook-url: ${{ secrets.ANNOUNCEMENT_WEBHOOK_URL }}
-          curseforge-project-id: "1465234"
-          modrinth-project-id: "4lDrPSXX"
+          curseforge-project-id: "354047"
+          modrinth-project-id: "aXf2OSFU"
           thumbnail-url: https://mod-assets.upcraft.dev/promo/ok-zoomer/icon_128x.png
