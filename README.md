@@ -20,3 +20,25 @@ This mod is available for download on the following services:
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ok-zoomer)
 - [GitHub Releases](https://github.com/Up-Mods/OkZoomer/releases)
 
+## For Developers
+
+Ok Zoomer is available on [Up's Mods Maven](https://maven.uuid.gg/releases/page/langeweile/ok_zoomer/ok_zoomer/) for both Fabric and NeoForge.
+
+```gradle
+repositories {
+    maven {
+        name = "Up's Mods"
+        url = "https://maven.uuid.gg/releases"
+    }
+}
+```
+
+```gradle
+dependencies {
+    implementation("page.langeweile.ok_zoomer:ok_zoomer:<version>") { transitive = false }
+}
+```
+
+Replace `<version>` with a version from [Up's Mods Maven](https://maven.uuid.gg/releases/page/langeweile/ok_zoomer/ok_zoomer/).
+
+> Do not use Modrinth Maven (`api.modrinth.com/maven`). Its jar does not process Ok Zoomer's bundled dependencies, which crashes on startup.
