@@ -95,10 +95,4 @@ publishMods {
 		optional("modmenu")
 		optional("sodium")
 	}
-
-	github {
-		accessToken = providers.environmentVariable("GITHUB_TOKEN")
-		repository = providers.environmentVariable("GITHUB_REPOSITORY")
-		commitish = providers.environmentVariable("TAG")
-	}
 }
