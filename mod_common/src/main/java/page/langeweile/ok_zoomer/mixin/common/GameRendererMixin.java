@@ -3,7 +3,7 @@ package page.langeweile.ok_zoomer.mixin.common;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,8 +13,8 @@ import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.utils.ZoomUtils;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
-@Mixin(Camera.class)
-public class CameraMixin {
+@Mixin(GameRenderer.class)
+public class GameRendererMixin {
 	@Inject(method = "tick()V", at = @At("HEAD"))
 	private void tickInstances(CallbackInfo info) {
 		var zoomCore = Zoom.getZoomCore();
@@ -35,26 +35,17 @@ public class CameraMixin {
 		}
 	}
 
-	@ModifyReturnValue(method = "calculateFov", at = @At("TAIL"))
-	private float modifyFov(float original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.getZoomCore().transitionMode().getActive()) {
-			return original;
-		} else {
-			return Zoom.getZoomCore().transitionMode().applyZoom(original, partialTicks);
-		}
-	}
-
 	// TODO - This affects the debug crosshair as well, make it not affect that!
-	@ModifyReturnValue(method = "calculateHudFov", at = @At("RETURN"))
-	private float modifyHandFov(float original, @Local(argsOnly = true) float partialTicks) {
-		if (!Zoom.getZoomCore().transitionMode().getActive() || !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value()) {
+	@ModifyReturnValue(method = "getFov", at = @At(value = "RETURN", ordinal = 1))
+	private float modifyHandFov(float original, @Local(argsOnly = true) float partialTicks, @Local(argsOnly = true) boolean useFovSetting) {
+		if (!Zoom.getZoomCore().transitionMode().getActive() || (!useFovSetting && !OkZoomerConfigManager.CONFIG.appearance.zoomHands.value())) {
 			return original;
 		} else {
 			return Zoom.getZoomCore().transitionMode().applyZoom(original, partialTicks);
 		}
 	}
 
-	@ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
+	@ModifyExpressionValue(method = "bobView", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/ClientAvatarState;getInterpolatedBob(F)F"))
 	private float modifyBob(float bob, @Local(argsOnly = true) float delta) {
 		if (!Zoom.isZooming() || !OkZoomerConfigManager.CONFIG.appearance.reduceViewBobbing.value()) {
 			return bob;
@@ -64,7 +55,7 @@ public class CameraMixin {
 	}
 
 	@ModifyArg(
-		method = "createProjectionMatrixForCulling",
+		method = "getProjectionMatrixForCulling",
 		at = @At(
 			value = "INVOKE",
 			target = "Ljava/lang/Math;max(FF)F"

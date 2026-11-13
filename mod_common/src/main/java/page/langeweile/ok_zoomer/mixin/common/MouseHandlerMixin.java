@@ -21,23 +21,6 @@ import page.langeweile.ok_zoomer.zoom.Zoom;
 @Mixin(MouseHandler.class)
 public abstract class MouseHandlerMixin {
 	@Inject(
-		method = "turnPlayer",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/tutorial/Tutorial;onMouse(DD)V"
-		)
-	)
-	public void applyZoomChanges(double movementTime, CallbackInfo ci, @Local(name = "xo") LocalDoubleRef xo, @Local(name = "yo") LocalDoubleRef yo, @Local(name = "sens") double sens) {
-		var modifier = Zoom.getZoomCore().mouseModifier();
-		if (modifier != null && modifier.getActive()) {
-			double transitionMultiplier = Zoom.getZoomCore().transitionMode().getInternalMultiplier()
-				* OkZoomerConfigManager.CONFIG.controls.sensitivityScale.value();
-			xo.set(modifier.applyXModifier(xo.get(), sens, movementTime, transitionMultiplier));
-			yo.set(modifier.applyYModifier(yo.get(), sens, movementTime, transitionMultiplier));
-		}
-	}
-
-	@Inject(
 		method = "onScroll",
 		at = @At(
 			value = "INVOKE",

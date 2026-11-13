@@ -1,7 +1,7 @@
 package page.langeweile.ok_zoomer.zoom.overlays;
 
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
@@ -33,7 +33,7 @@ public class SpyglassOverlay implements Overlay {
 
 	// TODO - Consider whether a third-person view block tweak option is desirable
 	@Override
-	public void extractOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, EasedTransitionMode transitionMode) {
+	public void renderOverlay(GuiGraphics graphics, DeltaTracker deltaTracker, EasedTransitionMode transitionMode) {
 		int guiWidth = graphics.guiWidth();
 		int guiHeight = graphics.guiHeight();
 		float smallerLength = (float) Math.min(guiWidth, guiHeight);

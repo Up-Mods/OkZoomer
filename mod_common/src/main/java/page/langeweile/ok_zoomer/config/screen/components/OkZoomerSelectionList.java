@@ -1,7 +1,7 @@
 package page.langeweile.ok_zoomer.config.screen.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.StringWidget;
@@ -59,9 +59,9 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 		}
 
 		@Override
-		public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			this.widget.setPosition(this.screen.width / 2 - 155, this.getContentY() + this.paddingTop);
-			this.widget.extractRenderState(graphics, mouseX, mouseY, partialTick);
+			this.widget.render(graphics, mouseX, mouseY, partialTick);
 		}
 
 		@Override
@@ -95,17 +95,18 @@ public class OkZoomerSelectionList extends ContainerObjectSelectionList<OkZoomer
 			this.buttons = rightButton != null ? List.of(leftButton, rightButton) : List.of(leftButton);
 		}
 
+
 		@Override
-		public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
+		public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean isHovering, float partialTick) {
 			int x = this.screen.width / 2 - 155;
 			int y = this.getContentY();
 
 			this.leftButton.setPosition(x, y + 2);
-			this.leftButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
+			this.leftButton.render(graphics, mouseX, mouseY, partialTick);
 
 			if (this.rightButton != null) {
 				this.rightButton.setPosition(x + 160, y + 2);
-				this.rightButton.extractRenderState(graphics, mouseX, mouseY, partialTick);
+				this.rightButton.render(graphics, mouseX, mouseY, partialTick);
 			}
 		}
 

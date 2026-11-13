@@ -1,7 +1,7 @@
 package page.langeweile.ok_zoomer.utils;
 
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import page.langeweile.ok_zoomer.config.OkZoomerConfigManager;
 import page.langeweile.ok_zoomer.zoom.Zoom;
 
@@ -15,7 +15,7 @@ public class InterfaceZoomUtils {
 		InterfaceZoomUtils.scale = 1.0F / fov;
 	}
 
-	public static void zoomInterface(GuiGraphicsExtractor graphics, Runnable runnable) {
+	public static void zoomInterface(GuiGraphics graphics, Runnable runnable) {
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(-(graphics.guiWidth() / InterfaceZoomUtils.translation), -(graphics.guiHeight() / InterfaceZoomUtils.translation));
 		graphics.pose().scale(InterfaceZoomUtils.scale, InterfaceZoomUtils.scale);
@@ -24,7 +24,7 @@ public class InterfaceZoomUtils {
 	}
 
 	// TODO - This assumes that the popped matrix is the interface zoom one, find a better way to do this!
-	public static void breakoutInterface(GuiGraphicsExtractor graphics, Runnable runnable) {
+	public static void breakoutInterface(GuiGraphics graphics, Runnable runnable) {
 		if (OkZoomerConfigManager.CONFIG.appearance.persistentInterface.value() || !Zoom.getZoomCore().transitionMode().getActive()) {
 			runnable.run();
 		} else {

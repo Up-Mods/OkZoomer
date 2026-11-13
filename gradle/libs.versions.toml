@@ -1,5 +1,6 @@
 [versions]
-minecraft = "26.1.2"
+minecraft = "1.21.11"
+minecraft_unobfuscated = "1.21.11_unobfuscated"
 
 shadow = "9.6.1"
 mod_publish_plugin = "2.2.1"
@@ -7,16 +8,17 @@ mod_publish_plugin = "2.2.1"
 fabric_loom = "1.19.3"
 fabric_loader = "0.20.1"
 moddevgradle = "2.0.148"
-neoforge = "26.1.2.125"
+neoforge = "21.11.48"
 
-fabric_api = "0.155.3+26.1.2"
+fabric_api = "0.141.6+1.21.11"
 wrench_wrapper = "0.9.3"
 
-modmenu = "18.0.2"
-sodium = "0.9.2+mc26.1.2"
+modmenu = "17.0.1"
+sodium = "0.8.14+mc1.21.11"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+minecraft_unobfuscated = { module = "com.mojang:minecraft", version.ref = "minecraft_unobfuscated" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
@@ -37,4 +39,5 @@ wrench_wrapper_neoforge = ["wrench_wrapper_api_neoforge", "wrench_wrapper_impl"]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 mod_publish_plugin = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod_publish_plugin" }
 fabric_loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric_loom" }
+fabric_loom-remap = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric_loom" }
 moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }

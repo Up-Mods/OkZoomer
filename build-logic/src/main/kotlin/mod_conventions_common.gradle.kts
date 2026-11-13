@@ -3,7 +3,7 @@ plugins {
 	`maven-publish`
 }
 
-val javaVersion = 25
+val javaVersion = 21
 
 version = System.getenv().get("TAG") ?: "0.0.0"
 group = "page.langeweile.ok_zoomer"
@@ -48,5 +48,25 @@ tasks.processResources {
 
 	filesMatching(listOf("fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
 		expand("version" to version)
+	}
+}
+
+publishing {
+	publications {
+		create<MavenPublication>("maven") {
+			artifactId = base.archivesName.get()
+			from(components["java"])
+		}
+	}
+
+	repositories {
+		providers.environmentVariable("MAVEN_UPLOAD_URL").orNull?.let { mavenUrl ->
+			maven(mavenUrl) {
+				credentials {
+					username = providers.environmentVariable("MAVEN_UPLOAD_USERNAME").get()
+					password = providers.environmentVariable("MAVEN_UPLOAD_PASSWORD").get()
+				}
+			}
+		}
 	}
 }

@@ -23,11 +23,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Build with Gradle
-        run: ./gradlew :mod:build
+        run: ./gradlew build
 
       - name: Upload build artifacts
         continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
           name: ${{ github.event.repository.name }}-${{ github.sha }}
-          path: mod/build/libs
+          path: |
+            mod_fabric/build/libs/*.jar
+            mod_norge/build/libs/*.jar

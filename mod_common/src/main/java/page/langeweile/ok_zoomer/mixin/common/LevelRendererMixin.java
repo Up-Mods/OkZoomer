@@ -10,12 +10,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import page.langeweile.ok_zoomer.zoom.Zoom;
 
 // Sodium uses @Overwrite on this method (and equivalents) until 26.2, so we need to be crafty
 @Mixin(value = LevelRenderer.class, priority = 1100)
 public abstract class LevelRendererMixin {
 	@Unique
-	private float prevCamFov = Float.MIN_VALUE;
+	private float prevZoomDivisor = Float.MIN_VALUE;
 
 	@ModifyExpressionValue(
 		method = "cullTerrain",
@@ -25,8 +26,8 @@ public abstract class LevelRendererMixin {
 		),
 		require = 0
 	)
-	private boolean modifyFrustumUpdateCheck(boolean original, @Local(argsOnly = true) Camera camera) {
-		return original || camera.getFov() != this.prevCamFov;
+	private boolean modifyFrustumUpdateCheck(boolean original) {
+		return original || Zoom.getZoomCore().transitionMode().getInternalMultiplier() != this.prevZoomDivisor;
 	}
 
 	@Inject(
@@ -37,7 +38,7 @@ public abstract class LevelRendererMixin {
 		),
 		require = 0
 	)
-	private void setPrevCamFov(Camera camera, Frustum frustum, boolean spectator, CallbackInfo ci) {
-		this.prevCamFov = camera.getFov();
+	private void setPrevCamFov(CallbackInfo ci) {
+		this.prevZoomDivisor = (float) Zoom.getZoomCore().transitionMode().getInternalMultiplier();
 	}
 }

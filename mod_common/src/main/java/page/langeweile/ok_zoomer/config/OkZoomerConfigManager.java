@@ -24,7 +24,7 @@ public class OkZoomerConfigManager {
 		// On initialization, configure our zoom instance
 		OkZoomerConfigManager.configureZoomInstance();
 
-		CONFIG.registerCallback(_ -> OkZoomerConfigManager.configureZoomInstance());
+		CONFIG.registerCallback(config -> OkZoomerConfigManager.configureZoomInstance());
 	}
 
 	public static void configureZoomInstance() {
@@ -37,7 +37,7 @@ public class OkZoomerConfigManager {
 
 	public static FloatUnaryOperator getTransitionOperator(ConfigEnums.ZoomTransitionModes mode) {
 		return switch (mode) {
-			case INSTANT -> _ -> 1.0F;
+			case INSTANT -> f -> 1.0F;
 			case LINEAR -> f -> f;
 			case SMOOTH -> Ease::outExpo;
 			case SINE -> Ease::outSine;

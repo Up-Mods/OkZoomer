@@ -5,7 +5,7 @@
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"AbstractClientPlayerMixin",
-		"CameraMixin",
+		"GameRendererMixin",
 		"GuiMixin",
 		"LevelRendererMixin",
 		"MouseHandlerMixin",
